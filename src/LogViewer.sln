@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4A84B079-FA8C-4EBB-88CE-6B07E2615AF4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{F7BC922D-7358-43E1-9E7E-2309EE431007}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{60829ACC-0690-4BD0-806E-5424AD1A5A3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogViewer", "LogViewer\LogViewer.csproj", "{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF} = {4A84B079-FA8C-4EBB-88CE-6B07E2615AF4}
+	EndGlobalSection
+EndGlobal
