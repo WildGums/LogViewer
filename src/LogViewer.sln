@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{60829ACC-0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogViewer", "LogViewer\LogViewer.csproj", "{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogViewer.Tests", "LogViewer.Tests\LogViewer.Tests.csproj", "{990340FE-7134-4917-BCE5-0BC1391418B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,11 +23,16 @@ Global
 		{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{990340FE-7134-4917-BCE5-0BC1391418B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{990340FE-7134-4917-BCE5-0BC1391418B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{990340FE-7134-4917-BCE5-0BC1391418B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{990340FE-7134-4917-BCE5-0BC1391418B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF} = {4A84B079-FA8C-4EBB-88CE-6B07E2615AF4}
+		{990340FE-7134-4917-BCE5-0BC1391418B6} = {4A84B079-FA8C-4EBB-88CE-6B07E2615AF4}
 	EndGlobalSection
 EndGlobal

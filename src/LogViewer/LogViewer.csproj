@@ -63,6 +63,12 @@
     <Reference Include="Microsoft.Windows.Shell">
       <HintPath>..\..\lib\Fluent.Ribbon.3.1.0\lib\net40\Microsoft.Windows.Shell.dll</HintPath>
     </Reference>
+    <Reference Include="Orc.FilterBuilder">
+      <HintPath>..\..\lib\Orc.FilterBuilder.1.4.0-unstable0039\lib\net40\Orc.FilterBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="Orc.Toolkit">
+      <HintPath>..\..\lib\Orc.Toolkit.1.0.9.0\lib\NET40\Orc.Toolkit.dll</HintPath>
+    </Reference>
     <Reference Include="Orchestra.Core">
       <HintPath>..\..\lib\Orchestra.Core.2.1.0-unstable0008\lib\net40\Orchestra.Core.dll</HintPath>
     </Reference>
@@ -105,6 +111,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FontAwesome.cs" />
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Services\ApplicationInitializationService.cs" />
     <Compile Include="Services\RibbonService.cs" />
@@ -145,6 +152,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Resource Include="Resources\Fonts\fontawesome-webfont.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -153,10 +161,10 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Themes\Generic.xaml">
+    <Resource Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </Resource>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

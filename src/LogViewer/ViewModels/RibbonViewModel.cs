@@ -4,6 +4,6 @@ namespace LogViewer.ViewModels
 {
     public class RibbonViewModel : ViewModelBase
     {
-         
+
     }
 }
