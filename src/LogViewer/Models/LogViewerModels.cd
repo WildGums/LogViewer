@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="LogViewer.Models.FilesLocation">
+    <Position X="6.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\FilesLocation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogViewer.Models.LocatedLogRecords">
+    <Position X="7.75" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\LocatedLogRecords.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="SetOfLogRecords" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LogViewer.Models.CheckableFilesLocation">
+    <Position X="3.5" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\CheckableFilesLocation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Location" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LogViewer.Models.LogRecord">
+    <Position X="4.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAQAAAAACIAAAAA=</HashCode>
+      <FileName>Models\LogRecord.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LogRecordType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LogViewer.Models.LogViewerConfig">
+    <Position X="3.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Models\LogViewerConfig.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="LogFilesLocations" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LogViewer.Models.SetOfLogRecords">
+    <Position X="6.5" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAAAEAQAAAEAAAAAAAA=</HashCode>
+      <FileName>Models\SetOfLogRecords.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="LogRecords" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Enum Name="LogViewer.Models.LogRecordType">
+    <Position X="1.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAYAAAAAAABAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Models\Enums\LogRecordType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

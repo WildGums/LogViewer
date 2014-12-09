@@ -4,15 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:catel="http://catel.codeplex.com"
+             xmlns:views="clr-namespace:LogViewer.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TreeView Grid.Column="0"></TreeView>
+        <views:LogTreeView Grid.Column="0"></views:LogTreeView>
         <GridSplitter Grid.Column="1" MinWidth="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
         <catel:TabControl Grid.Column="2">
             

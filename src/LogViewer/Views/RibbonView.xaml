@@ -10,8 +10,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <fluent:Ribbon x:Name="ribbon" IsQuickAccessToolBarVisible="False" CanCustomizeRibbon="False" AutomaticStateManagement="False">
-        <fluent:Ribbon.Tabs>
+        <fluent:Ribbon.Tabs >
             <fluent:RibbonTabItem Header="Filter">
+                <fluent:RibbonGroupBox>
+                    <fluent:Button Header="Refresh" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Refresh}}"/>
+                </fluent:RibbonGroupBox>
                 <fluent:RibbonGroupBox Header="Log record type">
                     <fluent:ToggleButton Header="Debug" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Bug}}"/>
                     <fluent:ToggleButton Header="Info" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Info}}"/>
@@ -21,7 +24,19 @@
                 <fluent:RibbonGroupBox>
                     
                 </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox Header="Log message">
+                <fluent:RibbonGroupBox Header="DateFilter">
+                    <fluent:GalleryPanel Orientation="Vertical">
+                        <DatePicker/>
+                        <DatePicker/>
+                    </fluent:GalleryPanel>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Header="TimeFilter">
+                    <fluent:GalleryPanel Orientation="Vertical">
+                        <TextBox/>
+                        <TextBox/>
+                    </fluent:GalleryPanel>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Header="Log text">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -36,11 +51,8 @@
                             <TextBox  Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" MinWidth="100" MaxWidth="300" />
                         </Grid>
                     <fluent:Button Header="Apply" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Search}}"/>
-                </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox>
-                    <fluent:DropDownButton Header="Filter builder"/>
-                </fluent:RibbonGroupBox>
-            </fluent:RibbonTabItem>
-        </fluent:Ribbon.Tabs>
+                </fluent:RibbonGroupBox>                
+            </fluent:RibbonTabItem>            
+        </fluent:Ribbon.Tabs>        
     </fluent:Ribbon>
 </catel:UserControl>

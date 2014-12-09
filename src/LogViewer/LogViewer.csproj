@@ -112,17 +112,34 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FontAwesome.cs" />
+    <Compile Include="Models\Filter.cs" />
+    <Compile Include="Models\LocatedLogRecords.cs" />
+    <Compile Include="Models\FilesLocation.cs" />
+    <Compile Include="Models\CheckableFilesLocation.cs" />
+    <Compile Include="Models\LogViewerModel.cs" />
+    <Compile Include="Models\SetOfLogRecords.cs" />
+    <Compile Include="Models\LogRecord.cs" />
+    <Compile Include="Models\Enums\LogRecordType.cs" />
+    <Compile Include="Models\LogViewerConfig.cs" />
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Services\ApplicationInitializationService.cs" />
     <Compile Include="Services\RibbonService.cs" />
+    <Compile Include="ViewModels\LogTreeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RibbonViewModel.cs" />
+    <Compile Include="ViewModels\SingleLogViewModel.cs" />
     <Compile Include="ViewModels\StatusBarViewModel.cs" />
+    <Compile Include="Views\LogTreeView.xaml.cs">
+      <DependentUpon>LogTreeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RibbonView.xaml.cs">
       <DependentUpon>RibbonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LogEntityView.xaml.cs">
+      <DependentUpon>LogEntityView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StatusBarView.xaml.cs">
       <DependentUpon>StatusBarView.xaml</DependentUpon>
@@ -146,6 +163,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Models\LogViewerModels.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -157,19 +175,25 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
+    <Page Include="Views\LogTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RibbonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LogEntityView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
