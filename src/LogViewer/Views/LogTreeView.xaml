@@ -4,13 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:catel="http://catel.codeplex.com"
+             xmlns:models="clr-namespace:LogViewer.Models"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <TreeView ItemsSource="{Binding LogFolders}">
-        <TreeView.ItemTemplate>
-            <HierarchicalDataTemplate ItemsSource="{Binding LogFiles}">
-                
-            </HierarchicalDataTemplate>
-        </TreeView.ItemTemplate>
-    </TreeView>
+    <UserControl.Resources>
+        <DataTemplate x:Key="Product" DataType="{x:Type models:Product}">
+            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />            
+        </DataTemplate>
+        <HierarchicalDataTemplate x:Key="Company" DataType="{x:Type models:Company}" ItemsSource="{Binding Products}" ItemTemplate="{StaticResource Product}">
+            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" IsThreeState="True"/>
+        </HierarchicalDataTemplate>        
+    </UserControl.Resources>
+
+    <TreeView ItemsSource="{Binding Companies}" ItemTemplate="{StaticResource Company}"/>
 </catel:UserControl>

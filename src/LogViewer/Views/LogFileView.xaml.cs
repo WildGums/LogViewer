@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace LogViewer.Views
 {
     /// <summary>
-    /// Логика взаимодействия для LogEntityView.xaml
+    /// Логика взаимодействия для LogFileView.xaml
     /// </summary>
-    public partial class LogEntityView
+    public partial class LogFileView
     {
-        public LogEntityView()
+        public LogFileView()
         {
             InitializeComponent();
         }

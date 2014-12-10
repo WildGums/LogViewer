@@ -118,8 +118,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FontAwesome.cs" />
+    <Compile Include="Models\Base\PathElement.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Filter.cs" />
+    <Compile Include="Services\Interfaces\ISettingsSerialiser.cs" />
     <Compile Include="Models\LogViewerModel.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\LogFile.cs" />
@@ -129,10 +131,11 @@
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Services\ApplicationInitializationService.cs" />
     <Compile Include="Services\RibbonService.cs" />
+    <Compile Include="Services\SettingsSerialiser.cs" />
     <Compile Include="ViewModels\LogTreeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RibbonViewModel.cs" />
-    <Compile Include="ViewModels\SingleLogViewModel.cs" />
+    <Compile Include="ViewModels\LogFileViewModel.cs" />
     <Compile Include="ViewModels\StatusBarViewModel.cs" />
     <Compile Include="Views\LogTreeView.xaml.cs">
       <DependentUpon>LogTreeView.xaml</DependentUpon>
@@ -143,8 +146,8 @@
     <Compile Include="Views\RibbonView.xaml.cs">
       <DependentUpon>RibbonView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LogEntityView.xaml.cs">
-      <DependentUpon>LogEntityView.xaml</DependentUpon>
+    <Compile Include="Views\LogFileView.xaml.cs">
+      <DependentUpon>LogFileView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StatusBarView.xaml.cs">
       <DependentUpon>StatusBarView.xaml</DependentUpon>
@@ -168,7 +171,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Models\LogViewerModels.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -180,9 +182,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -200,7 +200,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LogEntityView.xaml">
+    <Page Include="Views\LogFileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

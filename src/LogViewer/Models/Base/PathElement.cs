@@ -1,19 +1,20 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Company.cs" company="Orcomp development team">
+// <copyright file="PathElement.cs" company="Orcomp development team">
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace LogViewer.Models
+namespace LogViewer.Models.Base
 {
-    using System.Collections.ObjectModel;
-    using Base;
     using Catel.Data;
     using YAXLib;
 
     [YAXSerializableType(FieldsToSerialize = YAXSerializationFields.AttributedFieldsOnly)]
-    public class Company : PathElement
+    public abstract class PathElement : ModelBase
     {
         [YAXSerializableField]
-        public ObservableCollection<Product> Products { get; set; }
+        public string Name { get; set; }
+
+        [YAXSerializableField]
+        public bool? IsChecked { get; set; } 
     }
 }

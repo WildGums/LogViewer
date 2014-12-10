@@ -18,6 +18,7 @@ public static class ModuleInitializer
 
         serviceLocator.RegisterType<IRibbonService, RibbonService>();
         serviceLocator.RegisterType<IApplicationInitializationService, ApplicationInitializationService>();
+        serviceLocator.RegisterType<ISettingsSerialiser, SettingsSerialiser>();
         serviceLocator.RegisterType<LogViewerModel>(RegistrationType.Singleton);
     }
 }

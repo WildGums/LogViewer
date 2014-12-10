@@ -6,14 +6,13 @@
 namespace LogViewer.Models
 {
     using System.Collections.ObjectModel;
+    using Base;
     using Catel.Data;
+    using YAXLib;
 
-    public class Product : ModelBase
+    [YAXSerializableType(FieldsToSerialize = YAXSerializationFields.AttributedFieldsOnly)]
+    public class Product : PathElement
     {
-        public string Name { get; set; }
-
-        public bool IsChecked { get; set; }
-
         public ObservableCollection<LogFile> LogFiles { get; set; }
     }
 }
