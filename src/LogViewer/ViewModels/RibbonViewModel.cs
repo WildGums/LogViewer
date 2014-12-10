@@ -7,9 +7,15 @@
 
 namespace LogViewer.ViewModels
 {
+    using Catel.Fody;
     using Catel.MVVM;
+    using Models;
 
     public class RibbonViewModel : ViewModelBase
     {
+        public RibbonViewModel()
+        {
+            
+        }
     }
 }

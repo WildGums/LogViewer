@@ -1,5 +1,6 @@
 ﻿using Catel.IoC;
 using LogViewer.Services;
+using LogViewer.Models;
 using Orchestra.Services;
 using Orchestra.Shell.Services;
 
@@ -17,5 +18,6 @@ public static class ModuleInitializer
 
         serviceLocator.RegisterType<IRibbonService, RibbonService>();
         serviceLocator.RegisterType<IApplicationInitializationService, ApplicationInitializationService>();
+        serviceLocator.RegisterType<LogViewerModel>(RegistrationType.Singleton);
     }
 }

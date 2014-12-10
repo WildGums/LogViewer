@@ -10,9 +10,9 @@ namespace LogViewer.Models
 
     public class LogViewerModel : ModelBase
     {
+        public LogViewerConfig Config { get; set; }
         public Filter Filter { get; set; }
-        public ObservableCollection<LocatedLogRecords> LogTree { get; set; }
-        public ObservableCollection<ObservableCollection<SetOfLogRecords>> FilteredLogRecords { get; set; }
+        public ObservableCollection<Company> Companies { get; set; }
         public string StatusText { get; set; }
     }
 }

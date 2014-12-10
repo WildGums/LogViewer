@@ -101,23 +101,28 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="YAXLib">
+      <HintPath>..\..\lib\YAXLib.2.13\lib\YAXLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\SolutionAssemblyInfo.cs">
+      <Link>Properties\SolutionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FontAwesome.cs" />
+    <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Filter.cs" />
-    <Compile Include="Models\LocatedLogRecords.cs" />
-    <Compile Include="Models\FilesLocation.cs" />
-    <Compile Include="Models\CheckableFilesLocation.cs" />
     <Compile Include="Models\LogViewerModel.cs" />
-    <Compile Include="Models\SetOfLogRecords.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\LogFile.cs" />
     <Compile Include="Models\LogRecord.cs" />
     <Compile Include="Models\Enums\LogRecordType.cs" />
     <Compile Include="Models\LogViewerConfig.cs" />
@@ -175,7 +180,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Services\Interfaces\" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>

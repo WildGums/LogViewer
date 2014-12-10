@@ -7,6 +7,7 @@
              xmlns:fluent="urn:fluent-ribbon"
              xmlns:orchestra="https://github.com/orcomp/orchestra"
              xmlns:logViewer="clr-namespace:LogViewer"
+             xmlns:views="clr-namespace:LogViewer.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <fluent:Ribbon x:Name="ribbon" IsQuickAccessToolBarVisible="False" CanCustomizeRibbon="False" AutomaticStateManagement="False">
@@ -53,6 +54,6 @@
                     <fluent:Button Header="Apply" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Search}}"/>
                 </fluent:RibbonGroupBox>                
             </fluent:RibbonTabItem>            
-        </fluent:Ribbon.Tabs>        
+        </fluent:Ribbon.Tabs>              
     </fluent:Ribbon>
 </catel:UserControl>

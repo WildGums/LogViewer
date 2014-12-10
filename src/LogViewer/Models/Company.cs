@@ -1,15 +1,19 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CheckableFilesLocation.cs" company="Orcomp development team">
+// <copyright file="Company.cs" company="Orcomp development team">
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 namespace LogViewer.Models
 {
+    using System.Collections.ObjectModel;
     using Catel.Data;
 
-    public class CheckableFilesLocation : ModelBase
+    public class Company : ModelBase
     {
-        public FilesLocation Location { get; set; }
+        public string Name { get; set; }
+
         public bool IsChecked { get; set; }
+
+        public ObservableCollection<Product> Products { get; set; }
     }
 }

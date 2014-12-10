@@ -10,7 +10,6 @@ namespace LogViewer.Models
 
     public class LogViewerConfig : ModelBase
     {
-        public int TreeViewWidth { get; set; }
-        public ObservableCollection<CheckableFilesLocation> LogFilesLocations { get; set; }
+        public int TreeViewWidth { get; set; }        
     }
 }
