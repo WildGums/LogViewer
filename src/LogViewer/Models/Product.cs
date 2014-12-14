@@ -11,7 +11,7 @@ namespace LogViewer.Models
     using YAXLib;
 
     [YAXSerializableType(FieldsToSerialize = YAXSerializationFields.AttributedFieldsOnly)]
-    public class Product : PathElement
+    public class Product : TreeNode
     {
         public ObservableCollection<LogFile> LogFiles { get; set; }
     }

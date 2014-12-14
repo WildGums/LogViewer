@@ -7,12 +7,13 @@ namespace LogViewer.Models
 {
     using System;
     using Catel.Data;
+    using Catel.Logging;
 
     public class LogRecord : ModelBase
     {
         public DateTime DateTime { get; set; }
-        public LogRecordType LogRecordType { get; set; }
-        public string AssemblyName { get; set; }
-        public string Text { get; set; }
+        public LogEvent LogEvent { get; set; }
+        public string TargetTypeName { get; set; }
+        public string Message { get; set; }
     }
 }

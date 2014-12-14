@@ -7,11 +7,13 @@ namespace LogViewer.Models
 {
     using System;
     using System.Collections.ObjectModel;
+    using Base;
     using Catel.Data;
+    using YAXLib;
 
-    public class LogFile : ModelBase
+    public class LogFile : TreeNode
     {
-        public string ProcessAssemblyName { get; set; }
+        public string FIleName { get; set; }
         public DateTime DateTime { get; set; }
         public int ProcessId { get; set; }
         public ReadOnlyObservableCollection<LogRecord> LogRecords { get; set; } 

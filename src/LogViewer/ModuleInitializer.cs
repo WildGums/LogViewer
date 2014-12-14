@@ -1,6 +1,7 @@
 ﻿using Catel.IoC;
 using LogViewer.Services;
 using LogViewer.Models;
+using LogViewer.Factories;
 using Orchestra.Services;
 using Orchestra.Shell.Services;
 
@@ -18,7 +19,10 @@ public static class ModuleInitializer
 
         serviceLocator.RegisterType<IRibbonService, RibbonService>();
         serviceLocator.RegisterType<IApplicationInitializationService, ApplicationInitializationService>();
+        serviceLocator.RegisterType<ILogRecordService, LogRecordService>();
         serviceLocator.RegisterType<ISettingsSerialiser, SettingsSerialiser>();
+        serviceLocator.RegisterType<ICompanyFactory, CompanyFactory>();
+        serviceLocator.RegisterType<IProductFactory, ProductFactory>();
         serviceLocator.RegisterType<LogViewerModel>(RegistrationType.Singleton);
     }
 }

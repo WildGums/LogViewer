@@ -16,13 +16,12 @@ namespace LogViewer.Models
     {
         public LogViewerModel(ISettingsSerialiser settingsSerialiser)
         {
-            /*Companies = settingsSerialiser.DeserializeCompanies();
+            //Companies = settingsSerialiser.DeserializeCompanies();
             
-            var applicationDataDirectory = Path.GetApplicationDataDirectory();
+            /*var applicationDataDirectory = Path.GetApplicationDataDirectory();
             var serializer = new YAXLib.YAXSerializer(typeof (Company));
-            serializer.Deserialize()
-            var product = new Product() {Name = "ddd"};
-            Companies.Add(new Company { Name = "sssss", IsChecked = null, Products = new ObservableCollection<Product>(new[] { product }) });*/
+            serializer.Deserialize()*/
+            Companies = new ObservableCollection<Company>();
         }
         public LogViewerConfig Config { get; set; }
         public Filter Filter { get; set; }

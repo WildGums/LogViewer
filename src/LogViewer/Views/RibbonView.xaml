@@ -19,8 +19,8 @@
                 <fluent:RibbonGroupBox Header="Log record type">
                     <fluent:ToggleButton Header="Debug" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Bug}}"/>
                     <fluent:ToggleButton Header="Info" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Info}}"/>
-                    <fluent:ToggleButton Header="Warning" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Exclamation}}"/>
-                    <fluent:ToggleButton Header="Error" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Warning}}"/>
+                    <fluent:ToggleButton Header="Warning" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Warning}}"/>
+                    <fluent:ToggleButton Header="Error" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Remove}}"/>
                 </fluent:RibbonGroupBox>
                 <fluent:RibbonGroupBox>
                     

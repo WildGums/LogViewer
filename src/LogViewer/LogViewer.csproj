@@ -36,17 +36,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Catel.Core">
-      <HintPath>..\..\lib\Catel.Core.4.1.0-unstable0015\lib\net40\Catel.Core.dll</HintPath>
+    <Reference Include="Catel.Core, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Catel.Core.4.1.0-unstable0018\lib\net40\Catel.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Catel.Extensions.Controls">
-      <HintPath>..\..\lib\Catel.Extensions.Controls.4.1.0-unstable0007\lib\net40\Catel.Extensions.Controls.dll</HintPath>
+    <Reference Include="Catel.Extensions.Controls, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Catel.Extensions.Controls.4.1.0-unstable0018\lib\net40\Catel.Extensions.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Catel.Fody.Attributes">
       <HintPath>..\..\lib\Catel.Fody.2.4.0-unstable0001\lib\portable-net4+sl4+wp7+win8+wpa81+MonoAndroid14+MonoTouch40\Catel.Fody.Attributes.dll</HintPath>
     </Reference>
-    <Reference Include="Catel.MVVM">
-      <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0015\lib\net40\Catel.MVVM.dll</HintPath>
+    <Reference Include="Catel.MVVM, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0018\lib\net40\Catel.MVVM.dll</HintPath>
     </Reference>
     <Reference Include="Fluent">
       <HintPath>..\..\lib\Fluent.Ribbon.3.1.0\lib\net40\Fluent.dll</HintPath>
@@ -69,11 +72,13 @@
     <Reference Include="Orc.Toolkit">
       <HintPath>..\..\lib\Orc.Toolkit.1.0.9.0\lib\NET40\Orc.Toolkit.dll</HintPath>
     </Reference>
-    <Reference Include="Orchestra.Core">
-      <HintPath>..\..\lib\Orchestra.Core.2.1.0-unstable0008\lib\net40\Orchestra.Core.dll</HintPath>
+    <Reference Include="Orchestra.Core, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Orchestra.Core.2.1.0-unstable0022\lib\net40\Orchestra.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Orchestra.Shell.Ribbon.Fluent">
-      <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.1.0-unstable0008\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
+    <Reference Include="Orchestra.Shell.Ribbon.Fluent, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.1.0-unstable0022\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -87,8 +92,9 @@
     <Reference Include="System.Threading.Tasks">
       <HintPath>..\..\lib\Microsoft.Bcl.1.1.9\lib\net40\System.Threading.Tasks.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Fluent.Ribbon.3.1.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0018\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -117,8 +123,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Behaviors\TreeViewInPlaceEditBehavior.cs" />
+    <Compile Include="Behaviors\TreeViewInPlaceEditBoxBehavior.cs" />
+    <Compile Include="Extensions\AppDataServiceExtensions.cs" />
+    <Compile Include="Extensions\DependencyObjectExtension.cs" />
+    <Compile Include="Extensions\FrameworkElementExtension.cs" />
+    <Compile Include="Factories\CompanyFactory.cs" />
+    <Compile Include="Services\Interfaces\ILogRecordService.cs" />
+    <Compile Include="Factories\Interfaces\IProductFactory.cs" />
+    <Compile Include="Services\LogRecordService.cs" />
+    <Compile Include="Factories\ProductFactory.cs" />
     <Compile Include="FontAwesome.cs" />
-    <Compile Include="Models\Base\PathElement.cs" />
+    <Compile Include="Models\AssemblyLog.cs" />
+    <Compile Include="Models\Base\TreeNode.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Filter.cs" />
     <Compile Include="Services\Interfaces\ISettingsSerialiser.cs" />
@@ -126,12 +143,12 @@
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\LogFile.cs" />
     <Compile Include="Models\LogRecord.cs" />
-    <Compile Include="Models\Enums\LogRecordType.cs" />
     <Compile Include="Models\LogViewerConfig.cs" />
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Services\ApplicationInitializationService.cs" />
     <Compile Include="Services\RibbonService.cs" />
     <Compile Include="Services\SettingsSerialiser.cs" />
+    <Compile Include="Factories\Interfaces\ICompanyFactory.cs" />
     <Compile Include="ViewModels\LogTreeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RibbonViewModel.cs" />
@@ -182,7 +199,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Validators\" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
