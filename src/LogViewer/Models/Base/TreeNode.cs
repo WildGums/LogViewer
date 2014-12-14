@@ -18,11 +18,7 @@ namespace LogViewer.Models.Base
         }
 
         [YAXSerializableField]
-        public string Name { get; set; }
-
-        public bool IsSelected { get; set; }
-
-        public bool IsExpanded { get; set; }
+        public virtual string Name { get; set; }
 
         [YAXSerializableField]
         public ObservableCollection<TreeNode> Children { get; set; }

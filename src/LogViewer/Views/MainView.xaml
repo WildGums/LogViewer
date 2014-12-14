@@ -13,10 +13,8 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <views:LogTreeView Grid.Column="0"></views:LogTreeView>
+        <views:LogTreeView Grid.Column="0"/>
         <GridSplitter Grid.Column="1" MinWidth="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
-        <catel:TabControl Grid.Column="2">
-            
-        </catel:TabControl>
+        <views:LogTabView Grid.Column="2"/>
     </Grid>
 </catel:UserControl>

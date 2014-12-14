@@ -21,6 +21,7 @@ public static class ModuleInitializer
         serviceLocator.RegisterType<IApplicationInitializationService, ApplicationInitializationService>();
         serviceLocator.RegisterType<ILogRecordService, LogRecordService>();
         serviceLocator.RegisterType<ISettingsSerialiser, SettingsSerialiser>();
+        serviceLocator.RegisterType<ILogFileService, LogFileService>();
         serviceLocator.RegisterType<ICompanyFactory, CompanyFactory>();
         serviceLocator.RegisterType<IProductFactory, ProductFactory>();
         serviceLocator.RegisterType<LogViewerModel>(RegistrationType.Singleton);

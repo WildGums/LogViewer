@@ -22,11 +22,6 @@ namespace LogViewer.Services
             await RunAndWaitAsync(new Func<Task>[] { InitializePerformance });
         }
 
-        public override async Task InitializeCommands(ICommandManager commandManager)
-        {
-            // TODO: use commandManager.CreateCommand to create global command
-        }
-
         private async Task InitializePerformance()
         {
             Catel.Data.ModelBase.DefaultSuspendValidationValue = true;

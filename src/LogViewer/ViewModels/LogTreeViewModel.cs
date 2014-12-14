@@ -9,7 +9,7 @@ namespace LogViewer.ViewModels
 {
     using System;
     using System.Windows.Forms;
-
+    using Behaviors;
     using Catel.Fody;
     using Catel.IO;
     using Catel.Logging;
@@ -20,24 +20,29 @@ namespace LogViewer.ViewModels
     using Models;
     using Orchestra.Services;
     using Views;
+    using TreeNode = Models.Base.TreeNode;
 
-    public class LogTreeViewModel : ViewModelBase
+    public class LogTreeViewModel : ViewModelBase, IHasSelectableItems
     {
         private readonly ISelectDirectoryService _selectDirectoryService;
         private readonly IMessageService _messageService;
         private readonly ICompanyFactory _companyFactory;
         private readonly IAppDataService _appDataService;
+        private readonly ICommandManager _commandManager;
 
-        public LogTreeViewModel(LogViewerModel logViewerModel, ISelectDirectoryService selectDirectoryService, IMessageService messageService, ICompanyFactory companyFactory, IAppDataService appDataService)
+        public LogTreeViewModel(LogViewerModel logViewerModel, ISelectDirectoryService selectDirectoryService, IMessageService messageService, ICompanyFactory companyFactory, IAppDataService appDataService, ICommandManager commandManager)
         {
             _selectDirectoryService = selectDirectoryService;
             _messageService = messageService;
             _companyFactory = companyFactory;
             _appDataService = appDataService;
+            _commandManager = commandManager;
 
             LogViewer = logViewerModel;
 
             AddCompanyCommand = new Command(OnAddCompanyCommandExecute);
+
+            
         }
 
         [Model]
@@ -75,5 +80,8 @@ namespace LogViewer.ViewModels
                 }                
             }
         }
+
+        [ViewModelToModel("LogViewer")]
+        public TreeNode SelectedItem { get; set; }
     }
 }

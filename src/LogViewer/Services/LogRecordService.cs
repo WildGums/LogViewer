@@ -20,7 +20,7 @@ namespace LogViewer.Services
                 {
                     string line;
                     LogRecord record = null;
-                    var logRecordPattern = @"^\d{2}\:\d{2}\:\d{2}\:\d+\s\=\>\s\[[a-zA-Z]+\]\s\[[a-zA-Z\.]+\].+";
+                    var logRecordPattern = @"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+\s\=\>\s\[[a-zA-Z]+\]\s\[[a-zA-Z\.]+\].+";
 
                     while ((line = reader.ReadLine()) != null)
                     {                                          
@@ -50,9 +50,9 @@ namespace LogViewer.Services
 
         private DateTime ExtractDateTime(ref string line)
         {
-            var dateTimeString = Regex.Match(line, @"^\d{2}\:\d{2}\:\d{2}\:\d+").Value;
+            var dateTimeString = Regex.Match(line, @"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+").Value;
             line = line.Substring(dateTimeString.Length + " => ".Length).TrimStart();
-            return DateTime.ParseExact(dateTimeString, new[] { "hh:mm:ss:fff", "yyyy-MM-dd hh:mm:ss:fff", "hh:mm:ss:fff" }, null, DateTimeStyles.None);
+            return DateTime.ParseExact(dateTimeString, new[] { "hh:mm:ss:fff", "yyyy-MM-dd hh:mm:ss:fff" }, null, DateTimeStyles.None);
         }
 
         private LogEvent ExtractLogEventType(ref string line)

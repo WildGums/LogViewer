@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Product.cs" company="Orcomp development team">
+// <copyright file="LogFilesGroup.cs" company="Orcomp development team">
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,11 +7,15 @@ namespace LogViewer.Models
 {
     using System.Collections.ObjectModel;
     using Base;
+    using Catel.Collections;
     using Catel.Data;
-    using YAXLib;
 
-    public class Product : TreeNode
+    public class LogFilesGroup : TreeNode
     {
+        public LogFilesGroup()
+        {
+            LogFiles = new FastObservableCollection<LogFile>();
+        }
         public ObservableCollection<LogFile> LogFiles { get; set; }
     }
 }

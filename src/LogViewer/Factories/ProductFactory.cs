@@ -1,5 +1,6 @@
 namespace LogViewer.Factories
 {
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
@@ -9,21 +10,24 @@ namespace LogViewer.Factories
 
     public class ProductFactory : IProductFactory
     {
+        private readonly ILogFileService _logFileService;
         private readonly ILogRecordService _logRecordService;
 
-        public ProductFactory(ILogRecordService logRecordService)
+        public ProductFactory(ILogFileService logFileService, ILogRecordService logRecordService)
         {
+            _logFileService = logFileService;
             _logRecordService = logRecordService;
         }
 
         public Product CreateNewProductItem(string productFolder)
         {
             var productName = productFolder.Substring(productFolder.LastIndexOf('\\') + 1);
+            var logFiles = _logFileService.GetLogFIles(productFolder).ToLookup(x => x.HasUnifiedName);
+            var notUnifyNamedFIles = logFiles[false];
 
-            var logRecords = Directory.GetFiles(productFolder, "*.log", SearchOption.TopDirectoryOnly).SelectMany(file => _logRecordService.LoadRecordsFromFile(file)).ToArray();
+            var unifyNamedFIles = logFiles[true].GroupBy(x => x.Name).Select(x => _logFileService.CreateLogFilesGroup(x.Key, x.ToArray()));
 
-            //   var logFiles = Directory.GetFiles(productFolder, "*.log", SearchOption.TopDirectoryOnly).Select(fileName => _logFileFactory.CreateNewLogFileItem(fileName));
-            return new Product { Name = productName/*, Children = new ObservableCollection<TreeNode>(logFiles)*/ };
+            return new Product { Name = productName, Children = new ObservableCollection<TreeNode>(notUnifyNamedFIles.Cast<TreeNode>().Union(unifyNamedFIles)) };
         }
     }
 }

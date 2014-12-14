@@ -7,6 +7,7 @@ namespace LogViewer.Models
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using Base;
     using Catel.Data;
     using Catel.IO;
     using Services;
@@ -16,15 +17,14 @@ namespace LogViewer.Models
     {
         public LogViewerModel(ISettingsSerialiser settingsSerialiser)
         {
-            //Companies = settingsSerialiser.DeserializeCompanies();
-            
-            /*var applicationDataDirectory = Path.GetApplicationDataDirectory();
-            var serializer = new YAXLib.YAXSerializer(typeof (Company));
-            serializer.Deserialize()*/
             Companies = new ObservableCollection<Company>();
         }
+/*
         public LogViewerConfig Config { get; set; }
         public Filter Filter { get; set; }
+*/
         public ObservableCollection<Company> Companies { get; set; }
+        
+        public TreeNode SelectedItem { get; set; }
     }
 }
