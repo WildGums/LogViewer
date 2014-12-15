@@ -37,7 +37,7 @@ namespace LogViewer.Behaviors
         {
             if (ViewModel != null)
             {
-                ViewModel.SelectedItem = (TreeNode)e.NewValue;
+                ViewModel.SelectedItem = (NavigationNode)e.NewValue;
             }
         }
     }

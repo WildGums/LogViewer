@@ -1,8 +1,8 @@
-namespace LogViewer.Factories
+namespace LogViewer.Services
 {
     using Models;
 
-    public interface IProductFactory
+    public interface IProductService
     {
         Product CreateNewProductItem(string productFolder);
     }

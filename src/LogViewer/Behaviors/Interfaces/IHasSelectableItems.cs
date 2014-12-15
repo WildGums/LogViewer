@@ -4,6 +4,6 @@
 
     public interface IHasSelectableItems
     {
-        TreeNode SelectedItem { get; set; }
+        NavigationNode SelectedItem { get; set; }
     }
 }

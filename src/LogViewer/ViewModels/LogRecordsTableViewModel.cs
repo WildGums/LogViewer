@@ -28,7 +28,7 @@ namespace LogViewer.ViewModels
         public LogViewerModel LogViewer { get; set; }
 
         [ViewModelToModel("LogViewer")]
-        public TreeNode SelectedItem { get; set; }
+        public NavigationNode SelectedItem { get; set; }
 
         public ObservableCollection<LogRecord> LogRecords { get; set; }
 
@@ -36,40 +36,32 @@ namespace LogViewer.ViewModels
         {
             LogRecords.Clear();
 
-            LogRecords.AddRange(GetLastChildNodes(SelectedItem).SelectMany(GetLogRecords));
+            LogRecords.AddRange(GetLogFIles(SelectedItem).SelectMany(file => file.LogRecords));
         }
 
-        private IEnumerable<TreeNode> GetLastChildNodes(TreeNode node)
+        private IEnumerable<LogFile> GetLogFIles(NavigationNode node)
         {
-            if (node.Children == null || node.Children.Count == 0)
+            var stack = new Stack<NavigationNode>();
+            stack.Push(node);
+            while (stack.Count != 0)
             {
-                yield return node;
-                yield break;
+                var currentNode = stack.Pop();
+                var product = currentNode as Product;
+                if (product == null)
+                {
+                    foreach (var child in currentNode.Children)
+                    {
+                        stack.Push(child);
+                    }                    
+                }
+                else
+                {
+                    foreach (var logFile in product.LogFiles)
+                    {
+                        yield return logFile;
+                    }
+                }
             }
-
-            foreach (var last in node.Children.SelectMany(GetLastChildNodes))
-            {
-                yield return last;
-            }
-        }
-
-        private IEnumerable<LogRecord> GetLogRecords(TreeNode node)
-        {
-            Argument.IsNotNull(() => node);            
-
-            var logFile = node as LogFile;
-            if (logFile != null)
-            {
-                return logFile.LogRecords;
-            }
-
-            var logFileGroup = node as LogFilesGroup;
-            if (logFileGroup != null)
-            {
-                return logFileGroup.LogFiles.SelectMany(x => x.LogRecords);
-            }
-
-            return Enumerable.Empty<LogRecord>();
         }
     }
 }

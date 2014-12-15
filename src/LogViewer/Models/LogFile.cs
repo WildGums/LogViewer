@@ -12,10 +12,10 @@ namespace LogViewer.Models
     using Catel.Data;
     using YAXLib;
 
-    public class LogFile : TreeNode
+    public class LogFile : NavigationNode
     {
         public FileInfo Info { get; set; }
-        public bool HasUnifiedName { get; set; }
+        public bool IsUnifyNamed { get; set; }
         public DateTime DateTime { get; set; }
         public int ProcessId { get; set; }        
         public ObservableCollection<LogRecord> LogRecords { get; set; } 

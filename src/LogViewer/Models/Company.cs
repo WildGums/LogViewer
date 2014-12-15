@@ -11,7 +11,7 @@ namespace LogViewer.Models
     using YAXLib;
 
     [YAXSerializableType(FieldsToSerialize = YAXSerializationFields.AttributedFieldsOnly)]
-    public class Company : TreeNode
+    public class Company : NavigationNode
     {
     }
 }

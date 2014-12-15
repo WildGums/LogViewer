@@ -7,7 +7,7 @@ namespace LogViewer.Models
 {
     using Base;
 
-    public class AssemblyLog : TreeNode
+    public class AssemblyLog : NavigationNode
     {
          
     }

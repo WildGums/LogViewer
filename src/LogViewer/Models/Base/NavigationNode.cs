@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TreeNode.cs" company="Orcomp development team">
+// <copyright file="NavigationNode.cs" company="Orcomp development team">
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -10,17 +10,17 @@ namespace LogViewer.Models.Base
     using YAXLib;
 
     
-    public abstract class TreeNode : ModelBase
+    public abstract class NavigationNode : ModelBase
     {
-        public TreeNode()
+        public NavigationNode()
         {
-            Children = new ObservableCollection<TreeNode>();
+            Children = new ObservableCollection<NavigationNode>();
         }
 
         [YAXSerializableField]
         public virtual string Name { get; set; }
 
         [YAXSerializableField]
-        public ObservableCollection<TreeNode> Children { get; set; }
+        public ObservableCollection<NavigationNode> Children { get; set; }
     }
 }

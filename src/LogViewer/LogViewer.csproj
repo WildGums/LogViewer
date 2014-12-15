@@ -125,17 +125,16 @@
     </Compile>
     <Compile Include="Behaviors\SelectedItemBehavior.cs" />
     <Compile Include="Extensions\AppDataServiceExtensions.cs" />
-    <Compile Include="Factories\CompanyFactory.cs" />
-    <Compile Include="Models\LogFilesGroup.cs" />
+    <Compile Include="Services\CompanyService.cs" />
     <Compile Include="Services\Interfaces\ILogFileService.cs" />
     <Compile Include="Services\LogFileService.cs" />
     <Compile Include="Services\Interfaces\ILogRecordService.cs" />
-    <Compile Include="Factories\Interfaces\IProductFactory.cs" />
+    <Compile Include="Services\Interfaces\IProductService.cs" />
     <Compile Include="Services\LogRecordService.cs" />
-    <Compile Include="Factories\ProductFactory.cs" />
+    <Compile Include="Services\ProductService.cs" />
     <Compile Include="FontAwesome.cs" />
     <Compile Include="Models\AssemblyLog.cs" />
-    <Compile Include="Models\Base\TreeNode.cs" />
+    <Compile Include="Models\Base\NavigationNode.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Filter.cs" />
     <Compile Include="Services\Interfaces\ISettingsSerialiser.cs" />
@@ -148,7 +147,7 @@
     <Compile Include="Services\ApplicationInitializationService.cs" />
     <Compile Include="Services\RibbonService.cs" />
     <Compile Include="Services\SettingsSerialiser.cs" />
-    <Compile Include="Factories\Interfaces\ICompanyFactory.cs" />
+    <Compile Include="Services\Interfaces\ICompanyService.cs" />
     <Compile Include="Behaviors\Interfaces\IHasSelectableItems.cs" />
     <Compile Include="ViewModels\LogRecordsTableViewModel.cs" />
     <Compile Include="Views\LogRecordsTableView.xaml.cs">

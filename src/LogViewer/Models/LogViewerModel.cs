@@ -25,6 +25,6 @@ namespace LogViewer.Models
 */
         public ObservableCollection<Company> Companies { get; set; }
         
-        public TreeNode SelectedItem { get; set; }
+        public NavigationNode SelectedItem { get; set; }
     }
 }

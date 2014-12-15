@@ -7,6 +7,5 @@ namespace LogViewer.Services
     public interface ILogFileService
     {
         IEnumerable<LogFile> GetLogFIles(string filesFolder);
-        LogFilesGroup CreateLogFilesGroup(string name, IEnumerable<LogFile> logFiles);
     }
 }

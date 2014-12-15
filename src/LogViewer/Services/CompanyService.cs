@@ -1,11 +1,11 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompanyFactory.cs" company="Orcomp development team">
+// <copyright file="CompanyService.cs" company="Orcomp development team">
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogViewer.Factories
+namespace LogViewer.Services
 {
     using System.Collections.ObjectModel;
     using System.IO;
@@ -16,15 +16,15 @@ namespace LogViewer.Factories
     using Orchestra.Services;
     using Path = Catel.IO.Path;
 
-    public class CompanyFactory : ICompanyFactory
+    public class CompanyService : ICompanyService
     {
         private readonly IAppDataService _appDataService;
-        private readonly IProductFactory _productFactory;
+        private readonly IProductService _productService;
 
-        public CompanyFactory(IAppDataService appDataService, IProductFactory productFactory)
+        public CompanyService(IAppDataService appDataService, IProductService productService)
         {
             _appDataService = appDataService;
-            _productFactory = productFactory;
+            _productService = productService;
         }
 
         public Company CreateNewCompanyItem(string companyFolder)
@@ -35,9 +35,9 @@ namespace LogViewer.Factories
 
 
             var fullCompanyFolderPath = Path.Combine(_appDataService.GetRootAppDataFolder(), companyFolder);
-            var products = Directory.GetDirectories(fullCompanyFolderPath).Select(folder => _productFactory.CreateNewProductItem(folder) as TreeNode);
+            var products = Directory.GetDirectories(fullCompanyFolderPath).Select(folder => _productService.CreateNewProductItem(folder) as NavigationNode);
 
-            return new Company {Name = companyName, Children = new ObservableCollection<TreeNode>(products)};
+            return new Company {Name = companyName, Children = new ObservableCollection<NavigationNode>(products)};
         }
     }
 }

@@ -12,23 +12,23 @@ namespace LogViewer.ViewModels
     using Catel.MVVM;
     using Catel.Services;
     using Extensions;
-    using Factories;
     using Models;
     using Models.Base;
     using Orchestra.Services;
+    using Services;
 
     public class LogNavigatorViewModel : ViewModelBase, IHasSelectableItems
     {
         private readonly IAppDataService _appDataService;
-        private readonly ICompanyFactory _companyFactory;
+        private readonly ICompanyService _companyService;
         private readonly IMessageService _messageService;
         private readonly ISelectDirectoryService _selectDirectoryService;
 
-        public LogNavigatorViewModel(LogViewerModel logViewerModel, ISelectDirectoryService selectDirectoryService, IMessageService messageService, ICompanyFactory companyFactory, IAppDataService appDataService)
+        public LogNavigatorViewModel(LogViewerModel logViewerModel, ISelectDirectoryService selectDirectoryService, IMessageService messageService, ICompanyService companyService, IAppDataService appDataService)
         {
             _selectDirectoryService = selectDirectoryService;
             _messageService = messageService;
-            _companyFactory = companyFactory;
+            _companyService = companyService;
             _appDataService = appDataService;
 
             LogViewer = logViewerModel;
@@ -46,7 +46,7 @@ namespace LogViewer.ViewModels
         public Command AddCompanyCommand { get; private set; }
 
         [ViewModelToModel("LogViewer")]
-        public TreeNode SelectedItem { get; set; }
+        public NavigationNode SelectedItem { get; set; }
 
         /// <summary>
         /// Method to invoke when the AddCompanyCommand command is executed.
@@ -66,7 +66,7 @@ namespace LogViewer.ViewModels
                     return;
                 }
 
-                var company = _companyFactory.CreateNewCompanyItem(companyFolder);
+                var company = _companyService.CreateNewCompanyItem(companyFolder);
                 if (company != null)
                 {
                     LogViewer.Companies.Add(company);

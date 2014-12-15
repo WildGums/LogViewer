@@ -10,7 +10,7 @@ namespace LogViewer.Models
     using Catel.Data;
     using YAXLib;
 
-    public class Product : TreeNode
+    public class Product : NavigationNode
     {
         public ObservableCollection<LogFile> LogFiles { get; set; }
     }
