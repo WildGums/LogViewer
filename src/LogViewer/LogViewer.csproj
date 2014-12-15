@@ -38,18 +38,18 @@
   <ItemGroup>
     <Reference Include="Catel.Core, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Catel.Core.4.1.0-unstable0018\lib\net40\Catel.Core.dll</HintPath>
+      <HintPath>..\..\lib\Catel.Core.4.1.0-unstable0030\lib\net40\Catel.Core.dll</HintPath>
     </Reference>
     <Reference Include="Catel.Extensions.Controls, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Catel.Extensions.Controls.4.1.0-unstable0018\lib\net40\Catel.Extensions.Controls.dll</HintPath>
+      <HintPath>..\..\lib\Catel.Extensions.Controls.4.1.0-unstable0030\lib\net40\Catel.Extensions.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Catel.Fody.Attributes">
       <HintPath>..\..\lib\Catel.Fody.2.4.0-unstable0001\lib\portable-net4+sl4+wp7+win8+wpa81+MonoAndroid14+MonoTouch40\Catel.Fody.Attributes.dll</HintPath>
     </Reference>
     <Reference Include="Catel.MVVM, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0018\lib\net40\Catel.MVVM.dll</HintPath>
+      <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0030\lib\net40\Catel.MVVM.dll</HintPath>
     </Reference>
     <Reference Include="Fluent">
       <HintPath>..\..\lib\Fluent.Ribbon.3.1.0\lib\net40\Fluent.dll</HintPath>
@@ -74,11 +74,11 @@
     </Reference>
     <Reference Include="Orchestra.Core, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Orchestra.Core.2.1.0-unstable0031\lib\net40\Orchestra.Core.dll</HintPath>
+      <HintPath>..\..\lib\Orchestra.Core.2.1.0-unstable0041\lib\net40\Orchestra.Core.dll</HintPath>
     </Reference>
     <Reference Include="Orchestra.Shell.Ribbon.Fluent, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.1.0-unstable0031\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
+      <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.1.0-unstable0041\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -94,7 +94,7 @@
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0018\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0030\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -150,16 +150,16 @@
     <Compile Include="Services\SettingsSerialiser.cs" />
     <Compile Include="Factories\Interfaces\ICompanyFactory.cs" />
     <Compile Include="Behaviors\Interfaces\IHasSelectableItems.cs" />
-    <Compile Include="ViewModels\LogRecordsGridViewModel.cs" />
-    <Compile Include="Views\LogRecordsGridView.xaml.cs">
-      <DependentUpon>LogRecordsGridView.xaml</DependentUpon>
+    <Compile Include="ViewModels\LogRecordsTableViewModel.cs" />
+    <Compile Include="Views\LogRecordsTableView.xaml.cs">
+      <DependentUpon>LogRecordsTableView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\LogTreeViewModel.cs" />
+    <Compile Include="ViewModels\LogNavigatorViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RibbonViewModel.cs" />
     <Compile Include="ViewModels\StatusBarViewModel.cs" />
-    <Compile Include="Views\LogTreeView.xaml.cs">
-      <DependentUpon>LogTreeView.xaml</DependentUpon>
+    <Compile Include="Views\LogNavigatorView.xaml.cs">
+      <DependentUpon>LogNavigatorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -208,11 +208,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
-    <Page Include="Views\LogRecordsGridView.xaml">
+    <Page Include="Views\LogRecordsTableView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LogTreeView.xaml">
+    <Page Include="Views\LogNavigatorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LogTreeViewModel.cs" company="Orcomp development team">
+// <copyright file="LogNavigatorViewModel.cs" company="Orcomp development team">
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,31 +7,24 @@
 
 namespace LogViewer.ViewModels
 {
-    using System;
-    using System.Windows.Forms;
     using Behaviors;
-
-    using Catel.ExceptionHandling;
     using Catel.Fody;
-    using Catel.IO;
-    using Catel.Logging;
     using Catel.MVVM;
     using Catel.Services;
     using Extensions;
     using Factories;
     using Models;
+    using Models.Base;
     using Orchestra.Services;
-    using Views;
-    using TreeNode = Models.Base.TreeNode;
 
-    public class LogTreeViewModel : ViewModelBase, IHasSelectableItems
+    public class LogNavigatorViewModel : ViewModelBase, IHasSelectableItems
     {
-        private readonly ISelectDirectoryService _selectDirectoryService;
-        private readonly IMessageService _messageService;
-        private readonly ICompanyFactory _companyFactory;
         private readonly IAppDataService _appDataService;
+        private readonly ICompanyFactory _companyFactory;
+        private readonly IMessageService _messageService;
+        private readonly ISelectDirectoryService _selectDirectoryService;
 
-        public LogTreeViewModel(LogViewerModel logViewerModel, ISelectDirectoryService selectDirectoryService, IMessageService messageService, ICompanyFactory companyFactory, IAppDataService appDataService)
+        public LogNavigatorViewModel(LogViewerModel logViewerModel, ISelectDirectoryService selectDirectoryService, IMessageService messageService, ICompanyFactory companyFactory, IAppDataService appDataService)
         {
             _selectDirectoryService = selectDirectoryService;
             _messageService = messageService;
@@ -41,8 +34,6 @@ namespace LogViewer.ViewModels
             LogViewer = logViewerModel;
 
             AddCompanyCommand = new Command(OnAddCompanyCommandExecute);
-
-            
         }
 
         [Model]
@@ -53,6 +44,9 @@ namespace LogViewer.ViewModels
         /// Gets the AddCompanyCommand command.
         /// </summary>
         public Command AddCompanyCommand { get; private set; }
+
+        [ViewModelToModel("LogViewer")]
+        public TreeNode SelectedItem { get; set; }
 
         /// <summary>
         /// Method to invoke when the AddCompanyCommand command is executed.
@@ -76,11 +70,8 @@ namespace LogViewer.ViewModels
                 if (company != null)
                 {
                     LogViewer.Companies.Add(company);
-                }                
+                }
             }
         }
-
-        [ViewModelToModel("LogViewer")]
-        public TreeNode SelectedItem { get; set; }
     }
 }

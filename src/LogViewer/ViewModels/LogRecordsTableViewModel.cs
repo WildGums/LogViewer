@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LogRecordsGridViewModel.cs" company="Orcomp development team">
+// <copyright file="LogRecordsTableViewModel.cs" company="Orcomp development team">
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -16,9 +16,9 @@ namespace LogViewer.ViewModels
     using LogViewer.Models;
     using LogViewer.Models.Base;
 
-    public class LogRecordsGridViewModel : ViewModelBase
+    public class LogRecordsTableViewModel : ViewModelBase
     {
-        public LogRecordsGridViewModel(LogViewerModel logViewerModel)
+        public LogRecordsTableViewModel(LogViewerModel logViewerModel)
         {
             LogViewer = logViewerModel;
             LogRecords = new ObservableCollection<LogRecord>();

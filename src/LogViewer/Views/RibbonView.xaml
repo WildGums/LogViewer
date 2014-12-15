@@ -18,7 +18,7 @@
                     <fluent:ToggleButton Header="Warning" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Warning}}"/>
                     <fluent:ToggleButton Header="Error" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Remove}}"/>
                 </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Header="Date filter">
                     <fluent:GalleryPanel Orientation="Vertical">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -34,10 +34,34 @@
                             <DatePicker Grid.Column="1" Grid.Row="0"/>
                             <TextBlock Grid.Column="0" Grid.Row="1" Text="End date: " HorizontalAlignment="Right"/>
                             <DatePicker Grid.Column="1" Grid.Row="1"/>
-                            <fluent:Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Content="Apply" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}"/>
+                            <fluent:ToggleButton Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Content="Apply" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}"/>
                         </Grid> 
                     </fluent:GalleryPanel>
-                </fluent:RibbonGroupBox>                         
+                </fluent:RibbonGroupBox>    
+                <fluent:RibbonGroupBox Header="Text Search">
+                    <fluent:GalleryPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
+                                <TextBlock Text="Search template: " VerticalAlignment="Center"/>
+                                <TextBox Width="500"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+                                <CheckBox x:Name="RegexBox" Content="Use regular expression" VerticalAlignment="Center"/>
+                                <CheckBox Content="Match case" VerticalAlignment="Center"/>
+                                <CheckBox Content="Match whole word" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <fluent:Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" VerticalContentAlignment="Center" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Search}}"/>
+                        </Grid>
+                    </fluent:GalleryPanel>
+                </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>            
         </fluent:Ribbon.Tabs>              
     </fluent:Ribbon>

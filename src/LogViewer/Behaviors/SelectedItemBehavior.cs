@@ -28,8 +28,8 @@ namespace LogViewer.Behaviors
         {
             get
             {
-                var logTreeView = AssociatedObject.GetAncestorObject<LogTreeView>();
-                return logTreeView.ViewModel as LogTreeViewModel;
+                var logTreeView = AssociatedObject.GetAncestorObject<LogNavigatorView>();
+                return logTreeView.ViewModel as LogNavigatorViewModel;
             }
         }
 
