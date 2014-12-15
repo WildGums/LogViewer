@@ -74,11 +74,11 @@
     </Reference>
     <Reference Include="Orchestra.Core, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Orchestra.Core.2.1.0-unstable0022\lib\net40\Orchestra.Core.dll</HintPath>
+      <HintPath>..\..\lib\Orchestra.Core.2.1.0-unstable0031\lib\net40\Orchestra.Core.dll</HintPath>
     </Reference>
     <Reference Include="Orchestra.Shell.Ribbon.Fluent, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.1.0-unstable0022\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
+      <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.1.0-unstable0031\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -123,7 +123,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Behaviors\BindableSelectedItemBehavior.cs" />
+    <Compile Include="Behaviors\SelectedItemBehavior.cs" />
     <Compile Include="Extensions\AppDataServiceExtensions.cs" />
     <Compile Include="Factories\CompanyFactory.cs" />
     <Compile Include="Models\LogFilesGroup.cs" />
@@ -150,15 +150,14 @@
     <Compile Include="Services\SettingsSerialiser.cs" />
     <Compile Include="Factories\Interfaces\ICompanyFactory.cs" />
     <Compile Include="Behaviors\Interfaces\IHasSelectableItems.cs" />
-    <Compile Include="ViewModels\LogTabItemViewModel.cs" />
+    <Compile Include="ViewModels\LogRecordsGridViewModel.cs" />
+    <Compile Include="Views\LogRecordsGridView.xaml.cs">
+      <DependentUpon>LogRecordsGridView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\LogTreeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RibbonViewModel.cs" />
-    <Compile Include="ViewModels\LogTabViewModel.cs" />
     <Compile Include="ViewModels\StatusBarViewModel.cs" />
-    <Compile Include="Views\LogTabItemView.xaml.cs">
-      <DependentUpon>LogTabItemView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\LogTreeView.xaml.cs">
       <DependentUpon>LogTreeView.xaml</DependentUpon>
     </Compile>
@@ -167,9 +166,6 @@
     </Compile>
     <Compile Include="Views\RibbonView.xaml.cs">
       <DependentUpon>RibbonView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LogTabView.xaml.cs">
-      <DependentUpon>LogTabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StatusBarView.xaml.cs">
       <DependentUpon>StatusBarView.xaml</DependentUpon>
@@ -212,7 +208,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
-    <Page Include="Views\LogTabItemView.xaml">
+    <Page Include="Views\LogRecordsGridView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -225,10 +221,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RibbonView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\LogTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

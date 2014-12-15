@@ -10,6 +10,13 @@ namespace LogViewer.Services
 
     public class LogFileService : ILogFileService
     {
+        private readonly ILogRecordService _logRecordService;
+
+        public LogFileService(ILogRecordService logRecordService)
+        {
+            _logRecordService = logRecordService;
+        }
+
         public IEnumerable<LogFile> GetLogFIles(string filesFolder)
         {
             return Directory.GetFiles(filesFolder, "*.log", SearchOption.TopDirectoryOnly).Select(InitializeLogFIle).ToArray();
@@ -38,6 +45,10 @@ namespace LogViewer.Services
                 var name = logFile.Info.Name;
                 logFile.Name = ExtractPrefix(ref name);
             }
+
+            // TODO: make it lazy load
+            logFile.LogRecords = new ObservableCollection<LogRecord>(_logRecordService.LoadRecordsFromFile(logFile.Info));
+
             return logFile;
         }
 

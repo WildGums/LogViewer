@@ -12,9 +12,9 @@ namespace LogViewer.Services
 
     public class LogRecordService : ILogRecordService
     {
-        public IEnumerable<LogRecord> LoadRecordsFromFile(string filePath)
+        public IEnumerable<LogRecord> LoadRecordsFromFile(FileInfo fileInfo)
         {
-            using (var stream = new FileStream(filePath, FileMode.Open))
+            using (var stream = new FileStream(fileInfo.FullName, FileMode.Open))
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -32,6 +32,7 @@ namespace LogViewer.Services
                             }
 
                             record = new LogRecord();
+                            record.FileName = fileInfo.Name;
                             record.DateTime = ExtractDateTime(ref line);
                             record.LogEvent = ExtractLogEventType(ref line);
                             record.TargetTypeName = ExtractTargetTypeName(ref line);

@@ -15,6 +15,6 @@
         </Grid.ColumnDefinitions>
         <views:LogTreeView Grid.Column="0"/>
         <GridSplitter Grid.Column="1" MinWidth="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
-        <views:LogTabView Grid.Column="2"/>
+        <views:LogRecordsGridView Grid.Column="2"/>
     </Grid>
 </catel:UserControl>

@@ -18,7 +18,7 @@ namespace LogViewer.Models
         public bool HasUnifiedName { get; set; }
         public DateTime DateTime { get; set; }
         public int ProcessId { get; set; }        
-        public ReadOnlyObservableCollection<LogRecord> LogRecords { get; set; } 
-        public ReadOnlyObservableCollection<LogRecord> FilteredLogRecords { get; set; } 
+        public ObservableCollection<LogRecord> LogRecords { get; set; } 
+        public ObservableCollection<LogRecord> FilteredLogRecords { get; set; } 
     }
 }

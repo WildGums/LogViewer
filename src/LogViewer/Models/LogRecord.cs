@@ -11,6 +11,7 @@ namespace LogViewer.Models
 
     public class LogRecord : ModelBase
     {
+        public string FileName { get; set; }
         public DateTime DateTime { get; set; }
         public LogEvent LogEvent { get; set; }
         public string TargetTypeName { get; set; }

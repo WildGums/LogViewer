@@ -10,6 +10,8 @@ namespace LogViewer.ViewModels
     using System;
     using System.Windows.Forms;
     using Behaviors;
+
+    using Catel.ExceptionHandling;
     using Catel.Fody;
     using Catel.IO;
     using Catel.Logging;
@@ -28,15 +30,13 @@ namespace LogViewer.ViewModels
         private readonly IMessageService _messageService;
         private readonly ICompanyFactory _companyFactory;
         private readonly IAppDataService _appDataService;
-        private readonly ICommandManager _commandManager;
 
-        public LogTreeViewModel(LogViewerModel logViewerModel, ISelectDirectoryService selectDirectoryService, IMessageService messageService, ICompanyFactory companyFactory, IAppDataService appDataService, ICommandManager commandManager)
+        public LogTreeViewModel(LogViewerModel logViewerModel, ISelectDirectoryService selectDirectoryService, IMessageService messageService, ICompanyFactory companyFactory, IAppDataService appDataService)
         {
             _selectDirectoryService = selectDirectoryService;
             _messageService = messageService;
             _companyFactory = companyFactory;
             _appDataService = appDataService;
-            _commandManager = commandManager;
 
             LogViewer = logViewerModel;
 
@@ -72,7 +72,6 @@ namespace LogViewer.ViewModels
                     return;
                 }
 
-                
                 var company = _companyFactory.CreateNewCompanyItem(companyFolder);
                 if (company != null)
                 {

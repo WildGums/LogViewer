@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <TreeView Grid.Row="0" Grid.ColumnSpan="2" ItemsSource="{Binding Companies}">
             <i:Interaction.Behaviors>
-                <behaviors:BindableSelectedItemBehavior />
+                <behaviors:SelectedItemBehavior />
             </i:Interaction.Behaviors>
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">

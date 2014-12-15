@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BindableSelectedItemBehavior.cs" company="Orcomp development team">
+// <copyright file="SelectedItemBehavior.cs" company="Orcomp development team">
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ namespace LogViewer.Behaviors
     using ViewModels;
     using Views;
 
-    public class BindableSelectedItemBehavior : BehaviorBase<TreeView>
+    public class SelectedItemBehavior : BehaviorBase<TreeView>
     {
         protected override void OnAssociatedObjectLoaded()
         {
