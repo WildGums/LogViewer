@@ -14,12 +14,12 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <DataGrid Grid.Row="1" ItemsSource="{Binding LogRecords}" AutoGenerateColumns="False" IsReadOnly="True">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding LogRecords}" AutoGenerateColumns="False" CanUserAddRows="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Date and time" Width="Auto" Binding="{Binding DateTime}"/>
-                <DataGridTextColumn Header="Log event type" Width="Auto" Binding="{Binding LogEvent}"/>
-                <DataGridTextColumn Header="Target Type Name" Width="Auto" Binding="{Binding TargetTypeName}"/>
-                <DataGridTextColumn Header="Message" Binding="{Binding Message}"  Width="Auto">
+                <DataGridTextColumn Header="Date and time" Width="Auto" Binding="{Binding DateTime}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Log event type" Width="Auto" Binding="{Binding LogEvent}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Target Type Name" Width="Auto" Binding="{Binding TargetTypeName}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Message" Binding="{Binding Message}"  Width="Auto" IsReadOnly="False">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -28,7 +28,8 @@
                     <DataGridTextColumn.EditingElementStyle>
                         <Style TargetType="TextBox">
                             <Setter Property="TextWrapping" Value="Wrap" />
-                            <Setter Property="AcceptsReturn" Value="true" />
+                            <Setter Property="IsReadOnly" Value="true" />
+                            <Setter Property="IsReadOnlyCaretVisible" Value="true" />
                         </Style>
                     </DataGridTextColumn.EditingElementStyle>
                 </DataGridTextColumn>
