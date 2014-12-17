@@ -7,10 +7,19 @@
 
 namespace LogViewer.Services
 {
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+
     using Models;
 
     public interface ICompanyService
     {
-        Company CreateNewCompanyItem(string companyFolder);
+        Company CreateCompanyByDirectoryPath(string companyFolder);
+
+        IEnumerable<Company> LoadCompanies();
+
+        Company CreateCompanyByName(string companyName);
+
+        void SaveCompanies(IEnumerable<Company> companies);
     }
 }

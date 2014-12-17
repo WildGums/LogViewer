@@ -8,9 +8,7 @@ namespace LogViewer.Models
     using System.Collections.ObjectModel;
     using Base;
     using Catel.Data;
-    using YAXLib;
-
-    [YAXSerializableType(FieldsToSerialize = YAXSerializationFields.AttributedFieldsOnly)]
+        
     public class Company : NavigationNode
     {
     }

@@ -11,11 +11,10 @@ namespace LogViewer.Models
     using Catel.Data;
     using Catel.IO;
     using Services;
-    using YAXLib;
 
     public class LogViewerModel : ModelBase
     {
-        public LogViewerModel(ISettingsSerialiser settingsSerialiser)
+        public LogViewerModel()
         {
             Companies = new ObservableCollection<Company>();
         }

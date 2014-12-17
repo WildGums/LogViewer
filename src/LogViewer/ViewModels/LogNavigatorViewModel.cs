@@ -7,7 +7,15 @@
 
 namespace LogViewer.ViewModels
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using System.Reflection;
+    using System.Threading.Tasks;
+
     using Behaviors;
+
+    using Catel.Collections;
+    using Catel.Configuration;
     using Catel.Fody;
     using Catel.MVVM;
     using Catel.Services;
@@ -20,6 +28,7 @@ namespace LogViewer.ViewModels
     public class LogNavigatorViewModel : ViewModelBase, IHasSelectableItems
     {
         private readonly IAppDataService _appDataService;
+
         private readonly ICompanyService _companyService;
         private readonly IMessageService _messageService;
         private readonly ISelectDirectoryService _selectDirectoryService;
@@ -30,10 +39,31 @@ namespace LogViewer.ViewModels
             _messageService = messageService;
             _companyService = companyService;
             _appDataService = appDataService;
-
+            
             LogViewer = logViewerModel;
 
             AddCompanyCommand = new Command(OnAddCompanyCommandExecute);
+
+            
+        }
+
+        protected override async Task Initialize()
+        {
+            if (LogViewer.Companies == null)
+            {
+                LogViewer.Companies = new ObservableCollection<Company>();
+            }
+            else
+            {
+                LogViewer.Companies.Clear();
+            }
+            LogViewer.Companies.AddRange(_companyService.LoadCompanies());
+        }
+
+        protected override void OnClosing()
+        {
+            _companyService.SaveCompanies(LogViewer.Companies);
+            base.OnClosing();
         }
 
         [Model]
@@ -66,7 +96,7 @@ namespace LogViewer.ViewModels
                     return;
                 }
 
-                var company = _companyService.CreateNewCompanyItem(companyFolder);
+                var company = _companyService.CreateCompanyByDirectoryPath(companyFolder);
                 if (company != null)
                 {
                     LogViewer.Companies.Add(company);

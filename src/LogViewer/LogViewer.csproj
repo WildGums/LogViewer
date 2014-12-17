@@ -81,6 +81,7 @@
       <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.1.0-unstable0041\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.IO">
       <HintPath>..\..\lib\Microsoft.Bcl.1.1.9\lib\net40\System.IO.dll</HintPath>
@@ -107,9 +108,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="YAXLib">
-      <HintPath>..\..\lib\YAXLib.2.13\lib\YAXLib.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -137,7 +135,6 @@
     <Compile Include="Models\Base\NavigationNode.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Filter.cs" />
-    <Compile Include="Services\Interfaces\ISettingsSerialiser.cs" />
     <Compile Include="Models\LogViewerModel.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\LogFile.cs" />
@@ -146,7 +143,6 @@
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Services\ApplicationInitializationService.cs" />
     <Compile Include="Services\RibbonService.cs" />
-    <Compile Include="Services\SettingsSerialiser.cs" />
     <Compile Include="Services\Interfaces\ICompanyService.cs" />
     <Compile Include="Behaviors\Interfaces\IHasSelectableItems.cs" />
     <Compile Include="ViewModels\LogRecordsCollection.cs" />

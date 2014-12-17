@@ -19,7 +19,6 @@ public static class ModuleInitializer
         serviceLocator.RegisterType<IRibbonService, RibbonService>();
         serviceLocator.RegisterType<IApplicationInitializationService, ApplicationInitializationService>();
         serviceLocator.RegisterType<ILogRecordService, LogRecordService>();
-        serviceLocator.RegisterType<ISettingsSerialiser, SettingsSerialiser>();
         serviceLocator.RegisterType<ILogFileService, LogFileService>();
         serviceLocator.RegisterType<ICompanyService, CompanyService>();
         serviceLocator.RegisterType<IProductService, ProductService>();

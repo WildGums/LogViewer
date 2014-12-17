@@ -8,7 +8,6 @@ namespace LogViewer.Models
     using System.Collections.ObjectModel;
     using Base;
     using Catel.Data;
-    using YAXLib;
 
     public class Product : NavigationNode
     {

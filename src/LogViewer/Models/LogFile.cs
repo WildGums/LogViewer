@@ -10,7 +10,6 @@ namespace LogViewer.Models
     using System.IO;
     using Base;
     using Catel.Data;
-    using YAXLib;
 
     public class LogFile : NavigationNode
     {
