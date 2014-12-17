@@ -1,1 +1,0 @@
-Please add some test logs in this folder
