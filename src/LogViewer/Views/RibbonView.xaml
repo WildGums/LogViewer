@@ -31,10 +31,10 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Grid.Row="0" Text="Start date: " HorizontalAlignment="Right"/>
-                            <DatePicker Grid.Column="1" Grid.Row="0"/>
+                            <DatePicker Grid.Column="1" Grid.Row="0" SelectedDate="{Binding StartDate}"/>
                             <TextBlock Grid.Column="0" Grid.Row="1" Text="End date: " HorizontalAlignment="Right"/>
-                            <DatePicker Grid.Column="1" Grid.Row="1"/>
-                            <fluent:ToggleButton Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Content="Apply" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}"/>
+                            <DatePicker Grid.Column="1" Grid.Row="1" SelectedDate="{Binding EndDate}"/>
+                            <fluent:Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Content="Apply" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}" Command="{catel:CommandManagerBinding Filter.ApplyDateFilter}"/>
                         </Grid> 
                     </fluent:GalleryPanel>
                 </fluent:RibbonGroupBox>    

@@ -9,21 +9,36 @@ namespace LogViewer.ViewModels
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Data;
-
+    using Behaviors;
     using Catel;
     using Catel.Collections;
     using Catel.MVVM;
-
+    using Extensions;
     using LogViewer.Models;
     using LogViewer.Models.Base;
+    using Services;
 
     public class LogRecordsTableViewModel : ViewModelBase
     {
-        public LogRecordsTableViewModel(LogViewerModel logViewerModel)
+        private readonly IFilterService _filterService;
+
+        public LogRecordsTableViewModel(LogViewerModel logViewerModel, IFilterService filterService, ICommandManager commandManager)
         {
+            _filterService = filterService;
             LogViewer = logViewerModel;
-            LogRecords = new LogRecordsCollection(new ObservableCollection<LogRecord>());
+            LogRecords = new ObservableCollection<LogRecord>();
+
+            ApplyDateFilter = new Command(OnApplyDateFilterExecute);
+
+            commandManager.RegisterCommand("Filter.ApplyDateFilter", ApplyDateFilter, this);
         }
+
+        private void OnApplyDateFilterExecute()
+        {
+            OnSelectedItemChanged();
+        }
+
+        public Command ApplyDateFilter { get; private set; }
 
         [Model]
         public LogViewerModel LogViewer { get; set; }
@@ -31,16 +46,17 @@ namespace LogViewer.ViewModels
         [ViewModelToModel("LogViewer")]
         public NavigationNode SelectedItem { get; set; }
 
-        public CollectionView LogRecords { get; set; }
-
+        public ObservableCollection<LogRecord> LogRecords { get; set; }
 
         public void OnSelectedItemChanged()
         {
-            LogRecords = new LogRecordsCollection(new ObservableCollection<LogRecord>(GetLogFIles(SelectedItem).SelectMany(file => file.LogRecords))); 
-            LogRecords.GroupDescriptions.Add(new PropertyGroupDescription("FileName"));
+            var logFiles = GetLogFiles(SelectedItem);
+            var filteredFiles = _filterService.FilterFIles(LogViewer.Filter, logFiles);
+            LogRecords.Clear();
+            LogRecords.AddRange(new ObservableCollection<LogRecord>(_filterService.FilterRecords(LogViewer.Filter,filteredFiles.SelectMany(file => file.LogRecords))));
         }
 
-        private IEnumerable<LogFile> GetLogFIles(NavigationNode node)
+        private IEnumerable<LogFile> GetLogFiles(NavigationNode node)
         {
             var stack = new Stack<NavigationNode>();
             stack.Push(node);

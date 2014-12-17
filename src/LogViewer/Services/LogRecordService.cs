@@ -12,9 +12,9 @@ namespace LogViewer.Services
 
     public class LogRecordService : ILogRecordService
     {
-        public IEnumerable<LogRecord> LoadRecordsFromFile(FileInfo fileInfo)
+        public IEnumerable<LogRecord> LoadRecordsFromFile(LogFile logFile)
         {
-            using (var stream = new FileStream(fileInfo.FullName, FileMode.Open))
+            using (var stream = new FileStream(logFile.Info.FullName, FileMode.Open))
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -32,8 +32,14 @@ namespace LogViewer.Services
                             }
 
                             record = new LogRecord();
-                            record.FileName = fileInfo.Name;
+                            record.FileName = logFile.Name;
                             record.DateTime = ExtractDateTime(ref line);
+
+                            if (logFile.IsUnifyNamed && record.DateTime.Date == DateTime.MinValue.Date)
+                            {
+                                record.DateTime = logFile.DateTime.Date + record.DateTime.TimeOfDay;
+                            }
+
                             record.LogEvent = ExtractLogEventType(ref line);
                             record.TargetTypeName = ExtractTargetTypeName(ref line);
                             record.Message = line;
@@ -53,7 +59,7 @@ namespace LogViewer.Services
         {
             var dateTimeString = Regex.Match(line, @"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+").Value;
             line = line.Substring(dateTimeString.Length + " => ".Length).TrimStart();
-            return DateTime.ParseExact(dateTimeString, new[] { "hh:mm:ss:fff", "yyyy-MM-dd hh:mm:ss:fff" }, null, DateTimeStyles.None);
+            return DateTime.ParseExact(dateTimeString, new[] { "hh:mm:ss:fff", "yyyy-MM-dd hh:mm:ss:fff" }, null, DateTimeStyles.NoCurrentDateDefault);
         }
 
         private LogEvent ExtractLogEventType(ref string line)

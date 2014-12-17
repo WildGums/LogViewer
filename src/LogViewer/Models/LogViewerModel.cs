@@ -17,11 +17,11 @@ namespace LogViewer.Models
         public LogViewerModel()
         {
             Companies = new ObservableCollection<Company>();
+            Filter = new Filter();
         }
-/*
-        public LogViewerConfig Config { get; set; }
+
         public Filter Filter { get; set; }
-*/
+
         public ObservableCollection<Company> Companies { get; set; }
         
         public NavigationNode SelectedItem { get; set; }

@@ -22,6 +22,7 @@ public static class ModuleInitializer
         serviceLocator.RegisterType<ILogFileService, LogFileService>();
         serviceLocator.RegisterType<ICompanyService, CompanyService>();
         serviceLocator.RegisterType<IProductService, ProductService>();
+        serviceLocator.RegisterType<IFilterService, FilterService>();
         serviceLocator.RegisterType<LogViewerModel>(RegistrationType.Singleton);
     }
 }

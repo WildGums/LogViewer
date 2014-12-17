@@ -17,6 +17,12 @@ namespace LogViewer.Services
     public class ApplicationInitializationService : ApplicationInitializationServiceBase
     {
         #region Methods
+        public override Task InitializeCommands(ICommandManager commandManager)
+        {
+            commandManager.CreateCommand("Filter.ApplyDateFilter",throwExceptionWhenCommandIsAlreadyCreated:false);
+            return base.InitializeCommands(commandManager);
+        }
+
         public override async Task InitializeBeforeCreatingShell()
         {
             await RunAndWaitAsync(new Func<Task>[] { InitializePerformance });

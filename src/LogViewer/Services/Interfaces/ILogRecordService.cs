@@ -7,6 +7,6 @@ namespace LogViewer.Services
 
     public interface ILogRecordService
     {
-        IEnumerable<LogRecord> LoadRecordsFromFile(FileInfo fileInfo);
+        IEnumerable<LogRecord> LoadRecordsFromFile(LogFile logFile);
     }
 }

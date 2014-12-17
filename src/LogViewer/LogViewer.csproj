@@ -66,9 +66,6 @@
     <Reference Include="Microsoft.Windows.Shell">
       <HintPath>..\..\lib\Fluent.Ribbon.3.1.0\lib\net40\Microsoft.Windows.Shell.dll</HintPath>
     </Reference>
-    <Reference Include="Orc.FilterBuilder">
-      <HintPath>..\..\lib\Orc.FilterBuilder.1.4.0-unstable0039\lib\net40\Orc.FilterBuilder.dll</HintPath>
-    </Reference>
     <Reference Include="Orc.Toolkit">
       <HintPath>..\..\lib\Orc.Toolkit.1.0.9.0\lib\NET40\Orc.Toolkit.dll</HintPath>
     </Reference>
@@ -124,6 +121,7 @@
     <Compile Include="Behaviors\SelectedItemBehavior.cs" />
     <Compile Include="Extensions\AppDataServiceExtensions.cs" />
     <Compile Include="Services\CompanyService.cs" />
+    <Compile Include="Services\FilterService.cs" />
     <Compile Include="Services\Interfaces\ILogFileService.cs" />
     <Compile Include="Services\LogFileService.cs" />
     <Compile Include="Services\Interfaces\ILogRecordService.cs" />
@@ -145,7 +143,7 @@
     <Compile Include="Services\RibbonService.cs" />
     <Compile Include="Services\Interfaces\ICompanyService.cs" />
     <Compile Include="Behaviors\Interfaces\IHasSelectableItems.cs" />
-    <Compile Include="ViewModels\LogRecordsCollection.cs" />
+    <Compile Include="Services\Interfaces\IFilterService.cs" />
     <Compile Include="ViewModels\LogRecordsTableViewModel.cs" />
     <Compile Include="Views\LogRecordsTableView.xaml.cs">
       <DependentUpon>LogRecordsTableView.xaml</DependentUpon>

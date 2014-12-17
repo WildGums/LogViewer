@@ -11,5 +11,6 @@ namespace LogViewer.ViewModels
 
     public class MainViewModel : ViewModelBase
     {
+
     }
 }

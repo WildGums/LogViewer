@@ -4,9 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:catel="http://catel.codeplex.com"
+             xmlns:viewModels="clr-namespace:LogViewer.ViewModels"
+             xmlns:behaviors="clr-namespace:LogViewer.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    
     <catel:UserControl.Resources>
+        
         <!--Default GroupStyle-->
         <GroupStyle x:Key="groupStyle">
             <GroupStyle.Panel>
@@ -86,7 +90,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DataGrid x:Name="Grid" Grid.Row="1" ItemsSource="{Binding LogRecords}" Style="{StaticResource DefaultDataGridStyle}">
+        <DataGrid x:Name="Grid" Grid.Row="1" Style="{StaticResource DefaultDataGridStyle}" ItemsSource="{Binding}">
+            
+            <DataGrid.DataContext>
+                <CollectionViewSource Source="{Binding LogRecords}">                    
+                    <CollectionViewSource.GroupDescriptions>
+                        <PropertyGroupDescription PropertyName="FileName"/>
+                    </CollectionViewSource.GroupDescriptions>
+                </CollectionViewSource>
+            </DataGrid.DataContext>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Date and time" Width="Auto" Binding="{Binding DateTime}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Log event type" Width="Auto" Binding="{Binding LogEvent}" IsReadOnly="True"/>
