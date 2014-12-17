@@ -8,6 +8,7 @@ namespace LogViewer.ViewModels
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Windows.Data;
 
     using Catel;
     using Catel.Collections;
@@ -21,7 +22,7 @@ namespace LogViewer.ViewModels
         public LogRecordsTableViewModel(LogViewerModel logViewerModel)
         {
             LogViewer = logViewerModel;
-            LogRecords = new ObservableCollection<LogRecord>();
+            LogRecords = new LogRecordsCollection(new ObservableCollection<LogRecord>());
         }
 
         [Model]
@@ -30,13 +31,13 @@ namespace LogViewer.ViewModels
         [ViewModelToModel("LogViewer")]
         public NavigationNode SelectedItem { get; set; }
 
-        public ObservableCollection<LogRecord> LogRecords { get; set; }
+        public CollectionView LogRecords { get; set; }
+
 
         public void OnSelectedItemChanged()
         {
-            LogRecords.Clear();
-
-            LogRecords.AddRange(GetLogFIles(SelectedItem).SelectMany(file => file.LogRecords));
+            LogRecords = new LogRecordsCollection(new ObservableCollection<LogRecord>(GetLogFIles(SelectedItem).SelectMany(file => file.LogRecords))); 
+            LogRecords.GroupDescriptions.Add(new PropertyGroupDescription("FileName"));
         }
 
         private IEnumerable<LogFile> GetLogFIles(NavigationNode node)

@@ -149,6 +149,7 @@
     <Compile Include="Services\SettingsSerialiser.cs" />
     <Compile Include="Services\Interfaces\ICompanyService.cs" />
     <Compile Include="Behaviors\Interfaces\IHasSelectableItems.cs" />
+    <Compile Include="ViewModels\LogRecordsCollection.cs" />
     <Compile Include="ViewModels\LogRecordsTableViewModel.cs" />
     <Compile Include="Views\LogRecordsTableView.xaml.cs">
       <DependentUpon>LogRecordsTableView.xaml</DependentUpon>

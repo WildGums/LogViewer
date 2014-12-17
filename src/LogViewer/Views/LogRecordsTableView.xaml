@@ -4,17 +4,89 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:catel="http://catel.codeplex.com"
-             xmlns:logViewer="clr-namespace:LogViewer"
-             xmlns:orchestra="https://github.com/orcomp/orchestra"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <catel:UserControl.Resources>
+        <!--Default GroupStyle-->
+        <GroupStyle x:Key="groupStyle">
+            <GroupStyle.Panel>
+                <ItemsPanelTemplate>
+                    <DataGridRowsPresenter/>
+                </ItemsPanelTemplate>
+            </GroupStyle.Panel>
+            <GroupStyle.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" Padding="3"/>
+                    </StackPanel>
+                </DataTemplate>
+            </GroupStyle.HeaderTemplate>
+            <GroupStyle.ContainerStyle>
+                <Style TargetType="{x:Type GroupItem}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type GroupItem}">
+                                <Expander BorderBrush="#FFA4B97F" 
+                                          BorderThickness="0,0,0,1" 
+                                          IsExpanded="{Binding Path=Items[0].IsExpanded}">
+                                    <Expander.Header>
+                                        <DockPanel TextBlock.FontWeight="Bold">
+                                            <TextBlock Text="{Binding Path=Name}" Margin="5,0,5,0" />
+                                        </DockPanel>
+                                    </Expander.Header>
+                                    <ItemsPresenter />
+                                </Expander>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </GroupStyle.ContainerStyle>
+        </GroupStyle>
+
+        <!--RowDetails Template-->
+        <DataTemplate x:Key="RowDetailsDataTemplate">
+            <StackPanel>
+                <TextBlock Text="Details View"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <!--Default Row Style-->
+        <Style x:Key="DefaultRowStyle" TargetType="{x:Type DataGridRow}">
+            <Setter Property="DetailsTemplate" Value="{StaticResource RowDetailsDataTemplate}" />
+            <Setter Property="DetailsVisibility" Value="Collapsed" />
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Path=IsSelected}" Value="true" />
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="true" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="DetailsVisibility" Value="Visible" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--Default ColmnHeaderStyle-->
+        <Style x:Key="DefaultColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+
+        </Style>
+        
+        <!--Default DataGrid Style-->
+        <Style x:Key="DefaultDataGridStyle" TargetType="{x:Type DataGrid}">
+            <Setter Property="RowStyle" Value="{StaticResource DefaultRowStyle}" />
+            <Setter Property="ColumnHeaderStyle" Value="{StaticResource DefaultColumnHeaderStyle}" />
+            <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="CanUserAddRows" Value="False" />
+            <Setter Property="CanUserDeleteRows" Value="False" />
+            <Setter Property="CanUserReorderColumns" Value="False" />
+        </Style>
+    </catel:UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        <DataGrid Grid.Row="1" ItemsSource="{Binding LogRecords}" AutoGenerateColumns="False" CanUserAddRows="False">
+
+        <DataGrid x:Name="Grid" Grid.Row="1" ItemsSource="{Binding LogRecords}" Style="{StaticResource DefaultDataGridStyle}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Date and time" Width="Auto" Binding="{Binding DateTime}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Log event type" Width="Auto" Binding="{Binding LogEvent}" IsReadOnly="True"/>
