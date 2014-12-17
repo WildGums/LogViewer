@@ -9,6 +9,8 @@ namespace LogViewer.ViewModels
 {
     using System;
     using System.Collections.ObjectModel;
+    using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
 
@@ -96,7 +98,14 @@ namespace LogViewer.ViewModels
                     return;
                 }
 
-                var company = _companyService.CreateCompanyByDirectoryPath(companyFolder);
+                var companyName = new DirectoryInfo(companyFolder).Name;
+                if (LogViewer.Companies.Any(x => string.Equals(x.Name, companyName)))
+                {
+                    _messageService.ShowError(string.Format("The company {0} is already added", companyName));
+                    return;
+                }
+
+                var company = _companyService.CreateCompanyByName(companyName);
                 if (company != null)
                 {
                     LogViewer.Companies.Add(company);
