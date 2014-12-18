@@ -46,7 +46,22 @@ namespace LogViewer.ViewModels
 
             AddCompanyCommand = new Command(OnAddCompanyCommandExecute);
 
-            
+            DeleteCompanyCommand = new Command(OnDeleteCompanyCommandExecute, CanExecuteDeleteCompanyCommand);
+        }
+
+        private void OnDeleteCompanyCommandExecute()
+        {
+            var selectedCompany = SelectedItem as Company;
+            if (selectedCompany != null)
+            {
+                LogViewer.Companies.Remove(selectedCompany);
+            }            
+        }
+
+        private bool CanExecuteDeleteCompanyCommand()
+        {
+            var selectedCompany = SelectedItem as Company;
+            return selectedCompany != null;
         }
 
         protected override async Task Initialize()
@@ -76,6 +91,9 @@ namespace LogViewer.ViewModels
         /// Gets the AddCompanyCommand command.
         /// </summary>
         public Command AddCompanyCommand { get; private set; }
+        
+        
+        public Command DeleteCompanyCommand { get; private set; }
 
         [ViewModelToModel("LogViewer")]
         public NavigationNode SelectedItem { get; set; }
