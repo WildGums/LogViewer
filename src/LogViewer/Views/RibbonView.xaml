@@ -12,11 +12,14 @@
     <fluent:Ribbon IsQuickAccessToolBarVisible="False" CanCustomizeRibbon="False" AutomaticStateManagement="False">
         <fluent:Ribbon.Tabs >
             <fluent:RibbonTabItem Header="Filter">
+                <fluent:RibbonGroupBox>
+                    <fluent:Button Content="Apply filters" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Refresh}}" Command="{catel:CommandManagerBinding Filter.ApplyFilter}"/>
+                </fluent:RibbonGroupBox>
                 <fluent:RibbonGroupBox Header="Log event type">
-                    <fluent:ToggleButton Header="Debug" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Bug}}"/>
-                    <fluent:ToggleButton Header="Info" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Info}}"/>
-                    <fluent:ToggleButton Header="Warning" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Warning}}"/>
-                    <fluent:ToggleButton Header="Error" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Remove}}"/>
+                    <fluent:ToggleButton Header="Debug" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Bug}}" IsChecked="{Binding ShowDebug}"/>
+                    <fluent:ToggleButton Header="Info" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Info}}" IsChecked="{Binding ShowInfo}"/>
+                    <fluent:ToggleButton Header="Warning" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Warning}}" IsChecked="{Binding ShowWarning}"/>
+                    <fluent:ToggleButton Header="Error" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Remove}}" IsChecked="{Binding ShowError}"/>
                 </fluent:RibbonGroupBox>
                 <fluent:RibbonGroupBox Header="Date filter">
                     <fluent:GalleryPanel Orientation="Vertical">
@@ -33,8 +36,7 @@
                             <TextBlock Grid.Column="0" Grid.Row="0" Text="Start date: " HorizontalAlignment="Right"/>
                             <DatePicker Grid.Column="1" Grid.Row="0" SelectedDate="{Binding StartDate}"/>
                             <TextBlock Grid.Column="0" Grid.Row="1" Text="End date: " HorizontalAlignment="Right"/>
-                            <DatePicker Grid.Column="1" Grid.Row="1" SelectedDate="{Binding EndDate}"/>
-                            <fluent:Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Content="Apply" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}" Command="{catel:CommandManagerBinding Filter.ApplyDateFilter}"/>
+                            <DatePicker Grid.Column="1" Grid.Row="1" SelectedDate="{Binding EndDate}"/>                            
                         </Grid> 
                     </fluent:GalleryPanel>
                 </fluent:RibbonGroupBox>    

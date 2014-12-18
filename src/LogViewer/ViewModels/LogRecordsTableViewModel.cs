@@ -28,17 +28,17 @@ namespace LogViewer.ViewModels
             LogViewer = logViewerModel;
             LogRecords = new ObservableCollection<LogRecord>();
 
-            ApplyDateFilter = new Command(OnApplyDateFilterExecute);
+            ApplyFilter = new Command(OnApplyFilterExecute);
 
-            commandManager.RegisterCommand("Filter.ApplyDateFilter", ApplyDateFilter, this);
+            commandManager.RegisterCommand("Filter.ApplyFilter", ApplyFilter, this);
         }
 
-        private void OnApplyDateFilterExecute()
+        private void OnApplyFilterExecute()
         {
             OnSelectedItemChanged();
         }
 
-        public Command ApplyDateFilter { get; private set; }
+        public Command ApplyFilter { get; private set; }
 
         [Model]
         public LogViewerModel LogViewer { get; set; }

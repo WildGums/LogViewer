@@ -11,9 +11,13 @@ namespace LogViewer.Models
 
     public class Filter : ModelBase
     {
+        [DefaultValue(true)]
         public bool ShowInfo { get; set; }
+        [DefaultValue(true)]
         public bool ShowDebug { get; set; }
+        [DefaultValue(true)]
         public bool ShowWarning { get; set; }
+        [DefaultValue(true)]
         public bool ShowError { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

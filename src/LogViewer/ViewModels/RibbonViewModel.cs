@@ -41,5 +41,17 @@ namespace LogViewer.ViewModels
 
         [ViewModelToModel("Filter")]
         public DateTime EndDate { get; set; }        
+        
+        [ViewModelToModel("Filter")]
+        public bool ShowInfo { get; set; }
+
+        [ViewModelToModel("Filter")]
+        public bool ShowDebug { get; set; }
+
+        [ViewModelToModel("Filter")]
+        public bool ShowWarning { get; set; }
+
+        [ViewModelToModel("Filter")]
+        public bool ShowError { get; set; }    
     }
 }
