@@ -53,10 +53,10 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
                                 <TextBlock Text="Search template: " VerticalAlignment="Center"/>
-                                <TextBox Width="500"/>
+                                <TextBox Width="500" Text="{Binding SearchTemplate, UpdateSourceTrigger=PropertyChanged}"/>
                             </StackPanel>
                             <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
-                                <CheckBox x:Name="RegexBox" Content="Use regular expression" VerticalAlignment="Center"/>
+                                <CheckBox Content="Use regular expression" VerticalAlignment="Center"/>
                                 <CheckBox Content="Match case" VerticalAlignment="Center"/>
                                 <CheckBox Content="Match whole word" VerticalAlignment="Center"/>
                             </StackPanel>

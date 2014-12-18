@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:catel="http://catel.codeplex.com"
-             xmlns:viewModels="clr-namespace:LogViewer.ViewModels"
+             xmlns:controls="clr-namespace:LogViewer.Controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviors="clr-namespace:LogViewer.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -38,7 +39,7 @@
                                             <TextBlock Text="{Binding Path=Name}" Margin="5,0,5,0" />
                                         </DockPanel>
                                     </Expander.Header>
-                                    <ItemsPresenter />
+                                    <ItemsPresenter/>
                                 </Expander>
                             </ControlTemplate>
                         </Setter.Value>
@@ -84,14 +85,8 @@
             <Setter Property="CanUserReorderColumns" Value="False" />
         </Style>
     </catel:UserControl.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <DataGrid x:Name="Grid" Grid.Row="1" Style="{StaticResource DefaultDataGridStyle}" ItemsSource="{Binding}">
-            
+    
+    <DataGrid x:Name="Grid" Grid.Row="1" Style="{StaticResource DefaultDataGridStyle}" ItemsSource="{Binding}">            
             <DataGrid.DataContext>
                 <CollectionViewSource Source="{Binding LogRecords}">                    
                     <CollectionViewSource.GroupDescriptions>
@@ -103,21 +98,18 @@
                 <DataGridTextColumn Header="Date and time" Width="Auto" Binding="{Binding DateTime}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Log event type" Width="Auto" Binding="{Binding LogEvent}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Target Type Name" Width="Auto" Binding="{Binding TargetTypeName}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Message" Binding="{Binding Message}"  Width="Auto" IsReadOnly="False">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                    <DataGridTextColumn.EditingElementStyle>
-                        <Style TargetType="TextBox">
-                            <Setter Property="TextWrapping" Value="Wrap" />
-                            <Setter Property="IsReadOnly" Value="true" />
-                            <Setter Property="IsReadOnlyCaretVisible" Value="true" />
-                        </Style>
-                    </DataGridTextColumn.EditingElementStyle>
-                </DataGridTextColumn>
+                <DataGridTemplateColumn Header="Message" Width="Auto" IsReadOnly="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <controls:HighlightableTextBlock HighlightableText="{Binding Message}" HighlightBackground="Red" SearchTemplate="{Binding Path=DataContext.SearchTemplate, RelativeSource={RelativeSource AncestorLevel=3, AncestorType={x:Type Grid}}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Message}" TextWrapping="Wrap" IsReadOnly="True" IsReadOnlyCaretVisible="True"/>                            
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-    </Grid>
 </catel:UserControl>

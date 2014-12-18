@@ -46,7 +46,14 @@ namespace LogViewer.ViewModels
         [ViewModelToModel("LogViewer")]
         public NavigationNode SelectedItem { get; set; }
 
+        [Model]
+        [ViewModelToModel("LogViewer")]
+        public Filter Filter { get; set; }
+
         public ObservableCollection<LogRecord> LogRecords { get; set; }
+
+        [ViewModelToModel("Filter")]
+        public string SearchTemplate { get; set; }
 
         public void OnSelectedItemChanged()
         {

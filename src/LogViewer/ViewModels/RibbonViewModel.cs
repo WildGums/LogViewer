@@ -52,6 +52,9 @@ namespace LogViewer.ViewModels
         public bool ShowWarning { get; set; }
 
         [ViewModelToModel("Filter")]
-        public bool ShowError { get; set; }    
+        public bool ShowError { get; set; }
+
+        [ViewModelToModel("Filter")]
+        public string SearchTemplate { get; set; }
     }
 }

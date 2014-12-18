@@ -145,6 +145,7 @@
     <Compile Include="Behaviors\Interfaces\IHasSelectableItems.cs" />
     <Compile Include="Services\Interfaces\IFilterService.cs" />
     <Compile Include="ViewModels\LogRecordsTableViewModel.cs" />
+    <Compile Include="Controls\HighlightableTextBlock.cs" />
     <Compile Include="Views\LogRecordsTableView.xaml.cs">
       <DependentUpon>LogRecordsTableView.xaml</DependentUpon>
     </Compile>
