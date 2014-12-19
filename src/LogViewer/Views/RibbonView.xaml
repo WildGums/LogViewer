@@ -13,7 +13,7 @@
         <fluent:Ribbon.Tabs >
             <fluent:RibbonTabItem Header="Filter">
                 <fluent:RibbonGroupBox>
-                    <fluent:Button Content="Apply filters" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Refresh}}" Command="{catel:CommandManagerBinding Filter.ApplyFilter}"/>
+                    <fluent:Button Header="Apply filters and refresh" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Refresh}}" Command="{catel:CommandManagerBinding Filter.ApplyFilter}"/>                    
                 </fluent:RibbonGroupBox>
                 <fluent:RibbonGroupBox Header="Log event type">
                     <fluent:ToggleButton Header="Debug" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Bug}}" IsChecked="{Binding ShowDebug}"/>
@@ -56,6 +56,7 @@
                                 <CheckBox Content="Match whole word" VerticalAlignment="Center" IsChecked="{Binding Path=SearchTemplate.MatchWholeWord}"/>
                             </StackPanel>
                         </Grid>
+                        <fluent:ToggleButton Header="Use in filter" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}" IsChecked="{Binding IsUseTextSearch}"/>
                     </fluent:GalleryPanel>
                 </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>            

@@ -56,5 +56,8 @@ namespace LogViewer.ViewModels
 
         [ViewModelToModel("Filter")]
         public SearchTemplate SearchTemplate { get; set; }
+        
+        [ViewModelToModel("Filter")]
+        public bool IsUseTextSearch { get; set; }
     }
 }

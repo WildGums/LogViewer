@@ -8,6 +8,7 @@
 namespace LogViewer.Controls
 {
     using System;
+    using System.Linq;
     using System.Text.RegularExpressions;
     using System.Windows;
     using System.Windows.Controls;
@@ -104,7 +105,14 @@ namespace LogViewer.Controls
 
                 Inlines.Clear();
                 var split = Regex.Split(value, RegEx);
+                if (split.Max(x => x.Length) == 1)
+                {
+                    base.Text = value;
+                    return;
+                }
+
                 var text = value;
+
                 foreach (var str in split)
                 {
                     if (!text.StartsWith(str))

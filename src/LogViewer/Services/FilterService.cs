@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
+
     using Catel;
     using Catel.Logging;
 
@@ -11,7 +13,7 @@
     {
         public IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<LogRecord> logRecords)
         {
-            return logRecords.Where(record => AcceptFilterToLogEvent(record.LogEvent, filter));
+            return logRecords.Where(record => AcceptFilterToLogEvent(record.LogEvent, filter) && AcceptFilterToMessageText(record.Message, filter));
         }
 
         public IEnumerable<LogFile> FilterFIles(Filter filter, IEnumerable<LogFile> logFiles)
@@ -37,6 +39,16 @@
             }
 
             return false;
+        }
+
+        private bool AcceptFilterToMessageText(string message, Filter filter)
+        {
+            if (!filter.IsUseTextSearch || filter.SearchTemplate.RegularExpression == null)
+            {
+                return true;
+            }
+
+            return Regex.IsMatch(message, filter.SearchTemplate.RegularExpression);
         }
     }
 }
