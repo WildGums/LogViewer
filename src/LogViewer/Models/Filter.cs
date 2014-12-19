@@ -7,10 +7,17 @@ namespace LogViewer.Models
 {
     using System;
     using System.ComponentModel;
+    using System.Xml.Linq;
+
     using Catel.Data;
 
     public class Filter : ModelBase
     {
+        public Filter()
+        {
+            SearchTemplate = new SearchTemplate();
+        }
+
         [DefaultValue(true)]
         public bool ShowInfo { get; set; }
         [DefaultValue(true)]
@@ -21,6 +28,6 @@ namespace LogViewer.Models
         public bool ShowError { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string SearchTemplate { get; set; }
+        public SearchTemplate SearchTemplate { get; set; }
     }
 }

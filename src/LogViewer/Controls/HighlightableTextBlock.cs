@@ -16,22 +16,22 @@ namespace LogViewer.Controls
 
     public class HighlightableTextBlock : TextBlock
     {
-        private string _regularExpression;
+        private string _regEx;
 
-        public string SearchTemplate
+        public string RegularExpression
         {
             get
             {
-                if (null == (string) GetValue(SearchTemplateProperty))
+                if (null == (string) GetValue(RegularExpressionProperty))
                 {
-                    SetValue(SearchTemplateProperty, string.Empty);
+                    SetValue(RegularExpressionProperty, string.Empty);
                 }
-                return (string) GetValue(SearchTemplateProperty);
+                return (string) GetValue(RegularExpressionProperty);
             }
             set
             {
-                SetValue(SearchTemplateProperty, value);
-                UpdateRegex();
+                SetValue(RegularExpressionProperty, value);
+                RegEx = value;
             }
         }
 
@@ -71,18 +71,18 @@ namespace LogViewer.Controls
         {
             set
             {
-                if (string.IsNullOrWhiteSpace(RegularExpression) || !IsValidRegex(RegularExpression))
+                if (string.IsNullOrWhiteSpace(RegEx) || !IsValidRegex(RegEx))
                 {
                     base.Text = value;
                     return;
                 }
 
                 Inlines.Clear();
-                var split = Regex.Split(value, RegularExpression, RegexOptions.IgnoreCase);
+                var split = Regex.Split(value, RegEx);
                 foreach (var str in split)
                 {
                     var run = new Run(str);
-                    if (Regex.IsMatch(str, RegularExpression, RegexOptions.IgnoreCase))
+                    if (Regex.IsMatch(str, RegEx))
                     {
                         run.Background = HighlightBackground;
                         run.Foreground = HighlightForeground;
@@ -92,12 +92,12 @@ namespace LogViewer.Controls
             }
         }
 
-        public string RegularExpression
+        public string RegEx
         {
-            get { return _regularExpression; }
+            get { return _regEx; }
             set
             {
-                _regularExpression = value;
+                _regEx = value;
                 Text = base.Text;
             }
         }
@@ -110,34 +110,13 @@ namespace LogViewer.Controls
                 return;
             }
 
-            stb.UpdateRegex();
+            stb.RegEx = stb.RegularExpression;
         }
 
         public static void HighlightableTextChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             var stb = obj as HighlightableTextBlock;
             stb.Text = stb.HighlightableText;
-        }
-
-        private void UpdateRegex()
-        {
-            var newRegularExpression = string.Empty;
-/*
-            if (string.IsNullOrEmpty(SearchTemplate))
-            {
-                return;
-            }*/
-
-            if (newRegularExpression.Length > 0)
-            {
-                newRegularExpression += "|";
-            }
-            newRegularExpression += RegexWrap(SearchTemplate);
-
-            if (RegularExpression != newRegularExpression)
-            {
-                RegularExpression = newRegularExpression;
-            }
         }
 
         public bool IsValidRegex(string regEx)
@@ -158,13 +137,13 @@ namespace LogViewer.Controls
 
             return true;
         }
-
-        private string RegexWrap(string str)
+/*
+        private static string RegexWrap(string str)
         {
             return String.Format("(?={0})|(?<={0})", str);
-        }
+        }*/
 
-        public static readonly DependencyProperty SearchTemplateProperty = DependencyProperty.Register("SearchTemplate", typeof (string), typeof (HighlightableTextBlock), new PropertyMetadata(SearchTemplatePropertyChanged));
+        public static readonly DependencyProperty RegularExpressionProperty = DependencyProperty.Register("RegularExpression", typeof (string), typeof (HighlightableTextBlock), new PropertyMetadata(SearchTemplatePropertyChanged));
         public static readonly DependencyProperty HighlightableTextProperty = DependencyProperty.Register("HighlightableText", typeof (string), typeof (HighlightableTextBlock), new PropertyMetadata(HighlightableTextChanged));
         public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register("HighlightForeground", typeof (Brush), typeof (HighlightableTextBlock));
         public static readonly DependencyProperty HighlightBackgroundProperty = DependencyProperty.Register("HighlightBackground", typeof (Brush), typeof (HighlightableTextBlock));

@@ -12,6 +12,7 @@ namespace LogViewer.ViewModels
     using Behaviors;
     using Catel;
     using Catel.Collections;
+    using Catel.Fody;
     using Catel.MVVM;
     using Extensions;
     using LogViewer.Models;
@@ -52,11 +53,13 @@ namespace LogViewer.ViewModels
 
         public ObservableCollection<LogRecord> LogRecords { get; set; }
 
+        [Model]
+        [Expose("RegularExpression")]
         [ViewModelToModel("Filter")]
-        public string SearchTemplate { get; set; }
+        public SearchTemplate SearchTemplate { get; set; }
 
         public void OnSelectedItemChanged()
-        {
+        {            
             var logFiles = GetLogFiles(SelectedItem);
             var filteredFiles = _filterService.FilterFIles(LogViewer.Filter, logFiles);
             LogRecords.Clear();

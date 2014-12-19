@@ -15,9 +15,7 @@ namespace LogViewer.Models
     {
         public FileInfo Info { get; set; }
         public bool IsUnifyNamed { get; set; }
-        public DateTime DateTime { get; set; }
-        public int ProcessId { get; set; }        
+        public DateTime DateTime { get; set; }    
         public ObservableCollection<LogRecord> LogRecords { get; set; } 
-        public ObservableCollection<LogRecord> FilteredLogRecords { get; set; } 
     }
 }

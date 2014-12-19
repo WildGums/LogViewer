@@ -5,13 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:catel="http://catel.codeplex.com"
              xmlns:controls="clr-namespace:LogViewer.Controls"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:behaviors="clr-namespace:LogViewer.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     
     <catel:UserControl.Resources>
-        
         <!--Default GroupStyle-->
         <GroupStyle x:Key="groupStyle">
             <GroupStyle.Panel>
@@ -101,7 +98,8 @@
                 <DataGridTemplateColumn Header="Message" Width="Auto" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <controls:HighlightableTextBlock HighlightableText="{Binding Message}" HighlightBackground="Red" SearchTemplate="{Binding Path=DataContext.SearchTemplate, RelativeSource={RelativeSource AncestorLevel=3, AncestorType={x:Type Grid}}}"/>
+                            <controls:HighlightableTextBlock HighlightableText="{Binding Message}" HighlightBackground="Red" 
+                                                             RegularExpression="{Binding Path=DataContext.RegularExpression, RelativeSource={RelativeSource AncestorLevel=3, AncestorType={x:Type Grid}}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>

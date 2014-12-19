@@ -50,7 +50,10 @@ namespace LogViewer.Services
                         }
                     }
 
-                    yield return record;
+                    if (record != null)
+                    {
+                        yield return record;
+                    }
                 }
             }
         }

@@ -16,5 +16,8 @@ namespace LogViewer.Models
         public LogEvent LogEvent { get; set; }
         public string TargetTypeName { get; set; }
         public string Message { get; set; }
+
+        public bool IsSelected { get; set; }
+        public bool IsExpanded { get; set; }
     }
 }

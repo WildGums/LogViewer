@@ -120,6 +120,8 @@
     </Compile>
     <Compile Include="Behaviors\SelectedItemBehavior.cs" />
     <Compile Include="Extensions\AppDataServiceExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Models\SearchTemplate.cs" />
     <Compile Include="Services\CompanyService.cs" />
     <Compile Include="Services\FilterService.cs" />
     <Compile Include="Services\Interfaces\ILogFileService.cs" />
