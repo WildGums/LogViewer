@@ -16,17 +16,30 @@ namespace LogViewer.Controls
 
     public class HighlightableTextBlock : TextBlock
     {
-        private string _regEx;
+        #region Constants
+        public static readonly DependencyProperty RegularExpressionProperty = DependencyProperty.Register("RegularExpression", typeof(string), typeof(HighlightableTextBlock), new PropertyMetadata(SearchTemplatePropertyChanged));
 
+        public static readonly DependencyProperty HighlightableTextProperty = DependencyProperty.Register("HighlightableText", typeof(string), typeof(HighlightableTextBlock), new PropertyMetadata(HighlightableTextChanged));
+
+        public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register("HighlightForeground", typeof(Brush), typeof(HighlightableTextBlock));
+
+        public static readonly DependencyProperty HighlightBackgroundProperty = DependencyProperty.Register("HighlightBackground", typeof(Brush), typeof(HighlightableTextBlock));
+        #endregion
+
+        #region Fields
+        private string _regEx;
+        #endregion
+
+        #region Properties
         public string RegularExpression
         {
             get
             {
-                if (null == (string) GetValue(RegularExpressionProperty))
+                if (null == (string)GetValue(RegularExpressionProperty))
                 {
                     SetValue(RegularExpressionProperty, string.Empty);
                 }
-                return (string) GetValue(RegularExpressionProperty);
+                return (string)GetValue(RegularExpressionProperty);
             }
             set
             {
@@ -37,34 +50,46 @@ namespace LogViewer.Controls
 
         public string HighlightableText
         {
-            get { return (string) GetValue(HighlightableTextProperty); }
-            set { SetValue(HighlightableTextProperty, value); }
+            get
+            {
+                return (string)GetValue(HighlightableTextProperty);
+            }
+            set
+            {
+                SetValue(HighlightableTextProperty, value);
+            }
         }
 
         public Brush HighlightForeground
         {
             get
             {
-                if ((Brush) GetValue(HighlightForegroundProperty) == null)
+                if ((Brush)GetValue(HighlightForegroundProperty) == null)
                 {
                     SetValue(HighlightForegroundProperty, Brushes.Black);
                 }
-                return (Brush) GetValue(HighlightForegroundProperty);
+                return (Brush)GetValue(HighlightForegroundProperty);
             }
-            set { SetValue(HighlightForegroundProperty, value); }
+            set
+            {
+                SetValue(HighlightForegroundProperty, value);
+            }
         }
 
         public Brush HighlightBackground
         {
             get
             {
-                if ((Brush) GetValue(HighlightBackgroundProperty) == null)
+                if ((Brush)GetValue(HighlightBackgroundProperty) == null)
                 {
                     SetValue(HighlightBackgroundProperty, Brushes.Yellow);
                 }
-                return (Brush) GetValue(HighlightBackgroundProperty);
+                return (Brush)GetValue(HighlightBackgroundProperty);
             }
-            set { SetValue(HighlightBackgroundProperty, value); }
+            set
+            {
+                SetValue(HighlightBackgroundProperty, value);
+            }
         }
 
         private new string Text
@@ -79,8 +104,16 @@ namespace LogViewer.Controls
 
                 Inlines.Clear();
                 var split = Regex.Split(value, RegEx);
+                var text = value;
                 foreach (var str in split)
                 {
+                    if (!text.StartsWith(str))
+                    {
+                        continue;
+                    }
+
+                    text = text.Substring(str.Length);
+
                     var run = new Run(str);
                     if (Regex.IsMatch(str, RegEx))
                     {
@@ -94,14 +127,19 @@ namespace LogViewer.Controls
 
         public string RegEx
         {
-            get { return _regEx; }
+            get
+            {
+                return _regEx;
+            }
             set
             {
                 _regEx = value;
                 Text = base.Text;
             }
         }
+        #endregion
 
+        #region Methods
         public static void SearchTemplatePropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             var stb = obj as HighlightableTextBlock;
@@ -137,15 +175,6 @@ namespace LogViewer.Controls
 
             return true;
         }
-/*
-        private static string RegexWrap(string str)
-        {
-            return String.Format("(?={0})|(?<={0})", str);
-        }*/
-
-        public static readonly DependencyProperty RegularExpressionProperty = DependencyProperty.Register("RegularExpression", typeof (string), typeof (HighlightableTextBlock), new PropertyMetadata(SearchTemplatePropertyChanged));
-        public static readonly DependencyProperty HighlightableTextProperty = DependencyProperty.Register("HighlightableText", typeof (string), typeof (HighlightableTextBlock), new PropertyMetadata(HighlightableTextChanged));
-        public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register("HighlightForeground", typeof (Brush), typeof (HighlightableTextBlock));
-        public static readonly DependencyProperty HighlightBackgroundProperty = DependencyProperty.Register("HighlightBackground", typeof (Brush), typeof (HighlightableTextBlock));
+        #endregion
     }
 }
