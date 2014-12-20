@@ -10,6 +10,7 @@ namespace LogViewer.Controls
     using System;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
@@ -92,26 +93,17 @@ namespace LogViewer.Controls
                 }
 
                 Inlines.Clear();
-                var split = Regex.Split(value, RegEx);
+                var split = Regex.Split(value, RegEx, RegexOptions.ExplicitCapture);
                 if (split.Max(x => x.Length) == 1)
                 {
                     base.Text = value;
                     return;
                 }
 
-                var text = value;
-
                 foreach (var str in split)
                 {
-                    if (!text.StartsWith(str))
-                    {
-                        continue;
-                    }
-
-                    text = text.Substring(str.Length);
-
                     var run = new Run(str);
-                    if (Regex.IsMatch(str, RegEx))
+                    if (Regex.IsMatch(str, RegEx, RegexOptions.ExplicitCapture))
                     {
                         run.Background = HighlightBackground;
                         run.Foreground = HighlightForeground;
@@ -119,6 +111,10 @@ namespace LogViewer.Controls
                     Inlines.Add(run);
                 }
             }
+        }
+
+        private async Task SetText(string value)
+        {
         }
 
         public string RegEx

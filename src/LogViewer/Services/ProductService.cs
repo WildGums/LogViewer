@@ -21,7 +21,7 @@ namespace LogViewer.Services
             var productName = productFolder.Substring(productFolder.LastIndexOf('\\') + 1);
             var logFiles = _logFileService.GetLogFIles(productFolder);
 
-            return new Product { Name = productName, LogFiles = new ObservableCollection<LogFile>(logFiles) };
+            return new Product { Name = productName, LogFiles = new ObservableCollection<LogFile>(logFiles), Children = new ObservableCollection<NavigationNode>(logFiles) };
         }
     }
 }

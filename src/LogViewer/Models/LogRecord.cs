@@ -11,13 +11,12 @@ namespace LogViewer.Models
 
     public class LogRecord : ModelBase
     {
-        public string FileName { get; set; }
+        public LogFile LogFile { get; set; }
         public DateTime DateTime { get; set; }
         public LogEvent LogEvent { get; set; }
         public string TargetTypeName { get; set; }
         public string Message { get; set; }
 
-        public bool IsSelected { get; set; }
-        public bool IsExpanded { get; set; }
+        public bool IsSelected { get; set; }        
     }
 }

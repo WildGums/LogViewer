@@ -32,7 +32,7 @@ namespace LogViewer.Services
                             }
 
                             record = new LogRecord();
-                            record.FileName = logFile.Name;
+                            record.LogFile = logFile;
                             record.DateTime = ExtractDateTime(ref line);
 
                             if (logFile.IsUnifyNamed && record.DateTime.Date == DateTime.MinValue.Date)

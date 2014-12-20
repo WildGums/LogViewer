@@ -30,10 +30,10 @@
                             <ControlTemplate TargetType="{x:Type GroupItem}">
                                 <Expander BorderBrush="#FFA4B97F" 
                                           BorderThickness="0,0,0,1" 
-                                          IsExpanded="{Binding Path=Items[0].IsExpanded}">
+                                          IsExpanded="{Binding Path=Items[0].LogFile.IsExpanded}">
                                     <Expander.Header>
                                         <DockPanel TextBlock.FontWeight="Bold">
-                                            <TextBlock Text="{Binding Path=Name}" Margin="5,0,5,0" />
+                                            <TextBlock Text="{Binding Path=Items[0].LogFile.Info.Name}" Margin="5,0,5,0" />
                                         </DockPanel>
                                     </Expander.Header>
                                     <ItemsPresenter/>
@@ -87,7 +87,7 @@
             <DataGrid.DataContext>
                 <CollectionViewSource Source="{Binding LogRecords}">                    
                     <CollectionViewSource.GroupDescriptions>
-                        <PropertyGroupDescription PropertyName="FileName"/>
+                        <PropertyGroupDescription PropertyName="LogFile"/>
                     </CollectionViewSource.GroupDescriptions>
                 </CollectionViewSource>
             </DataGrid.DataContext>

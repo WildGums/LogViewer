@@ -20,9 +20,9 @@
             </i:Interaction.Behaviors>
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">                        
                         <ContentPresenter
-                                    Content="{Binding Name, Mode=OneTime}" 
+                                    Content="{Binding Name, Mode=OneTime}"                             
                                     Margin="2,0" />
                     </StackPanel>
                 </HierarchicalDataTemplate>

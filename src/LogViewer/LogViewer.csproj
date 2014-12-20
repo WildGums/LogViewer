@@ -122,6 +122,7 @@
     <Compile Include="Extensions\AppDataServiceExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Models\SearchTemplate.cs" />
+    <Compile Include="Models\Base\SimplyClearableModel.cs" />
     <Compile Include="Services\CompanyService.cs" />
     <Compile Include="Services\FilterService.cs" />
     <Compile Include="Services\Interfaces\ILogFileService.cs" />
@@ -139,7 +140,6 @@
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\LogFile.cs" />
     <Compile Include="Models\LogRecord.cs" />
-    <Compile Include="Models\LogViewerConfig.cs" />
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Services\ApplicationInitializationService.cs" />
     <Compile Include="Services\RibbonService.cs" />

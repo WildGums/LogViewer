@@ -12,7 +12,7 @@ namespace LogViewer.Models
 
     using LogViewer.Extensions;
 
-    public class SearchTemplate : ModelBase
+    public class SearchTemplate : SimplyClearableModel
     {
         protected override void OnPropertyChanged(AdvancedPropertyChangedEventArgs e)
         {
@@ -21,11 +21,11 @@ namespace LogViewer.Models
                 return;
             }
 
-            CreateRegex();
+            WrapIntoRegex();
             base.OnPropertyChanged(e);
         }
 
-        private async Task CreateRegex()
+        private async Task WrapIntoRegex()
         {
             string regex = TemplateString;
 
@@ -50,11 +50,6 @@ namespace LogViewer.Models
 
         public bool MatchWholeWord { get; set; }
 
-        public string RegularExpression { get; set; }
-
-        public void ClearDirtyFlag()
-        {
-            ClearIsDirtyOnAllChilds();
-        }
+        public string RegularExpression { get; set; }        
     }
 }

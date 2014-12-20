@@ -8,9 +8,15 @@
     using Catel.Logging;
 
     using Models;
+    using Models.Base;
 
     class FilterService : IFilterService
     {
+        public IEnumerable<LogRecord> FilterRecords(Filter filter, NavigationNode node)
+        {
+            return FilterRecords(filter, FilterFIles(filter, GetLogFiles(node)).SelectMany(file => file.LogRecords));
+        }
+
         public IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<LogRecord> logRecords)
         {
             return logRecords.Where(record => AcceptFilterToLogEvent(record.LogEvent, filter) && AcceptFilterToMessageText(record.Message, filter));
@@ -22,6 +28,11 @@
             Argument.IsNotNull(() => filter);
 
             return logFiles.Where(file => !file.IsUnifyNamed || (file.DateTime.Date <= filter.EndDate.Date && file.DateTime.Date >= filter.StartDate.Date));
+        }
+
+        public IEnumerable<LogFile> FilterFIles(Filter filter, NavigationNode node)
+        {
+            return FilterFIles(filter, GetLogFiles(node));
         }
 
         private bool AcceptFilterToLogEvent(LogEvent logEvent, Filter filter)
@@ -49,6 +60,42 @@
             }
 
             return Regex.IsMatch(message, filter.SearchTemplate.RegularExpression);
+        }
+
+        private IEnumerable<LogFile> GetLogFiles(NavigationNode node)
+        {
+            var logFile = node as LogFile;
+            if (logFile != null)
+            {
+                if (logFile.IsExpanded == null)
+                {
+                    logFile.IsExpanded = true;
+                }
+                yield return logFile;
+                yield break;
+            }
+
+            var stack = new Stack<NavigationNode>();
+            stack.Push(node);
+            while (stack.Count != 0)
+            {
+                var currentNode = stack.Pop();
+                var product = currentNode as Product;
+                if (product == null)
+                {
+                    foreach (var child in currentNode.Children)
+                    {
+                        stack.Push(child);
+                    }
+                }
+                else
+                {
+                    foreach (var item in product.LogFiles)
+                    {
+                        yield return item;
+                    }
+                }
+            }
         }
     }
 }

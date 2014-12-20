@@ -7,11 +7,10 @@
 
 namespace LogViewer.ViewModels
 {
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using System.Linq;
     using System.Threading.Tasks;
+    using Catel;
     using Catel.Collections;
     using Catel.Fody;
     using Catel.MVVM;
@@ -25,6 +24,10 @@ namespace LogViewer.ViewModels
 
         public LogRecordsTableViewModel(LogViewerModel logViewerModel, IFilterService filterService, ICommandManager commandManager)
         {
+            Argument.IsNotNull(() => logViewerModel);
+            Argument.IsNotNull(() => filterService);
+            Argument.IsNotNull(() => commandManager); 
+
             _filterService = filterService;
             LogViewer = logViewerModel;
             LogRecords = new ObservableCollection<LogRecord>();
@@ -33,8 +36,8 @@ namespace LogViewer.ViewModels
 
             commandManager.RegisterCommand("Filter.ResetSearchTemplate", ResetSearchTemplate, this);
 
-            Filter.PropertyChanged += Filter_PropertyChanged;
-            SearchTemplate.PropertyChanged += SearchTemplate_PropertyChanged;
+            Filter.PropertyChanged += OnFilterIsDirtyChanged; 
+            SearchTemplate.PropertyChanged += OnSearchTemplateIsDirtyChanged;
         }
 
         public Command ResetSearchTemplate { get; private set; }
@@ -56,26 +59,14 @@ namespace LogViewer.ViewModels
         [ViewModelToModel("Filter")]
         public SearchTemplate SearchTemplate { get; set; }
 
-        private void SearchTemplate_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnSearchTemplateIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            if (!SearchTemplate.IsDirty)
-            {
-                return;
-            }
-
-            SearchTemplate.ClearDirtyFlag();
-            ApplyFilter();
+            ApplyFilter(SearchTemplate);
         }
 
-        private void Filter_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnFilterIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            if (!Filter.IsDirty)
-            {
-                return;
-            }
-
-            Filter.ClearDirtyFlag();
-            ApplyFilter();
+            ApplyFilter(Filter);
         }
 
         private void OnResetSearchTemplateExecute()
@@ -88,36 +79,18 @@ namespace LogViewer.ViewModels
             ApplyFilter();
         }
 
-        private async Task ApplyFilter()
+        private async Task ApplyFilter(SimplyClearableModel clearableModel = null)
         {
-            var logFiles = GetLogFiles(SelectedItem);
-            var filteredFiles = _filterService.FilterFIles(LogViewer.Filter, logFiles);
-            LogRecords.Clear();
-            LogRecords.AddRange(new ObservableCollection<LogRecord>(_filterService.FilterRecords(LogViewer.Filter, filteredFiles.SelectMany(file => file.LogRecords))));
-        }
-
-        private IEnumerable<LogFile> GetLogFiles(NavigationNode node)
-        {
-            var stack = new Stack<NavigationNode>();
-            stack.Push(node);
-            while (stack.Count != 0)
+            if (clearableModel != null && !clearableModel.IsDirty)
             {
-                var currentNode = stack.Pop();
-                var product = currentNode as Product;
-                if (product == null)
-                {
-                    foreach (var child in currentNode.Children)
-                    {
-                        stack.Push(child);
-                    }
-                }
-                else
-                {
-                    foreach (var logFile in product.LogFiles)
-                    {
-                        yield return logFile;
-                    }
-                }
+                return;
+            }
+
+            LogRecords.ReplaceRange(_filterService.FilterRecords(LogViewer.Filter, SelectedItem));
+
+            if (clearableModel != null)
+            {
+                clearableModel.MarkClean();
             }
         }
     }

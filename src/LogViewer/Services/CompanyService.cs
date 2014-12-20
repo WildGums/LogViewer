@@ -13,7 +13,7 @@ namespace LogViewer.Services
     using System.IO;
     using System.Linq;
     using System.Reflection;
-
+    using Catel;
     using Catel.Configuration;
 
     using Extensions;
@@ -31,6 +31,10 @@ namespace LogViewer.Services
 
         public CompanyService(IAppDataService appDataService, IProductService productService, IConfigurationService configurationService)
         {
+            Argument.IsNotNull(() => appDataService);
+            Argument.IsNotNull(() => productService);
+            Argument.IsNotNull(() => configurationService);
+
             _appDataService = appDataService;
             _productService = productService;
             _configurationService = configurationService;
@@ -38,6 +42,8 @@ namespace LogViewer.Services
 
         public Company CreateCompanyByDirectoryPath(string companyFolder)
         {
+            Argument.IsNotNullOrEmpty(() => companyFolder);
+
             return CreateCompanyByName(new DirectoryInfo(companyFolder).Name);
         }
 
@@ -50,6 +56,8 @@ namespace LogViewer.Services
 
         public Company CreateCompanyByName(string companyName)
         {
+            Argument.IsNotNullOrEmpty(() => companyName);
+
             var fullCompanyFolderPath = Path.Combine(_appDataService.GetRootAppDataFolder(), companyName);
             var products = Directory.GetDirectories(fullCompanyFolderPath).Select(folder => _productService.CreateNewProductItem(folder) as NavigationNode);
 
@@ -58,6 +66,8 @@ namespace LogViewer.Services
 
         public void SaveCompanies(IEnumerable<Company> companies)
         {
+            Argument.IsNotNull(() => companies);
+
             var stringOfCompanies = string.Join(",", companies.Select(c => c.Name));
             _configurationService.SetValue("Companies", stringOfCompanies);
         }

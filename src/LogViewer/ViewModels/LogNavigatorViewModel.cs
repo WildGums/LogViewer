@@ -7,17 +7,13 @@
 
 namespace LogViewer.ViewModels
 {
-    using System;
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
     using System.Threading.Tasks;
-
     using Behaviors;
-
+    using Catel;
     using Catel.Collections;
-    using Catel.Configuration;
     using Catel.Fody;
     using Catel.MVVM;
     using Catel.Services;
@@ -30,18 +26,23 @@ namespace LogViewer.ViewModels
     public class LogNavigatorViewModel : ViewModelBase, IHasSelectableItems
     {
         private readonly IAppDataService _appDataService;
-
         private readonly ICompanyService _companyService;
         private readonly IMessageService _messageService;
         private readonly ISelectDirectoryService _selectDirectoryService;
 
         public LogNavigatorViewModel(LogViewerModel logViewerModel, ISelectDirectoryService selectDirectoryService, IMessageService messageService, ICompanyService companyService, IAppDataService appDataService)
         {
+            Argument.IsNotNull(() => logViewerModel);
+            Argument.IsNotNull(() => selectDirectoryService);
+            Argument.IsNotNull(() => messageService);
+            Argument.IsNotNull(() => companyService);
+            Argument.IsNotNull(() => appDataService);
+
             _selectDirectoryService = selectDirectoryService;
             _messageService = messageService;
             _companyService = companyService;
             _appDataService = appDataService;
-            
+
             LogViewer = logViewerModel;
 
             AddCompanyCommand = new Command(OnAddCompanyCommandExecute);
@@ -49,13 +50,27 @@ namespace LogViewer.ViewModels
             DeleteCompanyCommand = new Command(OnDeleteCompanyCommandExecute, CanExecuteDeleteCompanyCommand);
         }
 
+        [Model]
+        [Expose("Companies")]
+        public LogViewerModel LogViewer { get; set; }
+
+        /// <summary>
+        /// Gets the AddCompanyCommand command.
+        /// </summary>
+        public Command AddCompanyCommand { get; private set; }
+
+        public Command DeleteCompanyCommand { get; private set; }
+
+        [ViewModelToModel("LogViewer")]
+        public NavigationNode SelectedItem { get; set; }
+
         private void OnDeleteCompanyCommandExecute()
         {
             var selectedCompany = SelectedItem as Company;
             if (selectedCompany != null)
             {
                 LogViewer.Companies.Remove(selectedCompany);
-            }            
+            }
         }
 
         private bool CanExecuteDeleteCompanyCommand()
@@ -82,21 +97,6 @@ namespace LogViewer.ViewModels
             _companyService.SaveCompanies(LogViewer.Companies);
             base.OnClosing();
         }
-
-        [Model]
-        [Expose("Companies")]
-        public LogViewerModel LogViewer { get; set; }
-
-        /// <summary>
-        /// Gets the AddCompanyCommand command.
-        /// </summary>
-        public Command AddCompanyCommand { get; private set; }
-        
-        
-        public Command DeleteCompanyCommand { get; private set; }
-
-        [ViewModelToModel("LogViewer")]
-        public NavigationNode SelectedItem { get; set; }
 
         /// <summary>
         /// Method to invoke when the AddCompanyCommand command is executed.
