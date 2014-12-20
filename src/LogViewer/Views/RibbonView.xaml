@@ -12,10 +12,7 @@
     <fluent:Ribbon IsQuickAccessToolBarVisible="False" CanCustomizeRibbon="False" AutomaticStateManagement="False">
         <fluent:Ribbon.Tabs >
             <fluent:RibbonTabItem Header="Filter">
-                <fluent:RibbonGroupBox>
-                    <fluent:Button Header="Apply filters and refresh" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Refresh}}" Command="{catel:CommandManagerBinding Filter.ApplyFilter}"/>                    
-                </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox Header="Log event type">
+                <fluent:RibbonGroupBox Header="Level">
                     <fluent:ToggleButton Header="Debug" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Bug}}" IsChecked="{Binding ShowDebug}"/>
                     <fluent:ToggleButton Header="Info" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Info}}" IsChecked="{Binding ShowInfo}"/>
                     <fluent:ToggleButton Header="Warning" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Warning}}" IsChecked="{Binding ShowWarning}"/>
@@ -40,7 +37,7 @@
                         </Grid> 
                     </fluent:GalleryPanel>
                 </fluent:RibbonGroupBox>    
-                <fluent:RibbonGroupBox Header="Text hilightning">
+                <fluent:RibbonGroupBox Header="Highlighting">
                     <fluent:GalleryPanel>
                         <Grid>
                             <Grid.RowDefinitions>
@@ -49,13 +46,14 @@
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
                                 <TextBlock Text="Search template: " VerticalAlignment="Center"/>
-                                <TextBox Width="500" Text="{Binding Path=SearchTemplate.TemplateString, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Width="300" Text="{Binding Path=SearchTemplate.TemplateString, UpdateSourceTrigger=PropertyChanged}"/>
                             </StackPanel>
                             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
                                 <CheckBox Content="Match case" VerticalAlignment="Center" IsChecked="{Binding Path=SearchTemplate.MatchCase}"/>
                                 <CheckBox Content="Match whole word" VerticalAlignment="Center" IsChecked="{Binding Path=SearchTemplate.MatchWholeWord}"/>
                             </StackPanel>
                         </Grid>
+                        <fluent:Button Header="Reset" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Eraser}}" Command="{catel:CommandManagerBinding Filter.ResetSearchTemplate}"/>
                         <fluent:ToggleButton Header="Use in filter" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}" IsChecked="{Binding IsUseTextSearch}"/>
                     </fluent:GalleryPanel>
                 </fluent:RibbonGroupBox>

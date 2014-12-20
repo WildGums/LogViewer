@@ -3,20 +3,20 @@
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+
 namespace LogViewer.ViewModels
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Linq;
-    using System.Windows.Data;
-    using Behaviors;
-    using Catel;
+    using System.Threading.Tasks;
     using Catel.Collections;
     using Catel.Fody;
     using Catel.MVVM;
-    using Extensions;
-    using LogViewer.Models;
-    using LogViewer.Models.Base;
+    using Models;
+    using Models.Base;
     using Services;
 
     public class LogRecordsTableViewModel : ViewModelBase
@@ -29,17 +29,15 @@ namespace LogViewer.ViewModels
             LogViewer = logViewerModel;
             LogRecords = new ObservableCollection<LogRecord>();
 
-            ApplyFilter = new Command(OnApplyFilterExecute);
+            ResetSearchTemplate = new Command(OnResetSearchTemplateExecute);
 
-            commandManager.RegisterCommand("Filter.ApplyFilter", ApplyFilter, this);
+            commandManager.RegisterCommand("Filter.ResetSearchTemplate", ResetSearchTemplate, this);
+
+            Filter.PropertyChanged += Filter_PropertyChanged;
+            SearchTemplate.PropertyChanged += SearchTemplate_PropertyChanged;
         }
 
-        private void OnApplyFilterExecute()
-        {
-            OnSelectedItemChanged();
-        }
-
-        public Command ApplyFilter { get; private set; }
+        public Command ResetSearchTemplate { get; private set; }
 
         [Model]
         public LogViewerModel LogViewer { get; set; }
@@ -58,12 +56,44 @@ namespace LogViewer.ViewModels
         [ViewModelToModel("Filter")]
         public SearchTemplate SearchTemplate { get; set; }
 
+        private void SearchTemplate_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (!SearchTemplate.IsDirty)
+            {
+                return;
+            }
+
+            SearchTemplate.ClearDirtyFlag();
+            ApplyFilter();
+        }
+
+        private void Filter_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (!Filter.IsDirty)
+            {
+                return;
+            }
+
+            Filter.ClearDirtyFlag();
+            ApplyFilter();
+        }
+
+        private void OnResetSearchTemplateExecute()
+        {
+            SearchTemplate.TemplateString = string.Empty;
+        }
+
         public void OnSelectedItemChanged()
-        {            
+        {
+            ApplyFilter();
+        }
+
+        private async Task ApplyFilter()
+        {
             var logFiles = GetLogFiles(SelectedItem);
             var filteredFiles = _filterService.FilterFIles(LogViewer.Filter, logFiles);
             LogRecords.Clear();
-            LogRecords.AddRange(new ObservableCollection<LogRecord>(_filterService.FilterRecords(LogViewer.Filter,filteredFiles.SelectMany(file => file.LogRecords))));
+            LogRecords.AddRange(new ObservableCollection<LogRecord>(_filterService.FilterRecords(LogViewer.Filter, filteredFiles.SelectMany(file => file.LogRecords))));
         }
 
         private IEnumerable<LogFile> GetLogFiles(NavigationNode node)
@@ -79,7 +109,7 @@ namespace LogViewer.ViewModels
                     foreach (var child in currentNode.Children)
                     {
                         stack.Push(child);
-                    }                    
+                    }
                 }
                 else
                 {

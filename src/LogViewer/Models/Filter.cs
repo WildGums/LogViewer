@@ -16,6 +16,7 @@ namespace LogViewer.Models
         public Filter()
         {
             SearchTemplate = new SearchTemplate();
+            ClearIsDirtyOnAllChilds();
         }
 
         [DefaultValue(true)]
@@ -31,5 +32,10 @@ namespace LogViewer.Models
         public SearchTemplate SearchTemplate { get; set; }
         [DefaultValue(true)]
         public bool IsUseTextSearch { get; set; }
+
+        public void ClearDirtyFlag()
+        {
+            ClearIsDirtyOnAllChilds();
+        }
     }
 }

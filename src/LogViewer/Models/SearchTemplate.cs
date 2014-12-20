@@ -7,7 +7,7 @@ namespace LogViewer.Models
 {
     using System;
     using System.ComponentModel;
-
+    using System.Threading.Tasks;
     using Catel.Data;
 
     using LogViewer.Extensions;
@@ -21,7 +21,13 @@ namespace LogViewer.Models
                 return;
             }
 
-            string regex = TemplateString;                       
+            CreateRegex();
+            base.OnPropertyChanged(e);
+        }
+
+        private async Task CreateRegex()
+        {
+            string regex = TemplateString;
 
             if (!MatchCase)
             {
@@ -30,13 +36,12 @@ namespace LogViewer.Models
 
             if (MatchWholeWord)
             {
-                regex = regex.WrapToMatchWholeWordRegex();                
+                regex = regex.WrapToMatchWholeWordRegex();
             }
 
             regex = regex.WrapToFindRegex();
-            
+
             RegularExpression = regex;
-            base.OnPropertyChanged(e);
         }
 
         public string TemplateString { get; set; }
@@ -46,5 +51,10 @@ namespace LogViewer.Models
         public bool MatchWholeWord { get; set; }
 
         public string RegularExpression { get; set; }
+
+        public void ClearDirtyFlag()
+        {
+            ClearIsDirtyOnAllChilds();
+        }
     }
 }

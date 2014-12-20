@@ -3,6 +3,8 @@
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+
 namespace LogViewer.Behaviors
 {
     using System.Windows.Controls;
@@ -14,16 +16,6 @@ namespace LogViewer.Behaviors
 
     public class SelectedItemBehavior : BehaviorBase<TreeView>
     {
-        protected override void OnAssociatedObjectLoaded()
-        {
-            AssociatedObject.SelectedItemChanged += OnTreeViewSelectedItemChanged;
-        }        
-
-        protected override void OnAssociatedObjectUnloaded()
-        {
-            AssociatedObject.SelectedItemChanged -= OnTreeViewSelectedItemChanged;
-        }
-
         private IHasSelectableItems ViewModel
         {
             get
@@ -33,11 +25,21 @@ namespace LogViewer.Behaviors
             }
         }
 
-        void OnTreeViewSelectedItemChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<object> e)
+        protected override void OnAssociatedObjectLoaded()
+        {
+            AssociatedObject.SelectedItemChanged += OnTreeViewSelectedItemChanged;
+        }
+
+        protected override void OnAssociatedObjectUnloaded()
+        {
+            AssociatedObject.SelectedItemChanged -= OnTreeViewSelectedItemChanged;
+        }
+
+        private void OnTreeViewSelectedItemChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<object> e)
         {
             if (ViewModel != null)
             {
-                ViewModel.SelectedItem = (NavigationNode)e.NewValue;
+                ViewModel.SelectedItem = (NavigationNode) e.NewValue;
             }
         }
     }

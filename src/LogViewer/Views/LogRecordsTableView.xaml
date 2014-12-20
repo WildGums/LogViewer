@@ -92,13 +92,13 @@
                 </CollectionViewSource>
             </DataGrid.DataContext>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Date and time" Width="Auto" Binding="{Binding DateTime}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Log event type" Width="Auto" Binding="{Binding LogEvent}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Timestamp" Width="Auto" Binding="{Binding DateTime}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Level" Width="Auto" Binding="{Binding LogEvent}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Target Type Name" Width="Auto" Binding="{Binding TargetTypeName}" IsReadOnly="True"/>
                 <DataGridTemplateColumn Header="Message" Width="Auto" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <controls:HighlightableTextBlock HighlightableText="{Binding Message}" HighlightBackground="Red" 
+                            <controls:HighlightableTextBlock HighlightableText="{Binding Message}" HighlightBackground="Yellow" 
                                                              RegularExpression="{Binding Path=DataContext.RegularExpression, RelativeSource={RelativeSource AncestorLevel=3, AncestorType={x:Type Grid}}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

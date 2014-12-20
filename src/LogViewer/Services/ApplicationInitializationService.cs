@@ -19,7 +19,7 @@ namespace LogViewer.Services
         #region Methods
         public override Task InitializeCommands(ICommandManager commandManager)
         {
-            commandManager.CreateCommand("Filter.ApplyFilter",throwExceptionWhenCommandIsAlreadyCreated:false);
+            commandManager.CreateCommand("Filter.ResetSearchTemplate", throwExceptionWhenCommandIsAlreadyCreated: false);
             return base.InitializeCommands(commandManager);
         }
 
