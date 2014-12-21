@@ -18,7 +18,7 @@
                     <fluent:ToggleButton Header="Warning" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Warning}}" IsChecked="{Binding ShowWarning}"/>
                     <fluent:ToggleButton Header="Error" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Remove}}" IsChecked="{Binding ShowError}"/>
                 </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox Header="Date filter">
+                <fluent:RibbonGroupBox Header="Date range">
                     <fluent:GalleryPanel Orientation="Vertical">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -34,8 +34,9 @@
                             <DatePicker Grid.Column="1" Grid.Row="0" SelectedDate="{Binding StartDate}"/>
                             <TextBlock Grid.Column="0" Grid.Row="1" Text="End date: " HorizontalAlignment="Right"/>
                             <DatePicker Grid.Column="1" Grid.Row="1" SelectedDate="{Binding EndDate}"/>                            
-                        </Grid> 
+                        </Grid>                        
                     </fluent:GalleryPanel>
+                    <fluent:ToggleButton Header="Use in filter" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}" IsChecked="{Binding UseFilterRange}"/>
                 </fluent:RibbonGroupBox>    
                 <fluent:RibbonGroupBox Header="Highlighting">
                     <fluent:GalleryPanel>
@@ -54,7 +55,7 @@
                             </StackPanel>
                         </Grid>
                         <fluent:Button Header="Reset" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Eraser}}" Command="{catel:CommandManagerBinding Filter.ResetSearchTemplate}"/>
-                        <fluent:ToggleButton Header="Use in filter" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}" IsChecked="{Binding IsUseTextSearch}"/>
+                        <fluent:ToggleButton Header="Use in filter" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}" IsChecked="{Binding UseTextSearch}"/>
                     </fluent:GalleryPanel>
                 </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>            

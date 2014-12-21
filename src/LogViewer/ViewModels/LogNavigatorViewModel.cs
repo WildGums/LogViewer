@@ -7,6 +7,7 @@
 
 namespace LogViewer.ViewModels
 {
+    using System.Collections;
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
@@ -23,7 +24,7 @@ namespace LogViewer.ViewModels
     using Orchestra.Services;
     using Services;
 
-    public class LogNavigatorViewModel : ViewModelBase, IHasSelectableItems
+    public class LogNavigatorViewModel : ViewModelBase
     {
         private readonly IAppDataService _appDataService;
         private readonly ICompanyService _companyService;
@@ -48,6 +49,8 @@ namespace LogViewer.ViewModels
             AddCompanyCommand = new Command(OnAddCompanyCommandExecute);
 
             DeleteCompanyCommand = new Command(OnDeleteCompanyCommandExecute, CanExecuteDeleteCompanyCommand);
+
+            SelectedItems = new ObservableCollection<NavigationNode>();
         }
 
         [Model]
@@ -62,11 +65,15 @@ namespace LogViewer.ViewModels
         public Command DeleteCompanyCommand { get; private set; }
 
         [ViewModelToModel("LogViewer")]
-        public NavigationNode SelectedItem { get; set; }
+        public ObservableCollection<NavigationNode> SelectedItems { get; set; }
+
+        public void OnSelectedItemsChanged()
+        {
+        }
 
         private void OnDeleteCompanyCommandExecute()
         {
-            var selectedCompany = SelectedItem as Company;
+            var selectedCompany = SelectedItems.SingleOrDefault() as Company;
             if (selectedCompany != null)
             {
                 LogViewer.Companies.Remove(selectedCompany);
@@ -75,7 +82,7 @@ namespace LogViewer.ViewModels
 
         private bool CanExecuteDeleteCompanyCommand()
         {
-            var selectedCompany = SelectedItem as Company;
+            var selectedCompany = SelectedItems.SingleOrDefault() as Company;
             return selectedCompany != null;
         }
 

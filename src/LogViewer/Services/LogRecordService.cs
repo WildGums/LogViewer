@@ -20,7 +20,7 @@ namespace LogViewer.Services
                 {
                     string line;
                     LogRecord record = null;
-                    var logRecordPattern = @"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+\s\=\>\s\[[a-zA-Z]+\]\s\[[a-zA-Z\.]+\].+";
+                    var logRecordPattern = @"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+\s\=\>\s\[[a-zA-Z]+\]\s\[[a-zA-Z\d\.\`]+\].+";
 
                     while ((line = reader.ReadLine()) != null)
                     {                                          

@@ -118,9 +118,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Behaviors\SelectedItemBehavior.cs" />
+    <Compile Include="Behaviors\MultipleSelectionBehavior.cs" />
+    <Compile Include="Controls\TreeViewAttached.cs" />
     <Compile Include="Extensions\AppDataServiceExtensions.cs" />
+    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TreeViewExtensions.cs" />
     <Compile Include="Models\SearchTemplate.cs" />
     <Compile Include="Models\Base\SimplyClearableModel.cs" />
     <Compile Include="Services\CompanyService.cs" />
@@ -132,7 +135,6 @@
     <Compile Include="Services\LogRecordService.cs" />
     <Compile Include="Services\ProductService.cs" />
     <Compile Include="FontAwesome.cs" />
-    <Compile Include="Models\AssemblyLog.cs" />
     <Compile Include="Models\Base\NavigationNode.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Filter.cs" />
@@ -144,7 +146,6 @@
     <Compile Include="Services\ApplicationInitializationService.cs" />
     <Compile Include="Services\RibbonService.cs" />
     <Compile Include="Services\Interfaces\ICompanyService.cs" />
-    <Compile Include="Behaviors\Interfaces\IHasSelectableItems.cs" />
     <Compile Include="Services\Interfaces\IFilterService.cs" />
     <Compile Include="ViewModels\LogRecordsTableViewModel.cs" />
     <Compile Include="Controls\HighlightableTextBlock.cs" />
@@ -198,6 +199,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Behaviors\Interfaces\" />
     <Folder Include="Validators\" />
   </ItemGroup>
   <ItemGroup>

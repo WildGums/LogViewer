@@ -54,7 +54,7 @@
 
         private bool AcceptFilterToMessageText(string message, Filter filter)
         {
-            if (!filter.IsUseTextSearch || filter.SearchTemplate.RegularExpression == null)
+            if (!filter.UseTextSearch || filter.SearchTemplate.RegularExpression == null)
             {
                 return true;
             }

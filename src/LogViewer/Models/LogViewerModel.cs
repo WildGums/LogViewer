@@ -18,12 +18,13 @@ namespace LogViewer.Models
         {
             Companies = new ObservableCollection<Company>();
             Filter = new Filter();
+            SelectedItems = new ObservableCollection<NavigationNode>();
         }
 
         public Filter Filter { get; set; }
 
         public ObservableCollection<Company> Companies { get; set; }
-        
-        public NavigationNode SelectedItem { get; set; }
+
+        public ObservableCollection<NavigationNode> SelectedItems { get; set; }
     }
 }

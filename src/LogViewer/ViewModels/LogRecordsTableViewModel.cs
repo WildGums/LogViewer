@@ -46,7 +46,7 @@ namespace LogViewer.ViewModels
         public LogViewerModel LogViewer { get; set; }
 
         [ViewModelToModel("LogViewer")]
-        public NavigationNode SelectedItem { get; set; }
+        public ObservableCollection<NavigationNode> SelectedItems { get; set; }
 
         [Model]
         [ViewModelToModel("LogViewer")]
@@ -61,6 +61,7 @@ namespace LogViewer.ViewModels
 
         private void OnSearchTemplateIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
+            if (Filter.UseTextSearch)
             ApplyFilter(SearchTemplate);
         }
 
@@ -81,7 +82,7 @@ namespace LogViewer.ViewModels
 
         private async Task ApplyFilter(SimplyClearableModel clearableModel = null)
         {
-            if (clearableModel != null && !clearableModel.IsDirty)
+            /*if (clearableModel != null && !clearableModel.IsDirty)
             {
                 return;
             }
@@ -91,7 +92,7 @@ namespace LogViewer.ViewModels
             if (clearableModel != null)
             {
                 clearableModel.MarkClean();
-            }
+            }*/
         }
     }
 }

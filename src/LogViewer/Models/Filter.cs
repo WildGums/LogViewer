@@ -30,6 +30,6 @@ namespace LogViewer.Models
         public DateTime EndDate { get; set; }
         public SearchTemplate SearchTemplate { get; set; }
         [DefaultValue(true)]
-        public bool IsUseTextSearch { get; set; }
+        public bool UseTextSearch { get; set; }
     }
 }

@@ -11,6 +11,13 @@ namespace LogViewer.Models
 
     public class Product : NavigationNode
     {
+        private readonly bool _allowMutiselection = false;
+
         public ObservableCollection<LogFile> LogFiles { get; set; }
+
+        public override bool AllowMultiselection
+        {
+            get { return _allowMutiselection; }
+        }
     }
 }

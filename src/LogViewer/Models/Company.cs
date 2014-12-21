@@ -11,5 +11,10 @@ namespace LogViewer.Models
         
     public class Company : NavigationNode
     {
+        private readonly bool _allowMutiselection = false;
+        public override bool AllowMultiselection
+        {
+            get { return _allowMutiselection; }
+        }
     }
 }

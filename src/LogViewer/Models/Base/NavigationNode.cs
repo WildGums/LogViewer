@@ -15,7 +15,11 @@ namespace LogViewer.Models.Base
             Children = new ObservableCollection<NavigationNode>();
         }
 
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
+
+        public bool IsSelected { get; set; }
+
+        public abstract bool AllowMultiselection { get; }
 
         public ObservableCollection<NavigationNode> Children { get; set; }
     }

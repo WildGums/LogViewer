@@ -13,10 +13,17 @@ namespace LogViewer.Models
 
     public class LogFile : NavigationNode
     {
+        private readonly bool _allowMutiselection = true;
+
         public FileInfo Info { get; set; }
         public bool IsUnifyNamed { get; set; }
         public DateTime DateTime { get; set; }    
         public ObservableCollection<LogRecord> LogRecords { get; set; }
         public bool? IsExpanded { get; set; }
+
+        public override bool AllowMultiselection
+        {
+            get { return _allowMutiselection; }
+        }
     }
 }
