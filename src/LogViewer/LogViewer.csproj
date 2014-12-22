@@ -121,7 +121,8 @@
     <Compile Include="Behaviors\MultipleSelectionBehavior.cs" />
     <Compile Include="Controls\TreeViewAttached.cs" />
     <Compile Include="Extensions\AppDataServiceExtensions.cs" />
-    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Extensions\ItemsControlExtensions.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TreeViewExtensions.cs" />
     <Compile Include="Models\SearchTemplate.cs" />

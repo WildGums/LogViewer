@@ -1,23 +1,25 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TreeViewExtensions.cs" company="Orcomp development team">
+// <copyright file="ListExtensions.cs" company="Orcomp development team">
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 namespace LogViewer.Extensions
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Windows;
-    using System.Windows.Controls;
-    using Catel.Windows;
 
-    public static class TreeViewExtensions
+    public static class ListExtensions
     {
-        public static TreeViewItem FindNodeByDataContext(this TreeView treeView, object dataContext)
+        public static void RemoveByPredicate<T>(this IList<T> list, Predicate<T> predicate)
         {
-            var item = treeView.EnumerateNested<TreeViewItem>().FirstOrDefault(x => object.Equals(x.DataContext, dataContext));
-            return item;
+            var itemsToRemove = list.Where(x => predicate(x)).ToList();
+
+            foreach (var item in itemsToRemove)
+            {
+                list.Remove(item);
+            }
         }
     }
 }
