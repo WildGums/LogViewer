@@ -18,6 +18,7 @@ namespace LogViewer.Models.Base
         public string Name { get; set; }
 
         public bool IsSelected { get; set; }
+        public bool IsItemSelected { get; set; }
 
         public abstract bool AllowMultiselection { get; }
 

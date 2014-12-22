@@ -16,10 +16,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TreeView Grid.Row="0" Grid.ColumnSpan="2" ItemsSource="{Binding Companies}" 
-                  behaviors:MultipleSelectionBehavior.SelectedItems="{Binding SelectedItems}">
-            <i:Interaction.Behaviors>
-                <behaviors:MultipleSelectionBehavior />
+        <TreeView Grid.Row="0" ItemsSource="{Binding Companies}" Margin="0,1,0,19" Grid.RowSpan="2" >
+            <i:Interaction.Behaviors >
+                <behaviors:MultipleSelectionBehavior  SelectedItems="{Binding SelectedItems}" />
             </i:Interaction.Behaviors>
             <TreeView.Resources>
                 <Style x:Key="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}" TargetType="{x:Type TreeViewItem}">
@@ -31,6 +30,7 @@
                     </Style.Triggers>
                     <Style.Setters>
                         <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                        <Setter Property="behaviors:MultipleSelectionBehavior.IsItemSelected" Value="{Binding IsItemSelected}"/>
                     </Style.Setters>
                 </Style>
                 <HierarchicalDataTemplate DataType="{x:Type base:NavigationNode}" ItemsSource="{Binding Children}">
@@ -38,10 +38,10 @@
                         <TextBlock Text="{Binding Name}" Margin="5,0,0,0" VerticalAlignment="Center" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
-            </TreeView.Resources>         
+            </TreeView.Resources>
         </TreeView>
         <Button Grid.Row="1" Content="Add Company Folder" Command="{Binding AddCompanyCommand}"/>
         <Button Grid.Row="2" Grid.ColumnSpan="2" Content="Remove Company Folder" Command="{Binding DeleteCompanyCommand}"/>
     </Grid>
-    
+
 </catel:UserControl>

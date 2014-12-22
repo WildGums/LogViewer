@@ -10,6 +10,9 @@ namespace LogViewer.Behaviors
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -26,6 +29,10 @@ namespace LogViewer.Behaviors
         protected override void OnAssociatedObjectLoaded()
         {
             AssociatedObject.SelectedItemChanged += OnTreeViewSelectedItemChanged;
+            if (SelectedItems != null)
+            {
+                SelectedItems.CollectionChanged += collection_CollectionChanged;
+            }
         }
 
         protected override void OnAssociatedObjectUnloaded()
@@ -40,13 +47,12 @@ namespace LogViewer.Behaviors
             {
                 return;
             }
-            var treeView = e.OriginalSource as TreeView;
-            if (treeView == null)
+            if (!Equals(e.OriginalSource, AssociatedObject))
             {
                 return;
             }
 
-            var treeViewItem = treeView.FindNodeByDataContext(node);
+            var treeViewItem = AssociatedObject.FindNodeByDataContext(node);
             if (treeViewItem == null)
             {
                 return;
@@ -59,23 +65,23 @@ namespace LogViewer.Behaviors
 
             if (Keyboard.Modifiers == ModifierKeys.Control && node.AllowMultiselection)
             {
-                SelectMultipleItemsRandomly(treeView, treeViewItem);
+                SelectMultipleItemsRandomly(treeViewItem);
             }
             else if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
-                SelectMultipleItemsContinuously(treeView, treeViewItem);
+                SelectMultipleItemsContinuously(treeViewItem);
             }
             else
             {
-                SelectSingleItem(treeView, treeViewItem);
+                SelectSingleItem(treeViewItem);
             }
         }
 
         #region Attached Properties
 
         #region IsItemSelected
-        public static readonly DependencyProperty IsItemSelectedProperty = DependencyProperty.RegisterAttached("IsItemSelected", typeof(bool), typeof(MultipleSelectionBehavior), new PropertyMetadata(false, OnIsItemSelectedPropertyChanged));
-
+        public static readonly DependencyProperty IsItemSelectedProperty = DependencyProperty.RegisterAttached("IsItemSelected", typeof(bool), typeof(MultipleSelectionBehavior), new PropertyMetadata());
+ 
         public static bool GetIsItemSelected(TreeViewItem element)
         {
             return (bool)element.GetValue(IsItemSelectedProperty);
@@ -87,170 +93,129 @@ namespace LogViewer.Behaviors
         }
         #endregion
 
-        private static void OnIsItemSelectedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            TreeViewItem treeViewItem = d as TreeViewItem;
-            TreeView treeView = FindTreeView(treeViewItem);
-            if (treeViewItem != null && treeView != null)
-            {
-                var selectedItems = GetSelectedItems(treeView);
-                if (selectedItems != null)
-                {
-                    if (GetIsItemSelected(treeViewItem))
-                    {
-                        selectedItems.Add(treeViewItem.Header);
-                    }
-                    else
-                    {
-                        selectedItems.Remove(treeViewItem.Header);
-                    }
-                }
-            }
-        }
+        #endregion // Attached Properties               
 
-        #endregion // Attached Properties
-
-        
-
-        
-        private static TreeViewItem FindTreeViewItem(DependencyObject dependencyObject)
-        {
-            if (dependencyObject == null)
-            {
-                return null;
-            }
-
-            TreeViewItem treeViewItem = dependencyObject as TreeViewItem;
-            if (treeViewItem != null)
-            {
-                return treeViewItem;
-            }
-
-            return FindTreeViewItem(VisualTreeHelper.GetParent(dependencyObject));
-        }
-
-        private static void SelectSingleItem(TreeView treeView,
-                                                    TreeViewItem treeViewItem)
+        private void SelectSingleItem(TreeViewItem treeViewItem)
         {
             // first deselect all items
-            DeSelectAllItems(treeView, null);
-            SetIsItemSelected(treeViewItem, true);
-            SetStartItem(treeView, treeViewItem);
+            DeSelectAllItems();
+            SelectedItems.Add((NavigationNode)treeViewItem.DataContext);
+            StartItem = treeViewItem;
         }
 
-        private static void DeSelectAllItems(TreeView treeView,
-                                                 TreeViewItem treeViewItem)
+        private void DeSelectAllItems()
         {
-            if (treeView != null)
+            var stack = new Stack<ItemsControl>();
+            stack.Push(AssociatedObject);
+            while (stack.Count != 0)
             {
-                for (int i = 0; i < treeView.Items.Count; i++)
+                var item = stack.Pop();
+                var node = item.DataContext as NavigationNode;
+                if (node != null)
                 {
-                    TreeViewItem item = treeView.ItemContainerGenerator.
-                                               ContainerFromIndex(i) as TreeViewItem;
-                    if (item != null)
-                    {
-                        SetIsItemSelected(item, false);
-                        DeSelectAllItems(null, item);
-                    }
+                    SelectedItems.Remove(node);
                 }
-            }
-            else
-            {
-                for (int i = 0; i < treeViewItem.Items.Count; i++)
+                foreach (var subItem in item.Items.OfType<TreeViewItem>())
                 {
-                    TreeViewItem item = treeViewItem.ItemContainerGenerator.
-                                               ContainerFromIndex(i) as TreeViewItem;
-                    if (item != null)
-                    {
-                        SetIsItemSelected(item, false);
-                        DeSelectAllItems(null, item);
-                    }
+                    stack.Push(subItem);
                 }
-            }
+            }            
         }
-
         
+        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof(ObservableCollection<NavigationNode>), typeof(MultipleSelectionBehavior), new PropertyMetadata(new ObservableCollection<NavigationNode>(), SelectedItemsChanged));        
 
-        private static TreeView FindTreeView(DependencyObject dependencyObject)
+        public static ObservableCollection<NavigationNode> GetSelectedItems(MultipleSelectionBehavior element)
         {
-            if (dependencyObject == null)
-            {
-                return null;
-            }
-
-            TreeView treeView = dependencyObject as TreeView;
-            if (treeView != null)
-            {
-                return treeView;
-            }
-
-            return FindTreeView(VisualTreeHelper.GetParent(dependencyObject));
+            return (ObservableCollection<NavigationNode>)element.GetValue(SelectedItemsProperty);
         }
 
-        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof(IList), typeof(MultipleSelectionBehavior), new PropertyMetadata());
-
-        public static IList GetSelectedItems(TreeView element)
-        {
-            return (IList)element.GetValue(SelectedItemsProperty);
-        }
-
-        public static void SetSelectedItems(TreeView element, IList value)
+        public static void SetSelectedItems(MultipleSelectionBehavior element, IList value)
         {
             element.SetValue(SelectedItemsProperty, value);
-        }
+        }       
 
-        private static readonly DependencyProperty StartItemProperty =
-        DependencyProperty.RegisterAttached(
-            "StartItem",
-            typeof(TreeViewItem),
-            typeof(MultipleSelectionBehavior),
-            new PropertyMetadata());
-
-        private static TreeViewItem GetStartItem(TreeView element)
+        private static void SelectedItemsChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
         {
-            return (TreeViewItem)element.GetValue(StartItemProperty);
-        }
-
-        private static void SetStartItem(TreeView element, TreeViewItem value)
-        {
-            element.SetValue(StartItemProperty, value);
-        }
-
-        private static void SelectMultipleItemsRandomly(TreeView treeView,
-                                                    TreeViewItem treeViewItem)
-        {
-            SetIsItemSelected(treeViewItem, !GetIsItemSelected(treeViewItem));
-            if (GetStartItem(treeView) == null)
+            var newValue = args.NewValue as ObservableCollection<NavigationNode>;
+            var oldValue = args.OldValue as ObservableCollection<NavigationNode>;
+            if (oldValue != null)
             {
-                if (GetIsItemSelected(treeViewItem))
+                oldValue.CollectionChanged -= collection_CollectionChanged;
+            }
+            if (newValue != null)
+            {
+                newValue.CollectionChanged += collection_CollectionChanged;
+            }            
+        }
+
+        static void collection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    foreach (var item in e.NewItems.OfType<NavigationNode>())
+                    {
+                        item.IsItemSelected = true;
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    foreach (var item in e.OldItems.OfType<NavigationNode>())
+                    {
+                        item.IsItemSelected = false;
+                    }
+                    break;
+            }
+        }
+
+        public ObservableCollection<NavigationNode> SelectedItems
+        {
+            get { return (ObservableCollection<NavigationNode>)GetValue(SelectedItemsProperty); }
+            set { SetValue(SelectedItemsProperty, value); }
+        }
+
+        private TreeViewItem StartItem { get; set; }
+
+        private void SelectMultipleItemsRandomly(TreeViewItem treeViewItem)
+        {
+            if (SelectedItems.Contains((NavigationNode)treeViewItem.DataContext))
+            {
+                SelectedItems.Remove((NavigationNode)treeViewItem.DataContext);
+            }
+            else
+            {
+                SelectedItems.Add((NavigationNode)treeViewItem.DataContext);
+            }
+
+            if (StartItem == null)
+            {
+                if (SelectedItems.Contains((NavigationNode)treeViewItem.DataContext))
                 {
-                    SetStartItem(treeView, treeViewItem);
+                    StartItem = treeViewItem;
                 }
             }
             else
             {
-                if (GetSelectedItems(treeView).Count == 0)
+                if (SelectedItems.Count == 0)
                 {
-                    SetStartItem(treeView, null);
+                    StartItem = null;
                 }
             }
         }
 
-        private static void SelectMultipleItemsContinuously(TreeView treeView,
-                                                     TreeViewItem treeViewItem)
+        private void SelectMultipleItemsContinuously(TreeViewItem treeViewItem)
         {
-            TreeViewItem startItem = GetStartItem(treeView);
+            TreeViewItem startItem = StartItem;
             if (startItem != null)
             {
                 if (startItem == treeViewItem)
                 {
-                    SelectSingleItem(treeView, treeViewItem);
+                    SelectSingleItem(treeViewItem);
                     return;
                 }
 
-                ICollection<TreeViewItem> allItems = new List<TreeViewItem>();
-                GetAllItems(treeView, null, allItems);
-                DeSelectAllItems(treeView, null);
+                ICollection<TreeViewItem> allItems = new List<TreeViewItem>(GetAllItems());
+                
+                DeSelectAllItems();
                 bool isBetween = false;
                 foreach (var item in allItems)
                 {
@@ -261,13 +226,13 @@ namespace LogViewer.Behaviors
                         isBetween = !isBetween;
 
                         // set boundary element
-                        SetIsItemSelected(item, true);
+                        SelectedItems.Add((NavigationNode)item.DataContext);
                         continue;
                     }
 
                     if (isBetween)
                     {
-                        SetIsItemSelected(item, true);
+                        SelectedItems.Add((NavigationNode)item.DataContext);
                     }
                 }
             }
@@ -275,35 +240,30 @@ namespace LogViewer.Behaviors
 
         }
 
-        private static void GetAllItems(TreeView treeView, TreeViewItem treeViewItem,
-                                    ICollection<TreeViewItem> allItems)
+        private IEnumerable<TreeViewItem> GetAllItems(TreeViewItem rootItem = null)
         {
-            if (treeView != null)
+            var stack = new Stack<ItemsControl>();
+            if (rootItem == null)
             {
-                for (int i = 0; i < treeView.Items.Count; i++)
-                {
-                    TreeViewItem item = treeView.ItemContainerGenerator.
-                                               ContainerFromIndex(i) as TreeViewItem;
-                    if (item != null)
-                    {
-                        allItems.Add(item);
-                        GetAllItems(null, item, allItems);
-                    }
-                }
+                stack.Push(AssociatedObject);
             }
             else
             {
-                for (int i = 0; i < treeViewItem.Items.Count; i++)
-                {
-                    TreeViewItem item = treeViewItem.ItemContainerGenerator.
-                                               ContainerFromIndex(i) as TreeViewItem;
-                    if (item != null)
-                    {
-                        allItems.Add(item);
-                        GetAllItems(null, item, allItems);
-                    }
-                }
+                stack.Push(rootItem);
             }
+            while (stack.Count != 0)
+            {
+                var item = stack.Pop();
+                
+                if (!Equals(item, AssociatedObject) || Equals(item, rootItem))
+                {
+                    yield return (TreeViewItem) item;
+                }
+                foreach (var subItem in item.Items.OfType<TreeViewItem>())
+                {
+                    stack.Push(subItem);
+                }
+            }                        
         }
     }
 }
