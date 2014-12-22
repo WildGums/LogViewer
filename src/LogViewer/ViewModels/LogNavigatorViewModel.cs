@@ -67,8 +67,23 @@ namespace LogViewer.ViewModels
         [ViewModelToModel("LogViewer")]
         public ObservableCollection<NavigationNode> SelectedItems { get; set; }
 
+        private ObservableCollection<NavigationNode> _prevSelectedItems;
         public void OnSelectedItemsChanged()
         {
+            if (_prevSelectedItems != null)
+            {
+                _prevSelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
+            }
+            if (SelectedItems != null)
+            {
+                SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
+            }
+            _prevSelectedItems = SelectedItems;
+        }
+
+        void OnSelectedItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            DeleteCompanyCommand.RaiseCanExecuteChanged();
         }
 
         private void OnDeleteCompanyCommandExecute()
@@ -82,6 +97,10 @@ namespace LogViewer.ViewModels
 
         private bool CanExecuteDeleteCompanyCommand()
         {
+            if (SelectedItems.Count != 1)
+            {
+                return false;
+            }
             var selectedCompany = SelectedItems.SingleOrDefault() as Company;
             return selectedCompany != null;
         }

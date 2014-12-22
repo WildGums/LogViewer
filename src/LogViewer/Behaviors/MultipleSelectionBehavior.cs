@@ -145,7 +145,7 @@ namespace LogViewer.Behaviors
                     return;
                 }
 
-                var allItems = AssociatedObject.EnumerateNested<TreeViewItem>().Select(x => x.DataContext).OfType<NavigationNode>().ToList();//.Where(x => x.AllowMultiselection);
+                var allItems = AssociatedObject.EnumerateNested<TreeViewItem>().Select(x => x.DataContext).OfType<NavigationNode>().ToList().Where(x => x.AllowMultiselection);
 
                 DeSelectAllItems();
                 bool isBetween = false;
