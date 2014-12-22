@@ -11,14 +11,14 @@ namespace LogViewer.Behaviors
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-
+    using Catel;
     using Catel.Windows.Interactivity;
-
-    using LogViewer.Extensions;
-    using LogViewer.Models.Base;
+    using Extensions;
+    using Models.Base;
 
     public class MultipleSelectionBehavior : BehaviorBase<TreeView>
     {
@@ -76,14 +76,16 @@ namespace LogViewer.Behaviors
             }
         }
 
-        private void SelectSingleItem(NavigationNode node)
+        private async Task SelectSingleItem(NavigationNode node)
         {
-            DeSelectAllItems();
+            Argument.IsNotNull(() => node);
+
+            await DeSelectAllItems();
             SelectedItems.Add(node);
             StartItem = node;
         }
 
-        private void DeSelectAllItems()
+        private async Task DeSelectAllItems()
         {
             foreach (var node in AssociatedObject.EnumerateNested<TreeViewItem>().Select(x => x.DataContext).OfType<NavigationNode>())
             {
@@ -110,8 +112,10 @@ namespace LogViewer.Behaviors
             }
         }
 
-        private void SelectMultipleItemsRandomly(NavigationNode node)
+        private async Task SelectMultipleItemsRandomly(NavigationNode node)
         {
+            Argument.IsNotNull(() => node);
+
             if (SelectedItems.Contains(node))
             {
                 SelectedItems.Remove(node);
@@ -134,8 +138,10 @@ namespace LogViewer.Behaviors
             SelectedItems.RemoveByPredicate(x => !x.AllowMultiselection);
         }
 
-        private void SelectMultipleItemsContinuously(NavigationNode node)
+        private async Task SelectMultipleItemsContinuously(NavigationNode node)
         {
+            Argument.IsNotNull(() => node);
+
             var startItem = StartItem;
             if (startItem != null)
             {
@@ -147,7 +153,7 @@ namespace LogViewer.Behaviors
 
                 var allItems = AssociatedObject.EnumerateNested<TreeViewItem>().Select(x => x.DataContext).OfType<NavigationNode>().ToList().Where(x => x.AllowMultiselection);
 
-                DeSelectAllItems();
+                await DeSelectAllItems();
                 bool isBetween = false;
                 foreach (var item in allItems)
                 {
@@ -173,27 +179,21 @@ namespace LogViewer.Behaviors
         #region SelectedItems
 
         #region Constants
-        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof(ObservableCollection<NavigationNode>), typeof(MultipleSelectionBehavior), new PropertyMetadata(new ObservableCollection<NavigationNode>(), SelectedItemsChanged));
+        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof (ObservableCollection<NavigationNode>), typeof (MultipleSelectionBehavior), new PropertyMetadata(new ObservableCollection<NavigationNode>(), SelectedItemsChanged));
         #endregion
 
         #region Properties
         public ObservableCollection<NavigationNode> SelectedItems
         {
-            get
-            {
-                return (ObservableCollection<NavigationNode>)GetValue(SelectedItemsProperty);
-            }
-            set
-            {
-                SetValue(SelectedItemsProperty, value);
-            }
+            get { return (ObservableCollection<NavigationNode>) GetValue(SelectedItemsProperty); }
+            set { SetValue(SelectedItemsProperty, value); }
         }
         #endregion
 
         #region Methods
         public static ObservableCollection<NavigationNode> GetSelectedItems(MultipleSelectionBehavior element)
         {
-            return (ObservableCollection<NavigationNode>)element.GetValue(SelectedItemsProperty);
+            return (ObservableCollection<NavigationNode>) element.GetValue(SelectedItemsProperty);
         }
 
         public static void SetSelectedItems(MultipleSelectionBehavior element, IList value)
@@ -221,13 +221,13 @@ namespace LogViewer.Behaviors
         #region IsItemSelected
 
         #region Constants
-        public static readonly DependencyProperty IsItemSelectedProperty = DependencyProperty.RegisterAttached("IsItemSelected", typeof(bool), typeof(MultipleSelectionBehavior), new PropertyMetadata());
+        public static readonly DependencyProperty IsItemSelectedProperty = DependencyProperty.RegisterAttached("IsItemSelected", typeof (bool), typeof (MultipleSelectionBehavior), new PropertyMetadata());
         #endregion
 
         #region Methods
         public static bool GetIsItemSelected(TreeViewItem element)
         {
-            return (bool)element.GetValue(IsItemSelectedProperty);
+            return (bool) element.GetValue(IsItemSelectedProperty);
         }
 
         public static void SetIsItemSelected(TreeViewItem element, bool value)

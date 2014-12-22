@@ -31,5 +31,7 @@ namespace LogViewer.Models
         public SearchTemplate SearchTemplate { get; set; }
         [DefaultValue(true)]
         public bool UseTextSearch { get; set; }
+        [DefaultValue(false)]
+        public bool UseFilterRange { get; set; }
     }
 }

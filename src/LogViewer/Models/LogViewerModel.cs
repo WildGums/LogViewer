@@ -19,6 +19,7 @@ namespace LogViewer.Models
             Companies = new ObservableCollection<Company>();
             Filter = new Filter();
             SelectedItems = new ObservableCollection<NavigationNode>();
+            LogRecords = new ObservableCollection<LogRecord>();
         }
 
         public Filter Filter { get; set; }
@@ -26,5 +27,7 @@ namespace LogViewer.Models
         public ObservableCollection<Company> Companies { get; set; }
 
         public ObservableCollection<NavigationNode> SelectedItems { get; set; }
+
+        public ObservableCollection<LogRecord> LogRecords { get; set; }
     }
 }

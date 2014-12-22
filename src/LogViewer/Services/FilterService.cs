@@ -12,9 +12,9 @@
 
     class FilterService : IFilterService
     {
-        public IEnumerable<LogRecord> FilterRecords(Filter filter, NavigationNode node)
+        public IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<LogFile> files)
         {
-            return FilterRecords(filter, FilterFIles(filter, GetLogFiles(node)).SelectMany(file => file.LogRecords));
+            return FilterRecords(filter, FilterFIles(filter, files).SelectMany(file => file.LogRecords));
         }
 
         public IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<LogRecord> logRecords)
@@ -27,7 +27,7 @@
             Argument.IsNotNull(() => logFiles);
             Argument.IsNotNull(() => filter);
 
-            return logFiles.Where(file => !file.IsUnifyNamed || (file.DateTime.Date <= filter.EndDate.Date && file.DateTime.Date >= filter.StartDate.Date));
+            return logFiles.Where(file => !filter.UseFilterRange || !file.IsUnifyNamed || (file.DateTime.Date <= filter.EndDate.Date && file.DateTime.Date >= filter.StartDate.Date));
         }
 
         public IEnumerable<LogFile> FilterFIles(Filter filter, NavigationNode node)

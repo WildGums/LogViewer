@@ -119,7 +119,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\MultipleSelectionBehavior.cs" />
-    <Compile Include="Controls\TreeViewAttached.cs" />
     <Compile Include="Extensions\AppDataServiceExtensions.cs" />
     <Compile Include="Extensions\ItemsControlExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />

@@ -8,7 +8,9 @@
 namespace LogViewer.ViewModels
 {
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
     using System.ComponentModel;
+    using System.Linq;
     using System.Threading.Tasks;
     using Catel;
     using Catel.Collections;
@@ -20,23 +22,23 @@ namespace LogViewer.ViewModels
 
     public class LogRecordsTableViewModel : ViewModelBase
     {
+        private ObservableCollection<NavigationNode> _prevSelectedItems;
         private readonly IFilterService _filterService;
 
         public LogRecordsTableViewModel(LogViewerModel logViewerModel, IFilterService filterService, ICommandManager commandManager)
         {
             Argument.IsNotNull(() => logViewerModel);
             Argument.IsNotNull(() => filterService);
-            Argument.IsNotNull(() => commandManager); 
+            Argument.IsNotNull(() => commandManager);
 
             _filterService = filterService;
             LogViewer = logViewerModel;
-            LogRecords = new ObservableCollection<LogRecord>();
 
             ResetSearchTemplate = new Command(OnResetSearchTemplateExecute);
 
             commandManager.RegisterCommand("Filter.ResetSearchTemplate", ResetSearchTemplate, this);
 
-            Filter.PropertyChanged += OnFilterIsDirtyChanged; 
+            Filter.PropertyChanged += OnFilterIsDirtyChanged;
             SearchTemplate.PropertyChanged += OnSearchTemplateIsDirtyChanged;
         }
 
@@ -48,21 +50,84 @@ namespace LogViewer.ViewModels
         [ViewModelToModel("LogViewer")]
         public ObservableCollection<NavigationNode> SelectedItems { get; set; }
 
-        [Model]
         [ViewModelToModel("LogViewer")]
-        public Filter Filter { get; set; }
-
         public ObservableCollection<LogRecord> LogRecords { get; set; }
+
+        [Model]
+        [Expose("UseFilterRange")]
+        [Expose("StartDate")]
+        [Expose("EndDate")]
+        [ViewModelToModel("LogViewer")]
+        public Filter Filter { get; set; }        
 
         [Model]
         [Expose("RegularExpression")]
         [ViewModelToModel("Filter")]
         public SearchTemplate SearchTemplate { get; set; }
 
+        public void OnSelectedItemsChanged()
+        {
+            if (_prevSelectedItems != null)
+            {
+                _prevSelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
+            }
+
+            if (SelectedItems != null)
+            {
+                SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
+            }
+
+            _prevSelectedItems = SelectedItems;
+        }
+
+        private void OnSelectedItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            ApplyFilter();
+        }
+
+        public void OnEndDateChanged()
+        {
+            FilterFiles();
+        }
+
+        public void OnStartDateChanged()
+        {
+            FilterFiles();
+        }
+
+        public void OnUseFilterRangeChanged()
+        {
+            FilterFiles();
+        }
+
+        private void FilterFiles()
+        {
+            var buff = SelectedItems.OfType<LogFile>().ToArray();
+            if (buff.Any())
+            {
+                while (SelectedItems.Any())
+                {
+                    SelectedItems.RemoveAt(0);
+                }
+                SelectedItems.AddRange(_filterService.FilterFIles(Filter, buff));
+            }
+
+            foreach (var company in LogViewer.Companies)
+            {
+                foreach (var product in company.Children.Cast<Product>())
+                {
+                    product.Children.Clear();
+                    product.Children.AddRange(_filterService.FilterFIles(Filter, product.LogFiles));
+                }
+            }
+        }
+
         private void OnSearchTemplateIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             if (Filter.UseTextSearch)
-            ApplyFilter(SearchTemplate);
+            {
+                ApplyFilter(SearchTemplate);
+            }
         }
 
         private void OnFilterIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -82,17 +147,17 @@ namespace LogViewer.ViewModels
 
         private async Task ApplyFilter(SimplyClearableModel clearableModel = null)
         {
-            /*if (clearableModel != null && !clearableModel.IsDirty)
+            if (clearableModel != null && !clearableModel.IsDirty)
             {
                 return;
             }
 
-            LogRecords.ReplaceRange(_filterService.FilterRecords(LogViewer.Filter, SelectedItem));
+            LogRecords.ReplaceRange(_filterService.FilterRecords(LogViewer.Filter, SelectedItems.OfType<LogFile>()));
 
             if (clearableModel != null)
             {
                 clearableModel.MarkClean();
-            }*/
+            }
         }
     }
 }

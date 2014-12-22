@@ -30,14 +30,14 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Start date: " HorizontalAlignment="Right"/>
-                            <DatePicker Grid.Column="1" Grid.Row="0" SelectedDate="{Binding StartDate}"/>
-                            <TextBlock Grid.Column="0" Grid.Row="1" Text="End date: " HorizontalAlignment="Right"/>
-                            <DatePicker Grid.Column="1" Grid.Row="1" SelectedDate="{Binding EndDate}"/>                            
-                        </Grid>                        
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Start date: " HorizontalAlignment="Right" />
+                            <DatePicker Grid.Column="1" Grid.Row="0" SelectedDate="{Binding StartDate}" IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="End date: " HorizontalAlignment="Right" />
+                            <DatePicker Grid.Column="1" Grid.Row="1" SelectedDate="{Binding EndDate}" IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
+                        </Grid>
                     </fluent:GalleryPanel>
-                    <fluent:ToggleButton Header="Use in filter" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}" IsChecked="{Binding UseFilterRange}"/>
-                </fluent:RibbonGroupBox>    
+                    <fluent:ToggleButton x:Name="toggleButton" Header="Use in filter" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}" IsChecked="{Binding UseFilterRange}"/>
+                </fluent:RibbonGroupBox>
                 <fluent:RibbonGroupBox Header="Highlighting">
                     <fluent:GalleryPanel>
                         <Grid>
@@ -58,7 +58,7 @@
                         <fluent:ToggleButton Header="Use in filter" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}" IsChecked="{Binding UseTextSearch}"/>
                     </fluent:GalleryPanel>
                 </fluent:RibbonGroupBox>
-            </fluent:RibbonTabItem>            
-        </fluent:Ribbon.Tabs>              
+            </fluent:RibbonTabItem>
+        </fluent:Ribbon.Tabs>
     </fluent:Ribbon>
 </catel:UserControl>
