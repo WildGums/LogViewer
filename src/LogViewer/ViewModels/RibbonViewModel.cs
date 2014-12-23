@@ -8,12 +8,13 @@
 namespace LogViewer.ViewModels
 {
     using System.ComponentModel;
-
+    using System.Threading.Tasks;
+    using Catel;
     using Catel.Fody;
     using Catel.MVVM;
 
-    using LogViewer.Models;
-    using LogViewer.Services;
+    using Models;
+    using Services;
 
     public class RibbonViewModel : ViewModelBase
     {
@@ -24,10 +25,11 @@ namespace LogViewer.ViewModels
         #region Constructors
         public RibbonViewModel(LogViewerModel logViewerModel, IRegexService regexService)
         {
+            Argument.IsNotNull(() => logViewerModel);
+            Argument.IsNotNull(() => regexService);
+
             _regexService = regexService;
             Filter = logViewerModel.Filter;
-
-            SearchTemplate.PropertyChanged += OnSearchTemplatePropertyChanged;
         }
         #endregion
 
@@ -50,12 +52,26 @@ namespace LogViewer.ViewModels
         #region Methods
         private void OnSearchTemplatePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "RegularExpression")
+            if (string.Equals(e.PropertyName, "RegularExpression"))
             {
                 return;
             }
 
             SearchTemplate.RegularExpression = _regexService.ConvertToRegex(SearchTemplate.TemplateString, SearchTemplate.MatchCase, SearchTemplate.MatchWholeWord);
+        }
+
+        protected override async Task Initialize()
+        {
+            await base.Initialize();
+
+            SearchTemplate.PropertyChanged += OnSearchTemplatePropertyChanged;
+        }
+
+        protected override async Task Close()
+        {
+            SearchTemplate.PropertyChanged -= OnSearchTemplatePropertyChanged;
+
+            await base.Close();
         }
         #endregion
     }

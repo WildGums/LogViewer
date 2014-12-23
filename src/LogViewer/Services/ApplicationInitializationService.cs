@@ -22,7 +22,7 @@ namespace LogViewer.Services
         {
             Argument.IsNotNull(() => commandManager);
 
-            commandManager.CreateCommand("Filter.ResetSearchTemplate", throwExceptionWhenCommandIsAlreadyCreated: false);
+            commandManager.CreateCommand(Commands.Filter.ResetSearchTemplate, throwExceptionWhenCommandIsAlreadyCreated: false);
 
             await base.InitializeCommands(commandManager);
         }

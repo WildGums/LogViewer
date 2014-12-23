@@ -39,10 +39,7 @@ namespace LogViewer.ViewModels
 
             ResetSearchTemplate = new Command(OnResetSearchTemplateExecute);
 
-            commandManager.RegisterCommand("Filter.ResetSearchTemplate", ResetSearchTemplate, this);
-
-            Filter.PropertyChanged += OnFilterIsDirtyChanged;
-            SearchTemplate.PropertyChanged += OnSearchTemplateIsDirtyChanged;
+            commandManager.RegisterCommand(Commands.Filter.ResetSearchTemplate, ResetSearchTemplate, this);
         }
         #endregion
 
@@ -141,6 +138,22 @@ namespace LogViewer.ViewModels
             {
                 clearableModel.MarkClean();
             }
+        }
+
+        protected override async Task Initialize()
+        {
+            Filter.PropertyChanged += OnFilterIsDirtyChanged;
+            SearchTemplate.PropertyChanged += OnSearchTemplateIsDirtyChanged;
+
+            await base.Initialize();
+        }
+
+        protected override async Task Close()
+        {
+            Filter.PropertyChanged -= OnFilterIsDirtyChanged;
+            SearchTemplate.PropertyChanged -= OnSearchTemplateIsDirtyChanged;
+
+            await base.Close();
         }
         #endregion
     }
