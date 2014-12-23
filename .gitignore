@@ -73,6 +73,9 @@ CatelLogging.txt
 # Ghostdoc
 *.GhostDoc.xml
 
+# Data
+data/sensitive
+
 # Deployments
 deployment/FinalBuilder/backup
 deployment/InnoSetup/template/templates
