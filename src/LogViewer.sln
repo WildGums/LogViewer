@@ -1,12 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4A84B079-FA8C-4EBB-88CE-6B07E2615AF4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{F7BC922D-7358-43E1-9E7E-2309EE431007}"
+	ProjectSection(SolutionItems) = preProject
+		..\lib\repositories.config = ..\lib\repositories.config
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{60829ACC-0690-4BD0-806E-5424AD1A5A3F}"
 	ProjectSection(SolutionItems) = preProject
+		LogViewer.sln.DotSettings = LogViewer.sln.DotSettings
+		nuget.config = nuget.config
+		Settings.StyleCop = Settings.StyleCop
 		SolutionAssemblyInfo.cs = SolutionAssemblyInfo.cs
 	EndProjectSection
 EndProject
