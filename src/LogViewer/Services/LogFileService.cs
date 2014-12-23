@@ -35,7 +35,7 @@ namespace LogViewer.Services
         #endregion
 
         #region ILogFileService Members
-        public IEnumerable<LogFile> GetLogFIles(string filesFolder)
+        public IEnumerable<LogFile> GetLogFiles(string filesFolder)
         {
             Argument.IsNotNullOrEmpty(() => filesFolder);
 

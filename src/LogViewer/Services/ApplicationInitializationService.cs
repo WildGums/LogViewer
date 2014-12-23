@@ -18,17 +18,21 @@ namespace LogViewer.Services
     public class ApplicationInitializationService : ApplicationInitializationServiceBase
     {
         #region Methods
-        public override Task InitializeCommands(ICommandManager commandManager)
+        public override async Task InitializeCommands(ICommandManager commandManager)
         {
             Argument.IsNotNull(() => commandManager);
 
             commandManager.CreateCommand("Filter.ResetSearchTemplate", throwExceptionWhenCommandIsAlreadyCreated: false);
-            return base.InitializeCommands(commandManager);
+
+            await base.InitializeCommands(commandManager);
         }
 
         public override async Task InitializeBeforeCreatingShell()
         {
-            await RunAndWaitAsync(new Func<Task>[] { InitializePerformance });
+            await RunAndWaitAsync(new Func<Task>[]
+            {
+                InitializePerformance
+            });
         }
 
         private async Task InitializePerformance()

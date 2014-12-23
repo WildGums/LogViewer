@@ -23,10 +23,10 @@ namespace LogViewer.Services
             Argument.IsNotNull(() => logFiles);
             Argument.IsNotNull(() => filter);
 
-            return FilterFIles(filter, logFiles).SelectMany(file => file.LogRecords).Where(record => filter.IsAcceptableTo(record.LogEvent) && filter.IsAcceptableTo(record.Message));
+            return FilterFiles(filter, logFiles).SelectMany(file => file.LogRecords).Where(record => filter.IsAcceptableTo(record.LogEvent) && filter.IsAcceptableTo(record.Message));
         }
 
-        private IEnumerable<LogFile> FilterFIles(Filter filter, IEnumerable<LogFile> logFiles)
+        private IEnumerable<LogFile> FilterFiles(Filter filter, IEnumerable<LogFile> logFiles)
         {
             Argument.IsNotNull(() => logFiles);
             Argument.IsNotNull(() => filter);
@@ -43,7 +43,7 @@ namespace LogViewer.Services
             FilterAllFiles(logViewer);
         }
 
-        public void ApplyLogRecodsFilter(LogViewerModel logViewer)
+        public void ApplyLogRecordsFilter(LogViewerModel logViewer)
         {
             Argument.IsNotNull(() => logViewer);
 
@@ -71,7 +71,8 @@ namespace LogViewer.Services
                 {
                     selectedItems.RemoveAt(0);
                 }
-                selectedItems.AddRange(FilterFIles(logViewer.Filter, buff));
+
+                selectedItems.AddRange(FilterFiles(logViewer.Filter, buff));
             }
         }
 
@@ -86,7 +87,7 @@ namespace LogViewer.Services
                     var children = product.Children;
 
                     children.Clear();
-                    children.AddRange(FilterFIles(logViewer.Filter, product.LogFiles).OrderByDescending(x => x.Name));
+                    children.AddRange(FilterFiles(logViewer.Filter, product.LogFiles).OrderByDescending(x => x.Name));
                 }
             }
         }

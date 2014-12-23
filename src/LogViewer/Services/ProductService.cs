@@ -33,7 +33,7 @@ namespace LogViewer.Services
             Argument.IsNotNullOrEmpty(() => productFolder);
 
             var productName = productFolder.Substring(productFolder.LastIndexOf('\\') + 1);
-            var logFiles = _logFileService.GetLogFIles(productFolder);
+            var logFiles = _logFileService.GetLogFiles(productFolder);
 
             var files = logFiles as LogFile[] ?? logFiles.ToArray();
 

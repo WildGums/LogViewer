@@ -9,28 +9,22 @@ namespace LogViewer.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
     using System.Reflection;
-
     using Catel;
     using Catel.Collections;
     using Catel.Configuration;
-
-    using LogViewer.Models;
-
+    using Catel.Reflection;
+    using Models;
     using Orchestra.Services;
-
     using Path = Catel.IO.Path;
 
     public class CompanyService : ICompanyService
     {
         #region Fields
         private readonly IAppDataService _appDataService;
-
         private readonly IProductService _productService;
-
         private readonly IConfigurationService _configurationService;
         #endregion
 
@@ -57,7 +51,7 @@ namespace LogViewer.Services
 
         public IEnumerable<Company> LoadCompanies()
         {
-            string defaultCompanyName = ((AssemblyCompanyAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyCompanyAttribute), false)).Company;
+            string defaultCompanyName = AssemblyHelper.GetEntryAssembly().Company();
             var companyNames = _configurationService.GetValue("Companies", defaultCompanyName);
             return companyNames.Split(',').Select(CreateCompanyByName);
         }

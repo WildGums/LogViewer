@@ -14,7 +14,7 @@ namespace LogViewer.Services
         #region Methods
         void ApplyFilesFilter(LogViewerModel logViewer);
 
-        void ApplyLogRecodsFilter(LogViewerModel logViewer);
+        void ApplyLogRecordsFilter(LogViewerModel logViewer);
         #endregion
     }
 }

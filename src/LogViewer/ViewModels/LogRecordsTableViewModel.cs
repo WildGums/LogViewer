@@ -135,7 +135,7 @@ namespace LogViewer.ViewModels
                 return;
             }
 
-            _filterService.ApplyLogRecodsFilter(LogViewer);
+            _filterService.ApplyLogRecordsFilter(LogViewer);
 
             if (clearableModel != null)
             {
