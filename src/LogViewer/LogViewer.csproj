@@ -14,7 +14,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>8e36e7b5</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>b71dc211</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,8 +51,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0030\lib\net40\Catel.MVVM.dll</HintPath>
     </Reference>
-    <Reference Include="Fluent">
-      <HintPath>..\..\lib\Fluent.Ribbon.3.1.0\lib\net40\Fluent.dll</HintPath>
+    <Reference Include="Fluent, Version=3.2.0.0, Culture=neutral, PublicKeyToken=3e436e32a8c5546f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Fluent.Ribbon.3.2.0\lib\net40\Fluent.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks">
       <HintPath>..\..\lib\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
@@ -63,19 +64,19 @@
     <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop">
       <HintPath>..\..\lib\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Windows.Shell">
-      <HintPath>..\..\lib\Fluent.Ribbon.3.1.0\lib\net40\Microsoft.Windows.Shell.dll</HintPath>
+    <Reference Include="Microsoft.Windows.Shell, Version=3.5.41019.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Fluent.Ribbon.3.2.0\lib\net40\Microsoft.Windows.Shell.dll</HintPath>
     </Reference>
     <Reference Include="Orc.Toolkit">
       <HintPath>..\..\lib\Orc.Toolkit.1.0.9.0\lib\NET40\Orc.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Orchestra.Core, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Orchestra.Core.2.1.0-unstable0041\lib\net40\Orchestra.Core.dll</HintPath>
+      <HintPath>..\..\lib\Orchestra.Core.2.1.0-unstable0046\lib\net40\Orchestra.Core.dll</HintPath>
     </Reference>
     <Reference Include="Orchestra.Shell.Ribbon.Fluent, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.1.0-unstable0041\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
+      <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.1.0-unstable0046\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -92,7 +93,7 @@
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0030\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\..\lib\Fluent.Ribbon.3.2.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -237,9 +238,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\lib\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\lib\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
-    <Error Condition="!Exists('..\..\lib\Fody.1.26.3-beta0001\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\lib\Fody.1.26.3-beta0001\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\..\lib\Fody.1.26.4\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\lib\Fody.1.26.4\build\Fody.targets'))" />
   </Target>
-  <Import Project="..\..\lib\Fody.1.26.3-beta0001\build\Fody.targets" Condition="Exists('..\..\lib\Fody.1.26.3-beta0001\build\Fody.targets')" />
+  <Import Project="..\..\lib\Fody.1.26.4\build\Fody.targets" Condition="Exists('..\..\lib\Fody.1.26.4\build\Fody.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
