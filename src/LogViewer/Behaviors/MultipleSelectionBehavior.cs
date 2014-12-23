@@ -19,13 +19,12 @@ namespace LogViewer.Behaviors
     using Catel;
     using Catel.Windows.Interactivity;
 
-    using LogViewer.Extensions;
-    using LogViewer.Models.Base;
+    using Extensions;
+    using Models.Base;
 
     public class MultipleSelectionBehavior : BehaviorBase<TreeView>
     {
         #region Dependency properties
-        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof(ObservableCollection<NavigationNode>), typeof(MultipleSelectionBehavior), new PropertyMetadata(new ObservableCollection<NavigationNode>(), SelectedItemsChanged));
 
         public static ObservableCollection<NavigationNode> GetSelectedItems(MultipleSelectionBehavior element)
         {
@@ -55,17 +54,11 @@ namespace LogViewer.Behaviors
 
         public ObservableCollection<NavigationNode> SelectedItems
         {
-            get
-            {
-                return (ObservableCollection<NavigationNode>)GetValue(SelectedItemsProperty);
-            }
-            set
-            {
-                SetValue(SelectedItemsProperty, value);
-            }
+            get { return (ObservableCollection<NavigationNode>)GetValue(SelectedItemsProperty); }
+            set { SetValue(SelectedItemsProperty, value); }
         }
 
-        
+        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof(ObservableCollection<NavigationNode>), typeof(MultipleSelectionBehavior), new PropertyMetadata(new ObservableCollection<NavigationNode>(), SelectedItemsChanged));
         #endregion
 
         #region Methods
@@ -91,7 +84,7 @@ namespace LogViewer.Behaviors
             }
         }
 
-        private void OnTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private async void OnTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             var node = e.NewValue as NavigationNode;
             if (node == null)
@@ -110,15 +103,15 @@ namespace LogViewer.Behaviors
 
             if (Keyboard.Modifiers == ModifierKeys.Control && node.AllowMultiselection)
             {
-                SelectMultipleItemsRandomly(node);
+                await SelectMultipleItemsRandomly(node);
             }
             else if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
-                SelectMultipleItemsContinuously(node);
+                await SelectMultipleItemsContinuously(node);
             }
             else
             {
-                SelectSingleItem(node);
+                await SelectSingleItem(node);
             }
         }
 
@@ -143,6 +136,7 @@ namespace LogViewer.Behaviors
                         item.IsItemSelected = true;
                     }
                     break;
+
                 case NotifyCollectionChangedAction.Remove:
                     foreach (var item in e.OldItems.OfType<NavigationNode>())
                     {
@@ -189,7 +183,7 @@ namespace LogViewer.Behaviors
             {
                 if (startItem == node)
                 {
-                    SelectSingleItem(node);
+                    await SelectSingleItem(node);
                     return;
                 }
 
@@ -229,6 +223,7 @@ namespace LogViewer.Behaviors
             {
                 oldValue.CollectionChanged -= OnSelectedItemsCollectionChanged;
             }
+
             if (newValue != null)
             {
                 newValue.CollectionChanged += OnSelectedItemsCollectionChanged;

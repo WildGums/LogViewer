@@ -17,64 +17,38 @@ namespace LogViewer.Controls
 
     public class HighlightableTextBlock : TextBlock
     {
-        #region Constants
-        public static readonly DependencyProperty RegularExpressionProperty = DependencyProperty.Register("RegularExpression", typeof(string), typeof(HighlightableTextBlock), new PropertyMetadata(string.Empty, RegularExpressionPropertyChanged));
-
-        public static readonly DependencyProperty HighlightableTextProperty = DependencyProperty.Register("HighlightableText", typeof(string), typeof(HighlightableTextBlock), new PropertyMetadata(HighlightableTextChanged));
-
-        public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register("HighlightForeground", typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Black));
-
-        public static readonly DependencyProperty HighlightBackgroundProperty = DependencyProperty.Register("HighlightBackground", typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Yellow));
-        #endregion
-
         #region Properties
         public string RegularExpression
         {
-            get
-            {
-                return (string)GetValue(RegularExpressionProperty);
-            }
-            set
-            {
-                SetValue(RegularExpressionProperty, value);
-            }
+            get { return (string)GetValue(RegularExpressionProperty); }
+            set { SetValue(RegularExpressionProperty, value); }
         }
+
+        public static readonly DependencyProperty RegularExpressionProperty = DependencyProperty.Register("RegularExpression", typeof(string), typeof(HighlightableTextBlock), new PropertyMetadata(string.Empty, RegularExpressionPropertyChanged));
 
         public string HighlightableText
         {
-            get
-            {
-                return (string)GetValue(HighlightableTextProperty);
-            }
-            set
-            {
-                SetValue(HighlightableTextProperty, value);
-            }
+            get { return (string)GetValue(HighlightableTextProperty); }
+            set { SetValue(HighlightableTextProperty, value); }
         }
+
+        public static readonly DependencyProperty HighlightableTextProperty = DependencyProperty.Register("HighlightableText", typeof(string), typeof(HighlightableTextBlock), new PropertyMetadata(HighlightableTextChanged));
 
         public Brush HighlightForeground
         {
-            get
-            {
-                return (Brush)GetValue(HighlightForegroundProperty);
-            }
-            set
-            {
-                SetValue(HighlightForegroundProperty, value);
-            }
+            get { return (Brush)GetValue(HighlightForegroundProperty); }
+            set { SetValue(HighlightForegroundProperty, value); }
         }
+
+        public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register("HighlightForeground", typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Black));
 
         public Brush HighlightBackground
         {
-            get
-            {
-                return (Brush)GetValue(HighlightBackgroundProperty);
-            }
-            set
-            {
-                SetValue(HighlightBackgroundProperty, value);
-            }
+            get { return (Brush)GetValue(HighlightBackgroundProperty); }
+            set { SetValue(HighlightBackgroundProperty, value); }
         }
+
+        public static readonly DependencyProperty HighlightBackgroundProperty = DependencyProperty.Register("HighlightBackground", typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Yellow));
 
         private new string Text
         {
@@ -106,6 +80,7 @@ namespace LogViewer.Controls
                         run.Background = HighlightBackground;
                         run.Foreground = HighlightForeground;
                     }
+
                     inlines.Add(run);
                 }
             }
@@ -147,7 +122,7 @@ namespace LogViewer.Controls
 
             try
             {
-                Regex.Match("", regEx);
+                Regex.Match(string.Empty, regEx);
             }
             catch (ArgumentException)
             {
