@@ -117,7 +117,7 @@ namespace LogViewer.ViewModels
                 foreach (var product in company.Children.Cast<Product>())
                 {
                     product.Children.Clear();
-                    product.Children.AddRange(_filterService.FilterFIles(Filter, product.LogFiles));
+                    product.Children.AddRange(_filterService.FilterFIles(Filter, product.LogFiles).OrderByDescending(x => x.Name));
                 }
             }
         }
@@ -152,7 +152,13 @@ namespace LogViewer.ViewModels
                 return;
             }
 
+            var oldRecords = LogRecords.ToArray();
             LogRecords.ReplaceRange(_filterService.FilterRecords(LogViewer.Filter, SelectedItems.OfType<LogFile>()));
+
+            foreach (var record in LogRecords.Except(oldRecords))
+            {
+                record.LogFile.IsExpanded = true;
+            }
 
             if (clearableModel != null)
             {
