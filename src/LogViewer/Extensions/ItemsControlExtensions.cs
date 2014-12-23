@@ -5,16 +5,20 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogViewer.Extensions
+namespace LogViewer
 {
     using System.Collections.Generic;
     using System.Windows.Controls;
+    using Catel;
 
     public static class ItemsControlExtensions
     {
         #region Methods
-        public static IEnumerable<T> EnumerateNested<T>(this ItemsControl rootControl) where T : ItemsControl
+        public static IEnumerable<T> EnumerateNested<T>(this ItemsControl rootControl) 
+            where T : ItemsControl
         {
+            Argument.IsNotNull(() => rootControl);
+
             var stack = new Queue<ItemsControl>();
             stack.Enqueue(rootControl);
 
@@ -22,7 +26,7 @@ namespace LogViewer.Extensions
             {
                 var item = stack.Dequeue();
 
-                for (int i = 0; i < item.Items.Count; i++)
+                for (var i = 0; i < item.Items.Count; i++)
                 {
                     var subItem = item.ItemContainerGenerator.ContainerFromIndex(i) as ItemsControl;
                     if (subItem != null)

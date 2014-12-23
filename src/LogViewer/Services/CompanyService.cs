@@ -17,7 +17,6 @@ namespace LogViewer.Services
     using Catel;
     using Catel.Configuration;
 
-    using LogViewer.Extensions;
     using LogViewer.Models;
     using LogViewer.Models.Base;
 

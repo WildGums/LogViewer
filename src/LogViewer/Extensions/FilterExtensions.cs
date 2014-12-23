@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogViewer.Extensions
+namespace LogViewer
 {
     using System.Text.RegularExpressions;
 
@@ -23,10 +23,13 @@ namespace LogViewer.Extensions
             {
                 case LogEvent.Debug:
                     return filter.ShowDebug;
+
                 case LogEvent.Error:
                     return filter.ShowError;
+
                 case LogEvent.Info:
                     return filter.ShowInfo;
+
                 case LogEvent.Warning:
                     return filter.ShowWarning;
             }

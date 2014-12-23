@@ -18,7 +18,6 @@ namespace LogViewer.ViewModels
     using Catel.MVVM;
     using Catel.Services;
 
-    using LogViewer.Extensions;
     using LogViewer.Models;
     using LogViewer.Models.Base;
     using LogViewer.Services;

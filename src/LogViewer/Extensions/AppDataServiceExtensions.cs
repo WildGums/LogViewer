@@ -5,8 +5,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogViewer.Extensions
+namespace LogViewer
 {
+    using Catel;
     using Catel.IO;
 
     using Orchestra.Services;
@@ -16,6 +17,8 @@ namespace LogViewer.Extensions
         #region Methods
         public static string GetRootAppDataFolder(this IAppDataService appDataService)
         {
+            Argument.IsNotNull(() => appDataService);
+
             var currentCompanyDir = Path.GetParentDirectory(appDataService.ApplicationDataDirectory);
             return Path.GetParentDirectory(currentCompanyDir);
         }

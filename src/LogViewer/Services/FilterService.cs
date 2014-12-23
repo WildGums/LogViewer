@@ -13,7 +13,6 @@ namespace LogViewer.Services
     using Catel;
     using Catel.Collections;
 
-    using LogViewer.Extensions;
     using LogViewer.Models;
 
     internal class FilterService : IFilterService

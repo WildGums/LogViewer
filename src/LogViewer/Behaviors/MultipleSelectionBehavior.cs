@@ -19,7 +19,6 @@ namespace LogViewer.Behaviors
     using Catel;
     using Catel.Windows.Interactivity;
 
-    using Extensions;
     using Models.Base;
 
     public class MultipleSelectionBehavior : BehaviorBase<TreeView>
@@ -121,7 +120,7 @@ namespace LogViewer.Behaviors
 
             var selectedItems = SelectedItems;
 
-            await selectedItems.ClearOneByOne();
+            selectedItems.ClearOneByOne();
             selectedItems.Add(node);
             StartItem = node;
         }
@@ -191,7 +190,7 @@ namespace LogViewer.Behaviors
 
                 var selectedItems = SelectedItems;
 
-                await selectedItems.ClearOneByOne();
+                selectedItems.ClearOneByOne();
 
                 bool isBetween = false;
                 foreach (var item in allItems)

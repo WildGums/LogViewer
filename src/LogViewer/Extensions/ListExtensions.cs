@@ -5,13 +5,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogViewer.Extensions
+namespace LogViewer
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
-
     using Catel;
 
     public static class ListExtensions
@@ -29,8 +27,10 @@ namespace LogViewer.Extensions
             }
         }
 
-        public static async Task ClearOneByOne<T>(this IList<T> list)
+        public static void ClearOneByOne<T>(this IList<T> list)
         {
+            Argument.IsNotNull(() => list);
+
             while (list.Any())
             {
                 list.RemoveAt(0);

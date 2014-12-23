@@ -9,8 +9,6 @@ namespace LogViewer.Services
 {
     using Catel;
 
-    using LogViewer.Extensions;
-
     internal class RegexService : IRegexService
     {
         #region IRegexService Members

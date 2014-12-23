@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogViewer.Extensions
+namespace LogViewer
 {
     using System;
 
@@ -14,12 +14,12 @@ namespace LogViewer.Extensions
         #region Methods
         public static string WrapToFindRegex(this string str)
         {
-            return String.Format("(?={0})|(?<={0})", str);
+            return string.Format("(?={0})|(?<={0})", str);
         }
 
         public static string WrapToIgnoreCaseRegex(this string str)
         {
-            return String.Format("(?i){0}(?-i)", str);
+            return string.Format("(?i){0}(?-i)", str);
         }
 
         public static string WrapToMatchWholeWordRegex(this string str)
