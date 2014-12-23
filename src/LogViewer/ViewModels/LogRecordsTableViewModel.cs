@@ -17,7 +17,6 @@ namespace LogViewer.ViewModels
     using Catel.MVVM;
 
     using LogViewer.Models;
-    using LogViewer.Models.Base;
     using LogViewer.Services;
 
     public class LogRecordsTableViewModel : ViewModelBase

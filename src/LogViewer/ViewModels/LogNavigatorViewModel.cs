@@ -19,7 +19,6 @@ namespace LogViewer.ViewModels
     using Catel.Services;
 
     using LogViewer.Models;
-    using LogViewer.Models.Base;
     using LogViewer.Services;
 
     using Orchestra.Services;
@@ -118,20 +117,15 @@ namespace LogViewer.ViewModels
 
         protected override async Task Initialize()
         {
-            if (LogViewer.Companies == null)
-            {
-                LogViewer.Companies = new ObservableCollection<Company>();
-            }
-            else
-            {
-                LogViewer.Companies.Clear();
-            }
-            LogViewer.Companies.AddRange(_companyService.LoadCompanies());
+            await base.Initialize();
+
+            LogViewer.Companies.ReplaceRange(_companyService.LoadCompanies());
         }
 
         protected override void OnClosing()
         {
             _companyService.SaveCompanies(LogViewer.Companies);
+
             base.OnClosing();
         }
 

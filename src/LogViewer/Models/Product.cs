@@ -9,23 +9,19 @@ namespace LogViewer.Models
 {
     using System.Collections.ObjectModel;
 
-    using LogViewer.Models.Base;
-
     public class Product : NavigationNode
     {
-        #region Fields
-        private readonly bool _allowMutiselection = false;
-        #endregion
+        public Product()
+        {
+            LogFiles = new ObservableCollection<LogFile>();
+        }
 
         #region Properties
-        public ObservableCollection<LogFile> LogFiles { get; set; }
+        public ObservableCollection<LogFile> LogFiles { get; private set; }
 
-        public override bool AllowMultiselection
+        public override bool AllowMultiSelection
         {
-            get
-            {
-                return _allowMutiselection;
-            }
+            get { return false; }
         }
         #endregion
     }

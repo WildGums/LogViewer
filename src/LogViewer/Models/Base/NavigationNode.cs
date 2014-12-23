@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogViewer.Models.Base
+namespace LogViewer.Models
 {
     using System.Collections.ObjectModel;
 
@@ -14,7 +14,7 @@ namespace LogViewer.Models.Base
     public abstract class NavigationNode : ModelBase
     {
         #region Constructors
-        public NavigationNode()
+        protected NavigationNode()
         {
             Children = new ObservableCollection<NavigationNode>();
         }
@@ -27,9 +27,9 @@ namespace LogViewer.Models.Base
 
         public bool IsItemSelected { get; set; }
 
-        public abstract bool AllowMultiselection { get; }
+        public abstract bool AllowMultiSelection { get; }
 
-        public ObservableCollection<NavigationNode> Children { get; set; }
+        public ObservableCollection<NavigationNode> Children { get; private set; }
         #endregion
     }
 }

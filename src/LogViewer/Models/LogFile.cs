@@ -11,13 +11,12 @@ namespace LogViewer.Models
     using System.Collections.ObjectModel;
     using System.IO;
 
-    using LogViewer.Models.Base;
-
     public class LogFile : NavigationNode
     {
-        #region Fields
-        private readonly bool _allowMutiselection = true;
-        #endregion
+        public LogFile()
+        {
+            LogRecords = new ObservableCollection<LogRecord>();
+        }
 
         #region Properties
         public FileInfo Info { get; set; }
@@ -26,16 +25,13 @@ namespace LogViewer.Models
 
         public DateTime DateTime { get; set; }
 
-        public ObservableCollection<LogRecord> LogRecords { get; set; }
+        public ObservableCollection<LogRecord> LogRecords { get; private set; }
 
         public bool? IsExpanded { get; set; }
 
-        public override bool AllowMultiselection
+        public override bool AllowMultiSelection
         {
-            get
-            {
-                return _allowMutiselection;
-            }
+            get { return true; }
         }
         #endregion
     }

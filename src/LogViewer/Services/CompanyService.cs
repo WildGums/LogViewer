@@ -15,10 +15,10 @@ namespace LogViewer.Services
     using System.Reflection;
 
     using Catel;
+    using Catel.Collections;
     using Catel.Configuration;
 
     using LogViewer.Models;
-    using LogViewer.Models.Base;
 
     using Orchestra.Services;
 
@@ -69,7 +69,14 @@ namespace LogViewer.Services
             var fullCompanyFolderPath = Path.Combine(_appDataService.GetRootAppDataFolder(), companyName);
             var products = Directory.GetDirectories(fullCompanyFolderPath).Select(folder => _productService.CreateNewProductItem(folder) as NavigationNode);
 
-            return new Company { Name = companyName, Children = new ObservableCollection<NavigationNode>(products) };
+            var company = new Company
+            {
+                Name = companyName
+            };
+
+            company.Children.AddRange(products);
+
+            return company;
         }
 
         public void SaveCompanies(IEnumerable<Company> companies)

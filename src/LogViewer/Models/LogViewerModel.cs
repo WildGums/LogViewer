@@ -11,15 +11,14 @@ namespace LogViewer.Models
 
     using Catel.Data;
 
-    using LogViewer.Models.Base;
-
     public class LogViewerModel : ModelBase
     {
         #region Constructors
         public LogViewerModel()
         {
-            Companies = new ObservableCollection<Company>();
             Filter = new Filter();
+
+            Companies = new ObservableCollection<Company>();
             SelectedItems = new ObservableCollection<NavigationNode>();
             LogRecords = new ObservableCollection<LogRecord>();
         }
@@ -28,11 +27,11 @@ namespace LogViewer.Models
         #region Properties
         public Filter Filter { get; set; }
 
-        public ObservableCollection<Company> Companies { get; set; }
+        public ObservableCollection<Company> Companies { get; private set; }
 
-        public ObservableCollection<NavigationNode> SelectedItems { get; set; }
+        public ObservableCollection<NavigationNode> SelectedItems { get; private set; }
 
-        public ObservableCollection<LogRecord> LogRecords { get; set; }
+        public ObservableCollection<LogRecord> LogRecords { get; private set; }
         #endregion
     }
 }

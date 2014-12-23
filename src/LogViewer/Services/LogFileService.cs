@@ -16,7 +16,7 @@ namespace LogViewer.Services
     using System.Text.RegularExpressions;
 
     using Catel;
-
+    using Catel.Collections;
     using LogViewer.Models;
 
     public class LogFileService : ILogFileService
@@ -39,12 +39,12 @@ namespace LogViewer.Services
         {
             Argument.IsNotNullOrEmpty(() => filesFolder);
 
-            return Directory.GetFiles(filesFolder, "*.log", SearchOption.TopDirectoryOnly).Select(InitializeLogFIle).ToArray();
+            return Directory.GetFiles(filesFolder, "*.log", SearchOption.TopDirectoryOnly).Select(InitializeLogFile).ToArray();
         }
         #endregion
 
         #region Methods
-        private LogFile InitializeLogFIle(string fileName)
+        private LogFile InitializeLogFile(string fileName)
         {
             Argument.IsNotNullOrEmpty(() => fileName);
 
@@ -64,7 +64,7 @@ namespace LogViewer.Services
                 logFile.DateTime = DateTime.ParseExact(dateTimeString, "yyyy-MM-dd", null, DateTimeStyles.None);
             }
 
-            logFile.LogRecords = new ObservableCollection<LogRecord>(_logRecordService.LoadRecordsFromFile(logFile));
+            logFile.LogRecords.AddRange(_logRecordService.LoadRecordsFromFile(logFile));
 
             return logFile;
         }

@@ -7,21 +7,12 @@
 
 namespace LogViewer.Models
 {
-    using LogViewer.Models.Base;
-
     public class Company : NavigationNode
     {
-        #region Fields
-        private readonly bool _allowMutiselection = false;
-        #endregion
-
         #region Properties
-        public override bool AllowMultiselection
+        public override bool AllowMultiSelection
         {
-            get
-            {
-                return _allowMutiselection;
-            }
+            get { return false; }
         }
         #endregion
     }

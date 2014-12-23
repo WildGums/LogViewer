@@ -19,7 +19,7 @@ namespace LogViewer.Behaviors
     using Catel;
     using Catel.Windows.Interactivity;
 
-    using Models.Base;
+    using Models;
 
     public class MultipleSelectionBehavior : BehaviorBase<TreeView>
     {
@@ -100,7 +100,7 @@ namespace LogViewer.Behaviors
                 node.IsSelected = false;
             }
 
-            if (Keyboard.Modifiers == ModifierKeys.Control && node.AllowMultiselection)
+            if (Keyboard.Modifiers == ModifierKeys.Control && node.AllowMultiSelection)
             {
                 await SelectMultipleItemsRandomly(node);
             }
@@ -170,7 +170,7 @@ namespace LogViewer.Behaviors
                 StartItem = null;
             }
 
-            selectedItems.RemoveByPredicate(x => !x.AllowMultiselection);
+            selectedItems.RemoveByPredicate(x => !x.AllowMultiSelection);
         }
 
         private async Task SelectMultipleItemsContinuously(NavigationNode node)
@@ -186,13 +186,13 @@ namespace LogViewer.Behaviors
                     return;
                 }
 
-                var allItems = AssociatedObject.EnumerateNested<TreeViewItem>().Select(x => x.DataContext).OfType<NavigationNode>().ToList().Where(x => x.AllowMultiselection);
+                var allItems = AssociatedObject.EnumerateNested<TreeViewItem>().Select(x => x.DataContext).OfType<NavigationNode>().ToList().Where(x => x.AllowMultiSelection);
 
                 var selectedItems = SelectedItems;
 
                 selectedItems.ClearOneByOne();
 
-                bool isBetween = false;
+                var isBetween = false;
                 foreach (var item in allItems)
                 {
                     if (item == node || item == startItem)
@@ -209,7 +209,7 @@ namespace LogViewer.Behaviors
                     }
                 }
 
-                selectedItems.RemoveByPredicate(x => !x.AllowMultiselection);
+                selectedItems.RemoveByPredicate(x => !x.AllowMultiSelection);
             }
         }       
 

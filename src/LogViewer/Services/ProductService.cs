@@ -7,13 +7,10 @@
 
 namespace LogViewer.Services
 {
-    using System.Collections.ObjectModel;
     using System.Linq;
-
     using Catel;
-
-    using LogViewer.Models;
-    using LogViewer.Models.Base;
+    using Catel.Collections;
+    using Models;
 
     public class ProductService : IProductService
     {
@@ -40,7 +37,15 @@ namespace LogViewer.Services
 
             var files = logFiles as LogFile[] ?? logFiles.ToArray();
 
-            return new Product { Name = productName, LogFiles = new ObservableCollection<LogFile>(files), Children = new ObservableCollection<NavigationNode>(files) };
+            var product = new Product
+            {
+                Name = productName
+            };
+
+            product.LogFiles.AddRange(files);
+            product.Children.AddRange(files);
+
+            return product;
         }
         #endregion
     }
