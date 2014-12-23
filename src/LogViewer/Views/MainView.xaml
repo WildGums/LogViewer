@@ -1,20 +1,19 @@
 ﻿<catel:UserControl x:Class="LogViewer.Views.MainView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:catel="http://catel.codeplex.com"
-             xmlns:views="clr-namespace:LogViewer.Views"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:behaviors="clr-namespace:LogViewer.Behaviors"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:catel="http://catel.codeplex.com"
+                   xmlns:views="clr-namespace:LogViewer.Views"
+                   mc:Ignorable="d" 
+                   d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        
         <views:LogNavigatorView Grid.Column="0"/>
         <GridSplitter Grid.Column="1" MinWidth="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
         <views:LogRecordsTableView Grid.Column="2"/>
