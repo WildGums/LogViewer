@@ -15,33 +15,79 @@ namespace LogViewer.Behaviors
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+
     using Catel;
     using Catel.Windows.Interactivity;
-    using Extensions;
-    using Models.Base;
+
+    using LogViewer.Extensions;
+    using LogViewer.Models.Base;
 
     public class MultipleSelectionBehavior : BehaviorBase<TreeView>
     {
+        #region Dependency properties
+        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof(ObservableCollection<NavigationNode>), typeof(MultipleSelectionBehavior), new PropertyMetadata(new ObservableCollection<NavigationNode>(), SelectedItemsChanged));
+
+        public static ObservableCollection<NavigationNode> GetSelectedItems(MultipleSelectionBehavior element)
+        {
+            return (ObservableCollection<NavigationNode>)element.GetValue(SelectedItemsProperty);
+        }
+
+        public static void SetSelectedItems(MultipleSelectionBehavior element, IList value)
+        {
+            element.SetValue(SelectedItemsProperty, value);
+        }
+
+        public static readonly DependencyProperty IsItemSelectedProperty = DependencyProperty.RegisterAttached("IsItemSelected", typeof(bool), typeof(MultipleSelectionBehavior), new PropertyMetadata());
+
+        public static bool GetIsItemSelected(TreeViewItem element)
+        {
+            return (bool)element.GetValue(IsItemSelectedProperty);
+        }
+
+        public static void SetIsItemSelected(TreeViewItem element, bool value)
+        {
+            element.SetValue(IsItemSelectedProperty, value);
+        }
+        #endregion
+
         #region Properties
         private NavigationNode StartItem { get; set; }
+
+        public ObservableCollection<NavigationNode> SelectedItems
+        {
+            get
+            {
+                return (ObservableCollection<NavigationNode>)GetValue(SelectedItemsProperty);
+            }
+            set
+            {
+                SetValue(SelectedItemsProperty, value);
+            }
+        }
+
+        
         #endregion
 
         #region Methods
         protected override void OnAssociatedObjectLoaded()
         {
             AssociatedObject.SelectedItemChanged += OnTreeViewSelectedItemChanged;
-            if (SelectedItems != null)
+            var selectedItems = SelectedItems;
+
+            if (selectedItems != null)
             {
-                SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
+                selectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
             }
         }
 
         protected override void OnAssociatedObjectUnloaded()
         {
             AssociatedObject.SelectedItemChanged -= OnTreeViewSelectedItemChanged;
-            if (SelectedItems != null)
+            var selectedItems = SelectedItems;
+
+            if (selectedItems != null)
             {
-                SelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
+                selectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
             }
         }
 
@@ -80,17 +126,11 @@ namespace LogViewer.Behaviors
         {
             Argument.IsNotNull(() => node);
 
-            await DeSelectAllItems();
-            SelectedItems.Add(node);
-            StartItem = node;
-        }
+            var selectedItems = SelectedItems;
 
-        private async Task DeSelectAllItems()
-        {
-            foreach (var node in AssociatedObject.EnumerateNested<TreeViewItem>().Select(x => x.DataContext).OfType<NavigationNode>())
-            {
-                SelectedItems.Remove(node);
-            }
+            await selectedItems.ClearOneByOne();
+            selectedItems.Add(node);
+            StartItem = node;
         }
 
         private static void OnSelectedItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -116,26 +156,28 @@ namespace LogViewer.Behaviors
         {
             Argument.IsNotNull(() => node);
 
-            if (SelectedItems.Contains(node))
+            var selectedItems = SelectedItems;
+
+            if (selectedItems.Contains(node))
             {
-                SelectedItems.Remove(node);
+                selectedItems.Remove(node);
             }
             else
             {
-                SelectedItems.Add(node);
+                selectedItems.Add(node);
             }
 
-            if (StartItem == null && SelectedItems.Contains(node))
+            if (StartItem == null && selectedItems.Contains(node))
             {
                 StartItem = node;
             }
 
-            if (StartItem != null && SelectedItems.Count == 0)
+            if (StartItem != null && selectedItems.Count == 0)
             {
                 StartItem = null;
             }
 
-            SelectedItems.RemoveByPredicate(x => !x.AllowMultiselection);
+            selectedItems.RemoveByPredicate(x => !x.AllowMultiselection);
         }
 
         private async Task SelectMultipleItemsContinuously(NavigationNode node)
@@ -153,7 +195,10 @@ namespace LogViewer.Behaviors
 
                 var allItems = AssociatedObject.EnumerateNested<TreeViewItem>().Select(x => x.DataContext).OfType<NavigationNode>().ToList().Where(x => x.AllowMultiselection);
 
-                await DeSelectAllItems();
+                var selectedItems = SelectedItems;
+
+                await selectedItems.ClearOneByOne();
+
                 bool isBetween = false;
                 foreach (var item in allItems)
                 {
@@ -161,50 +206,25 @@ namespace LogViewer.Behaviors
                     {
                         isBetween = !isBetween;
 
-                        SelectedItems.Add(item);
+                        selectedItems.Add(item);
                         continue;
                     }
 
                     if (isBetween)
                     {
-                        SelectedItems.Add(item);
+                        selectedItems.Add(item);
                     }
                 }
 
-                SelectedItems.RemoveByPredicate(x => !x.AllowMultiselection);
+                selectedItems.RemoveByPredicate(x => !x.AllowMultiselection);
             }
-        }
-        #endregion
-
-        #region SelectedItems
-
-        #region Constants
-        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof (ObservableCollection<NavigationNode>), typeof (MultipleSelectionBehavior), new PropertyMetadata(new ObservableCollection<NavigationNode>(), SelectedItemsChanged));
-        #endregion
-
-        #region Properties
-        public ObservableCollection<NavigationNode> SelectedItems
-        {
-            get { return (ObservableCollection<NavigationNode>) GetValue(SelectedItemsProperty); }
-            set { SetValue(SelectedItemsProperty, value); }
-        }
-        #endregion
-
-        #region Methods
-        public static ObservableCollection<NavigationNode> GetSelectedItems(MultipleSelectionBehavior element)
-        {
-            return (ObservableCollection<NavigationNode>) element.GetValue(SelectedItemsProperty);
-        }
-
-        public static void SetSelectedItems(MultipleSelectionBehavior element, IList value)
-        {
-            element.SetValue(SelectedItemsProperty, value);
-        }
+        }       
 
         private static void SelectedItemsChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
         {
             var newValue = args.NewValue as ObservableCollection<NavigationNode>;
             var oldValue = args.OldValue as ObservableCollection<NavigationNode>;
+
             if (oldValue != null)
             {
                 oldValue.CollectionChanged -= OnSelectedItemsCollectionChanged;
@@ -213,29 +233,7 @@ namespace LogViewer.Behaviors
             {
                 newValue.CollectionChanged += OnSelectedItemsCollectionChanged;
             }
-        }
-        #endregion
-
-        #endregion
-
-        #region IsItemSelected
-
-        #region Constants
-        public static readonly DependencyProperty IsItemSelectedProperty = DependencyProperty.RegisterAttached("IsItemSelected", typeof (bool), typeof (MultipleSelectionBehavior), new PropertyMetadata());
-        #endregion
-
-        #region Methods
-        public static bool GetIsItemSelected(TreeViewItem element)
-        {
-            return (bool) element.GetValue(IsItemSelectedProperty);
-        }
-
-        public static void SetIsItemSelected(TreeViewItem element, bool value)
-        {
-            element.SetValue(IsItemSelectedProperty, value);
-        }
-        #endregion
-
+        }        
         #endregion
     }
 }

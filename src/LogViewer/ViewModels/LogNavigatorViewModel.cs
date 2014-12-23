@@ -7,30 +7,39 @@
 
 namespace LogViewer.ViewModels
 {
-    using System.Collections;
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using Behaviors;
+
     using Catel;
     using Catel.Collections;
     using Catel.Fody;
     using Catel.MVVM;
     using Catel.Services;
-    using Extensions;
-    using Models;
-    using Models.Base;
+
+    using LogViewer.Extensions;
+    using LogViewer.Models;
+    using LogViewer.Models.Base;
+    using LogViewer.Services;
+
     using Orchestra.Services;
-    using Services;
 
     public class LogNavigatorViewModel : ViewModelBase
     {
+        #region Fields
         private readonly IAppDataService _appDataService;
+
         private readonly ICompanyService _companyService;
+
         private readonly IMessageService _messageService;
+
         private readonly ISelectDirectoryService _selectDirectoryService;
 
+        private ObservableCollection<NavigationNode> _prevSelectedItems;
+        #endregion
+
+        #region Constructors
         public LogNavigatorViewModel(LogViewerModel logViewerModel, ISelectDirectoryService selectDirectoryService, IMessageService messageService, ICompanyService companyService, IAppDataService appDataService)
         {
             Argument.IsNotNull(() => logViewerModel);
@@ -52,7 +61,9 @@ namespace LogViewer.ViewModels
 
             SelectedItems = new ObservableCollection<NavigationNode>();
         }
+        #endregion
 
+        #region Properties
         [Model]
         [Expose("Companies")]
         public LogViewerModel LogViewer { get; set; }
@@ -66,8 +77,9 @@ namespace LogViewer.ViewModels
 
         [ViewModelToModel("LogViewer")]
         public ObservableCollection<NavigationNode> SelectedItems { get; set; }
+        #endregion
 
-        private ObservableCollection<NavigationNode> _prevSelectedItems;
+        #region Methods
         public void OnSelectedItemsChanged()
         {
             if (_prevSelectedItems != null)
@@ -81,7 +93,7 @@ namespace LogViewer.ViewModels
             _prevSelectedItems = SelectedItems;
         }
 
-        void OnSelectedItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void OnSelectedItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             DeleteCompanyCommand.RaiseCanExecuteChanged();
         }
@@ -156,5 +168,6 @@ namespace LogViewer.ViewModels
                 }
             }
         }
+        #endregion
     }
 }

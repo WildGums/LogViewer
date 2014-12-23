@@ -23,6 +23,7 @@ public static class ModuleInitializer
         serviceLocator.RegisterType<ICompanyService, CompanyService>();
         serviceLocator.RegisterType<IProductService, ProductService>();
         serviceLocator.RegisterType<IFilterService, FilterService>();
+        serviceLocator.RegisterType<IRegexService, RegexService>();
         serviceLocator.RegisterType<LogViewerModel>(RegistrationType.Singleton);
     }
 }

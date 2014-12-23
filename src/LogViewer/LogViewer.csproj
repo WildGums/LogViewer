@@ -120,10 +120,10 @@
     </Compile>
     <Compile Include="Behaviors\MultipleSelectionBehavior.cs" />
     <Compile Include="Extensions\AppDataServiceExtensions.cs" />
+    <Compile Include="Extensions\FilterExtensions.cs" />
     <Compile Include="Extensions\ItemsControlExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Extensions\TreeViewExtensions.cs" />
     <Compile Include="Models\SearchTemplate.cs" />
     <Compile Include="Models\Base\SimplyClearableModel.cs" />
     <Compile Include="Services\CompanyService.cs" />
@@ -144,9 +144,11 @@
     <Compile Include="Models\LogRecord.cs" />
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Services\ApplicationInitializationService.cs" />
+    <Compile Include="Services\RegexService.cs" />
     <Compile Include="Services\RibbonService.cs" />
     <Compile Include="Services\Interfaces\ICompanyService.cs" />
     <Compile Include="Services\Interfaces\IFilterService.cs" />
+    <Compile Include="Services\Interfaces\IRegexService.cs" />
     <Compile Include="ViewModels\LogRecordsTableViewModel.cs" />
     <Compile Include="Controls\HighlightableTextBlock.cs" />
     <Compile Include="Views\LogRecordsTableView.xaml.cs">
@@ -198,10 +200,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Behaviors\Interfaces\" />
-    <Folder Include="Validators\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>

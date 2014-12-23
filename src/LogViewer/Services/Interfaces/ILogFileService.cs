@@ -1,11 +1,20 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ILogFileService.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+
 namespace LogViewer.Services
 {
     using System.Collections.Generic;
-    using Models;
-    using Models.Base;
+
+    using LogViewer.Models;
 
     public interface ILogFileService
     {
+        #region Methods
         IEnumerable<LogFile> GetLogFIles(string filesFolder);
+        #endregion
     }
 }

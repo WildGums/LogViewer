@@ -1,101 +1,96 @@
-﻿namespace LogViewer.Services
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FilterService.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+
+namespace LogViewer.Services
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text.RegularExpressions;
 
     using Catel;
-    using Catel.Logging;
+    using Catel.Collections;
 
-    using Models;
-    using Models.Base;
+    using LogViewer.Extensions;
+    using LogViewer.Models;
 
-    class FilterService : IFilterService
+    internal class FilterService : IFilterService
     {
-        public IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<LogFile> files)
-        {
-            return FilterRecords(filter, FilterFIles(filter, files).SelectMany(file => file.LogRecords));
-        }
-
-        public IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<LogRecord> logRecords)
-        {
-            return logRecords.Where(record => AcceptFilterToLogEvent(record.LogEvent, filter) && AcceptFilterToMessageText(record.Message, filter));
-        }
-
-        public IEnumerable<LogFile> FilterFIles(Filter filter, IEnumerable<LogFile> logFiles)
+        #region IFilterService Members
+        private IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<LogFile> logFiles)
         {
             Argument.IsNotNull(() => logFiles);
             Argument.IsNotNull(() => filter);
 
-            return logFiles.Where(file => !filter.UseFilterRange || !file.IsUnifyNamed || (file.DateTime.Date <= filter.EndDate.Date && file.DateTime.Date >= filter.StartDate.Date));
+            return FilterFIles(filter, logFiles).SelectMany(file => file.LogRecords).Where(record => filter.IsAcceptableTo(record.LogEvent) && filter.IsAcceptableTo(record.Message));
         }
 
-        public IEnumerable<LogFile> FilterFIles(Filter filter, NavigationNode node)
+        private IEnumerable<LogFile> FilterFIles(Filter filter, IEnumerable<LogFile> logFiles)
         {
-            return FilterFIles(filter, GetLogFiles(node));
+            Argument.IsNotNull(() => logFiles);
+            Argument.IsNotNull(() => filter);
+
+            return logFiles.Where(filter.IsAcceptableTo);
         }
 
-        private bool AcceptFilterToLogEvent(LogEvent logEvent, Filter filter)
+        public void ApplyFilesFilter(LogViewerModel logViewer)
         {
-            switch (logEvent)
+            Argument.IsNotNull(() => logViewer);
+
+            FilterSelectedFiles(logViewer);
+
+            FilterAllFiles(logViewer);
+        }
+
+        public void ApplyLogRecodsFilter(LogViewerModel logViewer)
+        {
+            Argument.IsNotNull(() => logViewer);
+
+            var logRecords = logViewer.LogRecords;
+
+            var oldRecords = logRecords.ToArray();
+            logRecords.ReplaceRange(FilterRecords(logViewer.Filter, logViewer.SelectedItems.OfType<LogFile>()));
+
+            foreach (var record in logRecords.Except(oldRecords))
             {
-                case LogEvent.Debug:
-                    return filter.ShowDebug;
-                case LogEvent.Error:
-                    return filter.ShowError;
-                case LogEvent.Info:
-                    return filter.ShowInfo;
-                case LogEvent.Warning:
-                    return filter.ShowWarning;
+                record.LogFile.IsExpanded = true;
             }
-
-            return false;
         }
 
-        private bool AcceptFilterToMessageText(string message, Filter filter)
+        private void FilterSelectedFiles(LogViewerModel logViewer)
         {
-            if (!filter.UseTextSearch || filter.SearchTemplate.RegularExpression == null)
-            {
-                return true;
-            }
+            Argument.IsNotNull(() => logViewer);
 
-            return Regex.IsMatch(message, filter.SearchTemplate.RegularExpression);
-        }
+            var selectedItems = logViewer.SelectedItems;
 
-        private IEnumerable<LogFile> GetLogFiles(NavigationNode node)
-        {
-            var logFile = node as LogFile;
-            if (logFile != null)
+            var buff = selectedItems.OfType<LogFile>().ToArray();
+            if (buff.Any())
             {
-                if (logFile.IsExpanded == null)
+                while (selectedItems.Any())
                 {
-                    logFile.IsExpanded = true;
+                    selectedItems.RemoveAt(0);
                 }
-                yield return logFile;
-                yield break;
+                selectedItems.AddRange(FilterFIles(logViewer.Filter, buff));
             }
+        }
 
-            var stack = new Stack<NavigationNode>();
-            stack.Push(node);
-            while (stack.Count != 0)
+        private void FilterAllFiles(LogViewerModel logViewer)
+        {
+            Argument.IsNotNull(() => logViewer);
+
+            foreach (var company in logViewer.Companies)
             {
-                var currentNode = stack.Pop();
-                var product = currentNode as Product;
-                if (product == null)
+                foreach (var product in company.Children.Cast<Product>())
                 {
-                    foreach (var child in currentNode.Children)
-                    {
-                        stack.Push(child);
-                    }
-                }
-                else
-                {
-                    foreach (var item in product.LogFiles)
-                    {
-                        yield return item;
-                    }
+                    var children = product.Children;
+
+                    children.Clear();
+                    children.AddRange(FilterFIles(logViewer.Filter, product.LogFiles).OrderByDescending(x => x.Name));
                 }
             }
         }
+        #endregion
     }
 }

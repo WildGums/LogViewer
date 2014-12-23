@@ -8,12 +8,12 @@
 namespace LogViewer.Services
 {
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
 
-    using Models;
+    using LogViewer.Models;
 
     public interface ICompanyService
     {
+        #region Methods
         Company CreateCompanyByDirectoryPath(string companyFolder);
 
         IEnumerable<Company> LoadCompanies();
@@ -21,5 +21,6 @@ namespace LogViewer.Services
         Company CreateCompanyByName(string companyName);
 
         void SaveCompanies(IEnumerable<Company> companies);
+        #endregion
     }
 }

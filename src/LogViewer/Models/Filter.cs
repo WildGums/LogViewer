@@ -3,35 +3,48 @@
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+
 namespace LogViewer.Models
 {
     using System;
     using System.ComponentModel;
-    using System.Xml.Linq;
-
-    using Catel.Data;
 
     public class Filter : SimplyClearableModel
     {
+        #region Constructors
         public Filter()
         {
-            SearchTemplate = new SearchTemplate();            
+            SearchTemplate = new SearchTemplate();
+            StartDate = DateTime.Today;
+            EndDate = DateTime.Today;
         }
+        #endregion
 
+        #region Properties
         [DefaultValue(true)]
         public bool ShowInfo { get; set; }
+
         [DefaultValue(true)]
         public bool ShowDebug { get; set; }
+
         [DefaultValue(true)]
         public bool ShowWarning { get; set; }
+
         [DefaultValue(true)]
         public bool ShowError { get; set; }
+
         public DateTime StartDate { get; set; }
+
         public DateTime EndDate { get; set; }
+
         public SearchTemplate SearchTemplate { get; set; }
+
         [DefaultValue(true)]
         public bool UseTextSearch { get; set; }
+
         [DefaultValue(false)]
-        public bool UseFilterRange { get; set; }
+        public bool UseDateRange { get; set; }
+        #endregion
     }
 }

@@ -1,14 +1,20 @@
-﻿namespace LogViewer.Services
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IFilterService.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+
+namespace LogViewer.Services
 {
-    using System.Collections.Generic;
-    using Models;
-    using Models.Base;
+    using LogViewer.Models;
 
     public interface IFilterService
     {
-        IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<LogFile> files);
-        IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<LogRecord> logRecords);
-        IEnumerable<LogFile> FilterFIles(Filter filter, IEnumerable<LogFile> logFiles);
-        IEnumerable<LogFile> FilterFIles(Filter filter, NavigationNode node);
+        #region Methods
+        void ApplyFilesFilter(LogViewerModel logViewer);
+
+        void ApplyLogRecodsFilter(LogViewerModel logViewer);
+        #endregion
     }
 }

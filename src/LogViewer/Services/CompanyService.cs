@@ -13,22 +13,29 @@ namespace LogViewer.Services
     using System.IO;
     using System.Linq;
     using System.Reflection;
+
     using Catel;
     using Catel.Configuration;
 
-    using Extensions;
-    using Models;
-    using Models.Base;
+    using LogViewer.Extensions;
+    using LogViewer.Models;
+    using LogViewer.Models.Base;
+
     using Orchestra.Services;
+
     using Path = Catel.IO.Path;
 
     public class CompanyService : ICompanyService
     {
+        #region Fields
         private readonly IAppDataService _appDataService;
+
         private readonly IProductService _productService;
 
         private readonly IConfigurationService _configurationService;
+        #endregion
 
+        #region Constructors
         public CompanyService(IAppDataService appDataService, IProductService productService, IConfigurationService configurationService)
         {
             Argument.IsNotNull(() => appDataService);
@@ -39,7 +46,9 @@ namespace LogViewer.Services
             _productService = productService;
             _configurationService = configurationService;
         }
+        #endregion
 
+        #region ICompanyService Members
         public Company CreateCompanyByDirectoryPath(string companyFolder)
         {
             Argument.IsNotNullOrEmpty(() => companyFolder);
@@ -71,5 +80,6 @@ namespace LogViewer.Services
             var stringOfCompanies = string.Join(",", companies.Select(c => c.Name));
             _configurationService.SetValue("Companies", stringOfCompanies);
         }
+        #endregion
     }
 }

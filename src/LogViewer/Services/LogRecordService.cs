@@ -1,30 +1,41 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LogRecordService.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+
 namespace LogViewer.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
-    using System.Linq;
     using System.Text.RegularExpressions;
+
     using Catel;
     using Catel.Logging;
-    using Models;
+
+    using LogViewer.Models;
 
     public class LogRecordService : ILogRecordService
     {
+        #region ILogRecordService Members
         public IEnumerable<LogRecord> LoadRecordsFromFile(LogFile logFile)
         {
+            Argument.IsNotNull(() => logFile);
+
             using (var stream = new FileStream(logFile.Info.FullName, FileMode.Open))
             {
                 using (var reader = new StreamReader(stream))
                 {
                     string line;
                     LogRecord record = null;
-                    var logRecordPattern = @"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+\s\=\>\s\[[a-zA-Z]+\]\s\[[a-zA-Z\d\.\`]+\].+";
+                    const string LogRecordPattern = @"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+\s\=\>\s\[[a-zA-Z]+\]\s\[[a-zA-Z\d\.\`]+\].+";
 
                     while ((line = reader.ReadLine()) != null)
-                    {                                          
-                        if (Regex.IsMatch(line, logRecordPattern))
+                    {
+                        if (Regex.IsMatch(line, LogRecordPattern))
                         {
                             if (record != null)
                             {
@@ -57,7 +68,9 @@ namespace LogViewer.Services
                 }
             }
         }
+        #endregion
 
+        #region Methods
         private DateTime ExtractDateTime(ref string line)
         {
             var dateTimeString = Regex.Match(line, @"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+").Value;
@@ -83,8 +96,10 @@ namespace LogViewer.Services
         private void AppendMessageLine(LogRecord logRecord, string line)
         {
             Argument.IsNotNull(() => logRecord);
+            Argument.IsNotNull(() => line);
 
             logRecord.Message += (Environment.NewLine + line);
         }
+        #endregion
     }
 }

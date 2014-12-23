@@ -1,27 +1,47 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ProductService.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+
 namespace LogViewer.Services
 {
     using System.Collections.ObjectModel;
     using System.Linq;
-    using Models;
-    using Models.Base;
+
+    using Catel;
+
+    using LogViewer.Models;
+    using LogViewer.Models.Base;
 
     public class ProductService : IProductService
     {
+        #region Fields
         private readonly ILogFileService _logFileService;
-        private readonly ILogRecordService _logRecordService;
+        #endregion
 
-        public ProductService(ILogFileService logFileService, ILogRecordService logRecordService)
+        #region Constructors
+        public ProductService(ILogFileService logFileService)
         {
-            _logFileService = logFileService;
-            _logRecordService = logRecordService;
-        }
+            Argument.IsNotNull(() => logFileService);
 
+            _logFileService = logFileService;
+        }
+        #endregion
+
+        #region IProductService Members
         public Product CreateNewProductItem(string productFolder)
         {
+            Argument.IsNotNullOrEmpty(() => productFolder);
+
             var productName = productFolder.Substring(productFolder.LastIndexOf('\\') + 1);
             var logFiles = _logFileService.GetLogFIles(productFolder);
 
-            return new Product { Name = productName, LogFiles = new ObservableCollection<LogFile>(logFiles), Children = new ObservableCollection<NavigationNode>(logFiles) };
+            var files = logFiles as LogFile[] ?? logFiles.ToArray();
+
+            return new Product { Name = productName, LogFiles = new ObservableCollection<LogFile>(files), Children = new ObservableCollection<NavigationNode>(files) };
         }
+        #endregion
     }
 }

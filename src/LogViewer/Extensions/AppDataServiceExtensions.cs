@@ -3,17 +3,22 @@
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+
 namespace LogViewer.Extensions
 {
     using Catel.IO;
+
     using Orchestra.Services;
 
     public static class AppDataServiceExtensions
     {
+        #region Methods
         public static string GetRootAppDataFolder(this IAppDataService appDataService)
         {
             var currentCompanyDir = Path.GetParentDirectory(appDataService.ApplicationDataDirectory);
             return Path.GetParentDirectory(currentCompanyDir);
         }
+        #endregion
     }
 }

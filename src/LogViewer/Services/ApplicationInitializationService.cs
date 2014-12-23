@@ -10,6 +10,7 @@ namespace LogViewer.Services
     using System;
     using System.Threading.Tasks;
 
+    using Catel;
     using Catel.MVVM;
 
     using Orchestra.Services;
@@ -19,6 +20,8 @@ namespace LogViewer.Services
         #region Methods
         public override Task InitializeCommands(ICommandManager commandManager)
         {
+            Argument.IsNotNull(() => commandManager);
+
             commandManager.CreateCommand("Filter.ResetSearchTemplate", throwExceptionWhenCommandIsAlreadyCreated: false);
             return base.InitializeCommands(commandManager);
         }

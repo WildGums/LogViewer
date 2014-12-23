@@ -3,6 +3,8 @@
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+
 namespace LogViewer.Extensions
 {
     using System.Collections.Generic;
@@ -10,6 +12,7 @@ namespace LogViewer.Extensions
 
     public static class ItemsControlExtensions
     {
+        #region Methods
         public static IEnumerable<T> EnumerateNested<T>(this ItemsControl rootControl) where T : ItemsControl
         {
             var stack = new Queue<ItemsControl>();
@@ -35,5 +38,6 @@ namespace LogViewer.Extensions
                 }
             }
         }
+        #endregion
     }
 }

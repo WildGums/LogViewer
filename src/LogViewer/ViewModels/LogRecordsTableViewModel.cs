@@ -10,21 +10,25 @@ namespace LogViewer.ViewModels
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.ComponentModel;
-    using System.Linq;
     using System.Threading.Tasks;
+
     using Catel;
-    using Catel.Collections;
     using Catel.Fody;
     using Catel.MVVM;
-    using Models;
-    using Models.Base;
-    using Services;
+
+    using LogViewer.Models;
+    using LogViewer.Models.Base;
+    using LogViewer.Services;
 
     public class LogRecordsTableViewModel : ViewModelBase
     {
-        private ObservableCollection<NavigationNode> _prevSelectedItems;
+        #region Fields
         private readonly IFilterService _filterService;
 
+        private ObservableCollection<NavigationNode> _prevSelectedItems;
+        #endregion
+
+        #region Constructors
         public LogRecordsTableViewModel(LogViewerModel logViewerModel, IFilterService filterService, ICommandManager commandManager)
         {
             Argument.IsNotNull(() => logViewerModel);
@@ -41,30 +45,32 @@ namespace LogViewer.ViewModels
             Filter.PropertyChanged += OnFilterIsDirtyChanged;
             SearchTemplate.PropertyChanged += OnSearchTemplateIsDirtyChanged;
         }
+        #endregion
 
+        #region Properties
         public Command ResetSearchTemplate { get; private set; }
 
         [Model]
+        [Expose("LogRecords")]
         public LogViewerModel LogViewer { get; set; }
 
         [ViewModelToModel("LogViewer")]
         public ObservableCollection<NavigationNode> SelectedItems { get; set; }
 
-        [ViewModelToModel("LogViewer")]
-        public ObservableCollection<LogRecord> LogRecords { get; set; }
-
         [Model]
-        [Expose("UseFilterRange")]
+        [Expose("UseDateRange")]
         [Expose("StartDate")]
         [Expose("EndDate")]
         [ViewModelToModel("LogViewer")]
-        public Filter Filter { get; set; }        
+        public Filter Filter { get; set; }
 
         [Model]
         [Expose("RegularExpression")]
         [ViewModelToModel("Filter")]
         public SearchTemplate SearchTemplate { get; set; }
+        #endregion
 
+        #region Methods
         public void OnSelectedItemsChanged()
         {
             if (_prevSelectedItems != null)
@@ -87,39 +93,17 @@ namespace LogViewer.ViewModels
 
         public void OnEndDateChanged()
         {
-            FilterFiles();
+            _filterService.ApplyFilesFilter(LogViewer);
         }
 
         public void OnStartDateChanged()
         {
-            FilterFiles();
+            _filterService.ApplyFilesFilter(LogViewer);
         }
 
-        public void OnUseFilterRangeChanged()
+        public void OnUseDateRangeChanged()
         {
-            FilterFiles();
-        }
-
-        private void FilterFiles()
-        {
-            var buff = SelectedItems.OfType<LogFile>().ToArray();
-            if (buff.Any())
-            {
-                while (SelectedItems.Any())
-                {
-                    SelectedItems.RemoveAt(0);
-                }
-                SelectedItems.AddRange(_filterService.FilterFIles(Filter, buff));
-            }
-
-            foreach (var company in LogViewer.Companies)
-            {
-                foreach (var product in company.Children.Cast<Product>())
-                {
-                    product.Children.Clear();
-                    product.Children.AddRange(_filterService.FilterFIles(Filter, product.LogFiles).OrderByDescending(x => x.Name));
-                }
-            }
+            _filterService.ApplyFilesFilter(LogViewer);
         }
 
         private void OnSearchTemplateIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -152,18 +136,13 @@ namespace LogViewer.ViewModels
                 return;
             }
 
-            var oldRecords = LogRecords.ToArray();
-            LogRecords.ReplaceRange(_filterService.FilterRecords(LogViewer.Filter, SelectedItems.OfType<LogFile>()));
-
-            foreach (var record in LogRecords.Except(oldRecords))
-            {
-                record.LogFile.IsExpanded = true;
-            }
+            _filterService.ApplyLogRecodsFilter(LogViewer);
 
             if (clearableModel != null)
             {
                 clearableModel.MarkClean();
             }
         }
+        #endregion
     }
 }

@@ -7,60 +7,56 @@
 
 namespace LogViewer.ViewModels
 {
-    using System;
-    using System.Threading.Tasks;
+    using System.ComponentModel;
+
     using Catel.Fody;
     using Catel.MVVM;
-    using Models;
+
+    using LogViewer.Models;
+    using LogViewer.Services;
 
     public class RibbonViewModel : ViewModelBase
     {
-        public RibbonViewModel(LogViewerModel logViewerModel)
+        #region Fields
+        private readonly IRegexService _regexService;
+        #endregion
+
+        #region Constructors
+        public RibbonViewModel(LogViewerModel logViewerModel, IRegexService regexService)
         {
-            LogViewer = logViewerModel;
+            _regexService = regexService;
+            Filter = logViewerModel.Filter;
+
+            SearchTemplate.PropertyChanged += OnSearchTemplatePropertyChanged;
         }
+        #endregion
 
-
-
-        protected override async Task Initialize()
-        {
-            await base.Initialize();
-            StartDate = DateTime.Today;
-            EndDate = DateTime.Today;
-        }
-
-        [Model]        
-        public LogViewerModel LogViewer { get; set; }
-
-        [Model]        
-        [ViewModelToModel("LogViewer")]
+        #region Properties
+        [Model]
+        [Expose("StartDate")]
+        [Expose("EndDate")]
+        [Expose("ShowInfo")]
+        [Expose("ShowDebug")]
+        [Expose("ShowWarning")]
+        [Expose("ShowError")]
+        [Expose("UseTextSearch")]
+        [Expose("UseDateRange")]
         public Filter Filter { get; set; }
 
         [ViewModelToModel("Filter")]
-        public DateTime StartDate { get; set; }
-
-        [ViewModelToModel("Filter")]
-        public DateTime EndDate { get; set; }        
-        
-        [ViewModelToModel("Filter")]
-        public bool ShowInfo { get; set; }
-
-        [ViewModelToModel("Filter")]
-        public bool ShowDebug { get; set; }
-
-        [ViewModelToModel("Filter")]
-        public bool ShowWarning { get; set; }
-
-        [ViewModelToModel("Filter")]
-        public bool ShowError { get; set; }
-
-        [ViewModelToModel("Filter")]
         public SearchTemplate SearchTemplate { get; set; }
-        
-        [ViewModelToModel("Filter")]
-        public bool UseTextSearch { get; set; }
+        #endregion
 
-        [ViewModelToModel("Filter")]
-        public bool UseFilterRange { get; set; }
+        #region Methods
+        private void OnSearchTemplatePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "RegularExpression")
+            {
+                return;
+            }
+
+            SearchTemplate.RegularExpression = _regexService.ConvertToRegex(SearchTemplate.TemplateString, SearchTemplate.MatchCase, SearchTemplate.MatchWholeWord);
+        }
+        #endregion
     }
 }
