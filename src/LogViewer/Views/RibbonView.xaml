@@ -7,17 +7,27 @@
                    xmlns:fluent="urn:fluent-ribbon"
                    xmlns:orchestra="https://github.com/orcomp/orchestra"
                    xmlns:logViewer="clr-namespace:LogViewer"
+                   xmlns:views="clr-namespace:Orc.WorkspaceManagement.Views;assembly=Orc.WorkspaceManagement.Xaml"
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
     
-    <fluent:Ribbon IsQuickAccessToolBarVisible="False" CanCustomizeRibbon="False" AutomaticStateManagement="False">
+    <fluent:Ribbon x:Name="ribbon"  IsQuickAccessToolBarVisible="False" CanCustomizeRibbon="False" AutomaticStateManagement="False">
+        <fluent:Ribbon.Menu>
+            <fluent:Backstage Header="File">
+                <fluent:BackstageTabControl>
+                    <fluent:Button Header="Exit" Command="{catel:CommandManagerBinding File.Exit}"/>
+                </fluent:BackstageTabControl>
+            </fluent:Backstage>
+        </fluent:Ribbon.Menu>
+
         <fluent:Ribbon.Tabs >
-            <fluent:RibbonTabItem Header="Filter">
+            <fluent:RibbonTabItem Header="View">
                 <fluent:RibbonGroupBox Header="Level">
                     <fluent:ToggleButton Header="Debug" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Bug}}" IsChecked="{Binding ShowDebug}"/>
                     <fluent:ToggleButton Header="Info" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Info}}" IsChecked="{Binding ShowInfo}"/>
                     <fluent:ToggleButton Header="Warning" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Warning}}" IsChecked="{Binding ShowWarning}"/>
                     <fluent:ToggleButton Header="Error" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Remove}}" IsChecked="{Binding ShowError}"/>
                 </fluent:RibbonGroupBox>
+                
                 <fluent:RibbonGroupBox Header="Date range">
                     <fluent:GalleryPanel Orientation="Vertical">
                         <Grid>
@@ -38,6 +48,7 @@
                     </fluent:GalleryPanel>
                     <fluent:ToggleButton x:Name="toggleButton" Header="Use in filter" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}" IsChecked="{Binding UseDateRange}"/>
                 </fluent:RibbonGroupBox>
+
                 <fluent:RibbonGroupBox Header="Highlighting">
                     <fluent:GalleryPanel>
                         <Grid>
@@ -58,6 +69,30 @@
                         <fluent:ToggleButton Header="Use in filter" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}" IsChecked="{Binding UseTextSearch}"/>
                     </fluent:GalleryPanel>
                 </fluent:RibbonGroupBox>
+
+                <!--<fluent:RibbonGroupBox Header="Filter" MinWidth="175">
+                    <fbviews:FilterBuilderControl RawCollection="{Binding AllOperations}" AutoApplyFilter="False" />
+                </fluent:RibbonGroupBox>-->
+
+                <fluent:RibbonGroupBox Header="Workspaces">
+                    <fluent:SplitButton Header="{Binding CurrentWorkspace.Title}" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Plus}}" 
+                                        Command="{Binding CreateWorkspace}" ToolTip="{Binding CurrentWorkspace.Title}" Size="Large" Width="75">
+                        <views:WorkspacesView />
+                    </fluent:SplitButton>
+
+                    <fluent:Button Header="Save" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Save}}"
+                                   Command="{Binding SaveWorkspace}" Size="Large" />
+                </fluent:RibbonGroupBox>
+
+                <fluent:RibbonGroupBox Header="Settings">
+                    <fluent:Button Header="Settings" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Pencil}}"
+                                   Command="{catel:CommandManagerBinding Settings.General}" Size="Large" />
+
+                    <fluent:SplitButton Header="Shortcuts" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.KeyboardO}}"
+                                        Command="{Binding ShowKeyboardMappings}" Size="Large">
+                        <orchestra:KeyboardMappingsOverviewView />
+                    </fluent:SplitButton>
+                </fluent:RibbonGroupBox>                
             </fluent:RibbonTabItem>
         </fluent:Ribbon.Tabs>
     </fluent:Ribbon>

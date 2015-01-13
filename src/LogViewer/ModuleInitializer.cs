@@ -18,12 +18,10 @@ public static class ModuleInitializer
 
         serviceLocator.RegisterType<IRibbonService, RibbonService>();
         serviceLocator.RegisterType<IApplicationInitializationService, ApplicationInitializationService>();
-        serviceLocator.RegisterType<ILogRecordService, LogRecordService>();
-        serviceLocator.RegisterType<ILogFileService, LogFileService>();
-        serviceLocator.RegisterType<ICompanyService, CompanyService>();
-        serviceLocator.RegisterType<IProductService, ProductService>();
-        serviceLocator.RegisterType<IFilterService, FilterService>();
-        serviceLocator.RegisterType<IRegexService, RegexService>();
-        serviceLocator.RegisterType<LogViewerModel>(RegistrationType.Singleton);
+
+        // ***** IMPORTANT NOTE *****
+        //
+        // Only register the shell services in the ModuleInitializer. All other types must be registered 
+        // in the ApplicationInitializationService
     }
 }

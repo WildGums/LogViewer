@@ -35,25 +35,36 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Icons\logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Catel.Core, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Catel.Core.4.1.0-unstable0030\lib\net40\Catel.Core.dll</HintPath>
+      <HintPath>..\..\lib\Catel.Core.4.1.0-unstable0045\lib\net40\Catel.Core.dll</HintPath>
     </Reference>
     <Reference Include="Catel.Extensions.Controls, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Catel.Extensions.Controls.4.1.0-unstable0030\lib\net40\Catel.Extensions.Controls.dll</HintPath>
+      <HintPath>..\..\lib\Catel.Extensions.Controls.4.1.0-unstable0045\lib\net40\Catel.Extensions.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Catel.Fody.Attributes">
-      <HintPath>..\..\lib\Catel.Fody.2.4.0-unstable0001\lib\portable-net4+sl4+wp7+win8+wpa81+MonoAndroid14+MonoTouch40\Catel.Fody.Attributes.dll</HintPath>
+    <Reference Include="Catel.Fody.Attributes, Version=2.4.0.0, Culture=neutral, PublicKeyToken=1c8163524cbe02e6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Catel.Fody.2.4.0-unstable0004\lib\portable-net4+sl4+wp7+win8+wpa81+MonoAndroid14+MonoTouch40\Catel.Fody.Attributes.dll</HintPath>
     </Reference>
     <Reference Include="Catel.MVVM, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0030\lib\net40\Catel.MVVM.dll</HintPath>
+      <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0045\lib\net40\Catel.MVVM.dll</HintPath>
     </Reference>
     <Reference Include="Fluent, Version=3.2.0.0, Culture=neutral, PublicKeyToken=3e436e32a8c5546f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Fluent.Ribbon.3.2.0\lib\net40\Fluent.dll</HintPath>
+    </Reference>
+    <Reference Include="GoogleAnalytics.Core">
+      <HintPath>..\..\lib\GoogleAnalyticsSDK.1.2.12\lib\portable-net40+win8+wp8+sl5\GoogleAnalytics.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MethodTimer">
+      <HintPath>..\..\lib\MethodTimer.Fody.1.15.2.0\Lib\portable-net4+sl5+wp8+win8+wpa81+MonoAndroid16+MonoTouch40\MethodTimer.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks">
       <HintPath>..\..\lib\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
@@ -67,16 +78,34 @@
     <Reference Include="Microsoft.Windows.Shell, Version=3.5.41019.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\lib\Fluent.Ribbon.3.2.0\lib\net40\Microsoft.Windows.Shell.dll</HintPath>
     </Reference>
+    <Reference Include="Orc.Analytics">
+      <HintPath>..\..\lib\Orc.Analytics.0.2.0-unstable0010\lib\net40\Orc.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="Orc.FilterBuilder">
+      <HintPath>..\..\lib\Orc.FilterBuilder.1.4.0-unstable0043\lib\net40\Orc.FilterBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="Orc.Squirrel">
+      <HintPath>..\..\lib\Orc.Squirrel.0.2.0-unstable0017\lib\net40\Orc.Squirrel.dll</HintPath>
+    </Reference>
+    <Reference Include="Orc.Squirrel.Xaml">
+      <HintPath>..\..\lib\Orc.Squirrel.Xaml.0.2.0-unstable0017\lib\net40\Orc.Squirrel.Xaml.dll</HintPath>
+    </Reference>
     <Reference Include="Orc.Toolkit">
       <HintPath>..\..\lib\Orc.Toolkit.1.0.9.0\lib\NET40\Orc.Toolkit.dll</HintPath>
     </Reference>
+    <Reference Include="Orc.WorkspaceManagement">
+      <HintPath>..\..\lib\Orc.WorkspaceManagement.0.2.0-unstable0068\lib\net40\Orc.WorkspaceManagement.dll</HintPath>
+    </Reference>
+    <Reference Include="Orc.WorkspaceManagement.Xaml">
+      <HintPath>..\..\lib\Orc.WorkspaceManagement.Xaml.0.2.0-unstable0068\lib\net40\Orc.WorkspaceManagement.Xaml.dll</HintPath>
+    </Reference>
     <Reference Include="Orchestra.Core, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Orchestra.Core.2.1.0-unstable0046\lib\net40\Orchestra.Core.dll</HintPath>
+      <HintPath>..\..\lib\Orchestra.Core.2.1.0-unstable0050\lib\net40\Orchestra.Core.dll</HintPath>
     </Reference>
     <Reference Include="Orchestra.Shell.Ribbon.Fluent, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.1.0-unstable0046\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
+      <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.1.0-unstable0050\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -85,6 +114,20 @@
       <HintPath>..\..\lib\Microsoft.Bcl.1.1.9\lib\net40\System.IO.dll</HintPath>
     </Reference>
     <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http, Version=2.1.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Microsoft.Net.Http.2.1.10\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\..\lib\Microsoft.Net.Http.2.1.10\lib\net40\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\..\lib\Microsoft.Net.Http.2.1.10\lib\net40\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.1.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Microsoft.Net.Http.2.1.10\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime">
       <HintPath>..\..\lib\Microsoft.Bcl.1.1.9\lib\net40\System.Runtime.dll</HintPath>
     </Reference>
@@ -93,7 +136,7 @@
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Fluent.Ribbon.3.2.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0045\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -120,23 +163,29 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\MultipleSelectionBehavior.cs" />
+    <Compile Include="Configuration\AnalyticsConfigurationSynchronizer.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\AppDataServiceExtensions.cs" />
     <Compile Include="Extensions\FilterExtensions.cs" />
     <Compile Include="Extensions\ItemsControlExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="MethodTimeLogger.cs" />
     <Compile Include="Models\SearchTemplate.cs" />
     <Compile Include="Models\Base\SimplyClearableModel.cs" />
     <Compile Include="Services\CompanyService.cs" />
+    <Compile Include="Services\ConfigurationInitializationService.cs" />
     <Compile Include="Services\FilterService.cs" />
+    <Compile Include="Services\Interfaces\IConfigurationInitializationService.cs" />
     <Compile Include="Services\Interfaces\ILogFileService.cs" />
+    <Compile Include="Services\Interfaces\IManageUserDataService.cs" />
     <Compile Include="Services\LogFileService.cs" />
     <Compile Include="Services\Interfaces\ILogRecordService.cs" />
     <Compile Include="Services\Interfaces\IProductService.cs" />
     <Compile Include="Services\LogRecordService.cs" />
+    <Compile Include="Services\ManageUserDataService.cs" />
     <Compile Include="Services\ProductService.cs" />
-    <Compile Include="FontAwesome.cs" />
+    <Compile Include="Resources\Fonts\FontAwesome.cs" />
     <Compile Include="Models\Base\NavigationNode.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Filter.cs" />
@@ -153,6 +202,7 @@
     <Compile Include="Services\Interfaces\IRegexService.cs" />
     <Compile Include="ViewModels\LogRecordsTableViewModel.cs" />
     <Compile Include="Controls\HighlightableTextBlock.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\LogRecordsTableView.xaml.cs">
       <DependentUpon>LogRecordsTableView.xaml</DependentUpon>
     </Compile>
@@ -168,6 +218,9 @@
     </Compile>
     <Compile Include="Views\RibbonView.xaml.cs">
       <DependentUpon>RibbonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StatusBarView.xaml.cs">
       <DependentUpon>StatusBarView.xaml</DependentUpon>
@@ -202,7 +255,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Icons\logo.ico" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -224,6 +279,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SettingsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\StatusBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -231,6 +290,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\logo_0128.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\lib\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\lib\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

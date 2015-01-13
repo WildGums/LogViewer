@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Weavers>
-  <Catel />
-  <ModuleInit />
+  <ModuleInit/>
+  <MethodTimer/>
+  <Catel/>
+  <LoadAssembliesOnStartup>
+    <ExcludeAssemblies>
+      MethodTimer
+      Obsolete
+      Catel.Fody.Attributes
+    </ExcludeAssemblies>
+  </LoadAssembliesOnStartup>
 </Weavers>
