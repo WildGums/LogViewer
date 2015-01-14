@@ -22,10 +22,10 @@
         <fluent:Ribbon.Tabs >
             <fluent:RibbonTabItem Header="View">
                 <fluent:RibbonGroupBox Header="Level">
-                    <fluent:ToggleButton Header="Debug" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Bug}}" IsChecked="{Binding ShowDebug}"/>
-                    <fluent:ToggleButton Header="Info" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Info}}" IsChecked="{Binding ShowInfo}"/>
-                    <fluent:ToggleButton Header="Warning" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Warning}}" IsChecked="{Binding ShowWarning}"/>
-                    <fluent:ToggleButton Header="Error" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Remove}}" IsChecked="{Binding ShowError}"/>
+                    <fluent:ToggleButton Header="Debug" LargeIcon="/LogViewer;component\Resources\Images\debug.png" SnapsToDevicePixels="True" UseLayoutRounding="True" IsChecked="{Binding ShowDebug}"/>
+                    <fluent:ToggleButton Header="Info" LargeIcon="/LogViewer;component\Resources\Images\info.png" SnapsToDevicePixels="True" UseLayoutRounding="True" IsChecked="{Binding ShowInfo}"/>
+                    <fluent:ToggleButton Header="Warning" LargeIcon="/LogViewer;component\Resources\Images\warning.png" IsChecked="{Binding ShowWarning}"/>
+                    <fluent:ToggleButton Header="Error" LargeIcon="/LogViewer;component\Resources\Images\error.png" IsChecked="{Binding ShowError}"/>
                 </fluent:RibbonGroupBox>
                 
                 <fluent:RibbonGroupBox Header="Date range">

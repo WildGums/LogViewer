@@ -119,22 +119,22 @@
                 </DataTrigger>
                 <DataTrigger Binding="{Binding LogEvent}" Value="Error">
                     <Setter Property="BorderBrush" Value="Red" />
-                    <Setter Property="Content" Value="e" />
-                    <Setter Property="Padding" Value="0 1 1.5 0" />
+                    <Setter Property="Content" Value="!" />
+                    <Setter Property="Padding" Value="0 1 1 0" />
                     <Setter Property="Path.Data" Value="{StaticResource TriangleGeometry}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding LogEvent}" Value="Warning">
                     <Setter Property="BorderBrush" Value="Orange" />
                     <Setter Property="Content" Value="w" />
-                    <Setter Property="Padding" Value="0 0 2 4" />
-                    <Setter Property="Path.Margin" Value="2 0 1 -1" />
-                    <Setter Property="Path.Data" Value="{StaticResource HexagonGeometry}" />
+                    <Setter Property="Padding" Value="0 0 0 4" />
+                    <Setter Property="Path.Data" Value="{StaticResource RectngleGeometry}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding LogEvent}" Value="Debug">
-                    <Setter Property="BorderBrush" Value="LightGray" />
+                    <Setter Property="BorderBrush" Value="DarkGray" />
                     <Setter Property="Content" Value="d" />
-                    <Setter Property="Padding" Value="0 0 0 2" />
-                    <Setter Property="Path.Data" Value="{StaticResource RectngleGeometry}" />
+                    <Setter Property="Padding" Value="0 0 2 3" />
+                    <Setter Property="Path.Margin" Value="3 0 1 -1" />
+                    <Setter Property="Path.Data" Value="{StaticResource HexagonGeometry}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
