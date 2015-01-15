@@ -18,10 +18,10 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         
-        <Button Grid.Row="0" Grid.Column="0" Content="Add Folder" Margin="6 2 2 2" Command="{Binding AddCompany}"/>
-        <Button Grid.Row="0" Grid.Column="1"  Content="Remove Folder" Margin="2 2 6 2" Command="{Binding DeleteCompany}"/>
+        <Button Grid.Row="0" Grid.Column="0" Content="Add Folder" Margin="16 2 2 2" Command="{Binding AddCompany}"/>
+        <Button Grid.Row="0" Grid.Column="1"  Content="Remove Folder" Margin="2 2 16 2" Command="{Binding DeleteCompany}"/>
         
-        <TreeView Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="0" Padding="5" ItemsSource="{Binding Companies}">
+        <TreeView Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="0" ItemsSource="{Binding Companies}">
             <i:Interaction.Behaviors >
                 <behaviors:MultipleSelectionBehavior SelectedItems="{Binding SelectedItems}" />
             </i:Interaction.Behaviors>
@@ -30,8 +30,8 @@
                 <Style x:Key="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}" TargetType="{x:Type TreeViewItem}">
                     <Style.Triggers>
                         <Trigger Property="behaviors:MultipleSelectionBehavior.IsItemSelected" Value="True">
-                            <Setter Property="Background" Value="{x:Static SystemColors.HighlightBrush}" />
-                            <Setter Property="Foreground" Value="{x:Static SystemColors.HighlightTextBrush}" />
+                            <Setter Property="Background" Value="#FCF3D9" />
+                            <Setter Property="Foreground" Value="Black" />
                         </Trigger>
                     </Style.Triggers>
                     <Style.Setters>
