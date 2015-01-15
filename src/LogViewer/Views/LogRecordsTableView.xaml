@@ -70,17 +70,53 @@
 
         <!--Default ColmnHeaderStyle-->
         <Style x:Key="DefaultColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
-
+            
         </Style>
         
+        <!--Default DefaultCellStyle-->
+        <Style x:Key="DefaultCellStyle" TargetType="{x:Type DataGridCell}">
+            <Setter Property="Padding" Value="3" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter Margin="{TemplateBinding Padding}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="DataGridCell.IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="Background" Value="#FCF3D9" />
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsSelected" Value="True"/>
+                        <Condition Property="IsFocused" Value="True"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="Background" Value="#FED25A" />
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="IconColumnCellStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource DefaultCellStyle}">
+            <Setter Property="Padding" Value="1" />
+        </Style>
+
         <!--Default DataGrid Style-->
         <Style x:Key="DefaultDataGridStyle" TargetType="{x:Type DataGrid}">
             <Setter Property="RowStyle" Value="{StaticResource DefaultRowStyle}" />
+            <Setter Property="AlternatingRowBackground" Value="#F5F5F5" />
             <Setter Property="ColumnHeaderStyle" Value="{StaticResource DefaultColumnHeaderStyle}" />
             <Setter Property="AutoGenerateColumns" Value="False" />
             <Setter Property="CanUserAddRows" Value="False" />
             <Setter Property="CanUserDeleteRows" Value="False" />
             <Setter Property="CanUserReorderColumns" Value="False" />
+            <Setter Property="VerticalGridLinesBrush" Value="LightGray" />
+            <Setter Property="HorizontalGridLinesBrush" Value="LightGray" />
+            <Setter Property="CellStyle" Value="{StaticResource DefaultCellStyle}" />
         </Style>
 
         <Geometry x:Key="HexagonGeometry">M5.26,17.9 L15.8,17.9 21.1,8.9 15.8,0 5.26,0 0,8.9200432 C0,8.9200432 5.26,17.9 5.26,17.9 z</Geometry>
@@ -151,7 +187,7 @@
         
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Timestamp" Width="Auto" Binding="{Binding DateTime}" IsReadOnly="True"/>
-                <DataGridTemplateColumn Header="Level" Width="Auto" IsReadOnly="True">
+                <DataGridTemplateColumn Header="Level" Width="Auto" IsReadOnly="True" CellStyle="{StaticResource IconColumnCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                         <Label Style="{StaticResource DataGridLevelLabelStyle}" />
