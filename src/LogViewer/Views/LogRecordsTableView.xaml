@@ -116,11 +116,11 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Border x:Name="BackgroundBorder" BorderThickness="1" Height="32" Grid.ColumnSpan="2" 
+                            <Border x:Name="BackgroundBorder" BorderThickness="1" Height="30" Grid.ColumnSpan="2" 
                                                 Background="{StaticResource DataGridHeaderBackgroundBrush}" />
                             <ContentPresenter Margin="3 6 3 3" VerticalAlignment="Center" />
                             <Path x:Name="SortArrow" Visibility="Collapsed" Data="M0,0 L1,0 0.5,1 z" Stretch="Fill" 
-                                            Grid.Column="1" Width="8" Height="6" Fill="White" Margin="0,0,8,0" 
+                                            Grid.Column="1" Width="8" Height="6" Fill="Black" Margin="0,0,8,0" 
                                             VerticalAlignment="Center" RenderTransformOrigin="0.5,0.4" />
                             <Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left" 
                                             Style="{StaticResource ColumnHeaderGripperStyle}"/>
@@ -250,7 +250,7 @@
                 <DataTrigger Binding="{Binding LogEvent}" Value="Info">
                     <Setter Property="BorderBrush" Value="RoyalBlue" />
                     <Setter Property="Content" Value="i" />
-                    <Setter Property="Padding" Value="0 0 0 2" />
+                    <Setter Property="Padding" Value="0 0 1 2" />
                     <Setter Property="Path.Data" Value="{StaticResource EllipseGeometry}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding LogEvent}" Value="Error">
@@ -262,7 +262,7 @@
                 <DataTrigger Binding="{Binding LogEvent}" Value="Warning">
                     <Setter Property="BorderBrush" Value="Orange" />
                     <Setter Property="Content" Value="w" />
-                    <Setter Property="Padding" Value="0 0 0 4" />
+                    <Setter Property="Padding" Value="0 0 1 3" />
                     <Setter Property="Path.Data" Value="{StaticResource RectngleGeometry}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding LogEvent}" Value="Debug">
