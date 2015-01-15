@@ -38,7 +38,7 @@
                                           BorderThickness="0,0,0,1" 
                                           IsExpanded="{Binding Path=Items[0].LogFile.IsExpanded}">
                                     <Expander.Header>
-                                        <DockPanel TextBlock.FontWeight="Bold">
+                                        <DockPanel TextBlock.FontWeight="Medium">
                                             <TextBlock Text="{Binding Path=Items[0].LogFile.Info.Name}" Margin="5,0,5,0" />
                                         </DockPanel>
                                     </Expander.Header>
