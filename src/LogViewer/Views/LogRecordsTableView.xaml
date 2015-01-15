@@ -158,7 +158,7 @@
                     </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Target Type Name" Width="Auto" Binding="{Binding TargetTypeName}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Type Name" Width="Auto" Binding="{Binding TargetTypeName}" IsReadOnly="True"/>
                 <DataGridTemplateColumn Header="Message" Width="Auto" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

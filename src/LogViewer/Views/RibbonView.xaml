@@ -36,23 +36,20 @@
                     <fluent:GalleryPanel Orientation="Vertical">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
-                                <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Start date: " HorizontalAlignment="Right" VerticalAlignment="Center" />
-                            <DatePicker Grid.Column="1" Grid.Row="0" SelectedDate="{Binding StartDate}" Margin="0 4 0 2"
-                                        IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="0" Grid.Row="1" Text="End date: " HorizontalAlignment="Right" VerticalAlignment="Center" />
-                            <DatePicker Grid.Column="1" Grid.Row="1" SelectedDate="{Binding EndDate}" Margin="0 2 0 0"
-                                        IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Start: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <DatePicker Grid.Column="1" Grid.Row="0" Height="25" SelectedDate="{Binding StartDate}" VerticalAlignment="Center" IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1"  Text="End: " HorizontalAlignment="Right" />
+                            <DatePicker Grid.Column="1" Grid.Row="1" Height="25" SelectedDate="{Binding EndDate}" IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
                         </Grid>
                     </fluent:GalleryPanel>
-                    <fluent:ToggleButton x:Name="toggleButton" Header="Use in filter" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding UseDateRange}"/>
+                    <fluent:ToggleButton x:Name="toggleButton" Header="Enable" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding UseDateRange}"/>
                 </fluent:RibbonGroupBox>
 
                 <fluent:RibbonGroupBox Header="Highlighting">
@@ -63,8 +60,8 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
-                                <TextBlock Text="Search template: " VerticalAlignment="Center"/>
-                                <TextBox Width="300" Text="{Binding Path=SearchTemplate.TemplateString, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="Find: " VerticalAlignment="Center"/>
+                                <TextBox Width="250" Text="{Binding Path=SearchTemplate.TemplateString, UpdateSourceTrigger=PropertyChanged}"/>
                             </StackPanel>
                             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
                                 <CheckBox Content="Match case" VerticalAlignment="Center" IsChecked="{Binding Path=SearchTemplate.MatchCase}"/>
@@ -72,7 +69,7 @@
                             </StackPanel>
                         </Grid>
                         <fluent:Button Header="Reset" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Eraser}}" Command="{catel:CommandManagerBinding Filter.ResetSearchTemplate}"/>
-                        <fluent:ToggleButton Header="Use in filter" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding UseTextSearch}"/>
+                        <fluent:ToggleButton Header="Filter" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding UseTextSearch}"/>
                     </fluent:GalleryPanel>
                 </fluent:RibbonGroupBox>
 
