@@ -11,6 +11,21 @@
         <SolidColorBrush x:Key="DataGridHeaderMouseOverBackgroundBrush" Color="#FCF3D9"/>
         <SolidColorBrush x:Key="DataGridHeaderBorderBrush" Color="LightGray"/>
         <SolidColorBrush x:Key="DataGridHeaderBackgroundBrush" Color="#F4F4F4"/>
+
+        <!--ExpanderStyle-->
+        <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource DefaultExpanderStyle}">
+            <Setter Property="BorderBrush" Value="{StaticResource AccentColorBrush}"/>
+            <Setter Property="Background" Value="#FCF3D9"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        </Style>
+        
+        <!--GridSplitterStyle-->
+        <Style x:Key="HorisontalGridSplitterStyle"  TargetType="{x:Type GridSplitter}" >
+            <Setter Property="Height" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="Panel.ZIndex" Value="2"/>
+        </Style>
         
         <!--Default GroupStyle-->
         <GroupStyle x:Key="groupStyle">
@@ -33,16 +48,16 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type GroupItem}">
-                                <Expander BorderBrush="#FED25A" 
-                                          Background="#FCF3D9"
-                                          BorderThickness="0,0,0,1" 
-                                          IsExpanded="{Binding Path=Items[0].LogFile.IsExpanded}">
-                                    <Expander.Header>
-                                        <DockPanel TextBlock.FontWeight="Medium">
-                                            <TextBlock Text="{Binding Path=Items[0].LogFile.Info.Name}" Margin="5,0,5,0" />
-                                        </DockPanel>
+                                    <Expander IsExpanded="{Binding Path=Items[0].LogFile.IsExpanded}">
+                                        <Expander.Header>
+                                            <DockPanel TextBlock.FontWeight="Medium">
+                                                <TextBlock Text="{Binding Path=Items[0].LogFile.Info.Name}" Margin="5,0,5,0" />
+                                            </DockPanel>
                                     </Expander.Header>
-                                    <ItemsPresenter/>
+                                    <Grid>
+                                        <GridSplitter IsEnabled="False" VerticalAlignment="Top" Style="{StaticResource HorisontalGridSplitterStyle}"/>
+                                        <ItemsPresenter/>
+                                    </Grid>
                                 </Expander>
                             </ControlTemplate>
                         </Setter.Value>
