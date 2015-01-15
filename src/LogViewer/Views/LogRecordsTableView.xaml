@@ -101,9 +101,9 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Border x:Name="BackgroundBorder" BorderThickness="1" Height="30" Grid.ColumnSpan="2" 
+                            <Border x:Name="BackgroundBorder" BorderThickness="1" Height="32" Grid.ColumnSpan="2" 
                                                 Background="{StaticResource DataGridHeaderBackgroundBrush}" />
-                            <ContentPresenter Margin="3" VerticalAlignment="Center" />
+                            <ContentPresenter Margin="3 6 3 3" VerticalAlignment="Center" />
                             <Path x:Name="SortArrow" Visibility="Collapsed" Data="M0,0 L1,0 0.5,1 z" Stretch="Fill" 
                                             Grid.Column="1" Width="8" Height="6" Fill="White" Margin="0,0,8,0" 
                                             VerticalAlignment="Center" RenderTransformOrigin="0.5,0.4" />
