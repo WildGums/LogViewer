@@ -89,7 +89,7 @@
         
         <!--Default ColmnHeaderStyle-->
         <Style x:Key="DefaultColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
-            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Padding" Value="3"/>
             <Setter Property="Margin" Value="-1 -3 0 0"/>
             <Setter Property="FontWeight" Value="Normal"/>
             <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -101,7 +101,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Border x:Name="BackgroundBorder" BorderThickness="1 1 1 1" Grid.ColumnSpan="2" 
+                            <Border x:Name="BackgroundBorder" BorderThickness="1" Height="30" Grid.ColumnSpan="2" 
                                                 Background="{StaticResource DataGridHeaderBackgroundBrush}" />
                             <ContentPresenter Margin="3" VerticalAlignment="Center" />
                             <Path x:Name="SortArrow" Visibility="Collapsed" Data="M0,0 L1,0 0.5,1 z" Stretch="Fill" 
