@@ -261,10 +261,11 @@
         </Style>
     </catel:UserControl.Resources>
     
-    <DataGrid x:Name="Grid" Grid.Row="1" Style="{StaticResource DefaultDataGridStyle}" ItemsSource="{Binding}" 
+    <DataGrid x:Name="Grid" Grid.Row="1" Style="{StaticResource DefaultDataGridStyle}" ItemsSource="{Binding IsAsync=True}" 
               EnableRowVirtualization="True"
               EnableColumnVirtualization="True"
-              VerticalScrollBarVisibility="Visible">            
+              VerticalScrollBarVisibility="Visible"
+              >            
             <DataGrid.DataContext>
                 <CollectionViewSource Source="{Binding LogRecords}">                    
                     <!-- BV: Disabled grouping for now because it disables virtualisationa and slows everything down...
