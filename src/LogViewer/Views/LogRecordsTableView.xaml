@@ -8,6 +8,10 @@
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
     
     <catel:UserControl.Resources>
+        <SolidColorBrush x:Key="DataGridHeaderMouseOverBackgroundBrush" Color="#FCF3D9"/>
+        <SolidColorBrush x:Key="DataGridHeaderBorderBrush" Color="LightGray"/>
+        <SolidColorBrush x:Key="DataGridHeaderBackgroundBrush" Color="#F4F4F4"/>
+        
         <!--Default GroupStyle-->
         <GroupStyle x:Key="groupStyle">
             <GroupStyle.Panel>
@@ -29,7 +33,8 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type GroupItem}">
-                                <Expander BorderBrush="#FFA4B97F" 
+                                <Expander BorderBrush="#FED25A" 
+                                          Background="#FCF3D9"
                                           BorderThickness="0,0,0,1" 
                                           IsExpanded="{Binding Path=Items[0].LogFile.IsExpanded}">
                                     <Expander.Header>
@@ -67,10 +72,85 @@
                 </MultiDataTrigger>
             </Style.Triggers>
         </Style>
-
+        
+        <!--Default ColumnHeaderGripperStyle-->
+        <Style x:Key="ColumnHeaderGripperStyle" TargetType="{x:Type Thumb}">
+            <Setter Property="Width" Value="8"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Cursor" Value="SizeWE"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
         <!--Default ColmnHeaderStyle-->
         <Style x:Key="DefaultColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
-            
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="-1 -3 0 0"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                        <Grid Background="LightGray">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="BackgroundBorder" BorderThickness="1 1 1 1" Grid.ColumnSpan="2" 
+                                                Background="{StaticResource DataGridHeaderBackgroundBrush}" />
+                            <ContentPresenter Margin="3" VerticalAlignment="Center" />
+                            <Path x:Name="SortArrow" Visibility="Collapsed" Data="M0,0 L1,0 0.5,1 z" Stretch="Fill" 
+                                            Grid.Column="1" Width="8" Height="6" Fill="White" Margin="0,0,8,0" 
+                                            VerticalAlignment="Center" RenderTransformOrigin="0.5,0.4" />
+                            <Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left" 
+                                            Style="{StaticResource ColumnHeaderGripperStyle}"/>
+                            <Thumb x:Name="PART_RightHeaderGripper" HorizontalAlignment="Right" 
+                                            Style="{StaticResource ColumnHeaderGripperStyle}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="SortDirection" Value="{x:Null}">
+                                <Setter TargetName="BackgroundBorder" Property="Background" Value="{DynamicResource DataGridHeaderBackgroundBrush}" />
+                                <Setter TargetName="BackgroundBorder" Property="BorderBrush" Value="Transparent" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                    <Condition Property="SortDirection" Value="{x:Null}" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="BackgroundBorder" Value="{StaticResource DataGridHeaderMouseOverBackgroundBrush}" />
+                                <Setter Property="BorderBrush" TargetName="BackgroundBorder" Value="{StaticResource DataGridHeaderBorderBrush}" />
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="true" />
+                                    <Condition Property="SortDirection" Value="{x:Null}" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="BackgroundBorder" Property="Background" Value="{StaticResource DataGridHeaderMouseOverBackgroundBrush}" />
+                                <Setter TargetName="BackgroundBorder" Property="BorderBrush" Value="{StaticResource DataGridHeaderBorderBrush}" />
+                            </MultiTrigger>
+                            <Trigger Property="SortDirection" Value="Ascending">
+                                <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="SortArrow" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="180" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="SortDirection" Value="Descending">
+                                <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="DisplayIndex" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="PART_LeftHeaderGripper" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
         
         <!--Default DefaultCellStyle-->
@@ -107,7 +187,12 @@
 
         <!--Default DataGrid Style-->
         <Style x:Key="DefaultDataGridStyle" TargetType="{x:Type DataGrid}">
+            <Setter Property="Margin" Value="-2 -1 0 0" />
+            <Setter Property="BorderBrush" Value="LightGray" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="SelectionMode" Value="Single" />
             <Setter Property="RowStyle" Value="{StaticResource DefaultRowStyle}" />
+            <Setter Property="RowHeaderWidth" Value="0" />
             <Setter Property="AlternatingRowBackground" Value="#F5F5F5" />
             <Setter Property="ColumnHeaderStyle" Value="{StaticResource DefaultColumnHeaderStyle}" />
             <Setter Property="AutoGenerateColumns" Value="False" />
