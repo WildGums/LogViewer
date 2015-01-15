@@ -99,7 +99,7 @@
                         <Grid Background="LightGray">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Border x:Name="BackgroundBorder" BorderThickness="1 1 1 1" Grid.ColumnSpan="2" 
                                                 Background="{StaticResource DataGridHeaderBackgroundBrush}" />
@@ -261,12 +261,16 @@
         </Style>
     </catel:UserControl.Resources>
     
-    <DataGrid x:Name="Grid" Grid.Row="1" Style="{StaticResource DefaultDataGridStyle}" ItemsSource="{Binding}">            
+    <DataGrid x:Name="Grid" Grid.Row="1" Style="{StaticResource DefaultDataGridStyle}" ItemsSource="{Binding}" 
+              EnableRowVirtualization="True"
+              EnableColumnVirtualization="True"
+              VerticalScrollBarVisibility="Visible">            
             <DataGrid.DataContext>
                 <CollectionViewSource Source="{Binding LogRecords}">                    
+                    <!-- BV: Disabled grouping for now because it disables virtualisationa and slows everything down...
                     <CollectionViewSource.GroupDescriptions>
                         <PropertyGroupDescription PropertyName="LogFile"/>
-                    </CollectionViewSource.GroupDescriptions>
+                    </CollectionViewSource.GroupDescriptions>-->
                 </CollectionViewSource>
             </DataGrid.DataContext>
         
