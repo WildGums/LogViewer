@@ -306,6 +306,24 @@
   <ItemGroup>
     <Resource Include="Resources\Images\info.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\addWorkspace.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\filter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\reset.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\saveWorkspace.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\shortcuts.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\lib\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\lib\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

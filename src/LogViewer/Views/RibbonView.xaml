@@ -9,7 +9,11 @@
                    xmlns:logViewer="clr-namespace:LogViewer"
                    xmlns:views="clr-namespace:Orc.WorkspaceManagement.Views;assembly=Orc.WorkspaceManagement.Xaml"
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
-    
+    <catel:UserControl.Resources>
+        <Style TargetType="{x:Type Image}">
+            <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
+        </Style>
+    </catel:UserControl.Resources>
     <fluent:Ribbon x:Name="ribbon"  IsQuickAccessToolBarVisible="False" CanCustomizeRibbon="False" AutomaticStateManagement="False">
         <fluent:Ribbon.Menu>
             <fluent:Backstage Header="File">
@@ -40,13 +44,15 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Start date: " HorizontalAlignment="Right" />
-                            <DatePicker Grid.Column="1" Grid.Row="0" SelectedDate="{Binding StartDate}" IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
-                            <TextBlock Grid.Column="0" Grid.Row="1" Text="End date: " HorizontalAlignment="Right" />
-                            <DatePicker Grid.Column="1" Grid.Row="1" SelectedDate="{Binding EndDate}" IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Start date: " HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <DatePicker Grid.Column="1" Grid.Row="0" SelectedDate="{Binding StartDate}" Margin="0 4 0 2"
+                                        IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="End date: " HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <DatePicker Grid.Column="1" Grid.Row="1" SelectedDate="{Binding EndDate}" Margin="0 2 0 0"
+                                        IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
                         </Grid>
                     </fluent:GalleryPanel>
-                    <fluent:ToggleButton x:Name="toggleButton" Header="Use in filter" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}" IsChecked="{Binding UseDateRange}"/>
+                    <fluent:ToggleButton x:Name="toggleButton" Header="Use in filter" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding UseDateRange}"/>
                 </fluent:RibbonGroupBox>
 
                 <fluent:RibbonGroupBox Header="Highlighting">
@@ -66,7 +72,7 @@
                             </StackPanel>
                         </Grid>
                         <fluent:Button Header="Reset" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Eraser}}" Command="{catel:CommandManagerBinding Filter.ResetSearchTemplate}"/>
-                        <fluent:ToggleButton Header="Use in filter" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Filter}}" IsChecked="{Binding UseTextSearch}"/>
+                        <fluent:ToggleButton Header="Use in filter" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding UseTextSearch}"/>
                     </fluent:GalleryPanel>
                 </fluent:RibbonGroupBox>
 
@@ -75,20 +81,20 @@
                 </fluent:RibbonGroupBox>-->
 
                 <fluent:RibbonGroupBox Header="Workspaces">
-                    <fluent:SplitButton Header="{Binding CurrentWorkspace.Title}" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Plus}}" 
+                    <fluent:SplitButton Header="{Binding CurrentWorkspace.Title}" LargeIcon="/LogViewer;component\Resources\Images\addWorkspace.png" 
                                         Command="{Binding CreateWorkspace}" ToolTip="{Binding CurrentWorkspace.Title}" Size="Large" Width="75">
                         <views:WorkspacesView />
                     </fluent:SplitButton>
 
-                    <fluent:Button Header="Save" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Save}}"
+                    <fluent:Button Header="Save" LargeIcon="/LogViewer;component\Resources\Images\saveWorkspace.png"
                                    Command="{Binding SaveWorkspace}" Size="Large" />
                 </fluent:RibbonGroupBox>
 
                 <fluent:RibbonGroupBox Header="Settings">
-                    <fluent:Button Header="Settings" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Pencil}}"
+                    <fluent:Button Header="Settings" LargeIcon="/LogViewer;component\Resources\Images\settings.png"
                                    Command="{catel:CommandManagerBinding Settings.General}" Size="Large" />
 
-                    <fluent:SplitButton Header="Shortcuts" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.KeyboardO}}"
+                    <fluent:SplitButton Header="Shortcuts" LargeIcon="/LogViewer;component\Resources\Images\shortcuts.png"
                                         Command="{Binding ShowKeyboardMappings}" Size="Large">
                         <orchestra:KeyboardMappingsOverviewView />
                     </fluent:SplitButton>
