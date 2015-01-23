@@ -7,9 +7,12 @@
 
 namespace LogViewer.ViewModels
 {
+    using System;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.ComponentModel;
+    using System.Reactive;
+    using System.Reactive.Linq;
     using System.Threading.Tasks;
 
     using Catel;
@@ -23,6 +26,8 @@ namespace LogViewer.ViewModels
     {
         #region Fields
         private readonly IFilterService _filterService;
+
+        private IDisposable _applyFilterListener;
 
         private ObservableCollection<NavigationNode> _prevSelectedItems;
         #endregion
@@ -143,7 +148,21 @@ namespace LogViewer.ViewModels
         protected override async Task Initialize()
         {
             Filter.PropertyChanged += OnFilterIsDirtyChanged;
-            SearchTemplate.PropertyChanged += OnSearchTemplateIsDirtyChanged;
+            
+            var observable = Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+                h => SearchTemplate.PropertyChanged += h,
+                h => SearchTemplate.PropertyChanged -= h);
+
+            _applyFilterListener = observable
+                .Throttle(TimeSpan.FromMilliseconds(500))
+                .ObserveOnDispatcher()
+                .Subscribe(e =>
+                {
+                    if (Filter.UseTextSearch)
+                    {
+                        ApplyFilter(SearchTemplate);
+                    }
+                });
 
             await base.Initialize();
         }
@@ -151,7 +170,8 @@ namespace LogViewer.ViewModels
         protected override async Task Close()
         {
             Filter.PropertyChanged -= OnFilterIsDirtyChanged;
-            SearchTemplate.PropertyChanged -= OnSearchTemplateIsDirtyChanged;
+            
+            _applyFilterListener.Dispose();
 
             await base.Close();
         }

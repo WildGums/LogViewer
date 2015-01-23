@@ -128,6 +128,21 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Microsoft.Net.Http.2.1.10\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
     </Reference>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\..\lib\Rx-Core.2.2.5\lib\net40\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\..\lib\Rx-Interfaces.2.2.5\lib\net40\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\..\lib\Rx-Linq.2.2.5\lib\net40\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\..\lib\Rx-PlatformServices.2.2.5\lib\net40\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading">
+      <HintPath>..\..\lib\Rx-XAML.2.2.5\lib\net40\System.Reactive.Windows.Threading.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime">
       <HintPath>..\..\lib\Microsoft.Bcl.1.1.9\lib\net40\System.Runtime.dll</HintPath>
     </Reference>
