@@ -155,7 +155,7 @@ namespace LogViewer.ViewModels
                 return;
             }
 
-            SearchTemplate.RegularExpression = _regexService.ConvertToRegex(SearchTemplate.TemplateString, SearchTemplate.MatchCase, SearchTemplate.MatchWholeWord);
+            SearchTemplate.RegularExpression = SearchTemplate.IsEmpty() ? string.Empty : _regexService.ConvertToRegex(SearchTemplate.TemplateString, SearchTemplate.MatchCase, SearchTemplate.MatchWholeWord);
         }
 
         protected override async Task Initialize()
