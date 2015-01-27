@@ -24,7 +24,7 @@ namespace LogViewer.Services
         public IEnumerable<LogRecord> LoadRecordsFromFile(LogFile logFile)
         {
             Argument.IsNotNull(() => logFile);
-
+            int counter = 0;
             using (var stream = new FileStream(logFile.Info.FullName, FileMode.Open))
             {
                 using (var reader = new StreamReader(stream))
@@ -42,7 +42,7 @@ namespace LogViewer.Services
                                 yield return record;
                             }
 
-                            record = new LogRecord();
+                            record = new LogRecord() { Position = counter++ };
                             record.LogFile = logFile;
                             record.DateTime = ExtractDateTime(ref line);
 

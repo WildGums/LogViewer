@@ -66,6 +66,8 @@ namespace LogViewer.Services
 
             logFile.LogRecords.AddRange(_logRecordService.LoadRecordsFromFile(logFile));
 
+            logFile.EnsureFullTextIndex();
+
             return logFile;
         }
         #endregion

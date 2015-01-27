@@ -17,6 +17,11 @@ namespace LogViewer.Models
         #region Properties
         public LogFile LogFile { get; set; }
 
+        /// <summary>
+        /// Position of the record in the file. Incremental id for internal use.
+        /// </summary>
+        public int Position { get; set; }
+
         public DateTime DateTime { get; set; }
 
         public LogEvent LogEvent { get; set; }
