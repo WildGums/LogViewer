@@ -7,6 +7,7 @@
 
 namespace LogViewer.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -23,7 +24,16 @@ namespace LogViewer.Services
             Argument.IsNotNull(() => logFiles);
             Argument.IsNotNull(() => filter);
 
-            return FilterFiles(filter, logFiles).SelectMany(file => file.LogRecords).Where(record => filter.IsAcceptableTo(record.LogEvent) && filter.IsAcceptableTo(record.Message));
+            if (!filter.SearchTemplate.UseFullTextSearch || string.IsNullOrEmpty(filter.SearchTemplate.TemplateString))
+            {
+                return FilterFiles(filter, logFiles).SelectMany(file => file.LogRecords).Where(record => filter.IsAcceptableTo(record.LogEvent) && filter.IsAcceptableTo(record.Message));
+            }
+
+            Func<LogRecord, bool> where = record => filter.IsAcceptableTo(record.LogEvent);
+            return FilterFiles(filter, logFiles) // select only approriate files
+                .SelectMany(file => file.Select(filter.SearchTemplate.TemplateString, where)) // select records and scores from each file
+                .OrderBy(t => t.Item2) // sort by relevance
+                .Select(t => t.Item1); // we don't need score anymore
         }
 
         private IEnumerable<LogFile> FilterFiles(Filter filter, IEnumerable<LogFile> logFiles)

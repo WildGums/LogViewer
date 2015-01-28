@@ -12,6 +12,8 @@ namespace LogViewer.Models
         #region Properties
         public string TemplateString { get; set; }
 
+        public bool UseFullTextSearch { get; set; }
+
         public bool MatchCase { get; set; }
 
         public bool MatchWholeWord { get; set; }

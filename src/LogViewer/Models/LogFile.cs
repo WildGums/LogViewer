@@ -8,16 +8,20 @@
 namespace LogViewer.Models
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
     using Lucene.Net.Analysis;
     using Lucene.Net.Analysis.Standard;
     using Lucene.Net.Documents;
     using Lucene.Net.Index;
+    using Lucene.Net.QueryParsers;
+    using Lucene.Net.Search;
     using Lucene.Net.Store;
     using Version = Lucene.Net.Util.Version;
 
-    public class LogFile : NavigationNode
+    public class LogFile : NavigationNode, IDisposable
     {
         public LogFile()
         {
@@ -39,6 +43,8 @@ namespace LogViewer.Models
         {
             get { return true; }
         }
+
+        public IndexSearcher Searcher { get; private set; }
 
         public void EnsureFullTextIndex()
         {
@@ -62,6 +68,44 @@ namespace LogViewer.Models
                     writer.Commit();
                 }
             }
+
+            this.Searcher = new IndexSearcher(directory);
+        }
+
+        public IEnumerable<Tuple<LogRecord, float>> Select(string text, Func<LogRecord, bool> where = null)
+        {
+            var analyzer = new StandardAnalyzer(Version.LUCENE_30);
+            var parser = new QueryParser(Version.LUCENE_30, "message", analyzer);
+            if (!text.Contains("*") &&
+                !text.Contains(":") &&
+                !text.Contains(" ") &&
+                !text.Contains("AND") &&
+                !text.Contains("OR"))
+            {
+                text += "*";
+            } 
+            var query = parser.Parse(text);
+            return this.Select(query, where);
+        }
+
+        public IEnumerable<Tuple<LogRecord, float>> Select(Query query, Func<LogRecord, bool> where = null)
+        {
+            TopDocs search = this.Searcher.Search(query, LogRecords.Count);
+            var result = new List<Tuple<LogRecord, float>>();
+            foreach (var scoreDoc in search.ScoreDocs)
+            {
+                float score = scoreDoc.Score;
+                int docId = scoreDoc.Doc;
+                var doc = this.Searcher.Doc(docId);
+
+                var n = int.Parse(doc.Get("id"));
+                if (where == null || where(LogRecords[n]))
+                {
+                    result.Add(new Tuple<LogRecord, float>(LogRecords[n], score));
+                }
+            }
+
+            return result;
         }
         #endregion
 
@@ -73,7 +117,15 @@ namespace LogViewer.Models
             {
                 cleanName = cleanName.Substring(0, lastNdx);
             }
-            return this.Info.DirectoryName + @"\Indices\" + cleanName;
+            return this.Info.DirectoryName + @"\Indexes\" + cleanName;
+        }
+
+        public void Dispose()
+        {
+            if (this.Searcher != null)
+            {
+                this.Searcher.Dispose();
+            }
         }
     }
 }

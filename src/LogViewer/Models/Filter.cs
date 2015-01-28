@@ -15,7 +15,7 @@ namespace LogViewer.Models
         #region Constructors
         public Filter()
         {
-            SearchTemplate = new SearchTemplate();
+            SearchTemplate = new SearchTemplate() { UseFullTextSearch = true };
             StartDate = DateTime.Today;
             EndDate = DateTime.Today;
         }
