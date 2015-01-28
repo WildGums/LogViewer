@@ -154,6 +154,7 @@ namespace LogViewer.ViewModels
                 h => SearchTemplate.PropertyChanged -= h);
 
             _applyFilterListener = observable
+                .Delay(TimeSpan.FromMilliseconds(500))
                 .Throttle(TimeSpan.FromMilliseconds(500))
                 .ObserveOnDispatcher()
                 .Subscribe(e =>
