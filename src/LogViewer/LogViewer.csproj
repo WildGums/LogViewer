@@ -186,6 +186,7 @@
     <Compile Include="Behaviors\MultipleSelectionBehavior.cs" />
     <Compile Include="Configuration\AnalyticsConfigurationSynchronizer.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Converters\BoolToInvisibilityConverter.cs" />
     <Compile Include="Extensions\AppDataServiceExtensions.cs" />
     <Compile Include="Extensions\FilterExtensions.cs" />
     <Compile Include="Extensions\ItemsControlExtensions.cs" />
@@ -345,6 +346,7 @@
   <ItemGroup>
     <Resource Include="Resources\Images\shortcuts.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\lib\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\lib\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

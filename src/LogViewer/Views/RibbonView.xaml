@@ -8,8 +8,10 @@
                    xmlns:orchestra="https://github.com/orcomp/orchestra"
                    xmlns:logViewer="clr-namespace:LogViewer"
                    xmlns:views="clr-namespace:Orc.WorkspaceManagement.Views;assembly=Orc.WorkspaceManagement.Xaml"
+                   xmlns:converters="clr-namespace:LogViewer.Converters"
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
     <catel:UserControl.Resources>
+        <converters:BoolToInvisibilityConverter x:Key="BoolToInvisibility" />
         <Style TargetType="{x:Type Image}">
             <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
         </Style>
@@ -64,11 +66,14 @@
                                 <TextBox Width="250" Margin="3" Text="{Binding Path=SearchTemplate.TemplateString, UpdateSourceTrigger=PropertyChanged}"/>
                             </StackPanel>
                             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <CheckBox Content="Match case" VerticalAlignment="Center" IsChecked="{Binding Path=SearchTemplate.MatchCase}"/>
-                                <CheckBox Content="Match whole word" VerticalAlignment="Center" IsChecked="{Binding Path=SearchTemplate.MatchWholeWord}"/>
+                                <CheckBox Content="Match case" VerticalAlignment="Center" IsChecked="{Binding Path=SearchTemplate.MatchCase}" 
+                                          Visibility="{Binding Path=SearchTemplate.UseFullTextSearch, Converter={StaticResource BoolToInvisibility}}"/>
+                                <CheckBox Content="Match whole word" VerticalAlignment="Center" IsChecked="{Binding Path=SearchTemplate.MatchWholeWord}"
+                                          Visibility="{Binding Path=SearchTemplate.UseFullTextSearch, Converter={StaticResource BoolToInvisibility}}"/>
                             </StackPanel>
                         </Grid>
                         <fluent:Button Header="Reset" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Eraser}}" Command="{catel:CommandManagerBinding Filter.ResetSearchTemplate}"/>
+                        <fluent:ToggleButton Header="Full Text" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.FileText}}" IsChecked="{Binding Path=SearchTemplate.UseFullTextSearch}" />
                         <fluent:ToggleButton Header="Filter" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding UseTextSearch}"/>
                     </fluent:GalleryPanel>
                 </fluent:RibbonGroupBox>
