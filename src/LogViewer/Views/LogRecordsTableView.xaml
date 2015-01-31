@@ -300,6 +300,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Type Name" Width="Auto" Binding="{Binding TargetTypeName}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="ThreadId" Width="Auto" Binding="{Binding ThreadId}" IsReadOnly="True"/>
                 <DataGridTemplateColumn Header="Message" Width="Auto" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

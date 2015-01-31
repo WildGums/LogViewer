@@ -28,6 +28,8 @@ namespace LogViewer.Models
 
         public string TargetTypeName { get; set; }
 
+        public string ThreadId { get; set; }
+
         public string Message { get; set; }
         #endregion
     }

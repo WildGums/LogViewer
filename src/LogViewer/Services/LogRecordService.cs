@@ -53,6 +53,7 @@ namespace LogViewer.Services
 
                             record.LogEvent = ExtractLogEventType(ref line);
                             record.TargetTypeName = ExtractTargetTypeName(ref line);
+                            record.ThreadId = ExtractThreadId(ref line);
                             record.Message = line;
                         }
                         else
@@ -91,6 +92,13 @@ namespace LogViewer.Services
             var targetTypeName = Regex.Match(line, @"^\[[a-zA-Z\.]+\]").Value;
             line = line.Substring(targetTypeName.Length).TrimStart();
             return targetTypeName.Trim('[', ']');
+        }
+
+        private string ExtractThreadId(ref string line)
+        {
+            var threadId = Regex.Match(line, @"^\[[0-9\.]+\]").Value;
+            line = line.Substring(threadId.Length).TrimStart();
+            return threadId.Trim('[', ']');
         }
 
         private void AppendMessageLine(LogRecord logRecord, string line)
