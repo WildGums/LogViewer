@@ -7,10 +7,12 @@
 
 namespace LogViewer.Services
 {
+    using System.IO;
     using System.Linq;
     using Catel;
     using Catel.Collections;
     using Models;
+    using Path = Catel.IO.Path;
 
     public class ProductService : IProductService
     {
@@ -33,6 +35,12 @@ namespace LogViewer.Services
             Argument.IsNotNullOrEmpty(() => productFolder);
 
             var productName = productFolder.Substring(productFolder.LastIndexOf('\\') + 1);
+            var nestedLogFolder = Path.Combine(productFolder, "log");
+            if (Directory.Exists(nestedLogFolder))
+            {
+                productFolder = nestedLogFolder;
+            }
+
             var logFiles = _logFileService.GetLogFiles(productFolder);
 
             var files = logFiles as LogFile[] ?? logFiles.ToArray();
