@@ -23,7 +23,7 @@ namespace LogViewer.Services
         private static readonly Regex DateTimePattern = new Regex(@"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+", RegexOptions.Compiled);
         private static readonly Regex ThreadIdPattern = new Regex(@"^\[[0-9\.]+\]", RegexOptions.Compiled);
         private static readonly Regex LogEventPattern = new Regex(@"^\[[a-zA-Z]+\]", RegexOptions.Compiled);
-        private static readonly Regex TargetTypePattern = new Regex(@"^\[[a-zA-Z\.]+\]", RegexOptions.Compiled);
+        private static readonly Regex TargetTypePattern = new Regex(@"^\[[a-zA-Z\.\`\d]+\]", RegexOptions.Compiled);
         #endregion
 
         #region Methods
