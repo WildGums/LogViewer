@@ -36,10 +36,9 @@ namespace LogViewer.ViewModels
         #endregion
 
         #region Constructors
-        public LogNavigatorViewModel(FileBrowserModel fileBrowserModel, ISelectDirectoryService selectDirectoryService, IMessageService messageService, IAppDataService appDataService,
+        public LogNavigatorViewModel(ISelectDirectoryService selectDirectoryService, IMessageService messageService, IAppDataService appDataService,
             IFileBrowserService fileBrowserService, IFileBrowserConfigurationService fileBrowserConfigurationService)
         {
-            Argument.IsNotNull(() => fileBrowserModel);
             Argument.IsNotNull(() => selectDirectoryService);
             Argument.IsNotNull(() => messageService);
             Argument.IsNotNull(() => appDataService);
@@ -51,7 +50,7 @@ namespace LogViewer.ViewModels
             _fileBrowserService = fileBrowserService;
             _fileBrowserConfigurationService = fileBrowserConfigurationService;
 
-            FileBrowser = fileBrowserModel;
+            FileBrowser = _fileBrowserService.FileBrowserModel;
 
             AddCompany = new Command(OnAddCompanyCommandExecute);
             DeleteCompany = new Command(OnDeleteCompanyCommandExecute, CanExecuteDeleteCompanyCommand);

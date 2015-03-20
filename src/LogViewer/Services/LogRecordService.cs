@@ -33,7 +33,7 @@ namespace LogViewer.Services
         {
             Argument.IsNotNull(() => fileNode);
             int counter = 0;
-            using (var stream = new FileStream(fileNode.Info.FullName, FileMode.Open))
+            using (var stream = new FileStream(fileNode.FileInfo.FullName, FileMode.Open))
             {
                 using (var reader = new StreamReader(stream))
                 {

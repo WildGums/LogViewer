@@ -16,9 +16,15 @@ namespace LogViewer.Services
 
     internal class FilterService : IFilterService
     {
+        private readonly IIndexSearchService _indexSearchService;
+
         #region Constructors
-        public FilterService()
+        public FilterService(IIndexSearchService indexSearchService)
         {
+            Argument.IsNotNull(() => indexSearchService);
+
+            _indexSearchService = indexSearchService;
+
             Filter = new Filter();
         }
         #endregion
@@ -40,7 +46,7 @@ namespace LogViewer.Services
 
             Func<LogRecord, bool> where = record => filter.IsAcceptableTo(record.LogEvent);
             return logFiles.Where(filter.IsAcceptableTo) // select only approriate files
-                .SelectMany(file => file.Select(filter.SearchTemplate.TemplateString, where)) // select records and scores from each file
+                .SelectMany(file => _indexSearchService.Select(file,filter.SearchTemplate.TemplateString, where)) // select records and scores from each file
                 .OrderBy(t => t.Item2) // sort by relevance
                 .Select(t => t.Item1); // we don't need score anymore
         }

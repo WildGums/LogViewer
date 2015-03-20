@@ -96,6 +96,7 @@ namespace LogViewer.Services
             serviceLocator.RegisterType<IFileBrowserConfigurationService, FileBrowserConfigurationService>();
             serviceLocator.RegisterType<IFileSystemService, FileSystemService>();
             serviceLocator.RegisterType<IFileBrowserService, FileBrowserService>();
+            serviceLocator.RegisterType<IIndexSearchService, IndexSearchService>();
 
             serviceLocator.RegisterTypeAndInstantiate<FileBrowserModel>();
         }
@@ -120,12 +121,14 @@ namespace LogViewer.Services
 
             var googleAnalyticsService = _serviceLocator.ResolveType<IGoogleAnalyticsService>();
             googleAnalyticsService.AccountId = Analytics.AccountId;
+
+            _serviceLocator.RegisterTypeAndInstantiate<NavigatorConfigurationSynchronizer>();
         }
 
         [Time]
         private async Task InitializeFonts()
         {
-            FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/FileBrowser;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
+            FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/LogViewer;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
 
             FontImage.DefaultFontFamily = "FontAwesome";
 

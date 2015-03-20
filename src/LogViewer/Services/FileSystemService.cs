@@ -9,6 +9,7 @@ namespace LogViewer.Services
     using System.IO;
     using System.Linq;
     using Catel;
+    using Catel.Collections;
     using Catel.Services;
     using Models;
 
@@ -30,7 +31,7 @@ namespace LogViewer.Services
             _dispatcherService = dispatcherService;
             _logFileService = logFileService;
 
-            SetFileSearchFilter("*.*");
+            SetFileSearchFilter("*.log");
         }
         #endregion
 
@@ -53,15 +54,21 @@ namespace LogViewer.Services
             Argument.IsNotNullOrEmpty(() => path);
 
             var directoryInfo = new DirectoryInfo(path);
-            var folder = new FolderNode(directoryInfo) { IsNavigationRoot = isNavigationRoot };
+
+            FolderNode folder = null;
+            _dispatcherService.Invoke(() =>
+            {
+                folder = new FolderNode(directoryInfo) { IsNavigationRoot = isNavigationRoot };
+            });
+            
 
             var fileInfos = Directory.GetFiles(path, _wildcardsFilter, SearchOption.TopDirectoryOnly).Where(x => x.IsSupportedFile(_regexFilter)).Select(fileName => LoadFileFromFileSystem(Path.Combine(path, fileName)));
-            folder.Files = new ObservableCollection<FileNode>(fileInfos);
+           _dispatcherService.Invoke(() => folder.Files = new ObservableCollection<FileNode>(fileInfos));
 
             foreach (var directory in Directory.GetDirectories(path))
             {
                 var fullPath = Path.Combine(path, directory);
-                folder.Directories.Add(LoadFileSystemContent(fullPath));
+                _dispatcherService.Invoke(() => folder.Directories.Add(LoadFileSystemContent(fullPath)));
             }
 
             folder.ContentChanged += OnFolderContentChanged;

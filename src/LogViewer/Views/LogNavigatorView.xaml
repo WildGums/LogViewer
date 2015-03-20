@@ -20,8 +20,8 @@
         
         <Button Grid.Row="0" Grid.Column="0" Content="Add Folder" Margin="16 2 2 2" Command="{Binding AddCompany}"/>
         <Button Grid.Row="0" Grid.Column="1"  Content="Remove Folder" Margin="2 2 16 2" Command="{Binding DeleteCompany}"/>
-        
-        <TreeView Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="0" ItemsSource="{Binding Companies}">
+
+        <TreeView Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="0" ItemsSource="{Binding Directories}">
             <i:Interaction.Behaviors >
                 <behaviors:MultipleSelectionBehavior SelectedItems="{Binding SelectedItems}" />
             </i:Interaction.Behaviors>
@@ -40,7 +40,7 @@
                     </Style.Setters>
                 </Style>
 
-                <HierarchicalDataTemplate DataType="{x:Type models:NavigationNode}" ItemsSource="{Binding Children}">
+                <HierarchicalDataTemplate DataType="{x:Type models:FolderNode}" ItemsSource="{Binding Children}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Margin="0,2,0,2">
                         <TextBlock Text="{Binding Name}" Margin="5,0,0,0" VerticalAlignment="Center" />
                     </StackPanel>

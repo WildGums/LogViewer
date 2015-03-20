@@ -14,6 +14,7 @@ namespace LogViewer.Models
     using System.IO;
     using System.Windows.Data;
     using Catel;
+    using Catel.Collections;
 
     public class FolderNode : NavigationNode
     {
@@ -45,6 +46,7 @@ namespace LogViewer.Models
             _fileSystemWatcher.Created += OnChanged;
             _fileSystemWatcher.Deleted += OnChanged;
 
+            return; // temporary switched off
             _fileSystemWatcher.EnableRaisingEvents = true;
         }
         #endregion

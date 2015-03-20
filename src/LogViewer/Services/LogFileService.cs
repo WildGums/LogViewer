@@ -20,15 +20,19 @@ namespace LogViewer.Services
     public class LogFileService : ILogFileService
     {
         #region Fields
+        private static readonly Regex _fileNameMask = new Regex(@"^[a-zA-Z\.]+_(\d{4}-\d{2}-\d{2})_\d{6}_\d+\.log$", RegexOptions.Compiled);
         private readonly ILogRecordService _logRecordService;
+        private readonly IIndexSearchService _indexSearchService;
         #endregion
 
         #region Constructors
-        public LogFileService(ILogRecordService logRecordService)
+        public LogFileService(ILogRecordService logRecordService, IIndexSearchService indexSearchService)
         {
             Argument.IsNotNull(() => logRecordService);
+            Argument.IsNotNull(() => indexSearchService);
 
             _logRecordService = logRecordService;
+            _indexSearchService = indexSearchService;
         }
         #endregion
 
@@ -49,22 +53,29 @@ namespace LogViewer.Services
 
             var logFile = new FileNode(new FileInfo(fileName));
 
-            logFile.Name = logFile.Info.Name;
-            logFile.IsUnifyNamed = Regex.IsMatch(logFile.Info.Name, @"^[a-zA-Z\.]+_(\d{4}-\d{2}-\d{2})_\d{6}_\d+\.log$");
+            logFile.Name = logFile.FileInfo.Name;
+            logFile.IsUnifyNamed = _fileNameMask.IsMatch(logFile.FileInfo.Name);
             if (!logFile.IsUnifyNamed)
             {
-                logFile.Name = logFile.Info.Name;
+                logFile.Name = logFile.FileInfo.Name;
             }
             else
             {
-                logFile.Name = logFile.Info.Name;
-                var dateTimeString = Regex.Match(logFile.Info.Name, @"(\d{4}-\d{2}-\d{2})").Value;
+                logFile.Name = logFile.FileInfo.Name;
+                var dateTimeString = Regex.Match(logFile.FileInfo.Name, @"(\d{4}-\d{2}-\d{2})").Value;
                 logFile.DateTime = DateTime.ParseExact(dateTimeString, "yyyy-MM-dd", null, DateTimeStyles.None);
             }
 
-            logFile.LogRecords.AddRange(_logRecordService.LoadRecordsFromFile(logFile));
+            try
+            {
+                logFile.LogRecords.AddRange(_logRecordService.LoadRecordsFromFile(logFile));
 
-            logFile.EnsureFullTextIndex();
+                _indexSearchService.EnsureFullTextIndex(logFile);
+            }
+            catch
+            {
+                // ignored
+            }
 
             return logFile;
         }

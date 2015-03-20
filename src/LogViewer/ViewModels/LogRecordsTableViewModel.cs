@@ -40,7 +40,8 @@ namespace LogViewer.ViewModels
             Argument.IsNotNull(() => commandManager);
 
             _filterService = filterService;
-            LogViewer = fileBrowserModel;
+            FileBrowser = fileBrowserModel;
+            Filter = filterService.Filter;
 
             ResetSearchTemplate = new Command(OnResetSearchTemplateExecute);
 
@@ -53,7 +54,7 @@ namespace LogViewer.ViewModels
 
         [Model]
         [Expose("LogRecords")]
-        public FileBrowserModel LogViewer { get; set; }
+        public FileBrowserModel FileBrowser { get; set; }
 
         [ViewModelToModel("FileBrowser")]
         public ObservableCollection<NavigationNode> SelectedItems { get; set; }
@@ -62,7 +63,6 @@ namespace LogViewer.ViewModels
         [Expose("UseDateRange")]
         [Expose("StartDate")]
         [Expose("EndDate")]
-        [ViewModelToModel("FileBrowser")]
         public Filter Filter { get; set; }
 
         [Model]
@@ -94,17 +94,17 @@ namespace LogViewer.ViewModels
 
         public void OnEndDateChanged()
         {
-            _filterService.ApplyFilesFilter(LogViewer);
+            _filterService.ApplyFilesFilter(FileBrowser);
         }
 
         public void OnStartDateChanged()
         {
-            _filterService.ApplyFilesFilter(LogViewer);
+            _filterService.ApplyFilesFilter(FileBrowser);
         }
 
         public void OnUseDateRangeChanged()
         {
-            _filterService.ApplyFilesFilter(LogViewer);
+            _filterService.ApplyFilesFilter(FileBrowser);
         }
 
         private void OnSearchTemplateIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -137,7 +137,7 @@ namespace LogViewer.ViewModels
                 return;
             }
 
-            _filterService.ApplyLogRecordsFilter(LogViewer);
+            _filterService.ApplyLogRecordsFilter(FileBrowser);
 
             if (clearableModel != null)
             {

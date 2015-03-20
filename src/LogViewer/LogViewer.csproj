@@ -203,6 +203,8 @@
     <Compile Include="Services\FileBrowserService.cs" />
     <Compile Include="Services\FileSystemService.cs" />
     <Compile Include="Services\FilterService.cs" />
+    <Compile Include="Services\Interfaces\IIndexSearchService.cs" />
+    <Compile Include="Services\IndexSearchService.cs" />
     <Compile Include="Services\Interfaces\IFileBrowserService.cs" />
     <Compile Include="Services\Interfaces\IFileSystemService.cs" />
     <Compile Include="Services\Interfaces\IFileBrowserConfigurationService.cs" />
