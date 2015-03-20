@@ -30,14 +30,15 @@ namespace LogViewer.ViewModels
         private readonly IUIVisualizerService _uiVisualizerService;
         private readonly IWorkspaceManager _workspaceManager;
         private readonly IPleaseWaitService _pleaseWaitService;
+        private readonly IFilterService _filterService;
         #endregion
 
         #region Constructors
-        public RibbonViewModel(LogViewerModel logViewerModel, IRegexService regexService, ICommandManager commandManager, 
+        public RibbonViewModel(FileBrowserModel fileBrowserModel, IRegexService regexService, ICommandManager commandManager, 
             INavigationService navigationService, IConfigurationService configurationService, IUIVisualizerService uiVisualizerService,
-            IWorkspaceManager workspaceManager, IPleaseWaitService pleaseWaitService)
+            IWorkspaceManager workspaceManager, IPleaseWaitService pleaseWaitService, IFilterService filterService)
         {
-            Argument.IsNotNull(() => logViewerModel);
+            Argument.IsNotNull(() => fileBrowserModel);
             Argument.IsNotNull(() => regexService);
             Argument.IsNotNull(() => commandManager);
             Argument.IsNotNull(() => navigationService);
@@ -45,14 +46,16 @@ namespace LogViewer.ViewModels
             Argument.IsNotNull(() => uiVisualizerService);
             Argument.IsNotNull(() => workspaceManager);
             Argument.IsNotNull(() => pleaseWaitService);
+            Argument.IsNotNull(() => filterService);
 
             _regexService = regexService;
-            Filter = logViewerModel.Filter;
+            Filter = filterService.Filter;
             _navigationService = navigationService;
             _configurationService = configurationService;
             _uiVisualizerService = uiVisualizerService;
             _workspaceManager = workspaceManager;
             _pleaseWaitService = pleaseWaitService;
+            _filterService = filterService;
 
             SaveWorkspace = new Command(OnSaveWorkspaceExecute, OnSaveWorkspaceCanExecute);
             CreateWorkspace = new Command(OnCreateWorkspaceExecute);

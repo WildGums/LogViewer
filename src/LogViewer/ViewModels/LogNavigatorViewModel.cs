@@ -27,7 +27,8 @@ namespace LogViewer.ViewModels
     {
         #region Fields
         private readonly IAppDataService _appDataService;
-        private readonly ICompanyService _companyService;
+        private readonly IFileBrowserService _fileBrowserService;
+        private readonly IFileBrowserConfigurationService _fileBrowserConfigurationService;
         private readonly IMessageService _messageService;
         private readonly ISelectDirectoryService _selectDirectoryService;
 
@@ -35,20 +36,22 @@ namespace LogViewer.ViewModels
         #endregion
 
         #region Constructors
-        public LogNavigatorViewModel(LogViewerModel logViewerModel, ISelectDirectoryService selectDirectoryService, IMessageService messageService, ICompanyService companyService, IAppDataService appDataService)
+        public LogNavigatorViewModel(FileBrowserModel fileBrowserModel, ISelectDirectoryService selectDirectoryService, IMessageService messageService, IAppDataService appDataService,
+            IFileBrowserService fileBrowserService, IFileBrowserConfigurationService fileBrowserConfigurationService)
         {
-            Argument.IsNotNull(() => logViewerModel);
+            Argument.IsNotNull(() => fileBrowserModel);
             Argument.IsNotNull(() => selectDirectoryService);
             Argument.IsNotNull(() => messageService);
-            Argument.IsNotNull(() => companyService);
             Argument.IsNotNull(() => appDataService);
+            Argument.IsNotNull(() => fileBrowserConfigurationService);
 
             _selectDirectoryService = selectDirectoryService;
             _messageService = messageService;
-            _companyService = companyService;
             _appDataService = appDataService;
+            _fileBrowserService = fileBrowserService;
+            _fileBrowserConfigurationService = fileBrowserConfigurationService;
 
-            LogViewer = logViewerModel;
+            FileBrowser = fileBrowserModel;
 
             AddCompany = new Command(OnAddCompanyCommandExecute);
             DeleteCompany = new Command(OnDeleteCompanyCommandExecute, CanExecuteDeleteCompanyCommand);
@@ -59,10 +62,10 @@ namespace LogViewer.ViewModels
 
         #region Properties
         [Model]
-        [Expose("Companies")]
-        public LogViewerModel LogViewer { get; set; }
+        [Expose("Directories")]
+        public FileBrowserModel FileBrowser { get; set; }
 
-        [ViewModelToModel("LogViewer")]
+        [ViewModelToModel("FileBrowser")]
         public ObservableCollection<NavigationNode> SelectedItems { get; set; }
         #endregion
 
@@ -73,30 +76,20 @@ namespace LogViewer.ViewModels
         {
             var rootAppDataDir = _appDataService.GetRootAppDataFolder();
 
-            _selectDirectoryService.Title = "Select Company's application data folder";
+            _selectDirectoryService.Title = "Select FolderNode's application data folder";
             _selectDirectoryService.InitialDirectory = rootAppDataDir;
 
             if (_selectDirectoryService.DetermineDirectory())
             {
-                var companyFolder = _selectDirectoryService.DirectoryName;
-                if (string.Equals(companyFolder, rootAppDataDir) || !companyFolder.StartsWith(rootAppDataDir))
+                var folder = _selectDirectoryService.DirectoryName;
+
+                if (FileBrowser.Directories.Any(x => string.Equals(x.FullName, folder)))
                 {
-                    await _messageService.ShowError(string.Format("Must be selected subdirectory of the\"{0}\"", rootAppDataDir));
+                    await _messageService.ShowError(string.Format("The directory {0} is already added", folder));
                     return;
                 }
 
-                var companyName = new DirectoryInfo(companyFolder).Name;
-                if (LogViewer.Companies.Any(x => string.Equals(x.Name, companyName)))
-                {
-                    await _messageService.ShowError(string.Format("The company {0} is already added", companyName));
-                    return;
-                }
-
-                var company = _companyService.CreateCompanyByName(companyName);
-                if (company != null)
-                {
-                    LogViewer.Companies.Add(company);
-                }
+                _fileBrowserConfigurationService.AddFolder(folder);
             }
         }
 
@@ -104,10 +97,10 @@ namespace LogViewer.ViewModels
 
         private void OnDeleteCompanyCommandExecute()
         {
-            var selectedCompany = SelectedItems.SingleOrDefault() as Company;
+            var selectedCompany = SelectedItems.SingleOrDefault() as FolderNode;
             if (selectedCompany != null)
             {
-                LogViewer.Companies.Remove(selectedCompany);
+                FileBrowser.Directories.Remove(selectedCompany);
             }
         }
 
@@ -118,7 +111,7 @@ namespace LogViewer.ViewModels
                 return false;
             }
 
-            var selectedCompany = SelectedItems.SingleOrDefault() as Company;
+            var selectedCompany = SelectedItems.SingleOrDefault() as FolderNode;
             return selectedCompany != null;
         }
         #endregion
@@ -147,14 +140,10 @@ namespace LogViewer.ViewModels
         protected override async Task Initialize()
         {
             await base.Initialize();
-
-            LogViewer.Companies.ReplaceRange(_companyService.LoadCompanies());
         }
 
         protected override async Task<bool> Save()
         {
-           _companyService.SaveCompanies(LogViewer.Companies);
-
             return await base.Save();
         }
         #endregion

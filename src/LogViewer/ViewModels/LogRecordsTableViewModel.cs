@@ -33,14 +33,14 @@ namespace LogViewer.ViewModels
         #endregion
 
         #region Constructors
-        public LogRecordsTableViewModel(LogViewerModel logViewerModel, IFilterService filterService, ICommandManager commandManager)
+        public LogRecordsTableViewModel(FileBrowserModel fileBrowserModel, IFilterService filterService, ICommandManager commandManager)
         {
-            Argument.IsNotNull(() => logViewerModel);
+            Argument.IsNotNull(() => fileBrowserModel);
             Argument.IsNotNull(() => filterService);
             Argument.IsNotNull(() => commandManager);
 
             _filterService = filterService;
-            LogViewer = logViewerModel;
+            LogViewer = fileBrowserModel;
 
             ResetSearchTemplate = new Command(OnResetSearchTemplateExecute);
 
@@ -53,16 +53,16 @@ namespace LogViewer.ViewModels
 
         [Model]
         [Expose("LogRecords")]
-        public LogViewerModel LogViewer { get; set; }
+        public FileBrowserModel LogViewer { get; set; }
 
-        [ViewModelToModel("LogViewer")]
+        [ViewModelToModel("FileBrowser")]
         public ObservableCollection<NavigationNode> SelectedItems { get; set; }
 
         [Model]
         [Expose("UseDateRange")]
         [Expose("StartDate")]
         [Expose("EndDate")]
-        [ViewModelToModel("LogViewer")]
+        [ViewModelToModel("FileBrowser")]
         public Filter Filter { get; set; }
 
         [Model]

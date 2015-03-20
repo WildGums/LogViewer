@@ -29,11 +29,11 @@ namespace LogViewer.Services
         #region Methods
 
         #region ILogRecordService Members
-        public IEnumerable<LogRecord> LoadRecordsFromFile(LogFile logFile)
+        public IEnumerable<LogRecord> LoadRecordsFromFile(FileNode fileNode)
         {
-            Argument.IsNotNull(() => logFile);
+            Argument.IsNotNull(() => fileNode);
             int counter = 0;
-            using (var stream = new FileStream(logFile.Info.FullName, FileMode.Open))
+            using (var stream = new FileStream(fileNode.Info.FullName, FileMode.Open))
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -50,12 +50,12 @@ namespace LogViewer.Services
                             }
 
                             record = new LogRecord() {Position = counter++};
-                            record.LogFile = logFile;
+                            record.FileNode = fileNode;
                             record.DateTime = ExtractDateTime(ref line);
 
-                            if (logFile.IsUnifyNamed && record.DateTime.Date == DateTime.MinValue.Date)
+                            if (fileNode.IsUnifyNamed && record.DateTime.Date == DateTime.MinValue.Date)
                             {
-                                record.DateTime = logFile.DateTime.Date + record.DateTime.TimeOfDay;
+                                record.DateTime = fileNode.DateTime.Date + record.DateTime.TimeOfDay;
                             }
 
                             record.LogEvent = ExtractLogEventType(ref line);

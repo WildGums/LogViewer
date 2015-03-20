@@ -15,7 +15,7 @@ namespace LogViewer.Models
     public class LogRecord : ModelBase
     {
         #region Properties
-        public LogFile LogFile { get; set; }
+        public FileNode FileNode { get; set; }
 
         /// <summary>
         /// Position of the record in the file. Incremental id for internal use.

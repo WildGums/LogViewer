@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LogFileService.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
+//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -9,15 +9,13 @@ namespace LogViewer.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-
     using Catel;
     using Catel.Collections;
-    using LogViewer.Models;
+    using Models;
 
     public class LogFileService : ILogFileService
     {
@@ -34,23 +32,23 @@ namespace LogViewer.Services
         }
         #endregion
 
+        #region Methods
+
         #region ILogFileService Members
-        public IEnumerable<LogFile> GetLogFiles(string filesFolder)
+        public IEnumerable<FileNode> GetLogFiles(string filesFolder)
         {
             Argument.IsNotNullOrEmpty(() => filesFolder);
 
-            return Directory.GetFiles(filesFolder, "*.log", SearchOption.TopDirectoryOnly).Select(InitializeLogFile).ToArray();
+            return Directory.GetFiles(filesFolder, "*.log", SearchOption.TopDirectoryOnly).Select(LoadLogFile).ToArray();
         }
         #endregion
 
-        #region Methods
-        private LogFile InitializeLogFile(string fileName)
+        public FileNode LoadLogFile(string fileName)
         {
             Argument.IsNotNullOrEmpty(() => fileName);
 
-            var logFile = new LogFile();
+            var logFile = new FileNode(new FileInfo(fileName));
 
-            logFile.Info = new FileInfo(fileName);
             logFile.Name = logFile.Info.Name;
             logFile.IsUnifyNamed = Regex.IsMatch(logFile.Info.Name, @"^[a-zA-Z\.]+_(\d{4}-\d{2}-\d{2})_\d{6}_\d+\.log$");
             if (!logFile.IsUnifyNamed)

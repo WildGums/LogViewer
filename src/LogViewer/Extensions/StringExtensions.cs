@@ -8,6 +8,9 @@
 namespace LogViewer
 {
     using System;
+    using System.IO;
+    using System.Text.RegularExpressions;
+    using Catel;
 
     public static class StringExtensions
     {
@@ -25,6 +28,30 @@ namespace LogViewer
         public static string WrapToMatchWholeWordRegex(this string str)
         {
             return string.Format(@"\b({0})\b", str);
+        }
+
+        public static string ConvertWildcardToRegex(this string pattern)
+        {
+            Argument.IsNotNullOrEmpty(() => pattern);
+
+            return "^" + Regex.Escape(pattern).
+                Replace("\\*", ".*").
+                Replace("\\?", ".") + "$";
+        }
+
+        public static bool IsSupportedFile(this string fullName, string regexFilter)
+        {
+            Argument.IsNotNullOrEmpty(() => fullName);
+            Argument.IsNotNullOrEmpty(() => regexFilter);
+
+            var fileName = Path.GetFileName(fullName);
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return false;
+            }
+
+            return Regex.IsMatch(fileName, regexFilter);
         }
         #endregion
     }

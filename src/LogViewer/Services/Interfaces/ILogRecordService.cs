@@ -14,7 +14,7 @@ namespace LogViewer.Services
     public interface ILogRecordService
     {
         #region Methods
-        IEnumerable<LogRecord> LoadRecordsFromFile(LogFile logFile);
+        IEnumerable<LogRecord> LoadRecordsFromFile(FileNode fileNode);
         #endregion
     }
 }

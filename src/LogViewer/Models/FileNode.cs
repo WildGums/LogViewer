@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LogFile.cs" company="Wild Gums">
+// <copyright file="FileNode.cs" company="Wild Gums">
 //   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -12,6 +12,7 @@ namespace LogViewer.Models
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
+    using Catel;
     using Lucene.Net.Analysis;
     using Lucene.Net.Analysis.Standard;
     using Lucene.Net.Documents;
@@ -21,11 +22,25 @@ namespace LogViewer.Models
     using Lucene.Net.Store;
     using Version = Lucene.Net.Util.Version;
 
-    public class LogFile : NavigationNode, IDisposable
+    public class FileNode : NavigationNode, IDisposable
     {
-        public LogFile()
+        public FileNode(FileInfo fileInfo)
         {
+            Argument.IsNotNull(() => fileInfo);
+
+            FileInfo = fileInfo;
+            Name = fileInfo.Name;
+            FullName = fileInfo.FullName;
+
             LogRecords = new ObservableCollection<LogRecord>();
+        }
+
+        public FileInfo FileInfo { get; set; }
+
+        private void OnFileInfoChanged()
+        {
+            Name = FileInfo.Name;
+            FullName = FileInfo.FullName;
         }
 
         #region Properties
@@ -126,6 +141,6 @@ namespace LogViewer.Models
             {
                 this.Searcher.Dispose();
             }
-        }
+        }        
     }
 }

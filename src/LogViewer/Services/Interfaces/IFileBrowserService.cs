@@ -1,19 +1,18 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Company.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
+// <copyright file="IFileBrowserService.cs" company="Wild Gums">
+//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogViewer.Models
+namespace LogViewer.Services
 {
-    public class Company : NavigationNode
+    using Models;
+
+    public interface IFileBrowserService
     {
         #region Properties
-        public override bool AllowMultiSelection
-        {
-            get { return false; }
-        }
+        FileBrowserModel FileBrowserModel { get; }
         #endregion
     }
 }

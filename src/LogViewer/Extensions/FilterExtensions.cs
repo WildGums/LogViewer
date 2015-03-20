@@ -49,11 +49,11 @@ namespace LogViewer
             return Regex.IsMatch(message, filter.SearchTemplate.RegularExpression);
         }
 
-        public static bool IsAcceptableTo(this Filter filter, LogFile logFile)
+        public static bool IsAcceptableTo(this Filter filter, FileNode fileNode)
         {
-            Argument.IsNotNull(() => logFile);
+            Argument.IsNotNull(() => fileNode);
 
-            return !filter.UseDateRange || !logFile.IsUnifyNamed || (logFile.DateTime.Date <= filter.EndDate.Date && logFile.DateTime.Date >= filter.StartDate.Date);
+            return !filter.UseDateRange || !fileNode.IsUnifyNamed || (fileNode.DateTime.Date <= filter.EndDate.Date && fileNode.DateTime.Date >= filter.StartDate.Date);
         }
         #endregion
     }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IFilterService.cs" company="Wild Gums">
+// <copyright file="IFileBrowserConfigurationService.cs" company="Wild Gums">
 //   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,17 +7,12 @@
 
 namespace LogViewer.Services
 {
-    using Models;
+    using System.Collections.Generic;
 
-    public interface IFilterService
+    public interface IFileBrowserConfigurationService
     {
-        #region Properties
-        Filter Filter { get; set; }
-        #endregion
-
-        #region Methods
-        void ApplyFilesFilter(FileBrowserModel logViewer);
-        void ApplyLogRecordsFilter(FileBrowserModel logViewer);
-        #endregion
+        IEnumerable<string> LoadFolders();
+        bool AddFolder(string fullPath);
+        void RemoveFolder(string fullPath);
     }
 }

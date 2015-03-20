@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FilterService.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
+//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -10,41 +10,42 @@ namespace LogViewer.Services
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Catel;
     using Catel.Collections;
-
-    using LogViewer.Models;
+    using Models;
 
     internal class FilterService : IFilterService
     {
+        #region Constructors
+        public FilterService()
+        {
+            Filter = new Filter();
+        }
+        #endregion
+
+        #region Properties
+        public Filter Filter { get; set; }
+        #endregion
+
         #region IFilterService Members
-        private IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<LogFile> logFiles)
+        private IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<FileNode> logFiles)
         {
             Argument.IsNotNull(() => logFiles);
             Argument.IsNotNull(() => filter);
 
             if (!filter.SearchTemplate.UseFullTextSearch || string.IsNullOrEmpty(filter.SearchTemplate.TemplateString))
             {
-                return FilterFiles(filter, logFiles).SelectMany(file => file.LogRecords).Where(record => filter.IsAcceptableTo(record.LogEvent) && filter.IsAcceptableTo(record.Message));
+                return logFiles.Where(filter.IsAcceptableTo).SelectMany(file => file.LogRecords).Where(record => filter.IsAcceptableTo(record.LogEvent) && filter.IsAcceptableTo(record.Message));
             }
 
             Func<LogRecord, bool> where = record => filter.IsAcceptableTo(record.LogEvent);
-            return FilterFiles(filter, logFiles) // select only approriate files
+            return logFiles.Where(filter.IsAcceptableTo) // select only approriate files
                 .SelectMany(file => file.Select(filter.SearchTemplate.TemplateString, where)) // select records and scores from each file
                 .OrderBy(t => t.Item2) // sort by relevance
                 .Select(t => t.Item1); // we don't need score anymore
         }
 
-        private IEnumerable<LogFile> FilterFiles(Filter filter, IEnumerable<LogFile> logFiles)
-        {
-            Argument.IsNotNull(() => logFiles);
-            Argument.IsNotNull(() => filter);
-
-            return logFiles.Where(filter.IsAcceptableTo);
-        }
-
-        public void ApplyFilesFilter(LogViewerModel logViewer)
+        public void ApplyFilesFilter(FileBrowserModel logViewer)
         {
             Argument.IsNotNull(() => logViewer);
 
@@ -53,52 +54,43 @@ namespace LogViewer.Services
             FilterAllFiles(logViewer);
         }
 
-        public void ApplyLogRecordsFilter(LogViewerModel logViewer)
+        public void ApplyLogRecordsFilter(FileBrowserModel logViewer)
         {
             Argument.IsNotNull(() => logViewer);
 
             var logRecords = logViewer.LogRecords;
 
             var oldRecords = logRecords.ToArray();
-            logRecords.ReplaceRange(FilterRecords(logViewer.Filter, logViewer.SelectedItems.OfType<LogFile>()));
+            logRecords.ReplaceRange(FilterRecords(Filter, logViewer.SelectedItems.OfType<FileNode>()));
 
             foreach (var record in logRecords.Except(oldRecords))
             {
-                record.LogFile.IsExpanded = true;
+                record.FileNode.IsExpanded = true;
             }
         }
 
-        private void FilterSelectedFiles(LogViewerModel logViewer)
+        private void FilterSelectedFiles(FileBrowserModel logViewer)
         {
             Argument.IsNotNull(() => logViewer);
 
             var selectedItems = logViewer.SelectedItems;
 
-            var buff = selectedItems.OfType<LogFile>().ToArray();
+            var buff = selectedItems.OfType<FileNode>().ToArray();
             if (buff.Any())
             {
-                while (selectedItems.Any())
-                {
-                    selectedItems.RemoveAt(0);
-                }
-
-                selectedItems.AddRange(FilterFiles(logViewer.Filter, buff));
+                selectedItems.Clear();
+                selectedItems.AddRange(buff.Where(file => Filter.IsAcceptableTo(file)));
             }
         }
 
-        private void FilterAllFiles(LogViewerModel logViewer)
+        private void FilterAllFiles(FileBrowserModel fileBrowser)
         {
-            Argument.IsNotNull(() => logViewer);
+            Argument.IsNotNull(() => fileBrowser);
 
-            foreach (var company in logViewer.Companies)
+            foreach (var file in fileBrowser.Directories.SelectMany(x => x.GetAllNestedFiles()))
             {
-                foreach (var product in company.Children.Cast<Product>())
-                {
-                    var children = product.Children;
-
-                    children.Clear();
-                    children.AddRange(FilterFiles(logViewer.Filter, product.LogFiles).OrderByDescending(x => x.Name));
-                }
+                var filter = Filter;
+                file.IsVisible = filter.IsAcceptableTo(file);
             }
         }
         #endregion

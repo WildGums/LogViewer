@@ -14,7 +14,8 @@ namespace LogViewer.Services
     public interface ILogFileService
     {
         #region Methods
-        IEnumerable<LogFile> GetLogFiles(string filesFolder);
+        IEnumerable<FileNode> GetLogFiles(string filesFolder);
+        FileNode LoadLogFile(string fileName);
         #endregion
     }
 }
