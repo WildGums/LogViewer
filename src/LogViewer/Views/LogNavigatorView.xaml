@@ -45,6 +45,12 @@
                         <TextBlock Text="{Binding Name}" Margin="5,0,0,0" VerticalAlignment="Center" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
+                
+                <DataTemplate DataType="{x:Type models:FileNode}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Margin="0,2,0,2">
+                        <TextBlock Text="{Binding Name}" Margin="5,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </DataTemplate>
             </TreeView.Resources>
         </TreeView>
     </Grid>

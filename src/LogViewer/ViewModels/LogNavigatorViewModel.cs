@@ -96,10 +96,10 @@ namespace LogViewer.ViewModels
 
         private void OnDeleteCompanyCommandExecute()
         {
-            var selectedCompany = SelectedItems.SingleOrDefault() as FolderNode;
-            if (selectedCompany != null)
+            var folder = SelectedItems.SingleOrDefault() as FolderNode;
+            if (folder != null)
             {
-                FileBrowser.Directories.Remove(selectedCompany);
+                _fileBrowserConfigurationService.RemoveFolder(folder.FullName);
             }
         }
 
