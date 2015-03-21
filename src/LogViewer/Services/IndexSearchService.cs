@@ -24,7 +24,7 @@ namespace LogViewer.Services
         private readonly IDispatcherService _dispatcherService;
 
         #region Fields
-        private readonly IDictionary<FileNode, IndexSearcher> _searchers = new Dictionary<FileNode, IndexSearcher>();
+        private readonly IDictionary<string, IndexSearcher> _searchers = new Dictionary<string, IndexSearcher>();
         #endregion
 
         public IndexSearchService(IDispatcherService dispatcherService)
@@ -56,7 +56,8 @@ namespace LogViewer.Services
                 }
             }
 
-            _searchers[file] = new IndexSearcher(directory);
+            var indexSearcher = new IndexSearcher(directory);
+            _searchers[file.FullName] = indexSearcher;
         }
 
         public IEnumerable<Tuple<LogRecord, float>> Select(FileNode file, string text, Func<LogRecord, bool> where = null)
@@ -77,7 +78,7 @@ namespace LogViewer.Services
 
         public IEnumerable<Tuple<LogRecord, float>> Select(FileNode file, Query query, Func<LogRecord, bool> where = null)
         {
-            var searcher = _searchers[file];
+            var searcher = _searchers[file.FullName];
 
             TopDocs search = searcher.Search(query, file.LogRecords.Count);
             var result = new List<Tuple<LogRecord, float>>();
@@ -99,10 +100,11 @@ namespace LogViewer.Services
 
         public void DisposeIndex(FileNode file)
         {
-            if (_searchers.ContainsKey(file))
+            var key = file.FullName;
+            if (_searchers.ContainsKey(key))
             {
-                _searchers[file].Dispose();
-                _searchers.Remove(file);
+                _searchers[key].Dispose();
+                _searchers.Remove(key);
             }
         }
 
