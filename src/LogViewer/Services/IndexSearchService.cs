@@ -43,7 +43,7 @@ namespace LogViewer.Services
                 var analyzer = new StandardAnalyzer(Version.LUCENE_30);
                 using (var writer = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
                 {
-                    foreach (var logRecord in file.LogRecords)
+                    foreach (var logRecord in file.Records)
                     {
                         var doc = new Document();
                         doc.Add(new Field("id", logRecord.Position.ToString(), Field.Store.YES, Field.Index.NO));
@@ -80,7 +80,7 @@ namespace LogViewer.Services
         {
             var searcher = _searchers[file.FullName];
 
-            TopDocs search = searcher.Search(query, file.LogRecords.Count);
+            TopDocs search = searcher.Search(query, file.Records.Count);
             var result = new List<Tuple<LogRecord, float>>();
             foreach (var scoreDoc in search.ScoreDocs)
             {
@@ -89,9 +89,9 @@ namespace LogViewer.Services
                 var doc = searcher.Doc(docId);
 
                 var n = int.Parse(doc.Get("id"));
-                if (where == null || where(file.LogRecords[n]))
+                if (where == null || where(file.Records[n]))
                 {
-                    result.Add(new Tuple<LogRecord, float>(file.LogRecords[n], score));
+                    result.Add(new Tuple<LogRecord, float>(file.Records[n], score));
                 }
             }
 

@@ -17,21 +17,14 @@ namespace LogViewer.Models
         public FileBrowserModel()
         {
             RootDirectories = new ObservableCollection<FolderNode>();
-            SelectedItems = new ObservableCollection<NavigationNode>();
-            LogRecords = new ObservableCollection<LogRecord>();
+            SelectedItems = new ObservableCollection<NavigationNode>();           
         }
         #endregion
 
         #region Properties
         public ObservableCollection<FolderNode> RootDirectories { get; private set; }
 
-        public ObservableCollection<NavigationNode> SelectedItems { get; private set; }
-
-        public ObservableCollection<LogRecord> LogRecords { get; private set; }
+        public ObservableCollection<NavigationNode> SelectedItems { get; private set; }        
         #endregion
-
-        private void OnSelectedItems()
-        {
-        }
     }
 }

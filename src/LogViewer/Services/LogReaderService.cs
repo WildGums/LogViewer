@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LogRecordService.cs" company="Wild Gums">
+// <copyright file="LogReaderService.cs" company="Wild Gums">
 //   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ namespace LogViewer.Services
     using Catel.Logging;
     using Models;
 
-    public class LogRecordService : ILogRecordService
+    public class LogReaderService : ILogReaderService
     {
         #region Fields
         private static readonly Regex LogRecordPattern = new Regex(@"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+\s\=\>\s\[[a-zA-Z]+\]\s\[[a-zA-Z\d\.\`]+\].+", RegexOptions.Compiled);
@@ -28,7 +28,7 @@ namespace LogViewer.Services
 
         #region Methods
 
-        #region ILogRecordService Members
+        #region ILogReaderService Members
         public IEnumerable<LogRecord> LoadRecordsFromFile(FileNode fileNode)
         {
             Argument.IsNotNull(() => fileNode);

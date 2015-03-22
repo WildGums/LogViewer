@@ -5,6 +5,7 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:catel="http://catel.codeplex.com"
                    xmlns:controls="clr-namespace:LogViewer.Controls"
+                   xmlns:views="clr-namespace:LogViewer.Views"
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
     
     <catel:UserControl.Resources>
@@ -275,28 +276,28 @@
             </Style.Triggers>
         </Style>
     </catel:UserControl.Resources>
-    
-    <DataGrid x:Name="Grid" Grid.Row="1" Style="{StaticResource DefaultDataGridStyle}" ItemsSource="{Binding IsAsync=True}" 
+    <Grid>
+        <DataGrid x:Name="Grid" Grid.Row="1" Style="{StaticResource DefaultDataGridStyle}" ItemsSource="{Binding IsAsync=True}" 
               EnableRowVirtualization="True"
               EnableColumnVirtualization="True"
               VerticalScrollBarVisibility="Visible"
-              >            
+              >
             <DataGrid.DataContext>
-                <CollectionViewSource Source="{Binding LogRecords}">                    
+                <CollectionViewSource Source="{Binding Records}">
                     <!-- BV: Disabled grouping for now because it disables virtualisationa and slows everything down...
                     <CollectionViewSource.GroupDescriptions>
                         <PropertyGroupDescription PropertyName="LogFile"/>
                     </CollectionViewSource.GroupDescriptions>-->
                 </CollectionViewSource>
             </DataGrid.DataContext>
-        
+
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Timestamp" Width="Auto" Binding="{Binding DateTime}" IsReadOnly="True"/>
                 <DataGridTemplateColumn Header="Level" Width="Auto" IsReadOnly="True" CellStyle="{StaticResource IconColumnCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                        <Label Style="{StaticResource DataGridLevelLabelStyle}" />
-                    </DataTemplate>
+                            <Label Style="{StaticResource DataGridLevelLabelStyle}" />
+                        </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Type Name" Width="Auto" Binding="{Binding TargetTypeName}" IsReadOnly="True"/>
@@ -305,15 +306,16 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <controls:HighlightableTextBlock HighlightableText="{Binding Message}" HighlightBackground="Yellow" 
-                                                             RegularExpression="{Binding Path=DataContext.RegularExpression, RelativeSource={RelativeSource AncestorLevel=3, AncestorType={x:Type Grid}}}"/>
+                                                             RegularExpression="{Binding Path=DataContext.RegularExpression, RelativeSource={RelativeSource FindAncestor, AncestorLevel=4, AncestorType={x:Type Grid}}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding Message}" TextWrapping="Wrap" IsReadOnly="True" IsReadOnlyCaretVisible="True"/>                            
+                            <TextBox Text="{Binding Message}" TextWrapping="Wrap" IsReadOnly="True" IsReadOnlyCaretVisible="True"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+    </Grid>    
 </catel:UserControl>

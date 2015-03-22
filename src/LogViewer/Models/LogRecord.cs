@@ -31,6 +31,8 @@ namespace LogViewer.Models
         public string ThreadId { get; set; }
 
         public string Message { get; set; }
+
+        public bool IsSelected { get; set; }
         #endregion
     }
 }

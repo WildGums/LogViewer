@@ -23,7 +23,7 @@ namespace LogViewer.Models
             Name = fileInfo.Name;
             FullName = fileInfo.FullName;
 
-            LogRecords = new ObservableCollection<LogRecord>();
+            Records = new ObservableCollection<LogRecord>();
         }
         #endregion
 
@@ -31,7 +31,7 @@ namespace LogViewer.Models
         public FileInfo FileInfo { get; set; }
         public bool IsUnifyNamed { get; set; }
         public DateTime DateTime { get; set; }
-        public ObservableCollection<LogRecord> LogRecords { get; private set; }
+        public ObservableCollection<LogRecord> Records { get; private set; }
         public bool? IsExpanded { get; set; }
 
         public override bool AllowMultiSelection

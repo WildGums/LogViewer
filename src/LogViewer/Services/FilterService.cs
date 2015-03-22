@@ -12,18 +12,28 @@ namespace LogViewer.Services
     using System.Linq;
     using Catel;
     using Catel.Collections;
+    using Catel.Services;
     using Models;
 
     internal class FilterService : IFilterService
     {
+        #region Fields
+        private static readonly object Sync = new object();
+        private readonly IAggregateLogService _aggregateLogService;
+        private readonly IDispatcherService _dispatcherService;
         private readonly IIndexSearchService _indexSearchService;
+        #endregion
 
         #region Constructors
-        public FilterService(IIndexSearchService indexSearchService)
+        public FilterService(IIndexSearchService indexSearchService, IDispatcherService dispatcherService, IAggregateLogService aggregateLogService)
         {
             Argument.IsNotNull(() => indexSearchService);
+            Argument.IsNotNull(() => dispatcherService);
+            Argument.IsNotNull(() => aggregateLogService);
 
             _indexSearchService = indexSearchService;
+            _dispatcherService = dispatcherService;
+            _aggregateLogService = aggregateLogService;
 
             Filter = new Filter();
         }
@@ -36,17 +46,17 @@ namespace LogViewer.Services
         #region IFilterService Members
         private IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<FileNode> logFiles)
         {
-            Argument.IsNotNull(() => logFiles);
             Argument.IsNotNull(() => filter);
+            Argument.IsNotNull(() => logFiles);
 
             if (!filter.SearchTemplate.UseFullTextSearch || string.IsNullOrEmpty(filter.SearchTemplate.TemplateString))
             {
-                return logFiles.Where(filter.IsAcceptableTo).SelectMany(file => file.LogRecords).Where(record => filter.IsAcceptableTo(record.LogEvent) && filter.IsAcceptableTo(record.Message));
+                return logFiles.Where(filter.IsAcceptableTo).SelectMany(file => file.Records).Where(record => filter.IsAcceptableTo(record.LogEvent) && filter.IsAcceptableTo(record.Message));
             }
 
             Func<LogRecord, bool> where = record => filter.IsAcceptableTo(record.LogEvent);
             return logFiles.Where(filter.IsAcceptableTo) // select only approriate files
-                .SelectMany(file => _indexSearchService.Select(file,filter.SearchTemplate.TemplateString, where)) // select records and scores from each file
+                .SelectMany(file => _indexSearchService.Select(file, filter.SearchTemplate.TemplateString, where)) // select records and scores from each file
                 .OrderBy(t => t.Item2) // sort by relevance
                 .Select(t => t.Item1); // we don't need score anymore
         }
@@ -64,15 +74,18 @@ namespace LogViewer.Services
         {
             Argument.IsNotNull(() => fileBrowser);
 
-            var logRecords = fileBrowser.LogRecords;
-
-            var oldRecords = logRecords.ToArray();
-            logRecords.ReplaceRange(FilterRecords(Filter, fileBrowser.SelectedItems.OfType<FileNode>()));
-
-            foreach (var record in logRecords.Except(oldRecords))
+            lock (Sync)
             {
-                record.FileNode.IsExpanded = true;
-            }
+                var logRecords = _aggregateLogService.AggregateLog.Records;
+
+                var oldRecords = logRecords.ToArray();
+                _dispatcherService.Invoke(() => logRecords.ReplaceRange(FilterRecords(Filter, fileBrowser.SelectedItems.OfType<FileNode>())));
+
+                foreach (var record in logRecords.Except(oldRecords))
+                {
+                    record.FileNode.IsExpanded = true;
+                }
+            }            
         }
 
         private void FilterSelectedFiles(FileBrowserModel logViewer)

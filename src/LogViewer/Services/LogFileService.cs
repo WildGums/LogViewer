@@ -21,17 +21,17 @@ namespace LogViewer.Services
     {
         #region Fields
         private static readonly Regex _fileNameMask = new Regex(@"^[a-zA-Z\.]+_(\d{4}-\d{2}-\d{2})_\d{6}_\d+\.log$", RegexOptions.Compiled);
-        private readonly ILogRecordService _logRecordService;
+        private readonly ILogReaderService _logReaderService;
         private readonly IIndexSearchService _indexSearchService;
         #endregion
 
         #region Constructors
-        public LogFileService(ILogRecordService logRecordService, IIndexSearchService indexSearchService)
+        public LogFileService(ILogReaderService logReaderService, IIndexSearchService indexSearchService)
         {
-            Argument.IsNotNull(() => logRecordService);
+            Argument.IsNotNull(() => logReaderService);
             Argument.IsNotNull(() => indexSearchService);
 
-            _logRecordService = logRecordService;
+            _logReaderService = logReaderService;
             _indexSearchService = indexSearchService;
         }
         #endregion
@@ -68,7 +68,7 @@ namespace LogViewer.Services
 
             try
             {
-                logFile.LogRecords.AddRange(_logRecordService.LoadRecordsFromFile(logFile));
+                logFile.Records.AddRange(_logReaderService.LoadRecordsFromFile(logFile));
 
                 _indexSearchService.EnsureFullTextIndex(logFile);
             }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LogRecordsTableViewModel.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
+//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,37 +11,37 @@ namespace LogViewer.ViewModels
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.ComponentModel;
-    using System.Reactive;
     using System.Reactive.Linq;
     using System.Threading.Tasks;
-
     using Catel;
     using Catel.Fody;
     using Catel.MVVM;
-
-    using LogViewer.Models;
-    using LogViewer.Services;
+    using Models;
+    using Services;
 
     public class LogRecordsTableViewModel : ViewModelBase
     {
         #region Fields
         private readonly IFilterService _filterService;
-
+        private readonly IAggregateLogService _aggregateLogService;
         private IDisposable _applyFilterListener;
-
         private ObservableCollection<NavigationNode> _prevSelectedItems;
         #endregion
 
         #region Constructors
-        public LogRecordsTableViewModel(IFilterService filterService, ICommandManager commandManager, IFileBrowserService fileBrowserService)
+        public LogRecordsTableViewModel(IFilterService filterService, ICommandManager commandManager, IFileBrowserService fileBrowserService,
+            IAggregateLogService aggregateLogService)
         {
             Argument.IsNotNull(() => filterService);
             Argument.IsNotNull(() => commandManager);
             Argument.IsNotNull(() => fileBrowserService);
+            Argument.IsNotNull(() => aggregateLogService);
 
             _filterService = filterService;
+            _aggregateLogService = aggregateLogService;
             FileBrowser = fileBrowserService.FileBrowserModel;
             Filter = filterService.Filter;
+            AggregateLog = aggregateLogService.AggregateLog;
 
             ResetSearchTemplate = new Command(OnResetSearchTemplateExecute);
 
@@ -53,9 +53,12 @@ namespace LogViewer.ViewModels
         public Command ResetSearchTemplate { get; private set; }
 
         [Model]
-        [Expose("LogRecords")]
         [Expose("SelectedItems")]
         public FileBrowserModel FileBrowser { get; set; }
+
+        [Model]
+        [Expose("Records")]
+        public Log AggregateLog { get; private set; }
 
         [Model]
         [Expose("IsUseDateRange")]
@@ -85,9 +88,9 @@ namespace LogViewer.ViewModels
             _prevSelectedItems = FileBrowser.SelectedItems;
         }
 
-        private void OnSelectedItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        private async void OnSelectedItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
-            ApplyFilter();
+            await ApplyFilter();
         }
 
         public void OnEndDateChanged()
@@ -105,17 +108,17 @@ namespace LogViewer.ViewModels
             _filterService.ApplyFilesFilter(FileBrowser);
         }
 
-        private void OnSearchTemplateIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        private async void OnSearchTemplateIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             if (Filter.UseTextSearch)
             {
-                ApplyFilter(SearchTemplate);
+                await ApplyFilter(SearchTemplate);
             }
         }
 
-        private void OnFilterIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        private async void OnFilterIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            ApplyFilter(Filter);
+            await ApplyFilter(Filter);
         }
 
         private void OnResetSearchTemplateExecute()
@@ -123,30 +126,33 @@ namespace LogViewer.ViewModels
             SearchTemplate.TemplateString = string.Empty;
         }
 
-        public void OnSelectedItemChanged()
+        public async void OnSelectedItemChanged()
         {
-            ApplyFilter();
+            await ApplyFilter();
         }
 
         private async Task ApplyFilter(SimplyClearableModel clearableModel = null)
         {
-            if (clearableModel != null && !clearableModel.IsDirty)
+            await Task.Factory.StartNew(() =>
             {
-                return;
-            }
+                if (clearableModel != null && !clearableModel.IsDirty)
+                {
+                    return;
+                }
 
-            _filterService.ApplyLogRecordsFilter(FileBrowser);
+                _filterService.ApplyLogRecordsFilter(FileBrowser);
 
-            if (clearableModel != null)
-            {
-                clearableModel.MarkClean();
-            }
+                if (clearableModel != null)
+                {
+                    clearableModel.MarkClean();
+                }
+            });
         }
 
         protected override async Task Initialize()
         {
             Filter.PropertyChanged += OnFilterIsDirtyChanged;
-            
+
             var observable = Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
                 h => SearchTemplate.PropertyChanged += h,
                 h => SearchTemplate.PropertyChanged -= h);
@@ -155,11 +161,11 @@ namespace LogViewer.ViewModels
                 .Delay(TimeSpan.FromMilliseconds(500))
                 .Throttle(TimeSpan.FromMilliseconds(500))
                 .ObserveOnDispatcher()
-                .Subscribe(e =>
+                .Subscribe(async e =>
                 {
                     if (Filter.UseTextSearch)
                     {
-                        ApplyFilter(SearchTemplate);
+                        await ApplyFilter(SearchTemplate);
                     }
                 });
 
@@ -169,7 +175,7 @@ namespace LogViewer.ViewModels
         protected override async Task Close()
         {
             Filter.PropertyChanged -= OnFilterIsDirtyChanged;
-            
+
             _applyFilterListener.Dispose();
 
             await base.Close();
