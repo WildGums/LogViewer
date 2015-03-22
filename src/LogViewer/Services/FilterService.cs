@@ -85,7 +85,18 @@ namespace LogViewer.Services
             if (buff.Any())
             {
                 selectedItems.Clear();
-                selectedItems.AddRange(buff.Where(file => Filter.IsAcceptableTo(file)));
+                foreach (var file in buff)
+                {
+                    if (Filter.IsAcceptableTo(file))
+                    {
+                        selectedItems.Add(file);
+                    }
+                    else
+                    {
+                        file.IsSelected = false;
+                        file.IsItemSelected = false;
+                    }
+                }
             }
         }
 
