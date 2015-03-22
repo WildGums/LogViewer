@@ -44,7 +44,7 @@ namespace LogViewer.Models
         public bool UseTextSearch { get; set; }
 
         [DefaultValue(false)]
-        public bool UseDateRange { get; set; }
+        public bool IsUseDateRange { get; set; }
         #endregion
     }
 }

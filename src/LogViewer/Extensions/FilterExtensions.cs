@@ -53,7 +53,7 @@ namespace LogViewer
         {
             Argument.IsNotNull(() => fileNode);
 
-            return !filter.UseDateRange || !fileNode.IsUnifyNamed || (fileNode.DateTime.Date <= filter.EndDate.Date && fileNode.DateTime.Date >= filter.StartDate.Date);
+            return !filter.IsUseDateRange || !fileNode.IsUnifyNamed || (fileNode.DateTime.Date <= filter.EndDate.Date && fileNode.DateTime.Date >= filter.StartDate.Date);
         }
         #endregion
     }

@@ -80,7 +80,7 @@ namespace LogViewer.ViewModels
         [Expose("ShowWarning")]
         [Expose("ShowError")]
         [Expose("UseTextSearch")]
-        [Expose("UseDateRange")]
+        [Expose("IsUseDateRange")]
         public Filter Filter { get; set; }
 
         [ViewModelToModel("Filter")]

@@ -51,7 +51,7 @@
                             <DatePicker Grid.Column="1" Grid.Row="1" Height="25" SelectedDate="{Binding EndDate}" IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
                         </Grid>
                     </fluent:GalleryPanel>
-                    <fluent:ToggleButton x:Name="toggleButton" Header="Enable" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding UseDateRange}"/>
+                    <fluent:ToggleButton x:Name="toggleButton" Header="Enable" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding IsUseDateRange}"/>
                 </fluent:RibbonGroupBox>
 
                 <fluent:RibbonGroupBox Header="Highlighting">

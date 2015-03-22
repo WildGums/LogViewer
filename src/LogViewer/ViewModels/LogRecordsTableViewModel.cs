@@ -58,7 +58,7 @@ namespace LogViewer.ViewModels
         public FileBrowserModel FileBrowser { get; set; }
 
         [Model]
-        [Expose("UseDateRange")]
+        [Expose("IsUseDateRange")]
         [Expose("StartDate")]
         [Expose("EndDate")]
         public Filter Filter { get; set; }
@@ -100,7 +100,7 @@ namespace LogViewer.ViewModels
             _filterService.ApplyFilesFilter(FileBrowser);
         }
 
-        public void OnUseDateRangeChanged()
+        public void OnIsUseDateRangeChanged()
         {
             _filterService.ApplyFilesFilter(FileBrowser);
         }
