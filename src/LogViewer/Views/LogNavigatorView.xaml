@@ -17,11 +17,11 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
-        <Button Grid.Row="0" Grid.Column="0" Content="Add Folder" Margin="16 2 2 2" Command="{Binding AddCompany}"/>
-        <Button Grid.Row="0" Grid.Column="1"  Content="Remove Folder" Margin="2 2 16 2" Command="{Binding DeleteCompany}"/>
 
-        <TreeView Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="0" ItemsSource="{Binding Directories}">
+        <Button Grid.Row="0" Grid.Column="0" Content="Add Folder" Margin="16 2 2 2" Command="{Binding AddFolder}"/>
+        <Button Grid.Row="0" Grid.Column="1"  Content="Remove Folder" Margin="2 2 16 2" Command="{Binding DeleteFolder}"/>
+
+        <TreeView Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="0" ItemsSource="{Binding RootDirectories}">
             <i:Interaction.Behaviors >
                 <behaviors:MultipleSelectionBehavior SelectedItems="{Binding SelectedItems}" />
             </i:Interaction.Behaviors>

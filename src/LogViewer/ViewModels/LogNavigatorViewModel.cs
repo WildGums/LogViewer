@@ -52,26 +52,22 @@ namespace LogViewer.ViewModels
 
             FileBrowser = _fileBrowserService.FileBrowserModel;
 
-            AddCompany = new Command(OnAddCompanyCommandExecute);
-            DeleteCompany = new Command(OnDeleteCompanyCommandExecute, CanExecuteDeleteCompanyCommand);
-
-            SelectedItems = new ObservableCollection<NavigationNode>();
+            AddFolder = new Command(OnAddFolderExecute);
+            DeleteFolder = new Command(OnDeleteFolderExecute, OnDeleteFolderCanExecute);
         }
         #endregion
 
         #region Properties
         [Model]
-        [Expose("Directories")]
+        [Expose("RootDirectories")]
+        [Expose("SelectedItems")]
         public FileBrowserModel FileBrowser { get; set; }
-
-        [ViewModelToModel("FileBrowser")]
-        public ObservableCollection<NavigationNode> SelectedItems { get; set; }
         #endregion
 
         #region Commands
-        public Command AddCompany { get; private set; }
+        public Command AddFolder { get; private set; }
 
-        private async void OnAddCompanyCommandExecute()
+        private async void OnAddFolderExecute()
         {
             var rootAppDataDir = _appDataService.GetRootAppDataFolder();
 
@@ -82,7 +78,7 @@ namespace LogViewer.ViewModels
             {
                 var folder = _selectDirectoryService.DirectoryName;
 
-                if (FileBrowser.Directories.Any(x => string.Equals(x.FullName, folder)))
+                if (FileBrowser.RootDirectories.Any(x => string.Equals(x.FullName, folder)))
                 {
                     await _messageService.ShowError(string.Format("The directory {0} is already added", folder));
                     return;
@@ -92,26 +88,31 @@ namespace LogViewer.ViewModels
             }
         }
 
-        public Command DeleteCompany { get; private set; }
+        public Command DeleteFolder { get; private set; }
 
-        private void OnDeleteCompanyCommandExecute()
+        private void OnDeleteFolderExecute()
         {
-            var folder = SelectedItems.SingleOrDefault() as FolderNode;
+            var folder = FileBrowser.SelectedItems.SingleOrDefault() as FolderNode;
             if (folder != null)
             {
                 _fileBrowserConfigurationService.RemoveFolder(folder.FullName);
             }
         }
 
-        private bool CanExecuteDeleteCompanyCommand()
+        private bool OnDeleteFolderCanExecute()
         {
-            if (SelectedItems.Count != 1)
+            if (FileBrowser.SelectedItems.Count != 1)
             {
                 return false;
             }
 
-            var selectedCompany = SelectedItems.SingleOrDefault() as FolderNode;
-            return selectedCompany != null;
+            var folderNode = FileBrowser.SelectedItems.SingleOrDefault() as FolderNode;
+            if (folderNode == null)
+            {
+                return false;
+            }
+
+            return FileBrowser.RootDirectories.Contains(folderNode);
         }
         #endregion
 
@@ -123,17 +124,17 @@ namespace LogViewer.ViewModels
                 _prevSelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
             }
 
-            if (SelectedItems != null)
+            if (FileBrowser.SelectedItems != null)
             {
-                SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
+                FileBrowser.SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
             }
 
-            _prevSelectedItems = SelectedItems;
+            _prevSelectedItems = FileBrowser.SelectedItems;
         }
 
         private void OnSelectedItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            DeleteCompany.RaiseCanExecuteChanged();
+            DeleteFolder.RaiseCanExecuteChanged();
         }
 
         protected override async Task Initialize()

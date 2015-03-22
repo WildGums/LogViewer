@@ -33,14 +33,14 @@ namespace LogViewer.ViewModels
         #endregion
 
         #region Constructors
-        public LogRecordsTableViewModel(FileBrowserModel fileBrowserModel, IFilterService filterService, ICommandManager commandManager)
+        public LogRecordsTableViewModel(IFilterService filterService, ICommandManager commandManager, IFileBrowserService fileBrowserService)
         {
-            Argument.IsNotNull(() => fileBrowserModel);
             Argument.IsNotNull(() => filterService);
             Argument.IsNotNull(() => commandManager);
+            Argument.IsNotNull(() => fileBrowserService);
 
             _filterService = filterService;
-            FileBrowser = fileBrowserModel;
+            FileBrowser = fileBrowserService.FileBrowserModel;
             Filter = filterService.Filter;
 
             ResetSearchTemplate = new Command(OnResetSearchTemplateExecute);
@@ -54,10 +54,8 @@ namespace LogViewer.ViewModels
 
         [Model]
         [Expose("LogRecords")]
+        [Expose("SelectedItems")]
         public FileBrowserModel FileBrowser { get; set; }
-
-        [ViewModelToModel("FileBrowser")]
-        public ObservableCollection<NavigationNode> SelectedItems { get; set; }
 
         [Model]
         [Expose("UseDateRange")]
@@ -79,12 +77,12 @@ namespace LogViewer.ViewModels
                 _prevSelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
             }
 
-            if (SelectedItems != null)
+            if (FileBrowser.SelectedItems != null)
             {
-                SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
+                FileBrowser.SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
             }
 
-            _prevSelectedItems = SelectedItems;
+            _prevSelectedItems = FileBrowser.SelectedItems;
         }
 
         private void OnSelectedItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)

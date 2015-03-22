@@ -58,7 +58,7 @@ namespace LogViewer.Services
             FolderNode folder = null;
             _dispatcherService.Invoke(() =>
             {
-                folder = new FolderNode(directoryInfo) { IsNavigationRoot = isNavigationRoot };
+                folder = new FolderNode(directoryInfo);
             });
             
 

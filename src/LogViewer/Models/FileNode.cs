@@ -8,19 +8,11 @@
 namespace LogViewer.Models
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
     using Catel;
-    using Lucene.Net.Analysis.Standard;
-    using Lucene.Net.Documents;
-    using Lucene.Net.Index;
-    using Lucene.Net.QueryParsers;
-    using Lucene.Net.Search;
-    using Lucene.Net.Store;
-    using Version = Lucene.Net.Util.Version;
 
-    public class FileNode : NavigationNode//, IDisposable
+    public class FileNode : NavigationNode
     {
         #region Constructors
         public FileNode(FileInfo fileInfo)
@@ -46,7 +38,6 @@ namespace LogViewer.Models
         {
             get { return true; }
         }
-
         #endregion
 
         #region Methods
@@ -54,7 +45,7 @@ namespace LogViewer.Models
         {
             Name = FileInfo.Name;
             FullName = FileInfo.FullName;
-        }        
+        }
         #endregion
     }
 }

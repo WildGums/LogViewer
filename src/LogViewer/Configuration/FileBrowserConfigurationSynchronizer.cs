@@ -3,12 +3,13 @@
 //   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+
 namespace LogViewer.Configuration
 {
     using System.Collections.ObjectModel;
     using System.Linq;
     using Catel;
-    using Catel.Collections;
     using Catel.Configuration;
     using Models;
     using Services;
@@ -17,8 +18,8 @@ namespace LogViewer.Configuration
     {
         #region Fields
         private readonly IFileBrowserConfigurationService _fileBrowserConfigurationService;
-        private readonly IFileSystemService _fileSystemService;
         private readonly IFileBrowserService _fileBrowserService;
+        private readonly IFileSystemService _fileSystemService;
         #endregion
 
         #region Constructors
@@ -51,7 +52,7 @@ namespace LogViewer.Configuration
             var foldersFromConfig = _fileBrowserConfigurationService.LoadFolders().ToArray();
             var fileBrowserModel = _fileBrowserService.FileBrowserModel;
 
-            var folderNodes = fileBrowserModel.Directories;
+            var folderNodes = fileBrowserModel.RootDirectories;
             var foldersFromNavigator = folderNodes.Select(x => x.FullName).ToArray();
 
             UpdateFolderNodes(foldersFromConfig, foldersFromNavigator, folderNodes);

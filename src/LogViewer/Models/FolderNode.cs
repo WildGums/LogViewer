@@ -46,7 +46,7 @@ namespace LogViewer.Models
             _fileSystemWatcher.Created += OnChanged;
             _fileSystemWatcher.Deleted += OnChanged;
 
-            return; // temporary switched off
+           // return; // temporary switched off
             _fileSystemWatcher.EnableRaisingEvents = true;
         }
         #endregion
@@ -57,7 +57,6 @@ namespace LogViewer.Models
             get { return false; }
         }
 
-        public bool IsNavigationRoot { get; set; }
         public IList<FileNode> Files { get; set; }
         public IList<FolderNode> Directories { get; set; }
 

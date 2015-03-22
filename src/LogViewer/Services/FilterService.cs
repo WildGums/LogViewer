@@ -51,23 +51,23 @@ namespace LogViewer.Services
                 .Select(t => t.Item1); // we don't need score anymore
         }
 
-        public void ApplyFilesFilter(FileBrowserModel logViewer)
+        public void ApplyFilesFilter(FileBrowserModel fileBrowser)
         {
-            Argument.IsNotNull(() => logViewer);
+            Argument.IsNotNull(() => fileBrowser);
 
-            FilterSelectedFiles(logViewer);
+            FilterSelectedFiles(fileBrowser);
 
-            FilterAllFiles(logViewer);
+            FilterAllFiles(fileBrowser);
         }
 
-        public void ApplyLogRecordsFilter(FileBrowserModel logViewer)
+        public void ApplyLogRecordsFilter(FileBrowserModel fileBrowser)
         {
-            Argument.IsNotNull(() => logViewer);
+            Argument.IsNotNull(() => fileBrowser);
 
-            var logRecords = logViewer.LogRecords;
+            var logRecords = fileBrowser.LogRecords;
 
             var oldRecords = logRecords.ToArray();
-            logRecords.ReplaceRange(FilterRecords(Filter, logViewer.SelectedItems.OfType<FileNode>()));
+            logRecords.ReplaceRange(FilterRecords(Filter, fileBrowser.SelectedItems.OfType<FileNode>()));
 
             foreach (var record in logRecords.Except(oldRecords))
             {
@@ -93,7 +93,7 @@ namespace LogViewer.Services
         {
             Argument.IsNotNull(() => fileBrowser);
 
-            foreach (var file in fileBrowser.Directories.SelectMany(x => x.GetAllNestedFiles()))
+            foreach (var file in fileBrowser.RootDirectories.SelectMany(x => x.GetAllNestedFiles()))
             {
                 var filter = Filter;
                 file.IsVisible = filter.IsAcceptableTo(file);
