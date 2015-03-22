@@ -8,6 +8,9 @@
                    xmlns:behaviors="clr-namespace:LogViewer.Behaviors"
                    xmlns:models="clr-namespace:LogViewer.Models"
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+    <catel:UserControl.Resources>
+        <catel:BooleanToHidingVisibilityConverter x:Key="BooleanToHidingVisibilityConverter"/>
+    </catel:UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -35,6 +38,7 @@
                         </Trigger>
                     </Style.Triggers>
                     <Style.Setters>
+                        <Setter Property="Visibility" Value="{Binding IsVisibile, Converter={StaticResource BooleanToHidingVisibilityConverter}}"/>
                         <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
                         <Setter Property="behaviors:MultipleSelectionBehavior.IsItemSelected" Value="{Binding IsItemSelected}"/>
                     </Style.Setters>

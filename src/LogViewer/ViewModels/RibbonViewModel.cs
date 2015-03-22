@@ -34,11 +34,10 @@ namespace LogViewer.ViewModels
         #endregion
 
         #region Constructors
-        public RibbonViewModel(FileBrowserModel fileBrowserModel, IRegexService regexService, ICommandManager commandManager, 
+        public RibbonViewModel(IRegexService regexService, ICommandManager commandManager, 
             INavigationService navigationService, IConfigurationService configurationService, IUIVisualizerService uiVisualizerService,
             IWorkspaceManager workspaceManager, IPleaseWaitService pleaseWaitService, IFilterService filterService)
         {
-            Argument.IsNotNull(() => fileBrowserModel);
             Argument.IsNotNull(() => regexService);
             Argument.IsNotNull(() => commandManager);
             Argument.IsNotNull(() => navigationService);
