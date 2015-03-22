@@ -10,13 +10,26 @@ namespace LogViewer.Controls
     using System;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
     using System.Windows.Media;
+    using Catel.IoC;
+    using Catel.Services;
 
     public class HighlightableTextBlock : TextBlock
     {
+        #region Fields
+        private readonly IDispatcherService _dispatcherService;
+        #endregion
+
+        public HighlightableTextBlock()
+        {
+            var serviceLocator = this.GetServiceLocator();
+            _dispatcherService = serviceLocator.ResolveType<IDispatcherService>();
+        }
+
         #region Properties
         public string RegularExpression
         {
@@ -49,46 +62,63 @@ namespace LogViewer.Controls
         }
 
         public static readonly DependencyProperty HighlightBackgroundProperty = DependencyProperty.Register("HighlightBackground", typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Yellow));
+        
 
         private new string Text
         {
-            set
+            set { HilightText(value); }
+        }
+
+        private async Task HilightText(string value)
+        {
+            await Task.Factory.StartNew(() =>
             {
-                var regEx = RegularExpression;
+                string regEx = string.Empty;
+
+                _dispatcherService.Invoke(() =>
+                {
+                    regEx = RegularExpression;
+                });
 
                 if (string.IsNullOrWhiteSpace(regEx) || !IsValidRegex(regEx))
                 {
-                    base.Text = value;
+                    _dispatcherService.Invoke(() => { base.Text = value; });
                     return;
                 }
 
                 var inlines = Inlines;
 
-                inlines.Clear();
+                _dispatcherService.Invoke(() => inlines.Clear());
+
                 var split = Regex.Split(value, regEx, RegexOptions.ExplicitCapture);
                 if (split.Max(x => x.Length) == 1)
                 {
-                    base.Text = value;
+                    _dispatcherService.Invoke(() => { base.Text = value; });
                     return;
                 }
 
                 foreach (var str in split)
                 {
-                    var run = new Run(str);
-                    if (Regex.IsMatch(str, regEx, RegexOptions.ExplicitCapture))
+                    var match = Regex.IsMatch(str, regEx, RegexOptions.ExplicitCapture);
+                    _dispatcherService.Invoke(() =>
                     {
-                        run.Background = HighlightBackground;
-                        run.Foreground = HighlightForeground;
-                    }
+                        var run = new Run(str);
+                        if (match)
+                        {
+                            run.Background = HighlightBackground;
+                            run.Foreground = HighlightForeground;
+                        }
 
-                    inlines.Add(run);
+                        inlines.Add(run);
+                    });
+                    
                 }
-            }
+            });
         }
         #endregion
 
         #region Methods
-        public void UpdateText()
+        private void UpdateText()
         {
             Text = base.Text;
         }

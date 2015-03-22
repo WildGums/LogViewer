@@ -55,7 +55,7 @@ namespace LogViewer.Services
             }
 
             Func<LogRecord, bool> where = record => filter.IsAcceptableTo(record.LogEvent);
-            return logFiles.Where(filter.IsAcceptableTo) // select only approriate files
+            return logFiles.Where(file => filter.IsAcceptableTo(file) && file.Records.Any()) // select only approriate files
                 .SelectMany(file => _indexSearchService.Select(file, filter.SearchTemplate.TemplateString, where)) // select records and scores from each file
                 .OrderBy(t => t.Item2) // sort by relevance
                 .Select(t => t.Item1); // we don't need score anymore
