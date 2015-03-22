@@ -19,9 +19,9 @@ namespace LogViewer.Models
     public class FolderNode : NavigationNode
     {
         #region Fields
-        private readonly List<EventHandler<FolderNodeEventArgs>> _eventHandlers;
+/*        private readonly List<EventHandler<FolderNodeEventArgs>> _eventHandlers;
         private readonly FileSystemWatcher _fileSystemWatcher;
-        private bool _disposed;
+        private bool _disposed;*/
         #endregion
 
         #region Constructors
@@ -36,7 +36,7 @@ namespace LogViewer.Models
             Files = new ObservableCollection<FileNode>();
             Directories = new ObservableCollection<FolderNode>();
 
-            _eventHandlers = new List<EventHandler<FolderNodeEventArgs>>();
+            /*eventHandlers = new List<EventHandler<FolderNodeEventArgs>>();
 
             _fileSystemWatcher = new FileSystemWatcher();
             _fileSystemWatcher.Path = FullName;
@@ -46,8 +46,7 @@ namespace LogViewer.Models
             _fileSystemWatcher.Created += OnChanged;
             _fileSystemWatcher.Deleted += OnChanged;
 
-           // return; // temporary switched off
-            _fileSystemWatcher.EnableRaisingEvents = true;
+            _fileSystemWatcher.EnableRaisingEvents = true;*/
         }
         #endregion
 
@@ -67,7 +66,7 @@ namespace LogViewer.Models
         #endregion
 
         #region Methods
-        private event EventHandler<FolderNodeEventArgs> _contentChanged;
+/*        private event EventHandler<FolderNodeEventArgs> _contentChanged;
 
         public event EventHandler<FolderNodeEventArgs> ContentChanged
         {
@@ -135,7 +134,7 @@ namespace LogViewer.Models
             }
 
             _disposed = true;
-        }
+        }*/
         #endregion
     }
 }

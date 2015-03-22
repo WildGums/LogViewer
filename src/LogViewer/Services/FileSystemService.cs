@@ -3,39 +3,73 @@
 //   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+
 namespace LogViewer.Services
 {
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
     using Catel;
-    using Catel.Collections;
     using Catel.Services;
     using Models;
 
     internal class FileSystemService : IFileSystemService
     {
         #region Fields
+        private readonly IDispatcherService _dispatcherService;
+        private readonly IFileSystemWatchingService _fileSystemWatchingService;
+        private readonly ILogFileService _logFileService;
         private string _regexFilter;
         private string _wildcardsFilter;
-        private readonly IDispatcherService _dispatcherService;
-        private readonly ILogFileService _logFileService;
         #endregion
 
         #region Constructors
-        public FileSystemService(IDispatcherService dispatcherService, ILogFileService logFileService)
+        public FileSystemService(IDispatcherService dispatcherService, ILogFileService logFileService, IFileSystemWatchingService fileSystemWatchingService)
         {
             Argument.IsNotNull(() => dispatcherService);
             Argument.IsNotNull(() => logFileService);
+            Argument.IsNotNull(() => fileSystemWatchingService);
 
             _dispatcherService = dispatcherService;
             _logFileService = logFileService;
+            _fileSystemWatchingService = fileSystemWatchingService;
 
             SetFileSearchFilter("*.log");
         }
         #endregion
 
         #region Methods
+        public FolderNode LoadFileSystemContent(string path, bool isNavigationRoot = false)
+        {
+            Argument.IsNotNullOrEmpty(() => path);
+
+            var directoryInfo = new DirectoryInfo(path);
+
+            FolderNode folder = null;
+            _dispatcherService.Invoke(() => { folder = new FolderNode(directoryInfo); });
+
+            var fileInfos = Directory.GetFiles(path, _wildcardsFilter, SearchOption.TopDirectoryOnly).Where(x => x.IsSupportedFile(_regexFilter))
+                .Select(fileName => LoadFileFromFileSystem(Path.Combine(path, fileName)));
+            _dispatcherService.Invoke(() => folder.Files = new ObservableCollection<FileNode>(fileInfos));
+
+            foreach (var directory in Directory.GetDirectories(path))
+            {
+                var fullPath = Path.Combine(path, directory);
+                _dispatcherService.Invoke(() => folder.Directories.Add(LoadFileSystemContent(fullPath)));
+            }
+
+            _fileSystemWatchingService.BeginDirectoryWatching(folder, OnFolderContentChanged);
+
+            if (!isNavigationRoot)
+            {
+                var hasVisibleFiles = folder.Files.Any(file => file.IsVisible);
+                var hasVisibleSubfolders = folder.Directories.Any() && folder.Directories.All(dir => dir.IsVisible);
+                folder.IsVisible = hasVisibleFiles || hasVisibleSubfolders;
+            }
+            return folder;
+        }
+
         public void SetFileSearchFilter(string value)
         {
             Argument.IsNotNullOrEmpty(() => value);
@@ -47,33 +81,6 @@ namespace LogViewer.Services
         public string GetFileSearchFilter()
         {
             return _wildcardsFilter;
-        }
-
-        public FolderNode LoadFileSystemContent(string path, bool isNavigationRoot = false)
-        {
-            Argument.IsNotNullOrEmpty(() => path);
-
-            var directoryInfo = new DirectoryInfo(path);
-
-            FolderNode folder = null;
-            _dispatcherService.Invoke(() =>
-            {
-                folder = new FolderNode(directoryInfo);
-            });
-            
-
-            var fileInfos = Directory.GetFiles(path, _wildcardsFilter, SearchOption.TopDirectoryOnly).Where(x => x.IsSupportedFile(_regexFilter)).Select(fileName => LoadFileFromFileSystem(Path.Combine(path, fileName)));
-           _dispatcherService.Invoke(() => folder.Files = new ObservableCollection<FileNode>(fileInfos));
-
-            foreach (var directory in Directory.GetDirectories(path))
-            {
-                var fullPath = Path.Combine(path, directory);
-                _dispatcherService.Invoke(() => folder.Directories.Add(LoadFileSystemContent(fullPath)));
-            }
-
-            folder.ContentChanged += OnFolderContentChanged;
-
-            return folder;
         }
 
         private void OnCreated(FolderNode folder, string fullPath)
@@ -97,7 +104,7 @@ namespace LogViewer.Services
             }
         }
 
-        private static void OnDeleted(FolderNode folder, string fullPath)
+        private void OnDeleted(FolderNode folder, string fullPath)
         {
             Argument.IsNotNull(() => folder);
             Argument.IsNotNullOrEmpty(() => fullPath);
@@ -106,7 +113,7 @@ namespace LogViewer.Services
             if (childDir != null)
             {
                 folder.Directories.Remove(childDir);
-                childDir.Dispose();
+                _fileSystemWatchingService.EndDirectoryWatching(childDir);
             }
 
             var childFile = folder.Files.FirstOrDefault(x => string.Equals(x.FullName, fullPath));
@@ -148,7 +155,7 @@ namespace LogViewer.Services
             folder.Directories.Remove(oldDir);
 
             ClearSubfolders(oldDir);
-            oldDir.Dispose();
+            _fileSystemWatchingService.EndDirectoryWatching(oldDir);
 
             if (Directory.Exists(newName))
             {
@@ -163,7 +170,7 @@ namespace LogViewer.Services
 
             foreach (var folderNode in folder.Directories)
             {
-                folderNode.Dispose();
+                _fileSystemWatchingService.EndDirectoryWatching(folderNode);
                 ClearSubfolders(folderNode);
             }
 

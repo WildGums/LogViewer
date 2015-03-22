@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ApplicationInitializationService.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
+//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,26 +16,27 @@ namespace LogViewer.Services
     using Catel.IoC;
     using Catel.Logging;
     using Catel.MVVM;
+    using Catel.Windows.Controls;
     using Configuration;
     using MethodTimer;
     using Models;
     using Orc.Analytics;
+    using Orc.FilterBuilder.Services;
     using Orc.Squirrel;
     using Orc.WorkspaceManagement;
     using Orchestra.Markup;
     using Orchestra.Services;
-    using Orchestra.Shell.Services;
     using Settings = LogViewer.Settings;
-    using Catel.Windows.Controls;
-    using Orc.FilterBuilder.Services;
 
     public class ApplicationInitializationService : ApplicationInitializationServiceBase
     {
+        #region Fields
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-
-        private readonly ITypeFactory _typeFactory;
         private readonly IServiceLocator _serviceLocator;
+        private readonly ITypeFactory _typeFactory;
+        #endregion
 
+        #region Constructors
         public ApplicationInitializationService(ITypeFactory typeFactory, IServiceLocator serviceLocator)
         {
             Argument.IsNotNull(() => typeFactory);
@@ -44,6 +45,7 @@ namespace LogViewer.Services
             _typeFactory = typeFactory;
             _serviceLocator = serviceLocator;
         }
+        #endregion
 
         #region Methods
         public override async Task InitializeBeforeCreatingShell()
@@ -97,6 +99,7 @@ namespace LogViewer.Services
             serviceLocator.RegisterType<IFileSystemService, FileSystemService>();
             serviceLocator.RegisterType<IFileBrowserService, FileBrowserService>();
             serviceLocator.RegisterType<IIndexSearchService, IndexSearchService>();
+            serviceLocator.RegisterType<IFileSystemWatchingService, FileSystemWatchingService>();
 
             serviceLocator.RegisterTypeAndInstantiate<FileBrowserModel>();
         }
@@ -179,8 +182,8 @@ namespace LogViewer.Services
             await workspaceManager.Initialize(defaultWorkspaceName: Workspaces.DefaultWorkspaceName);
 
             var defaultWorkspace = (from workspace in workspaceManager.Workspaces
-                                    where string.Equals(workspace.Title, Workspaces.DefaultWorkspaceName)
-                                    select workspace).FirstOrDefault();
+                where string.Equals(workspace.Title, Workspaces.DefaultWorkspaceName)
+                select workspace).FirstOrDefault();
             if (defaultWorkspace != null)
             {
                 defaultWorkspace.CanDelete = false;
