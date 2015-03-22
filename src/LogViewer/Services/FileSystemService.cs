@@ -50,7 +50,7 @@ namespace LogViewer.Services
             _dispatcherService.Invoke(() => { folder = new FolderNode(directoryInfo); });
 
             var fileInfos = Directory.GetFiles(path, _wildcardsFilter, SearchOption.TopDirectoryOnly).Where(x => x.IsSupportedFile(_regexFilter))
-                .Select(fileName => LoadFileFromFileSystem(Path.Combine(path, fileName)));
+                .Select(fileName => LoadFileFromFileSystem(Path.Combine(path, fileName))).OrderByDescending(x => x.Name);
             _dispatcherService.Invoke(() => folder.Files = new ObservableCollection<FileNode>(fileInfos));
 
             foreach (var directory in Directory.GetDirectories(path))
