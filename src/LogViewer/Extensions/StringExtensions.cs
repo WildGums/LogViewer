@@ -53,6 +53,16 @@ namespace LogViewer
 
             return Regex.IsMatch(fileName, regexFilter);
         }
+
+        public static bool IsFile(this string fullName)
+        {
+            return File.Exists(fullName);
+        }
+
+        public static bool IsDirectory(this string fullName)
+        {
+            return Directory.Exists(fullName);
+        }
         #endregion
     }
 }

@@ -19,23 +19,32 @@ namespace LogViewer.Services
         #region Fields
         private readonly IDispatcherService _dispatcherService;
         private readonly IFileSystemWatchingService _fileSystemWatchingService;
-        private readonly ILogFileService _logFileService;
+        private readonly INavigationNodeCacheService _navigationNodeCacheService;
+        private readonly IFilterService _filterService;
+        private readonly IFileNodeService _fileNodeService;
         private string _regexFilter;
         private string _wildcardsFilter;
         #endregion
 
         #region Constructors
-        public FileSystemService(IDispatcherService dispatcherService, ILogFileService logFileService, IFileSystemWatchingService fileSystemWatchingService)
+        public FileSystemService(IDispatcherService dispatcherService, IFileNodeService fileNodeService, IFileSystemWatchingService fileSystemWatchingService,
+            INavigationNodeCacheService navigationNodeCacheService, IFilterService filterService)
         {
             Argument.IsNotNull(() => dispatcherService);
-            Argument.IsNotNull(() => logFileService);
+            Argument.IsNotNull(() => fileNodeService);
             Argument.IsNotNull(() => fileSystemWatchingService);
+            Argument.IsNotNull(() => navigationNodeCacheService);
+            Argument.IsNotNull(() => filterService);
 
             _dispatcherService = dispatcherService;
-            _logFileService = logFileService;
+            _fileNodeService = fileNodeService;
             _fileSystemWatchingService = fileSystemWatchingService;
+            _navigationNodeCacheService = navigationNodeCacheService;
+            _filterService = filterService;
 
-            SetFileSearchFilter("*.log");
+            Filter = "*.log";
+
+            fileSystemWatchingService.ContentChanged += OnFolderContentChanged;
         }
         #endregion
 
@@ -59,61 +68,101 @@ namespace LogViewer.Services
                 _dispatcherService.Invoke(() => folder.Directories.Add(LoadFileSystemContent(fullPath)));
             }
 
-            _fileSystemWatchingService.BeginDirectoryWatching(folder, OnFolderContentChanged);
-
-            if (!isNavigationRoot)
+            if (isNavigationRoot)
             {
-                var hasVisibleFiles = folder.Files.Any(file => file.IsVisible);
-                var hasVisibleSubfolders = folder.Directories.Any() && folder.Directories.All(dir => dir.IsVisible);
-                folder.IsVisible = hasVisibleFiles || hasVisibleSubfolders;
+                _fileSystemWatchingService.BeginDirectoryWatching(folder.FullName, _wildcardsFilter);
             }
+            else
+            {
+                folder.UpdateVisibility();
+            }
+
+            _navigationNodeCacheService.AddToCache(folder);
             return folder;
         }
 
-        public void SetFileSearchFilter(string value)
+        public void ReleaseFileSystemContent(FolderNode folder)
         {
-            Argument.IsNotNullOrEmpty(() => value);
-
-            _wildcardsFilter = value;
-            _regexFilter = _wildcardsFilter.ConvertWildcardToRegex();
+            _fileSystemWatchingService.EndDirectoryWatching(folder.FullName);
+            OnDeleted(folder.FullName);
         }
 
-        public string GetFileSearchFilter()
+
+        public string Filter
         {
-            return _wildcardsFilter;
+            get { return _wildcardsFilter; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    _wildcardsFilter = string.Empty;
+                    _regexFilter = string.Empty;
+                }
+                else
+                {
+                    _wildcardsFilter = value;
+                    _regexFilter = _wildcardsFilter.ConvertWildcardToRegex();
+                    _fileSystemWatchingService.UpdateFilter(_wildcardsFilter);
+                }                
+            }
         }
 
-        private void OnCreated(FolderNode folder, string fullPath)
+        private void OnRenamed(string newName, string oldName)
         {
-            Argument.IsNotNull(() => folder);
+            Argument.IsNotNullOrEmpty(() => oldName);
+            Argument.IsNotNullOrEmpty(() => newName);
+
+            if (newName.IsFile())
+            {
+                RenameFile(oldName, newName);
+            }
+
+            if (newName.IsDirectory())
+            {
+                RenameFolder(oldName, newName);
+            }
+        }
+
+        private void OnCreated(string fullPath)
+        {
             Argument.IsNotNullOrEmpty(() => fullPath);
 
-            if (File.Exists(fullPath))
+            var folder = GetParentFolderNode(fullPath);
+
+            if (fullPath.IsFile() && folder.Files.FirstOrDefault(x => string.Equals(x.FullName, fullPath)) == null)
             {
                 if (fullPath.IsSupportedFile(_regexFilter))
                 {
-                    var fileInfo = LoadFileFromFileSystem(fullPath);
-                    folder.Files.Add(fileInfo);
+                    var fileNode = GetFromCacheOrLoad(fullPath);
+                    folder.Files.Add(fileNode);
+                    _navigationNodeCacheService.AddToCache(fileNode);
                 }
             }
 
-            if (Directory.Exists(fullPath))
+            if (fullPath.IsDirectory())
             {
-                var folderInfo = LoadFileSystemContent(fullPath);
-                folder.Directories.Add(folderInfo);
+                var folderNode = LoadFileSystemContent(fullPath);
+                folderNode.IsVisible = false;
+                folder.Directories.Add(folderNode);
+                _navigationNodeCacheService.AddToCache(folderNode);
             }
+
+
+            _filterService.ApplyFilesFilter();
         }
 
-        private void OnDeleted(FolderNode folder, string fullPath)
+       
+
+        private void OnDeleted(string fullPath)
         {
-            Argument.IsNotNull(() => folder);
             Argument.IsNotNullOrEmpty(() => fullPath);
+
+            var folder = GetParentFolderNode(fullPath);
 
             var childDir = folder.Directories.FirstOrDefault(x => string.Equals(x.FullName, fullPath));
             if (childDir != null)
             {
-                folder.Directories.Remove(childDir);
-                _fileSystemWatchingService.EndDirectoryWatching(childDir);
+                folder.Directories.Remove(childDir);                
             }
 
             var childFile = folder.Files.FirstOrDefault(x => string.Equals(x.FullName, fullPath));
@@ -121,30 +170,33 @@ namespace LogViewer.Services
             {
                 folder.Files.Remove(childFile);
             }
+
+            _navigationNodeCacheService.RemoveFromCache(fullPath);
+            _filterService.ApplyFilesFilter();
         }
 
-        private void OnRenamed(FolderNode folder, string newName, string oldName)
+        private void OnChanged(string fullPath)
         {
-            Argument.IsNotNull(() => folder);
+            var fileNode = GetFromCacheOrLoad(fullPath);
+            _fileNodeService.ReloadFileNode(fileNode);
+        }
+
+        private FileNode GetFromCacheOrLoad(string fullPath)
+        {
+            var fileNode = _navigationNodeCacheService.GetFromCache<FileNode>(fullPath);
+            if (fileNode == null)
+            {
+                fileNode = LoadFileFromFileSystem(fullPath);
+            }
+            return fileNode;
+        }
+
+        private void RenameFolder(string oldName, string newName)
+        {
             Argument.IsNotNullOrEmpty(() => oldName);
             Argument.IsNotNullOrEmpty(() => newName);
 
-            if (File.Exists(newName))
-            {
-                RenameFile(folder, oldName, newName);
-            }
-
-            if (Directory.Exists(newName))
-            {
-                RenameFolder(folder, oldName, newName);
-            }
-        }
-
-        private void RenameFolder(FolderNode folder, string oldName, string newName)
-        {
-            Argument.IsNotNull(() => folder);
-            Argument.IsNotNullOrEmpty(() => oldName);
-            Argument.IsNotNullOrEmpty(() => newName);
+            var folder = GetParentFolderNode(newName);
 
             var oldDir = folder.Directories.FirstOrDefault(x => string.Equals(x.FullName, oldName));
             if (oldDir == null)
@@ -155,7 +207,6 @@ namespace LogViewer.Services
             folder.Directories.Remove(oldDir);
 
             ClearSubfolders(oldDir);
-            _fileSystemWatchingService.EndDirectoryWatching(oldDir);
 
             if (Directory.Exists(newName))
             {
@@ -170,18 +221,18 @@ namespace LogViewer.Services
 
             foreach (var folderNode in folder.Directories)
             {
-                _fileSystemWatchingService.EndDirectoryWatching(folderNode);
                 ClearSubfolders(folderNode);
             }
 
             folder.Directories.Clear();
         }
 
-        private void RenameFile(FolderNode folder, string oldName, string newName)
+        private void RenameFile(string oldName, string newName)
         {
-            Argument.IsNotNull(() => folder);
             Argument.IsNotNullOrEmpty(() => oldName);
             Argument.IsNotNullOrEmpty(() => newName);
+
+            var folder = GetParentFolderNode(newName);
 
             var oldFile = folder.Files.FirstOrDefault(x => string.Equals(x.FullName, oldName));
             if (!newName.IsSupportedFile(_regexFilter))
@@ -208,35 +259,39 @@ namespace LogViewer.Services
 
         private void OnFolderContentChanged(object sender, FolderNodeEventArgs e)
         {
-            var folder = sender as FolderNode;
-            if (folder == null)
+            switch (e.ChangeType)
             {
-                return;
+                case WatcherChangeTypes.Changed:
+                    _dispatcherService.Invoke(() => OnChanged(e.NewPath));
+                    break;
+                case WatcherChangeTypes.Created:
+                    _dispatcherService.Invoke(() => OnCreated(e.NewPath));
+                    break;
+                case WatcherChangeTypes.Deleted:
+                    _dispatcherService.Invoke(() => OnDeleted(e.OldPath));
+                    break;
+                case WatcherChangeTypes.Renamed:
+                    _dispatcherService.Invoke(() => OnRenamed(e.NewPath, e.OldPath));
+                    break;
             }
+        }      
 
-            if (e.ChangeType.HasFlag(WatcherChangeTypes.Deleted))
-            {
-                _dispatcherService.Invoke(() => OnDeleted(folder, e.OldPath));
-            }
-
-            if (e.ChangeType.HasFlag(WatcherChangeTypes.Created))
-            {
-                _dispatcherService.Invoke(() => OnCreated(folder, e.NewPath));
-            }
-
-            if (e.ChangeType.HasFlag(WatcherChangeTypes.Renamed))
-            {
-                _dispatcherService.Invoke(() => OnRenamed(folder, e.NewPath, e.OldPath));
-            }
-        }
-
-        public FileNode LoadFileFromFileSystem(string fullName)
+        private FileNode LoadFileFromFileSystem(string fullName)
         {
             Argument.IsNotNullOrEmpty(() => fullName);
 
-            var fileInfo = _logFileService.LoadLogFile(fullName);
-            return fileInfo;
+            var fileNode = _fileNodeService.LoadFileNode(fullName);
+            _navigationNodeCacheService.AddToCache(fileNode);
+            return fileNode;
         }
+
+        private FolderNode GetParentFolderNode(string fullPath)
+        {
+            var parentDirectory = Catel.IO.Path.GetParentDirectory(fullPath);
+            var folder = _navigationNodeCacheService.GetFromCache<FolderNode>(parentDirectory);
+            return folder;
+        }
+
         #endregion
     }
 }

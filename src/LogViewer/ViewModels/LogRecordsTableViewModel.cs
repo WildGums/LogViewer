@@ -95,17 +95,17 @@ namespace LogViewer.ViewModels
 
         public void OnEndDateChanged()
         {
-            _filterService.ApplyFilesFilter(FileBrowser);
+            _filterService.ApplyFilesFilter();
         }
 
         public void OnStartDateChanged()
         {
-            _filterService.ApplyFilesFilter(FileBrowser);
+            _filterService.ApplyFilesFilter();
         }
 
         public void OnIsUseDateRangeChanged()
         {
-            _filterService.ApplyFilesFilter(FileBrowser);
+            _filterService.ApplyFilesFilter();
         }
 
         private async void OnSearchTemplateIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -140,7 +140,7 @@ namespace LogViewer.ViewModels
                     return;
                 }
 
-                _filterService.ApplyLogRecordsFilter(FileBrowser);
+                _filterService.ApplyLogRecordsFilter();
 
                 if (clearableModel != null)
                 {

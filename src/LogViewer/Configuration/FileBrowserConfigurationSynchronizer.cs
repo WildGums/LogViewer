@@ -70,6 +70,7 @@ namespace LogViewer.Configuration
             foreach (var folder in foldersToRemove)
             {
                 var folderNode = directories.FirstOrDefault(x => string.Equals(x.FullName.ToLower(), folder.ToLower()));
+                _fileSystemService.ReleaseFileSystemContent(folderNode);
                 directories.Remove(folderNode);
             }
 

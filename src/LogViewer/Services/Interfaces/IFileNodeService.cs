@@ -1,21 +1,19 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ILogFileService.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
+// <copyright file="IFileNodeService.cs" company="Wild Gums">
+//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 
 namespace LogViewer.Services
 {
-    using System.Collections.Generic;
+    using Models;
 
-    using LogViewer.Models;
-
-    public interface ILogFileService
+    public interface IFileNodeService
     {
         #region Methods
-        IEnumerable<FileNode> GetLogFiles(string filesFolder);
-        FileNode LoadLogFile(string fileName);
+        FileNode LoadFileNode(string fileName);
+        void ReloadFileNode(FileNode fileNode);
         #endregion
     }
 }

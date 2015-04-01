@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IFilterService.cs" company="Wild Gums">
+// <copyright file="INavigationNodeCacheService.cs" company="Wild Gums">
 //   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -9,15 +9,10 @@ namespace LogViewer.Services
 {
     using Models;
 
-    public interface IFilterService
+    public interface INavigationNodeCacheService
     {
-        #region Properties
-        Filter Filter { get; set; }
-        #endregion
-
-        #region Methods
-        void ApplyFilesFilter();
-        void ApplyLogRecordsFilter();
-        #endregion
+        T GetFromCache<T>(string fullPath) where T : NavigationNode;
+        void AddToCache(NavigationNode folderNode);
+        void RemoveFromCache(string fullPath);
     }
 }

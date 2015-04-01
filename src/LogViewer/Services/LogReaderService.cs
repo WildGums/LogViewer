@@ -109,8 +109,12 @@ namespace LogViewer.Services
 
         private void AppendMessageLine(LogRecord logRecord, string line)
         {
-            Argument.IsNotNull(() => logRecord);
             Argument.IsNotNull(() => line);
+
+            if (logRecord == null)
+            {
+                return;
+            }
 
             logRecord.Message += (Environment.NewLine + line);
         }

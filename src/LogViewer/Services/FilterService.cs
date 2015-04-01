@@ -18,14 +18,16 @@ namespace LogViewer.Services
     internal class FilterService : IFilterService
     {
         #region Fields
-        private static readonly object Sync = new object();
+        private static readonly object _lockObject = new object();
         private readonly IAggregateLogService _aggregateLogService;
         private readonly IDispatcherService _dispatcherService;
         private readonly IIndexSearchService _indexSearchService;
+        private readonly FileBrowserModel _fileBrowser;
         #endregion
 
         #region Constructors
-        public FilterService(IIndexSearchService indexSearchService, IDispatcherService dispatcherService, IAggregateLogService aggregateLogService)
+        public FilterService(IIndexSearchService indexSearchService, IDispatcherService dispatcherService, IAggregateLogService aggregateLogService,
+            IFileBrowserService fileBrowserService)
         {
             Argument.IsNotNull(() => indexSearchService);
             Argument.IsNotNull(() => dispatcherService);
@@ -36,6 +38,7 @@ namespace LogViewer.Services
             _aggregateLogService = aggregateLogService;
 
             Filter = new Filter();
+            _fileBrowser = fileBrowserService.FileBrowserModel;
         }
         #endregion
 
@@ -61,25 +64,21 @@ namespace LogViewer.Services
                 .Select(t => t.Item1); // we don't need score anymore
         }
 
-        public void ApplyFilesFilter(FileBrowserModel fileBrowser)
+        public void ApplyFilesFilter()
         {
-            Argument.IsNotNull(() => fileBrowser);
+            FilterSelectedFiles();
 
-            FilterSelectedFiles(fileBrowser);
-
-            FilterAllFiles(fileBrowser);
+            FilterAllFiles();
         }
 
-        public void ApplyLogRecordsFilter(FileBrowserModel fileBrowser)
+        public void ApplyLogRecordsFilter()
         {
-            Argument.IsNotNull(() => fileBrowser);
-
-            lock (Sync)
+            lock (_lockObject)
             {
                 var logRecords = _aggregateLogService.AggregateLog.Records;
 
                 var oldRecords = logRecords.ToArray();
-                _dispatcherService.Invoke(() => logRecords.ReplaceRange(FilterRecords(Filter, fileBrowser.SelectedItems.OfType<FileNode>())));
+                _dispatcherService.Invoke(() => logRecords.ReplaceRange(FilterRecords(Filter, _fileBrowser.SelectedItems.OfType<FileNode>())));
 
                 foreach (var record in logRecords.Except(oldRecords))
                 {
@@ -88,11 +87,9 @@ namespace LogViewer.Services
             }            
         }
 
-        private void FilterSelectedFiles(FileBrowserModel logViewer)
+        private void FilterSelectedFiles()
         {
-            Argument.IsNotNull(() => logViewer);
-
-            var selectedItems = logViewer.SelectedItems;
+            var selectedItems = _fileBrowser.SelectedItems;
 
             var buff = selectedItems.OfType<FileNode>().ToArray();
             if (buff.Any())
@@ -113,14 +110,17 @@ namespace LogViewer.Services
             }
         }
 
-        private void FilterAllFiles(FileBrowserModel fileBrowser)
+        private void FilterAllFiles()
         {
-            Argument.IsNotNull(() => fileBrowser);
-
-            foreach (var file in fileBrowser.RootDirectories.SelectMany(x => x.GetAllNestedFiles()))
+            foreach (var file in _fileBrowser.RootDirectories.SelectMany(x => x.GetAllNestedFiles()))
             {
                 var filter = Filter;
                 file.IsVisible = filter.IsAcceptableTo(file);
+            }
+
+            foreach (var subRootFolders in _fileBrowser.RootDirectories.SelectMany(x => x.Directories))
+            {
+                subRootFolders.UpdateVisibility();
             }
         }
         #endregion

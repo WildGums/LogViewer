@@ -92,7 +92,7 @@ namespace LogViewer.Services
             serviceLocator.RegisterType<IFilterCustomizationService, FilterCustomizationService>();
 
             serviceLocator.RegisterType<ILogReaderService, LogReaderService>();
-            serviceLocator.RegisterType<ILogFileService, LogFileService>();
+            serviceLocator.RegisterType<IFileNodeService, FileNodeService>();
             serviceLocator.RegisterType<IFilterService, FilterService>();
             serviceLocator.RegisterType<IRegexService, RegexService>();
             serviceLocator.RegisterType<IFileBrowserConfigurationService, FileBrowserConfigurationService>();
@@ -101,6 +101,7 @@ namespace LogViewer.Services
             serviceLocator.RegisterType<IIndexSearchService, IndexSearchService>();
             serviceLocator.RegisterType<IFileSystemWatchingService, FileSystemWatchingService>();
             serviceLocator.RegisterType<IAggregateLogService, AggregateLogService>();
+            serviceLocator.RegisterType<INavigationNodeCacheService, NavigationNodeCacheService>();
 
             serviceLocator.RegisterTypeAndInstantiate<FileBrowserModel>();
         }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LogFileService.cs" company="Wild Gums">
+// <copyright file="FileNodeService.cs" company="Wild Gums">
 //   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -9,6 +9,7 @@ namespace LogViewer.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -17,7 +18,7 @@ namespace LogViewer.Services
     using Catel.Collections;
     using Models;
 
-    public class LogFileService : ILogFileService
+    public class FileNodeService : IFileNodeService
     {
         #region Fields
         private static readonly Regex _fileNameMask = new Regex(@"^[a-zA-Z\.]+_(\d{4}-\d{2}-\d{2})_\d{6}_\d+\.log$", RegexOptions.Compiled);
@@ -26,7 +27,7 @@ namespace LogViewer.Services
         #endregion
 
         #region Constructors
-        public LogFileService(ILogReaderService logReaderService, IIndexSearchService indexSearchService)
+        public FileNodeService(ILogReaderService logReaderService, IIndexSearchService indexSearchService)
         {
             Argument.IsNotNull(() => logReaderService);
             Argument.IsNotNull(() => indexSearchService);
@@ -38,46 +39,48 @@ namespace LogViewer.Services
 
         #region Methods
 
-        #region ILogFileService Members
-        public IEnumerable<FileNode> GetLogFiles(string filesFolder)
-        {
-            Argument.IsNotNullOrEmpty(() => filesFolder);
-
-            return Directory.GetFiles(filesFolder, "*.log", SearchOption.TopDirectoryOnly).Select(LoadLogFile).ToArray();
-        }
-        #endregion
-
-        public FileNode LoadLogFile(string fileName)
+ 
+        public FileNode LoadFileNode(string fileName)
         {
             Argument.IsNotNullOrEmpty(() => fileName);
 
-            var logFile = new FileNode(new FileInfo(fileName));
+            var fileNode = new FileNode(new FileInfo(fileName));
 
-            logFile.Name = logFile.FileInfo.Name;
-            logFile.IsUnifyNamed = _fileNameMask.IsMatch(logFile.FileInfo.Name);
-            if (!logFile.IsUnifyNamed)
+            fileNode.Name = fileNode.FileInfo.Name;
+            fileNode.IsUnifyNamed = _fileNameMask.IsMatch(fileNode.FileInfo.Name);
+            if (!fileNode.IsUnifyNamed)
             {
-                logFile.Name = logFile.FileInfo.Name;
+                fileNode.Name = fileNode.FileInfo.Name;
             }
             else
             {
-                logFile.Name = logFile.FileInfo.Name;
-                var dateTimeString = Regex.Match(logFile.FileInfo.Name, @"(\d{4}-\d{2}-\d{2})").Value;
-                logFile.DateTime = DateTime.ParseExact(dateTimeString, "yyyy-MM-dd", null, DateTimeStyles.None);
+                fileNode.Name = fileNode.FileInfo.Name;
+                var dateTimeString = Regex.Match(fileNode.FileInfo.Name, @"(\d{4}-\d{2}-\d{2})").Value;
+                fileNode.DateTime = DateTime.ParseExact(dateTimeString, "yyyy-MM-dd", null, DateTimeStyles.None);
             }
 
             try
             {
-                logFile.Records.AddRange(_logReaderService.LoadRecordsFromFile(logFile));
+                fileNode.Records.AddRange(_logReaderService.LoadRecordsFromFile(fileNode));
 
-                _indexSearchService.EnsureFullTextIndex(logFile);
+                _indexSearchService.EnsureFullTextIndex(fileNode);
             }
             catch
             {
                 // ignored
             }
 
-            return logFile;
+            return fileNode;
+        }
+
+        public void ReloadFileNode(FileNode fileNode)
+        {
+            var logRecords = fileNode.Records;
+
+            logRecords.Clear();
+            logRecords.AddRange(_logReaderService.LoadRecordsFromFile(fileNode));
+
+            _indexSearchService.EnsureFullTextIndex(fileNode);
         }
         #endregion
     }

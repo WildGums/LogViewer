@@ -30,5 +30,17 @@ namespace LogViewer
                 }
             }
         }
+
+        public static void UpdateVisibility(this FolderNode folder)
+        {
+            foreach (var subFolder in folder.Directories)
+            {
+                subFolder.UpdateVisibility();
+            }
+
+            var hasVisibleFiles = folder.Files.Any(file => file.IsVisible);
+            var hasVisibleSubfolders = folder.Directories.Any() && folder.Directories.All(dir => dir.IsVisible);
+            folder.IsVisible = hasVisibleFiles || hasVisibleSubfolders;
+        }
     }
 }

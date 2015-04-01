@@ -195,7 +195,7 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="MethodTimeLogger.cs" />
-    <Compile Include="Models\EventArgs\FolderNodeEventArgs.cs" />
+    <Compile Include="Services\EventArgs\FolderNodeEventArgs.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\SearchTemplate.cs" />
     <Compile Include="Models\Base\SimplyClearableModel.cs" />
@@ -206,6 +206,8 @@
     <Compile Include="Services\FileSystemService.cs" />
     <Compile Include="Services\FileSystemWatchingService.cs" />
     <Compile Include="Services\FilterService.cs" />
+    <Compile Include="Services\NavigationNodeCacheService.cs" />
+    <Compile Include="Services\Interfaces\INavigationNodeCacheService.cs" />
     <Compile Include="Services\Interfaces\IAggregateLogService.cs" />
     <Compile Include="Services\Interfaces\IFileSystemWatchingService.cs" />
     <Compile Include="Services\Interfaces\IIndexSearchService.cs" />
@@ -214,9 +216,9 @@
     <Compile Include="Services\Interfaces\IFileSystemService.cs" />
     <Compile Include="Services\Interfaces\IFileBrowserConfigurationService.cs" />
     <Compile Include="Services\Interfaces\IConfigurationInitializationService.cs" />
-    <Compile Include="Services\Interfaces\ILogFileService.cs" />
+    <Compile Include="Services\Interfaces\IFileNodeService.cs" />
     <Compile Include="Services\Interfaces\IManageUserDataService.cs" />
-    <Compile Include="Services\LogFileService.cs" />
+    <Compile Include="Services\FileNodeService.cs" />
     <Compile Include="Services\Interfaces\ILogReaderService.cs" />
     <Compile Include="Services\LogReaderService.cs" />
     <Compile Include="Services\ManageUserDataService.cs" />
