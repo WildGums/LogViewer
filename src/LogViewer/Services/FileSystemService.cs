@@ -13,16 +13,15 @@ namespace LogViewer.Services
     using Catel;
     using Catel.Services;
     using Models;
-    using Orchestra.Models;
 
     internal class FileSystemService : IFileSystemService
     {
         #region Fields
         private readonly IDispatcherService _dispatcherService;
-        private readonly IFileSystemWatchingService _fileSystemWatchingService;
-        private readonly INavigationNodeCacheService _navigationNodeCacheService;
-        private readonly IFilterService _filterService;
         private readonly IFileNodeService _fileNodeService;
+        private readonly IFileSystemWatchingService _fileSystemWatchingService;
+        private readonly IFilterService _filterService;
+        private readonly INavigationNodeCacheService _navigationNodeCacheService;
         private string _regexFilter;
         private string _wildcardsFilter;
         #endregion
@@ -46,6 +45,27 @@ namespace LogViewer.Services
             Filter = "*.log";
 
             fileSystemWatchingService.ContentChanged += OnFolderContentChanged;
+        }
+        #endregion
+
+        #region Properties
+        public string Filter
+        {
+            get { return _wildcardsFilter; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    _wildcardsFilter = string.Empty;
+                    _regexFilter = string.Empty;
+                }
+                else
+                {
+                    _wildcardsFilter = value;
+                    _regexFilter = _wildcardsFilter.ConvertWildcardToRegex();
+                    _fileSystemWatchingService.UpdateFilter(_wildcardsFilter);
+                }
+            }
         }
         #endregion
 
@@ -88,26 +108,6 @@ namespace LogViewer.Services
             OnDeleted(folder.FullName);
         }
 
-
-        public string Filter
-        {
-            get { return _wildcardsFilter; }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    _wildcardsFilter = string.Empty;
-                    _regexFilter = string.Empty;
-                }
-                else
-                {
-                    _wildcardsFilter = value;
-                    _regexFilter = _wildcardsFilter.ConvertWildcardToRegex();
-                    _fileSystemWatchingService.UpdateFilter(_wildcardsFilter);
-                }                
-            }
-        }
-
         private void OnRenamed(string newName, string oldName)
         {
             Argument.IsNotNullOrEmpty(() => oldName);
@@ -147,11 +147,9 @@ namespace LogViewer.Services
                 folder.Directories.Add(folderNode);
                 _navigationNodeCacheService.AddToCache(folderNode);
             }
-            
+
             _filterService.ApplyFilesFilter();
         }
-
-       
 
         private void OnDeleted(string fullPath)
         {
@@ -162,7 +160,7 @@ namespace LogViewer.Services
             var childDir = folder.Directories.FirstOrDefault(x => string.Equals(x.FullName, fullPath));
             if (childDir != null)
             {
-                folder.Directories.Remove(childDir);                
+                folder.Directories.Remove(childDir);
             }
 
             var childFile = folder.Files.FirstOrDefault(x => string.Equals(x.FullName, fullPath));
@@ -296,7 +294,7 @@ namespace LogViewer.Services
                     _dispatcherService.Invoke(() => OnRenamed(e.NewPath, e.OldPath));
                     break;
             }
-        }      
+        }
 
         private FileNode LoadFileFromFileSystem(string fullName)
         {
@@ -309,11 +307,12 @@ namespace LogViewer.Services
 
         private FolderNode GetParentFolderNode(string fullPath)
         {
+            Argument.IsNotNullOrEmpty(() => fullPath);
+
             var parentDirectory = Catel.IO.Path.GetParentDirectory(fullPath);
             var folder = _navigationNodeCacheService.GetFromCache<FolderNode>(parentDirectory);
             return folder;
         }
-
         #endregion
     }
 }
