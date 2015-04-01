@@ -191,6 +191,7 @@
     <Compile Include="Extensions\AppDataServiceExtensions.cs" />
     <Compile Include="Extensions\FilterExtensions.cs" />
     <Compile Include="Extensions\FolderNodeExtensions.cs" />
+    <Compile Include="Extensions\IListExtensions.cs" />
     <Compile Include="Extensions\ItemsControlExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

@@ -7,9 +7,11 @@
 
 namespace LogViewer.Services
 {
+    using System;
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
+    using System.Windows.Documents;
     using Catel;
     using Catel.Services;
     using Models;
@@ -79,9 +81,9 @@ namespace LogViewer.Services
             FolderNode folder = null;
             _dispatcherService.Invoke(() => { folder = new FolderNode(directoryInfo); });
 
-            var fileInfos = Directory.GetFiles(path, _wildcardsFilter, SearchOption.TopDirectoryOnly).Where(x => x.IsSupportedFile(_regexFilter))
+            var fileNodes = Directory.GetFiles(path, _wildcardsFilter, SearchOption.TopDirectoryOnly).Where(x => x.IsSupportedFile(_regexFilter))
                 .Select(fileName => LoadFileFromFileSystem(Path.Combine(path, fileName))).OrderByDescending(x => x.Name);
-            _dispatcherService.Invoke(() => folder.Files = new ObservableCollection<FileNode>(fileInfos));
+            _dispatcherService.Invoke(() => folder.Files = new ObservableCollection<FileNode>(fileNodes));
 
             foreach (var directory in Directory.GetDirectories(path))
             {
@@ -104,6 +106,8 @@ namespace LogViewer.Services
 
         public void ReleaseFileSystemContent(FolderNode folder)
         {
+            Argument.IsNotNull(() => folder);
+
             _fileSystemWatchingService.EndDirectoryWatching(folder.FullName);
             OnDeleted(folder.FullName);
         }
@@ -135,7 +139,7 @@ namespace LogViewer.Services
                 if (fullPath.IsSupportedFile(_regexFilter))
                 {
                     var fileNode = GetFromCacheOrLoad(fullPath);
-                    folder.Files.Add(fileNode);
+                    folder.Files.AddDescendingly(fileNode, CompareFileNodes);
                     _navigationNodeCacheService.AddToCache(fileNode);
                 }
             }
@@ -149,6 +153,16 @@ namespace LogViewer.Services
             }
 
             _filterService.ApplyFilesFilter();
+        }
+
+        private int CompareFileNodes(FileNode fileNode1, FileNode fileNode2)
+        {
+            Argument.IsNotNull(() => fileNode1);
+            Argument.IsNotNull(() => fileNode2);
+
+            var name1 = fileNode1.Name;
+            var name2 = fileNode2.Name;
+            return string.Compare(name1, 0, name2, 0, Math.Min(name1.Length, name2.Length));
         }
 
         private void OnDeleted(string fullPath)
@@ -175,6 +189,8 @@ namespace LogViewer.Services
 
         private void OnChanged(string fullPath)
         {
+            Argument.IsNotNullOrEmpty(() => fullPath);
+
             var fileNode = GetFromCacheOrLoad(fullPath);
             _fileNodeService.ReloadFileNode(fileNode);
 
@@ -183,6 +199,8 @@ namespace LogViewer.Services
 
         private FileNode GetFromCacheOrLoad(string fullPath)
         {
+            Argument.IsNotNullOrEmpty(() => fullPath);
+
             var fileNode = _navigationNodeCacheService.GetFromCache<FileNode>(fullPath);
             if (fileNode == null)
             {
@@ -262,14 +280,14 @@ namespace LogViewer.Services
             if (fileNode == null)
             {
                 var newFileNode = LoadFileFromFileSystem(newName);
-                folder.Files.Add(newFileNode);
+                folder.Files.AddDescendingly(newFileNode, CompareFileNodes);
             }
             else
             {
                 folder.Files.Remove(fileNode);
                 _navigationNodeCacheService.RemoveFromCache(fileNode.FullName);
                 fileNode.FileInfo = new FileInfo(newName);
-                folder.Files.Add(fileNode);
+                folder.Files.AddDescendingly(fileNode, CompareFileNodes);
                 _navigationNodeCacheService.AddToCache(fileNode);
             }
         }
