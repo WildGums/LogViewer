@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LogNavigatorViewModel.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
+//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -8,30 +8,24 @@
 namespace LogViewer.ViewModels
 {
     using System.Collections.ObjectModel;
-    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-
     using Catel;
-    using Catel.Collections;
     using Catel.Fody;
     using Catel.MVVM;
     using Catel.Services;
-
-    using LogViewer.Models;
-    using LogViewer.Services;
-
+    using Models;
     using Orchestra.Services;
+    using Services;
 
     public class LogNavigatorViewModel : ViewModelBase
     {
         #region Fields
         private readonly IAppDataService _appDataService;
-        private readonly IFileBrowserService _fileBrowserService;
         private readonly IFileBrowserConfigurationService _fileBrowserConfigurationService;
+        private readonly IFileBrowserService _fileBrowserService;
         private readonly IMessageService _messageService;
         private readonly ISelectDirectoryService _selectDirectoryService;
-
         private ObservableCollection<NavigationNode> _prevSelectedItems;
         #endregion
 
@@ -62,6 +56,38 @@ namespace LogViewer.ViewModels
         [Expose("RootDirectories")]
         [Expose("SelectedItems")]
         public FileBrowserModel FileBrowser { get; set; }
+        #endregion
+
+        #region Methods
+        public void OnSelectedItemsChanged()
+        {
+            if (_prevSelectedItems != null)
+            {
+                _prevSelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
+            }
+
+            if (FileBrowser.SelectedItems != null)
+            {
+                FileBrowser.SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
+            }
+
+            _prevSelectedItems = FileBrowser.SelectedItems;
+        }
+
+        private void OnSelectedItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            DeleteFolder.RaiseCanExecuteChanged();
+        }
+
+        protected override async Task Initialize()
+        {
+            await base.Initialize();
+        }
+
+        protected override async Task<bool> Save()
+        {
+            return await base.Save();
+        }
         #endregion
 
         #region Commands
@@ -113,38 +139,6 @@ namespace LogViewer.ViewModels
             }
 
             return FileBrowser.RootDirectories.Contains(folderNode);
-        }
-        #endregion
-
-        #region Methods
-        public void OnSelectedItemsChanged()
-        {
-            if (_prevSelectedItems != null)
-            {
-                _prevSelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
-            }
-
-            if (FileBrowser.SelectedItems != null)
-            {
-                FileBrowser.SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
-            }
-
-            _prevSelectedItems = FileBrowser.SelectedItems;
-        }
-
-        private void OnSelectedItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            DeleteFolder.RaiseCanExecuteChanged();
-        }
-
-        protected override async Task Initialize()
-        {
-            await base.Initialize();
-        }
-
-        protected override async Task<bool> Save()
-        {
-            return await base.Save();
         }
         #endregion
     }

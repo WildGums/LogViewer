@@ -31,9 +31,20 @@ namespace LogViewer.Services
         #region ILogReaderService Members
         public IEnumerable<LogRecord> LoadRecordsFromFile(FileNode fileNode)
         {
-            Argument.IsNotNull(() => fileNode);
+            Argument.IsNotNull(() => fileNode);           
+
+            FileStream stream;
+            try
+            {
+                stream = new FileStream(fileNode.FileInfo.FullName, FileMode.Open, FileAccess.Read);
+            }
+            catch (IOException exception)
+            {
+                yield break;
+            }
+
             int counter = 0;
-            using (var stream = new FileStream(fileNode.FileInfo.FullName, FileMode.Open))
+            using (stream)
             {
                 using (var reader = new StreamReader(stream))
                 {

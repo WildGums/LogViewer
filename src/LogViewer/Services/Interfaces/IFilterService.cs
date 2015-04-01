@@ -17,7 +17,7 @@ namespace LogViewer.Services
 
         #region Methods
         void ApplyFilesFilter();
-        void ApplyLogRecordsFilter();
+        void ApplyLogRecordsFilter(FileNode fileNode = null);
         #endregion
     }
 }

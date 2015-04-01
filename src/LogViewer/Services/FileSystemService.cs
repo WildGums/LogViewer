@@ -146,8 +146,7 @@ namespace LogViewer.Services
                 folder.Directories.Add(folderNode);
                 _navigationNodeCacheService.AddToCache(folderNode);
             }
-
-
+            
             _filterService.ApplyFilesFilter();
         }
 
@@ -179,6 +178,8 @@ namespace LogViewer.Services
         {
             var fileNode = GetFromCacheOrLoad(fullPath);
             _fileNodeService.ReloadFileNode(fileNode);
+
+            _filterService.ApplyLogRecordsFilter(fileNode);
         }
 
         private FileNode GetFromCacheOrLoad(string fullPath)

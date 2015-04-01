@@ -71,14 +71,23 @@ namespace LogViewer.Services
             FilterAllFiles();
         }
 
-        public void ApplyLogRecordsFilter()
+        public void ApplyLogRecordsFilter(FileNode fileNode = null)
         {
+            var selectedNodes = _fileBrowser.SelectedItems.OfType<FileNode>().ToArray();
+            if (fileNode != null && !selectedNodes.Contains(fileNode))
+            {
+                return;
+            }
+
             lock (_lockObject)
             {
                 var logRecords = _aggregateLogService.AggregateLog.Records;
 
                 var oldRecords = logRecords.ToArray();
-                _dispatcherService.Invoke(() => logRecords.ReplaceRange(FilterRecords(Filter, _fileBrowser.SelectedItems.OfType<FileNode>())));
+                _dispatcherService.Invoke(() =>
+                {                    
+                    logRecords.ReplaceRange(FilterRecords(Filter, selectedNodes));
+                });
 
                 foreach (var record in logRecords.Except(oldRecords))
                 {

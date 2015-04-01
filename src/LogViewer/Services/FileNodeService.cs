@@ -8,11 +8,8 @@
 namespace LogViewer.Services
 {
     using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Globalization;
     using System.IO;
-    using System.Linq;
     using System.Text.RegularExpressions;
     using Catel;
     using Catel.Collections;
@@ -22,8 +19,8 @@ namespace LogViewer.Services
     {
         #region Fields
         private static readonly Regex _fileNameMask = new Regex(@"^[a-zA-Z\.]+_(\d{4}-\d{2}-\d{2})_\d{6}_\d+\.log$", RegexOptions.Compiled);
-        private readonly ILogReaderService _logReaderService;
         private readonly IIndexSearchService _indexSearchService;
+        private readonly ILogReaderService _logReaderService;
         #endregion
 
         #region Constructors
@@ -38,8 +35,6 @@ namespace LogViewer.Services
         #endregion
 
         #region Methods
-
- 
         public FileNode LoadFileNode(string fileName)
         {
             Argument.IsNotNullOrEmpty(() => fileName);
