@@ -13,6 +13,7 @@ namespace LogViewer.Services
     using Catel;
     using Catel.Services;
     using Models;
+    using Orchestra.Models;
 
     internal class FileSystemService : IFileSystemService
     {
@@ -197,6 +198,12 @@ namespace LogViewer.Services
             Argument.IsNotNullOrEmpty(() => oldName);
             Argument.IsNotNullOrEmpty(() => newName);
 
+            var fromCache = _navigationNodeCacheService.GetFromCache<FolderNode>(newName);
+            if (fromCache != null)
+            {
+                return;
+            }
+
             var folder = GetParentFolderNode(newName);
 
             var oldDir = folder.Directories.FirstOrDefault(x => string.Equals(x.FullName, oldName));
@@ -206,6 +213,7 @@ namespace LogViewer.Services
             }
 
             folder.Directories.Remove(oldDir);
+            _navigationNodeCacheService.RemoveFromCache(oldName);
 
             ClearSubfolders(oldDir);
 
@@ -213,6 +221,7 @@ namespace LogViewer.Services
             {
                 var newDir = LoadFileSystemContent(newName);
                 folder.Directories.Add(newDir);
+                _navigationNodeCacheService.AddToCache(newDir);
             }
         }
 
@@ -233,28 +242,37 @@ namespace LogViewer.Services
             Argument.IsNotNullOrEmpty(() => oldName);
             Argument.IsNotNullOrEmpty(() => newName);
 
+            var fromCache = _navigationNodeCacheService.GetFromCache<FileNode>(newName);
+            if (fromCache != null)
+            {
+                return;
+            }
+
             var folder = GetParentFolderNode(newName);
 
-            var oldFile = folder.Files.FirstOrDefault(x => string.Equals(x.FullName, oldName));
+            var fileNode = folder.Files.FirstOrDefault(x => string.Equals(x.FullName, oldName));
             if (!newName.IsSupportedFile(_regexFilter))
             {
-                if (oldFile != null)
+                if (fileNode != null)
                 {
-                    folder.Files.Remove(oldFile);
+                    folder.Files.Remove(fileNode);
+                    _navigationNodeCacheService.RemoveFromCache(fileNode.FullName);
                 }
                 return;
             }
 
-            if (oldFile == null)
+            if (fileNode == null)
             {
-                var fileInfo = LoadFileFromFileSystem(newName);
-                folder.Files.Add(fileInfo);
+                var newFileNode = LoadFileFromFileSystem(newName);
+                folder.Files.Add(newFileNode);
             }
             else
             {
-                folder.Files.Remove(oldFile);
-                oldFile.FileInfo = new FileInfo(newName);
-                folder.Files.Add(oldFile);
+                folder.Files.Remove(fileNode);
+                _navigationNodeCacheService.RemoveFromCache(fileNode.FullName);
+                fileNode.FileInfo = new FileInfo(newName);
+                folder.Files.Add(fileNode);
+                _navigationNodeCacheService.AddToCache(fileNode);
             }
         }
 
@@ -265,12 +283,15 @@ namespace LogViewer.Services
                 case WatcherChangeTypes.Changed:
                     _dispatcherService.Invoke(() => OnChanged(e.NewPath));
                     break;
+
                 case WatcherChangeTypes.Created:
                     _dispatcherService.Invoke(() => OnCreated(e.NewPath));
                     break;
+
                 case WatcherChangeTypes.Deleted:
                     _dispatcherService.Invoke(() => OnDeleted(e.OldPath));
                     break;
+
                 case WatcherChangeTypes.Renamed:
                     _dispatcherService.Invoke(() => OnRenamed(e.NewPath, e.OldPath));
                     break;
