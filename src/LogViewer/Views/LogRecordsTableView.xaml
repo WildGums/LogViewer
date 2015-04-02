@@ -278,6 +278,7 @@
             </Style.Triggers>
         </Style>
         <catel:BooleanToHidingVisibilityConverter x:Key="BooleanToHidingVisibilityConverter"/>
+        <converters:BoolToInvisibilityConverter x:Key="BoolToInvisibilityConverter"/>
     </catel:UserControl.Resources>
     <Grid>
         <Grid.Resources>
@@ -304,7 +305,12 @@
                 <DataGridTemplateColumn Header="Level" Width="Auto" IsReadOnly="True" CellStyle="{StaticResource IconColumnCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Style="{StaticResource DataGridLevelLabelStyle}" ToolTip="{Binding DateTime, Converter={converters:TimestampToStringConverter}}" />
+                            <Label Style="{StaticResource DataGridLevelLabelStyle}">
+                                <Label.ToolTip >
+                                    <ToolTip Visibility="{Binding Path=Data.IsTimestampVisible, Source={StaticResource Proxy}, Converter={StaticResource BoolToInvisibilityConverter}}"
+                                             Content="{Binding DateTime, Converter={converters:TimestampToStringConverter}}"/>
+                                </Label.ToolTip>
+                            </Label> 
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
