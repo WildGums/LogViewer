@@ -47,6 +47,7 @@
                 </catel:StackGrid.ColumnDefinitions>
 
                 <CheckBox Grid.ColumnSpan="2" Content="Enable anonymous analytics to improve this application" IsChecked="{Binding EnableAnalytics}" />
+                <CheckBox Grid.ColumnSpan="2" Content="Show Timestamp inLevel tooltip" IsChecked="{Binding IsTimestampVisible}" />
             </catel:StackGrid>
         </GroupBox>
 

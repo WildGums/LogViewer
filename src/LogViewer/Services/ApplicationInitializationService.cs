@@ -100,8 +100,9 @@ namespace LogViewer.Services
             serviceLocator.RegisterType<IFileBrowserService, FileBrowserService>();
             serviceLocator.RegisterType<IIndexSearchService, IndexSearchService>();
             serviceLocator.RegisterType<IFileSystemWatchingService, FileSystemWatchingService>();
-            serviceLocator.RegisterType<IAggregateLogService, AggregateLogService>();
+            serviceLocator.RegisterType<ILogTableService, LogTableService>();
             serviceLocator.RegisterType<INavigationNodeCacheService, NavigationNodeCacheService>();
+            serviceLocator.RegisterType<ILogTableConfigurationService, LogTableConfigurationService>();
 
             serviceLocator.RegisterTypeAndInstantiate<FileBrowserModel>();
         }
@@ -128,6 +129,7 @@ namespace LogViewer.Services
             googleAnalyticsService.AccountId = Analytics.AccountId;
 
             _serviceLocator.RegisterTypeAndInstantiate<NavigatorConfigurationSynchronizer>();
+            _serviceLocator.RegisterTypeAndInstantiate<TimestampVisibilityConfigurationSynchronizer>();
         }
 
         [Time]

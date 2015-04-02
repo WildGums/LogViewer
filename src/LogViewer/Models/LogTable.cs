@@ -1,25 +1,27 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AggregateLogService.cs" company="Wild Gums">
+// <copyright file="LogTable.cs" company="Wild Gums">
 //   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogViewer.Services
+namespace LogViewer.Models
 {
-    using Models;
+    using System.Collections.ObjectModel;
+    using Catel.Data;
 
-    public class AggregateLogService : IAggregateLogService
+    public class LogTable : ModelBase
     {
         #region Constructors
-        public AggregateLogService()
+        public LogTable()
         {
-            AggregateLog = new Log();
+            Records = new ObservableCollection<LogRecord>();
         }
         #endregion
 
         #region Properties
-        public Log AggregateLog { get; private set; }
+        public ObservableCollection<LogRecord> Records { get; private set; }
+        public bool IsTimestampVisible { get; set; }
         #endregion
     }
 }

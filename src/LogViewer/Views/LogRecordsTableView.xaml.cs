@@ -22,11 +22,19 @@ namespace LogViewer.Views
 
             _defaultGroupStyle = (GroupStyle) FindResource("groupStyle");
             InitDataGrid();
+
+            Loaded += LogRecordsTableView_Loaded;
+        }
+
+        void LogRecordsTableView_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            //throw new System.NotImplementedException();
         }
 
         private void InitDataGrid()
         {
             Grid.GroupStyle.Add(_defaultGroupStyle);
         }
+         
     }
 }

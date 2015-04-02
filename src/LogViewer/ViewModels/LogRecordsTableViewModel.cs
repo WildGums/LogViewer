@@ -23,25 +23,25 @@ namespace LogViewer.ViewModels
     {
         #region Fields
         private readonly IFilterService _filterService;
-        private readonly IAggregateLogService _aggregateLogService;
+        private readonly ILogTableService _logTableService;
         private IDisposable _applyFilterListener;
         private ObservableCollection<NavigationNode> _prevSelectedItems;
         #endregion
 
         #region Constructors
         public LogRecordsTableViewModel(IFilterService filterService, ICommandManager commandManager, IFileBrowserService fileBrowserService,
-            IAggregateLogService aggregateLogService)
+            ILogTableService logTableService)
         {
             Argument.IsNotNull(() => filterService);
             Argument.IsNotNull(() => commandManager);
             Argument.IsNotNull(() => fileBrowserService);
-            Argument.IsNotNull(() => aggregateLogService);
+            Argument.IsNotNull(() => logTableService);
 
             _filterService = filterService;
-            _aggregateLogService = aggregateLogService;
+            _logTableService = logTableService;
             FileBrowser = fileBrowserService.FileBrowserModel;
             Filter = filterService.Filter;
-            AggregateLog = aggregateLogService.AggregateLog;
+            LogTable = logTableService.LogTable;
 
             ResetSearchTemplate = new Command(OnResetSearchTemplateExecute);
 
@@ -58,7 +58,8 @@ namespace LogViewer.ViewModels
 
         [Model]
         [Expose("Records")]
-        public Log AggregateLog { get; private set; }
+        [Expose("IsTimestampVisible")]
+        public LogTable LogTable { get; private set; }
 
         [Model]
         [Expose("IsUseDateRange")]

@@ -1,26 +1,25 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Log.cs" company="Wild Gums">
+// <copyright file="logTableService.cs" company="Wild Gums">
 //   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogViewer.Models
+namespace LogViewer.Services
 {
-    using System.Collections.ObjectModel;
-    using Catel.Data;
+    using Models;
 
-    public class Log : ModelBase
+    public class LogTableService : ILogTableService
     {
         #region Constructors
-        public Log()
+        public LogTableService()
         {
-            Records = new ObservableCollection<LogRecord>();
+            LogTable = new LogTable();
         }
         #endregion
 
         #region Properties
-        public ObservableCollection<LogRecord> Records { get; private set; }
+        public LogTable LogTable { get; private set; }
         #endregion
     }
 }

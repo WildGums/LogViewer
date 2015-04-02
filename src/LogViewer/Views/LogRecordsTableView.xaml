@@ -6,6 +6,7 @@
                    xmlns:catel="http://catel.codeplex.com"
                    xmlns:controls="clr-namespace:LogViewer.Controls"
                    xmlns:views="clr-namespace:LogViewer.Views"
+                   xmlns:logViewer="clr-namespace:LogViewer"
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
     
     <catel:UserControl.Resources>
@@ -275,9 +276,13 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <catel:BooleanToHidingVisibilityConverter x:Key="BooleanToHidingVisibilityConverter"/>
     </catel:UserControl.Resources>
     <Grid>
-        <DataGrid x:Name="Grid" Grid.Row="1" Style="{StaticResource DefaultDataGridStyle}" ItemsSource="{Binding IsAsync=True}" 
+        <Grid.Resources>
+            <logViewer:BindingProxy x:Key="Proxy" Data="{Binding}"/>
+        </Grid.Resources>
+        <DataGrid x:Name="Grid" Style="{StaticResource DefaultDataGridStyle}" ItemsSource="{Binding IsAsync=True}" 
               EnableRowVirtualization="True"
               EnableColumnVirtualization="True"
               VerticalScrollBarVisibility="Visible"
@@ -292,7 +297,9 @@
             </DataGrid.DataContext>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Timestamp" Width="Auto" Binding="{Binding DateTime}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Timestamp" Width="Auto" Binding="{Binding DateTime}" IsReadOnly="True"
+                                    Visibility="{Binding Path=Data.IsTimestampVisible, Source={StaticResource Proxy}, Converter={StaticResource BooleanToHidingVisibilityConverter}}"/>
+                
                 <DataGridTemplateColumn Header="Level" Width="Auto" IsReadOnly="True" CellStyle="{StaticResource IconColumnCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

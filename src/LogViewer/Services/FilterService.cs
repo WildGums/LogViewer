@@ -19,23 +19,23 @@ namespace LogViewer.Services
     {
         #region Fields
         private static readonly object _lockObject = new object();
-        private readonly IAggregateLogService _aggregateLogService;
+        private readonly ILogTableService _logTableService;
         private readonly IDispatcherService _dispatcherService;
         private readonly IIndexSearchService _indexSearchService;
         private readonly FileBrowserModel _fileBrowser;
         #endregion
 
         #region Constructors
-        public FilterService(IIndexSearchService indexSearchService, IDispatcherService dispatcherService, IAggregateLogService aggregateLogService,
+        public FilterService(IIndexSearchService indexSearchService, IDispatcherService dispatcherService, ILogTableService logTableService,
             IFileBrowserService fileBrowserService)
         {
             Argument.IsNotNull(() => indexSearchService);
             Argument.IsNotNull(() => dispatcherService);
-            Argument.IsNotNull(() => aggregateLogService);
+            Argument.IsNotNull(() => logTableService);
 
             _indexSearchService = indexSearchService;
             _dispatcherService = dispatcherService;
-            _aggregateLogService = aggregateLogService;
+            _logTableService = logTableService;
 
             Filter = new Filter();
             _fileBrowser = fileBrowserService.FileBrowserModel;
@@ -81,7 +81,7 @@ namespace LogViewer.Services
 
             lock (_lockObject)
             {
-                var logRecords = _aggregateLogService.AggregateLog.Records;
+                var logRecords = _logTableService.LogTable.Records;
 
                 var oldRecords = logRecords.ToArray();
                 _dispatcherService.Invoke(() =>

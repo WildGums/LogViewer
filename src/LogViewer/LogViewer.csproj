@@ -185,7 +185,8 @@
     </Compile>
     <Compile Include="Behaviors\MultipleSelectionBehavior.cs" />
     <Compile Include="Configuration\AnalyticsConfigurationSynchronizer.cs" />
-    <Compile Include="Configuration\FileBrowserConfigurationSynchronizer.cs" />
+    <Compile Include="Configuration\NavigatorConfigurationSynchronizer.cs" />
+    <Compile Include="Configuration\TimestampVisibilityConfigurationSynchronizer.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Converters\BoolToInvisibilityConverter.cs" />
     <Compile Include="Extensions\AppDataServiceExtensions.cs" />
@@ -195,12 +196,15 @@
     <Compile Include="Extensions\ItemsControlExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Helpers\BindingProxy.cs" />
     <Compile Include="MethodTimeLogger.cs" />
     <Compile Include="Services\EventArgs\FolderNodeEventArgs.cs" />
-    <Compile Include="Models\Log.cs" />
+    <Compile Include="Models\LogTable.cs" />
     <Compile Include="Models\SearchTemplate.cs" />
     <Compile Include="Models\Base\SimplyClearableModel.cs" />
-    <Compile Include="Services\AggregateLogService.cs" />
+    <Compile Include="Services\Interfaces\ILogTableConfigurationService.cs" />
+    <Compile Include="Services\LogTableConfigurationService.cs" />
+    <Compile Include="Services\LogTableService.cs" />
     <Compile Include="Services\ConfigurationInitializationService.cs" />
     <Compile Include="Services\FileBrowserConfigurationService.cs" />
     <Compile Include="Services\FileBrowserService.cs" />
@@ -209,7 +213,7 @@
     <Compile Include="Services\FilterService.cs" />
     <Compile Include="Services\NavigationNodeCacheService.cs" />
     <Compile Include="Services\Interfaces\INavigationNodeCacheService.cs" />
-    <Compile Include="Services\Interfaces\IAggregateLogService.cs" />
+    <Compile Include="Services\Interfaces\ILogTableService.cs" />
     <Compile Include="Services\Interfaces\IFileSystemWatchingService.cs" />
     <Compile Include="Services\Interfaces\IIndexSearchService.cs" />
     <Compile Include="Services\IndexSearchService.cs" />
