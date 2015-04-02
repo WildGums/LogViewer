@@ -7,6 +7,7 @@
                    xmlns:controls="clr-namespace:LogViewer.Controls"
                    xmlns:views="clr-namespace:LogViewer.Views"
                    xmlns:logViewer="clr-namespace:LogViewer"
+                   xmlns:converters="clr-namespace:LogViewer.Converters"
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
     
     <catel:UserControl.Resources>
@@ -303,7 +304,7 @@
                 <DataGridTemplateColumn Header="Level" Width="Auto" IsReadOnly="True" CellStyle="{StaticResource IconColumnCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Style="{StaticResource DataGridLevelLabelStyle}" />
+                            <Label Style="{StaticResource DataGridLevelLabelStyle}" ToolTip="{Binding DateTime, Converter={converters:TimestampToStringConverter}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -189,6 +189,7 @@
     <Compile Include="Configuration\TimestampVisibilityConfigurationSynchronizer.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Converters\BoolToInvisibilityConverter.cs" />
+    <Compile Include="Converters\TimestampToStringConverter.cs" />
     <Compile Include="Extensions\AppDataServiceExtensions.cs" />
     <Compile Include="Extensions\FilterExtensions.cs" />
     <Compile Include="Extensions\FolderNodeExtensions.cs" />
