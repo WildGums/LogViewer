@@ -7,15 +7,19 @@
                    xmlns:views="clr-namespace:LogViewer.Views"
                    mc:Ignorable="d" 
                    d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    
+    <catel:StackGrid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
-        <views:LogNavigatorView Grid.Column="0"/>
-        <GridSplitter Grid.Column="1" MinWidth="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
-        <views:LogRecordsTableView Grid.Column="2"/>
-    </Grid>
+        <views:LogNavigatorView />
+        
+        <GridSplitter Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Center" />
+        
+        <views:LogRecordsTableView />
+    </catel:StackGrid>
+    
 </catel:UserControl>
