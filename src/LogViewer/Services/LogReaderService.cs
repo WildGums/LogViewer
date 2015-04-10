@@ -14,11 +14,14 @@ namespace LogViewer.Services
     using System.Text.RegularExpressions;
     using Catel;
     using Catel.Logging;
+    using MethodTimer;
     using Models;
 
     public class LogReaderService : ILogReaderService
     {
         #region Fields
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
         private static readonly Regex LogRecordPattern = new Regex(@"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+\s\=\>\s\[[a-zA-Z]+\]\s\[[a-zA-Z\d\.\`]+\].+", RegexOptions.Compiled);
         private static readonly Regex DateTimePattern = new Regex(@"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+", RegexOptions.Compiled);
         private static readonly Regex ThreadIdPattern = new Regex(@"^\[[0-9\.]+\]", RegexOptions.Compiled);
@@ -29,17 +32,23 @@ namespace LogViewer.Services
         #region Methods
 
         #region ILogReaderService Members
+        [Time]
         public IEnumerable<LogRecord> LoadRecordsFromFile(FileNode fileNode)
         {
-            Argument.IsNotNull(() => fileNode);           
+            Argument.IsNotNull(() => fileNode);
 
             FileStream stream;
+
+            Log.Debug("Loading records file file '{0}'", fileNode);
+
             try
             {
                 stream = new FileStream(fileNode.FileInfo.FullName, FileMode.Open, FileAccess.Read);
             }
-            catch (IOException exception)
+            catch (IOException ex)
             {
+                Log.Warning(ex, "Failed to load records from file '{0}'", fileNode);
+
                 yield break;
             }
 
@@ -60,9 +69,12 @@ namespace LogViewer.Services
                                 yield return record;
                             }
 
-                            record = new LogRecord() {Position = counter++};
-                            record.FileNode = fileNode;
-                            record.DateTime = ExtractDateTime(ref line);
+                            record = new LogRecord
+                            {
+                                Position = counter++,
+                                FileNode = fileNode,
+                                DateTime = ExtractDateTime(ref line)
+                            };
 
                             if (fileNode.IsUnifyNamed && record.DateTime.Date == DateTime.MinValue.Date)
                             {
@@ -86,6 +98,8 @@ namespace LogViewer.Services
                     }
                 }
             }
+
+            Log.Info("Read '{0}' records from file '{1}'", counter, fileNode);
         }
         #endregion
 
@@ -93,7 +107,7 @@ namespace LogViewer.Services
         {
             var dateTimeString = DateTimePattern.Match(line).Value;
             line = line.Substring(dateTimeString.Length + " => ".Length).TrimStart();
-            return DateTime.ParseExact(dateTimeString, new[] {"hh:mm:ss:fff", "yyyy-MM-dd hh:mm:ss:fff"}, null, DateTimeStyles.NoCurrentDateDefault);
+            return DateTime.ParseExact(dateTimeString, new[] { "hh:mm:ss:fff", "yyyy-MM-dd hh:mm:ss:fff" }, null, DateTimeStyles.NoCurrentDateDefault);
         }
 
         private LogEvent ExtractLogEventType(ref string line)
@@ -101,7 +115,7 @@ namespace LogViewer.Services
             var eventTypeString = LogEventPattern.Match(line).Value;
             line = line.Substring(eventTypeString.Length).TrimStart();
             eventTypeString = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(eventTypeString.Trim('[', ']').ToLowerInvariant());
-            return (LogEvent) Enum.Parse(typeof (LogEvent), eventTypeString);
+            return (LogEvent)Enum.Parse(typeof(LogEvent), eventTypeString);
         }
 
         private string ExtractTargetTypeName(ref string line)

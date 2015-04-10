@@ -203,6 +203,9 @@
     <Compile Include="Models\LogTable.cs" />
     <Compile Include="Models\SearchTemplate.cs" />
     <Compile Include="Models\Base\SimplyClearableModel.cs" />
+    <Compile Include="Services\Extensions\IFileNodeServiceExtensions.cs" />
+    <Compile Include="Services\Extensions\IFileSystemServiceExtensions.cs" />
+    <Compile Include="Services\Extensions\IIndexSearchServiceExtensions.cs" />
     <Compile Include="Services\Interfaces\ILogTableConfigurationService.cs" />
     <Compile Include="Services\LogTableConfigurationService.cs" />
     <Compile Include="Services\LogTableService.cs" />

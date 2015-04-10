@@ -23,6 +23,7 @@ namespace LogViewer.ViewModels
         #region Fields
         private readonly IAppDataService _appDataService;
         private readonly IFileBrowserConfigurationService _fileBrowserConfigurationService;
+        private readonly IFileNodeService _fileNodeService;
         private readonly IFileBrowserService _fileBrowserService;
         private readonly IMessageService _messageService;
         private readonly ISelectDirectoryService _selectDirectoryService;
@@ -31,18 +32,20 @@ namespace LogViewer.ViewModels
 
         #region Constructors
         public LogNavigatorViewModel(ISelectDirectoryService selectDirectoryService, IMessageService messageService, IAppDataService appDataService,
-            IFileBrowserService fileBrowserService, IFileBrowserConfigurationService fileBrowserConfigurationService)
+            IFileBrowserService fileBrowserService, IFileBrowserConfigurationService fileBrowserConfigurationService, IFileNodeService fileNodeService)
         {
             Argument.IsNotNull(() => selectDirectoryService);
             Argument.IsNotNull(() => messageService);
             Argument.IsNotNull(() => appDataService);
             Argument.IsNotNull(() => fileBrowserConfigurationService);
+            Argument.IsNotNull(() => fileNodeService);
 
             _selectDirectoryService = selectDirectoryService;
             _messageService = messageService;
             _appDataService = appDataService;
             _fileBrowserService = fileBrowserService;
             _fileBrowserConfigurationService = fileBrowserConfigurationService;
+            _fileNodeService = fileNodeService;
 
             FileBrowser = _fileBrowserService.FileBrowserModel;
 
@@ -52,42 +55,10 @@ namespace LogViewer.ViewModels
         #endregion
 
         #region Properties
-        [Model]
+        [Model(SupportIEditableObject = false)]
         [Expose("RootDirectories")]
         [Expose("SelectedItems")]
         public FileBrowserModel FileBrowser { get; set; }
-        #endregion
-
-        #region Methods
-        public void OnSelectedItemsChanged()
-        {
-            if (_prevSelectedItems != null)
-            {
-                _prevSelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
-            }
-
-            if (FileBrowser.SelectedItems != null)
-            {
-                FileBrowser.SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
-            }
-
-            _prevSelectedItems = FileBrowser.SelectedItems;
-        }
-
-        private void OnSelectedItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            DeleteFolder.RaiseCanExecuteChanged();
-        }
-
-        protected override async Task Initialize()
-        {
-            await base.Initialize();
-        }
-
-        protected override async Task<bool> Save()
-        {
-            return await base.Save();
-        }
         #endregion
 
         #region Commands
@@ -139,6 +110,42 @@ namespace LogViewer.ViewModels
             }
 
             return FileBrowser.RootDirectories.Contains(folderNode);
+        }
+        #endregion
+
+        #region Methods
+        public void OnSelectedItemsChanged()
+        {
+            if (_prevSelectedItems != null)
+            {
+                _prevSelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
+            }
+
+            if (FileBrowser.SelectedItems != null)
+            {
+                FileBrowser.SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
+            }
+
+            _prevSelectedItems = FileBrowser.SelectedItems;
+        }
+
+        private void OnSelectedItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            DeleteFolder.RaiseCanExecuteChanged();
+            foreach (var fileNode in FileBrowser.SelectedItems.OfType<FileNode>())
+            {
+                _fileNodeService.LoadFileNode(fileNode);
+            }
+        }
+
+        protected override async Task Initialize()
+        {
+            await base.Initialize();
+        }
+
+        protected override async Task<bool> Save()
+        {
+            return await base.Save();
         }
         #endregion
     }

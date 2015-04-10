@@ -9,6 +9,8 @@ namespace LogViewer.Services
 {
     using System;
     using System.Collections.Generic;
+    using Catel;
+    using Catel.Logging;
     using Catel.Services;
     using Lucene.Net.Analysis.Standard;
     using Lucene.Net.Documents;
@@ -18,24 +20,27 @@ namespace LogViewer.Services
     using Lucene.Net.Store;
     using Models;
     using Version = Lucene.Net.Util.Version;
+    using System.IO;
+    using MethodTimer;
 
+    // TODO: Replace by Orc.Search
     public class IndexSearchService : IIndexSearchService
     {
-        private readonly IDispatcherService _dispatcherService;
-
         #region Fields
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
         private readonly IDictionary<string, IndexSearcher> _searchers = new Dictionary<string, IndexSearcher>();
         #endregion
 
-        public IndexSearchService(IDispatcherService dispatcherService)
-        {
-            _dispatcherService = dispatcherService;
-        }
-
         #region Methods
+        [Time]
         public void EnsureFullTextIndex(FileNode file)
         {
-            string directoryName = this.GetIndexDirectory(file);
+            Argument.IsNotNull(() => file);
+
+            Log.Debug("Ensuring full text index for file node '{0}'", file);
+
+            string directoryName = GetIndexDirectory(file);
             var directory = FSDirectory.Open(directoryName);
 
             if (!IndexReader.IndexExists(directory))
@@ -72,16 +77,18 @@ namespace LogViewer.Services
             {
                 text += "*";
             }
+
             var query = parser.Parse(text);
-            return this.Select(file, query, where);
+            return Select(file, query, where);
         }
 
         public IEnumerable<Tuple<LogRecord, float>> Select(FileNode file, Query query, Func<LogRecord, bool> where = null)
         {
             var searcher = _searchers[file.FullName];
 
-            TopDocs search = searcher.Search(query, file.Records.Count);
+            var search = searcher.Search(query, file.Records.Count);
             var result = new List<Tuple<LogRecord, float>>();
+
             foreach (var scoreDoc in search.ScoreDocs)
             {
                 float score = scoreDoc.Score;
@@ -110,13 +117,14 @@ namespace LogViewer.Services
 
         private string GetIndexDirectory(FileNode file)
         {
-            var lastNdx = file.FileInfo.Name.LastIndexOf(file.FileInfo.Extension, StringComparison.Ordinal);
+            var lastIndex = file.FileInfo.Name.LastIndexOf(file.FileInfo.Extension, StringComparison.Ordinal);
             var cleanName = file.FileInfo.Name;
-            if (lastNdx > 0)
+            if (lastIndex > 0)
             {
-                cleanName = cleanName.Substring(0, lastNdx);
+                cleanName = cleanName.Substring(0, lastIndex);
             }
-            return file.FileInfo.DirectoryName + @"\Indexes\" + cleanName;
+
+            return Path.Combine(file.FileInfo.DirectoryName, "Indexes", cleanName);
         }
         #endregion
     }

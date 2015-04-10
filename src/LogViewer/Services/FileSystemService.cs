@@ -4,21 +4,28 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+//#define LOADFILES_PARALLEL
+//#define LOADDIRECTORIES_PARALLEL
 
 namespace LogViewer.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
-    using System.Windows.Documents;
+    using System.Threading.Tasks;
     using Catel;
+    using Catel.Logging;
     using Catel.Services;
+    using Catel.Threading;
     using Models;
 
     internal class FileSystemService : IFileSystemService
     {
         #region Fields
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
         private readonly IDispatcherService _dispatcherService;
         private readonly IFileNodeService _fileNodeService;
         private readonly IFileSystemWatchingService _fileSystemWatchingService;
@@ -76,20 +83,72 @@ namespace LogViewer.Services
         {
             Argument.IsNotNullOrEmpty(() => path);
 
+            Log.Debug("Loading file system content '{0}'", path);
+
             var directoryInfo = new DirectoryInfo(path);
 
             FolderNode folder = null;
             _dispatcherService.Invoke(() => { folder = new FolderNode(directoryInfo); });
 
-            var fileNodes = Directory.GetFiles(path, _wildcardsFilter, SearchOption.TopDirectoryOnly).Where(x => x.IsSupportedFile(_regexFilter))
-                .Select(fileName => LoadFileFromFileSystem(Path.Combine(path, fileName))).OrderByDescending(x => x.Name);
+            var logFiles = Directory.GetFiles(path, _wildcardsFilter, SearchOption.TopDirectoryOnly).Where(x => x.IsSupportedFile(_regexFilter)).OrderBy(x => new FileInfo(x).Name).ToList();
+
+            var fileNodes = new List<FileNode>();
+
+#if LOADFILES_PARALLEL
+            var fileTasks = new List<Action>();
+
+            foreach (var logFile in logFiles)
+            {
+                var file = logFile;
+
+                fileTasks.Add(() =>
+                {
+                    var fileNode = LoadFileFromFileSystem(Path.Combine(path, file));
+
+                    lock (fileTasks)
+                    {
+                        fileNodes.Add(fileNode);
+                    }
+                });
+            }
+
+            // Parse all files parallel
+            TaskHelper.RunAndWait(fileTasks.ToArray());
+#else
+            foreach (var logFile in logFiles)
+            {
+                var fileNode = LoadFileFromFileSystem(Path.Combine(path, logFile));
+                fileNodes.Add(fileNode);
+            }
+#endif
+
             _dispatcherService.Invoke(() => folder.Files = new ObservableCollection<FileNode>(fileNodes));
 
-            foreach (var directory in Directory.GetDirectories(path))
+            var logDirectories = Directory.GetDirectories(path).Select(x => Path.Combine(path, x));
+
+#if LOADDIRECTORIES_PARALLEL
+            var directoryTasks = new List<Action>();
+
+            foreach (var directory in logDirectories)
             {
-                var fullPath = Path.Combine(path, directory);
-                _dispatcherService.Invoke(() => folder.Directories.Add(LoadFileSystemContent(fullPath)));
+                var dir = directory;
+
+                directoryTasks.Add(() =>
+                {
+                    var folderNode = LoadFileSystemContent(Path.Combine(path, dir));
+                    _dispatcherService.Invoke(() => folder.Directories.Add(folderNode));
+                });
             }
+
+            // Parse all directories parallel
+            TaskHelper.RunAndWait(directoryTasks.ToArray());
+#else
+            foreach (var directory in logDirectories)
+            {
+                var fileSystemContent = LoadFileSystemContent(directory);
+                _dispatcherService.Invoke(() => folder.Directories.Add(fileSystemContent));
+            }
+#endif
 
             if (isNavigationRoot)
             {
@@ -101,6 +160,7 @@ namespace LogViewer.Services
             }
 
             _navigationNodeCacheService.AddToCache(folder);
+
             return folder;
         }
 
@@ -112,23 +172,23 @@ namespace LogViewer.Services
             OnDeleted(folder.FullName);
         }
 
-        private void OnRenamed(string newName, string oldName)
+        private async void OnRenamed(string newName, string oldName)
         {
             Argument.IsNotNullOrEmpty(() => oldName);
             Argument.IsNotNullOrEmpty(() => newName);
 
             if (newName.IsFile())
             {
-                RenameFile(oldName, newName);
+                await RenameFile(oldName, newName);
             }
 
             if (newName.IsDirectory())
             {
-                RenameFolder(oldName, newName);
+                await RenameFolder(oldName, newName);
             }
         }
 
-        private void OnCreated(string fullPath)
+        private async Task OnCreated(string fullPath)
         {
             Argument.IsNotNullOrEmpty(() => fullPath);
 
@@ -162,6 +222,7 @@ namespace LogViewer.Services
 
             var name1 = fileNode1.Name;
             var name2 = fileNode2.Name;
+
             return string.Compare(name1, 0, name2, 0, Math.Min(name1.Length, name2.Length));
         }
 
@@ -187,12 +248,12 @@ namespace LogViewer.Services
             _filterService.ApplyFilesFilter();
         }
 
-        private void OnChanged(string fullPath)
+        private async void OnChanged(string fullPath)
         {
             Argument.IsNotNullOrEmpty(() => fullPath);
 
             var fileNode = GetFromCacheOrLoad(fullPath);
-            _fileNodeService.ReloadFileNode(fileNode);
+            await _fileNodeService.ReloadFileNodeAsync(fileNode);
 
             _filterService.ApplyLogRecordsFilter(fileNode);
         }
@@ -206,10 +267,11 @@ namespace LogViewer.Services
             {
                 fileNode = LoadFileFromFileSystem(fullPath);
             }
+
             return fileNode;
         }
 
-        private void RenameFolder(string oldName, string newName)
+        private async Task RenameFolder(string oldName, string newName)
         {
             Argument.IsNotNullOrEmpty(() => oldName);
             Argument.IsNotNullOrEmpty(() => newName);
@@ -253,7 +315,7 @@ namespace LogViewer.Services
             folder.Directories.Clear();
         }
 
-        private void RenameFile(string oldName, string newName)
+        private async Task RenameFile(string oldName, string newName)
         {
             Argument.IsNotNullOrEmpty(() => oldName);
             Argument.IsNotNullOrEmpty(() => newName);
@@ -318,8 +380,10 @@ namespace LogViewer.Services
         {
             Argument.IsNotNullOrEmpty(() => fullName);
 
-            var fileNode = _fileNodeService.LoadFileNode(fullName);
+            var fileNode = _fileNodeService.CreateFileNode(fullName);
+
             _navigationNodeCacheService.AddToCache(fileNode);
+
             return fileNode;
         }
 

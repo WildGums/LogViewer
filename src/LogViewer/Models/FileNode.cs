@@ -11,6 +11,7 @@ namespace LogViewer.Models
     using System.Collections.ObjectModel;
     using System.IO;
     using Catel;
+    using Catel.Collections;
 
     public class FileNode : NavigationNode
     {
@@ -23,7 +24,7 @@ namespace LogViewer.Models
             Name = fileInfo.Name;
             FullName = fileInfo.FullName;
 
-            Records = new ObservableCollection<LogRecord>();
+            Records = new FastObservableCollection<LogRecord>();
         }
         #endregion
 
@@ -31,7 +32,7 @@ namespace LogViewer.Models
         public FileInfo FileInfo { get; set; }
         public bool IsUnifyNamed { get; set; }
         public DateTime DateTime { get; set; }
-        public ObservableCollection<LogRecord> Records { get; private set; }
+        public FastObservableCollection<LogRecord> Records { get; private set; }
         public bool? IsExpanded { get; set; }
 
         public override bool AllowMultiSelection
@@ -45,6 +46,11 @@ namespace LogViewer.Models
         {
             Name = FileInfo.Name;
             FullName = FileInfo.FullName;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
         #endregion
     }

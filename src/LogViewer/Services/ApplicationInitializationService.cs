@@ -16,6 +16,7 @@ namespace LogViewer.Services
     using Catel.IoC;
     using Catel.Logging;
     using Catel.MVVM;
+    using Catel.Services;
     using Catel.Windows.Controls;
     using Configuration;
     using MethodTimer;

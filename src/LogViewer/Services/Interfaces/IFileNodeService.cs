@@ -12,7 +12,8 @@ namespace LogViewer.Services
     public interface IFileNodeService
     {
         #region Methods
-        FileNode LoadFileNode(string fileName);
+        FileNode CreateFileNode(string fileName);
+        void LoadFileNode(FileNode fileNode);
         void ReloadFileNode(FileNode fileNode);
         #endregion
     }
