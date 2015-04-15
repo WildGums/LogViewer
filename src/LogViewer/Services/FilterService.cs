@@ -10,6 +10,7 @@ namespace LogViewer.Services
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using Catel;
     using Catel.Collections;
     using Catel.Services;
@@ -18,11 +19,10 @@ namespace LogViewer.Services
     internal class FilterService : IFilterService
     {
         #region Fields
-        private static readonly object _lockObject = new object();
-        private readonly ILogTableService _logTableService;
         private readonly IDispatcherService _dispatcherService;
-        private readonly IIndexSearchService _indexSearchService;
         private readonly FileBrowserModel _fileBrowser;
+        private readonly IIndexSearchService _indexSearchService;
+        private readonly ILogTableService _logTableService;
         #endregion
 
         #region Constructors
@@ -54,7 +54,7 @@ namespace LogViewer.Services
 
             if (!filter.SearchTemplate.UseFullTextSearch || string.IsNullOrEmpty(filter.SearchTemplate.TemplateString))
             {
-                return logFiles.Where(filter.IsAcceptableTo).SelectMany(file => file.Records).Where(record => filter.IsAcceptableTo(record.LogEvent) && filter.IsAcceptableTo(record.Message));
+                return logFiles.Where(filter.IsAcceptableTo).SelectMany(file => file.Records.ToArray()).Where(record => filter.IsAcceptableTo(record.LogEvent) && filter.IsAcceptableTo(record.Message));
             }
 
             Func<LogRecord, bool> where = record => filter.IsAcceptableTo(record.LogEvent);
@@ -79,21 +79,22 @@ namespace LogViewer.Services
                 return;
             }
 
-            lock (_lockObject)
+            var logRecords = _logTableService.LogTable.Records;
+
+            var oldRecords = logRecords.ToArray();
+            _dispatcherService.Invoke(() =>
             {
-                var logRecords = _logTableService.LogTable.Records;
-
-                var oldRecords = logRecords.ToArray();
-                _dispatcherService.Invoke(() =>
-                {                    
-                    logRecords.ReplaceRange(FilterRecords(Filter, selectedNodes));
-                });
-
-                foreach (var record in logRecords.Except(oldRecords))
+                using (logRecords.SuspendChangeNotifications())
                 {
-                    record.FileNode.IsExpanded = true;
+                    var filteredRecords = FilterRecords(Filter, selectedNodes).ToArray();
+                    logRecords.ReplaceRange(filteredRecords);
                 }
-            }            
+            });
+
+            foreach (var record in logRecords.Except(oldRecords))
+            {
+                record.FileNode.IsExpanded = true;
+            }
         }
 
         private void FilterSelectedFiles()

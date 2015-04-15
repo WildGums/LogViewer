@@ -8,7 +8,7 @@
 namespace LogViewer.Models
 {
     using System.Collections.ObjectModel;
-
+    using Catel.Collections;
     using Catel.Data;
 
     public class FileBrowserModel : ModelBase
@@ -16,15 +16,15 @@ namespace LogViewer.Models
         #region Constructors
         public FileBrowserModel()
         {
-            RootDirectories = new ObservableCollection<FolderNode>();
-            SelectedItems = new ObservableCollection<NavigationNode>();           
+            RootDirectories = new FastObservableCollection<FolderNode>();
+            SelectedItems = new FastObservableCollection<NavigationNode>();           
         }
         #endregion
 
         #region Properties
-        public ObservableCollection<FolderNode> RootDirectories { get; private set; }
+        public FastObservableCollection<FolderNode> RootDirectories { get; private set; }
 
-        public ObservableCollection<NavigationNode> SelectedItems { get; private set; }        
+        public FastObservableCollection<NavigationNode> SelectedItems { get; private set; }        
         #endregion
     }
 }

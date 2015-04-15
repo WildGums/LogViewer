@@ -7,16 +7,17 @@
 
 namespace LogViewer.Behaviors
 {
+    using System;
     using System.Collections;
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
 
     using Catel;
+    using Catel.Collections;
     using Catel.Windows.Interactivity;
 
     using Models;
@@ -25,9 +26,9 @@ namespace LogViewer.Behaviors
     {
         #region Dependency properties
 
-        public static ObservableCollection<NavigationNode> GetSelectedItems(MultipleSelectionBehavior element)
+        public static FastObservableCollection<NavigationNode> GetSelectedItems(MultipleSelectionBehavior element)
         {
-            return (ObservableCollection<NavigationNode>)element.GetValue(SelectedItemsProperty);
+            return (FastObservableCollection<NavigationNode>)element.GetValue(SelectedItemsProperty);
         }
 
         public static void SetSelectedItems(MultipleSelectionBehavior element, IList value)
@@ -51,39 +52,27 @@ namespace LogViewer.Behaviors
         #region Properties
         private NavigationNode StartItem { get; set; }
 
-        public ObservableCollection<NavigationNode> SelectedItems
+        public FastObservableCollection<NavigationNode> SelectedItems
         {
-            get { return (ObservableCollection<NavigationNode>)GetValue(SelectedItemsProperty); }
+            get { return (FastObservableCollection<NavigationNode>)GetValue(SelectedItemsProperty); }
             set { SetValue(SelectedItemsProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof(ObservableCollection<NavigationNode>), typeof(MultipleSelectionBehavior), new PropertyMetadata(new ObservableCollection<NavigationNode>(), SelectedItemsChanged));
+        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof(FastObservableCollection<NavigationNode>), typeof(MultipleSelectionBehavior), new PropertyMetadata(new FastObservableCollection<NavigationNode>()));
         #endregion
 
         #region Methods
         protected override void OnAssociatedObjectLoaded()
         {
             AssociatedObject.SelectedItemChanged += OnTreeViewSelectedItemChanged;
-            var selectedItems = SelectedItems;
-
-            if (selectedItems != null)
-            {
-                selectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
-            }
         }
 
         protected override void OnAssociatedObjectUnloaded()
         {
             AssociatedObject.SelectedItemChanged -= OnTreeViewSelectedItemChanged;
-            var selectedItems = SelectedItems;
-
-            if (selectedItems != null)
-            {
-                selectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
-            }
         }
 
-        private async void OnTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private void OnTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             var node = e.NewValue as NavigationNode;
             if (node == null)
@@ -102,78 +91,93 @@ namespace LogViewer.Behaviors
 
             if (Keyboard.Modifiers == ModifierKeys.Control && node.AllowMultiSelection)
             {
-                await SelectMultipleItemsRandomly(node);
+                SelectMultipleItemsRandomly(node);
             }
             else if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
-                await SelectMultipleItemsContinuously(node);
+                SelectMultipleItemsContinuously(node);
             }
             else
             {
-                await SelectSingleItem(node);
+                SelectSingleItem(node);
             }
         }
 
-        private async Task SelectSingleItem(NavigationNode node)
+        private void SelectSingleItem(NavigationNode node)
         {
             Argument.IsNotNull(() => node);
 
             var selectedItems = SelectedItems;
 
-            selectedItems.ClearOneByOne();
-            selectedItems.Add(node);
+            using (selectedItems.SuspendChangeNotifications())
+            {
+                using (UpdatingSelection(selectedItems))
+                {
+                    selectedItems.Clear();
+                    selectedItems.Add(node);
+                }
+            }
+            
             StartItem = node;
         }
 
-        private static void OnSelectedItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    foreach (var item in e.NewItems.OfType<NavigationNode>())
-                    {
-                        item.IsItemSelected = true;
-                    }
-                    break;
-
-                case NotifyCollectionChangedAction.Remove:
-                    foreach (var item in e.OldItems.OfType<NavigationNode>())
-                    {
-                        item.IsItemSelected = false;
-                    }
-                    break;
-            }
-        }
-
-        private async Task SelectMultipleItemsRandomly(NavigationNode node)
+        private void SelectMultipleItemsRandomly(NavigationNode node)
         {
             Argument.IsNotNull(() => node);
 
             var selectedItems = SelectedItems;
 
-            if (selectedItems.Contains(node))
+            var navigationNodes = selectedItems.ToList();
+
+            using (UpdatingSelection(navigationNodes))
             {
-                selectedItems.Remove(node);
-            }
-            else
-            {
-                selectedItems.Add(node);
+                if (navigationNodes.Contains(node))
+                {
+                    navigationNodes.Remove(node);
+                }
+                else
+                {
+                    navigationNodes.Add(node);
+                }
+
+                if (StartItem == null && navigationNodes.Contains(node))
+                {
+                    StartItem = node;
+                }
+
+                if (StartItem != null && navigationNodes.Count == 0)
+                {
+                    StartItem = null;
+                }
+
+                navigationNodes.RemoveByPredicate(x => !x.AllowMultiSelection);
             }
 
-            if (StartItem == null && selectedItems.Contains(node))
-            {
-                StartItem = node;
-            }
-
-            if (StartItem != null && selectedItems.Count == 0)
-            {
-                StartItem = null;
-            }
-
-            selectedItems.RemoveByPredicate(x => !x.AllowMultiSelection);
+            ReplaceRange(selectedItems, navigationNodes);
         }
 
-        private async Task SelectMultipleItemsContinuously(NavigationNode node)
+        private void ReplaceRange(FastObservableCollection<NavigationNode> selectedItems, List<NavigationNode> navigationNodes)
+        {
+            using (selectedItems.SuspendChangeNotifications())
+            {
+                SelectedItems.ReplaceRange(navigationNodes);
+            }
+        }
+
+        private static IDisposable UpdatingSelection(IEnumerable<NavigationNode> selectedItems)
+        {
+            return new DisposableToken(null, t => SetItemSetectedValue(selectedItems, false), t => SetItemSetectedValue(selectedItems, true));
+        }
+
+        private static void SetItemSetectedValue(IEnumerable<NavigationNode> selectedItems, bool value)
+        {
+            foreach (var selectedItem in selectedItems)
+            {
+                selectedItem.IsItemSelected = value;
+            }
+        }
+
+        private void SelectMultipleItemsContinuously(NavigationNode node)
         {
             Argument.IsNotNull(() => node);
 
@@ -182,7 +186,7 @@ namespace LogViewer.Behaviors
             {
                 if (startItem == node)
                 {
-                    await SelectSingleItem(node);
+                    SelectSingleItem(node);
                     return;
                 }
 
@@ -190,44 +194,33 @@ namespace LogViewer.Behaviors
 
                 var selectedItems = SelectedItems;
 
-                selectedItems.ClearOneByOne();
+                var navigationNodes = new List<NavigationNode>();
 
-                var isBetween = false;
-                foreach (var item in allItems)
+                using (UpdatingSelection(navigationNodes))
                 {
-                    if (item == node || item == startItem)
+                    var isBetween = false;
+                    foreach (var item in allItems)
                     {
-                        isBetween = !isBetween;
+                        if (item == node || item == startItem)
+                        {
+                            isBetween = !isBetween;
 
-                        selectedItems.Add(item);
-                        continue;
+                            navigationNodes.Add(item);
+                            continue;
+                        }
+
+                        if (isBetween)
+                        {
+                            navigationNodes.Add(item);
+                        }
                     }
 
-                    if (isBetween)
-                    {
-                        selectedItems.Add(item);
-                    }
+                    navigationNodes.RemoveByPredicate(x => !x.AllowMultiSelection);
                 }
 
-                selectedItems.RemoveByPredicate(x => !x.AllowMultiSelection);
+                ReplaceRange(selectedItems, navigationNodes);
             }
-        }       
-
-        private static void SelectedItemsChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
-        {
-            var newValue = args.NewValue as ObservableCollection<NavigationNode>;
-            var oldValue = args.OldValue as ObservableCollection<NavigationNode>;
-
-            if (oldValue != null)
-            {
-                oldValue.CollectionChanged -= OnSelectedItemsCollectionChanged;
-            }
-
-            if (newValue != null)
-            {
-                newValue.CollectionChanged += OnSelectedItemsCollectionChanged;
-            }
-        }        
+        }            
         #endregion
     }
 }

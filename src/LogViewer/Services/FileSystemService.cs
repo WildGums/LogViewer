@@ -20,6 +20,7 @@ namespace LogViewer.Services
     using Catel.Services;
     using Catel.Threading;
     using Models;
+    using System.Threading;
 
     internal class FileSystemService : IFileSystemService
     {
@@ -78,6 +79,7 @@ namespace LogViewer.Services
         }
         #endregion
 
+        
         #region Methods
         public FolderNode LoadFileSystemContent(string path, bool isNavigationRoot = false)
         {
@@ -359,19 +361,19 @@ namespace LogViewer.Services
             switch (e.ChangeType)
             {
                 case WatcherChangeTypes.Changed:
-                    _dispatcherService.Invoke(() => OnChanged(e.NewPath));
+                    _dispatcherService.BeginInvoke(() => OnChanged(e.NewPath));
                     break;
 
                 case WatcherChangeTypes.Created:
-                    _dispatcherService.Invoke(() => OnCreated(e.NewPath));
+                    _dispatcherService.BeginInvoke(() => OnCreated(e.NewPath));
                     break;
 
                 case WatcherChangeTypes.Deleted:
-                    _dispatcherService.Invoke(() => OnDeleted(e.OldPath));
+                    _dispatcherService.BeginInvoke(() => OnDeleted(e.OldPath));
                     break;
 
                 case WatcherChangeTypes.Renamed:
-                    _dispatcherService.Invoke(() => OnRenamed(e.NewPath, e.OldPath));
+                    _dispatcherService.BeginInvoke(() => OnRenamed(e.NewPath, e.OldPath));
                     break;
             }
         }

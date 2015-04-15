@@ -7,6 +7,7 @@
 
 namespace LogViewer.ViewModels
 {
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading.Tasks;
@@ -132,7 +133,9 @@ namespace LogViewer.ViewModels
         private void OnSelectedItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             DeleteFolder.RaiseCanExecuteChanged();
-            foreach (var fileNode in FileBrowser.SelectedItems.OfType<FileNode>())
+            var fileNodes = FileBrowser.SelectedItems.OfType<FileNode>().ToArray();
+
+            foreach (var fileNode in fileNodes)
             {
                 _fileNodeService.LoadFileNode(fileNode);
             }

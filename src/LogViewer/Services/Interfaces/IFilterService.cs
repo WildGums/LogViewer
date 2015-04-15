@@ -7,6 +7,7 @@
 
 namespace LogViewer.Services
 {
+    using System;
     using Models;
 
     public interface IFilterService

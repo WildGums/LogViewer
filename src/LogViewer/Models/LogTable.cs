@@ -8,6 +8,7 @@
 namespace LogViewer.Models
 {
     using System.Collections.ObjectModel;
+    using Catel.Collections;
     using Catel.Data;
 
     public class LogTable : ModelBase
@@ -15,12 +16,12 @@ namespace LogViewer.Models
         #region Constructors
         public LogTable()
         {
-            Records = new ObservableCollection<LogRecord>();
+            Records = new FastObservableCollection<LogRecord>();
         }
         #endregion
 
         #region Properties
-        public ObservableCollection<LogRecord> Records { get; private set; }
+        public FastObservableCollection<LogRecord> Records { get; private set; }
         public bool IsTimestampVisible { get; set; }
         #endregion
     }
