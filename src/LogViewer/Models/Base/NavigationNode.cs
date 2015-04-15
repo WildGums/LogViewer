@@ -13,8 +13,6 @@ namespace LogViewer.Models
     public abstract class NavigationNode : ModelBase
     {
         #region Properties
-        public bool IsLoaded { get; set; }
-
         public string Name { get; set; }
         public string FullName { get; set; }
         public bool IsSelected { get; set; }
