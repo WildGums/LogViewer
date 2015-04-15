@@ -2,12 +2,6 @@
 <Weavers>
   <ModuleInit/>
   <MethodTimer/>
+  <LoadAssembliesOnStartup/>
   <Catel/>
-  <LoadAssembliesOnStartup>
-    <ExcludeAssemblies>
-      MethodTimer
-      Obsolete
-      Catel.Fody.Attributes
-    </ExcludeAssemblies>
-  </LoadAssembliesOnStartup>
 </Weavers>

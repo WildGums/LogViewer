@@ -34,17 +34,20 @@ namespace LogViewer.Services
         #region Fields
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
         private readonly IServiceLocator _serviceLocator;
+        private readonly ICommandManager _commandManager;
         private readonly ITypeFactory _typeFactory;
         #endregion
 
         #region Constructors
-        public ApplicationInitializationService(ITypeFactory typeFactory, IServiceLocator serviceLocator)
+        public ApplicationInitializationService(ITypeFactory typeFactory, IServiceLocator serviceLocator, ICommandManager commandManager)
         {
             Argument.IsNotNull(() => typeFactory);
             Argument.IsNotNull(() => serviceLocator);
+            Argument.IsNotNull(() => commandManager);
 
             _typeFactory = typeFactory;
             _serviceLocator = serviceLocator;
+            _commandManager = commandManager;
         }
         #endregion
 
@@ -68,19 +71,21 @@ namespace LogViewer.Services
             });
         }
 
-        public override async Task InitializeCommands(ICommandManager commandManager)
+        public override async Task InitializeAfterCreatingShell()
         {
-            Argument.IsNotNull(() => commandManager);
+            await InitializeCommands();
+            await base.InitializeAfterCreatingShell();
+        }
 
-            commandManager.CreateCommand(Commands.File.Exit, throwExceptionWhenCommandIsAlreadyCreated: false);
+        private async Task InitializeCommands()
+        {
+            _commandManager.CreateCommand(Commands.File.Exit, throwExceptionWhenCommandIsAlreadyCreated: false);
 
-            commandManager.CreateCommand(Commands.Filter.ResetSearchTemplate, throwExceptionWhenCommandIsAlreadyCreated: false);
+            _commandManager.CreateCommand(Commands.Filter.ResetSearchTemplate, throwExceptionWhenCommandIsAlreadyCreated: false);
 
-            commandManager.CreateCommand(Commands.Settings.General, throwExceptionWhenCommandIsAlreadyCreated: false);
+            _commandManager.CreateCommand(Commands.Settings.General, throwExceptionWhenCommandIsAlreadyCreated: false);
 
-            commandManager.CreateCommand(Commands.Help.About, throwExceptionWhenCommandIsAlreadyCreated: false);
-
-            await base.InitializeCommands(commandManager);
+            _commandManager.CreateCommand(Commands.Help.About, throwExceptionWhenCommandIsAlreadyCreated: false);
         }
 
         private async Task RegisterTypes()

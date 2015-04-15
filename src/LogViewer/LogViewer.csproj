@@ -14,7 +14,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>b71dc211</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>2dd8be67</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -41,25 +41,25 @@
     <ApplicationIcon>Resources\Icons\logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Catel.Core, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Catel.Core.4.1.0-unstable0045\lib\net40\Catel.Core.dll</HintPath>
+    <Reference Include="Catel.Core, Version=4.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Catel.Core.4.2.0-unstable0036\lib\net40\Catel.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Catel.Extensions.Controls, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Catel.Extensions.Controls.4.1.0-unstable0045\lib\net40\Catel.Extensions.Controls.dll</HintPath>
+    <Reference Include="Catel.Extensions.Controls, Version=4.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Catel.Extensions.Controls.4.2.0-unstable0036\lib\net40\Catel.Extensions.Controls.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Catel.Fody.Attributes, Version=2.4.0.0, Culture=neutral, PublicKeyToken=1c8163524cbe02e6, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Catel.Fody.2.4.0-unstable0004\lib\portable-net4+sl4+wp7+win8+wpa81+MonoAndroid14+MonoTouch40\Catel.Fody.Attributes.dll</HintPath>
+    <Reference Include="Catel.Fody.Attributes, Version=2.5.0.0, Culture=neutral, PublicKeyToken=1c8163524cbe02e6, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Catel.Fody.2.5.0\lib\portable-net4+sl4+wp7+win8+wpa81+MonoAndroid14+MonoTouch40\Catel.Fody.Attributes.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Catel.MVVM, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0045\lib\net40\Catel.MVVM.dll</HintPath>
+    <Reference Include="Catel.MVVM, Version=4.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Catel.MVVM.4.2.0-unstable0036\lib\net40\Catel.MVVM.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Fluent, Version=3.2.0.0, Culture=neutral, PublicKeyToken=3e436e32a8c5546f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Fluent.Ribbon.3.2.0\lib\net40\Fluent.dll</HintPath>
+    <Reference Include="Fluent, Version=3.4.0.0, Culture=neutral, PublicKeyToken=3e436e32a8c5546f, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Fluent.Ribbon.3.4.0\lib\net40\Fluent.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="GoogleAnalytics.Core">
       <HintPath>..\..\lib\GoogleAnalyticsSDK.1.2.12\lib\portable-net40+win8+wp8+sl5\GoogleAnalytics.Core.dll</HintPath>
@@ -84,57 +84,68 @@
       <HintPath>..\..\lib\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Windows.Shell, Version=3.5.41019.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Fluent.Ribbon.3.2.0\lib\net40\Microsoft.Windows.Shell.dll</HintPath>
+      <HintPath>..\..\lib\Fluent.Ribbon.3.4.0\lib\net40\Microsoft.Windows.Shell.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Orc.Analytics">
-      <HintPath>..\..\lib\Orc.Analytics.0.2.0-unstable0010\lib\net40\Orc.Analytics.dll</HintPath>
+    <Reference Include="Orc.Analytics, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Orc.Analytics.1.0.0-unstable0018\lib\net40\Orc.Analytics.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Orc.FilterBuilder">
-      <HintPath>..\..\lib\Orc.FilterBuilder.1.4.0-unstable0043\lib\net40\Orc.FilterBuilder.dll</HintPath>
+    <Reference Include="Orc.FilterBuilder, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Orc.FilterBuilder.1.4.0-unstable0080\lib\net40\Orc.FilterBuilder.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Orc.Squirrel">
-      <HintPath>..\..\lib\Orc.Squirrel.0.2.0-unstable0017\lib\net40\Orc.Squirrel.dll</HintPath>
+    <Reference Include="Orc.Squirrel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Orc.Squirrel.1.0.0-unstable0035\lib\net40\Orc.Squirrel.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Orc.Squirrel.Xaml">
-      <HintPath>..\..\lib\Orc.Squirrel.Xaml.0.2.0-unstable0017\lib\net40\Orc.Squirrel.Xaml.dll</HintPath>
+    <Reference Include="Orc.Squirrel.Xaml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Orc.Squirrel.Xaml.1.0.0-unstable0035\lib\net40\Orc.Squirrel.Xaml.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Orc.Toolkit">
-      <HintPath>..\..\lib\Orc.Toolkit.1.0.9.0\lib\NET40\Orc.Toolkit.dll</HintPath>
+    <Reference Include="Orc.Toolkit, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Orc.Toolkit.1.1.0-unstable0174\lib\net40\Orc.Toolkit.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Orc.WorkspaceManagement">
-      <HintPath>..\..\lib\Orc.WorkspaceManagement.0.2.0-unstable0068\lib\net40\Orc.WorkspaceManagement.dll</HintPath>
+    <Reference Include="Orc.WorkspaceManagement, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Orc.WorkspaceManagement.1.0.0-unstable0090\lib\net40\Orc.WorkspaceManagement.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Orc.WorkspaceManagement.Xaml">
-      <HintPath>..\..\lib\Orc.WorkspaceManagement.Xaml.0.2.0-unstable0068\lib\net40\Orc.WorkspaceManagement.Xaml.dll</HintPath>
+    <Reference Include="Orc.WorkspaceManagement.Xaml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Orc.WorkspaceManagement.Xaml.1.0.0-unstable0090\lib\net40\Orc.WorkspaceManagement.Xaml.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Orchestra.Core, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Orchestra.Core.2.1.0-unstable0050\lib\net40\Orchestra.Core.dll</HintPath>
+    <Reference Include="Orchestra.Core, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Orchestra.Core.2.2.0-unstable0029\lib\net40\Orchestra.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Orchestra.Shell.Ribbon.Fluent, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.1.0-unstable0050\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
+    <Reference Include="Orchestra.Shell.Ribbon.Fluent, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.2.0-unstable0029\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
-    <Reference Include="System.IO">
-      <HintPath>..\..\lib\Microsoft.Bcl.1.1.9\lib\net40\System.IO.dll</HintPath>
+    <Reference Include="System.IO, Version=2.6.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Microsoft.Bcl.1.1.10\lib\net40\System.IO.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http, Version=2.1.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Microsoft.Net.Http.2.1.10\lib\net40\System.Net.Http.dll</HintPath>
+    <Reference Include="System.Net.Http, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Microsoft.Net.Http.2.2.29\lib\net40\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http.Extensions">
-      <HintPath>..\..\lib\Microsoft.Net.Http.2.1.10\lib\net40\System.Net.Http.Extensions.dll</HintPath>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Microsoft.Net.Http.2.2.29\lib\net40\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http.Primitives">
-      <HintPath>..\..\lib\Microsoft.Net.Http.2.1.10\lib\net40\System.Net.Http.Primitives.dll</HintPath>
+    <Reference Include="System.Net.Http.Primitives, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Microsoft.Net.Http.2.2.29\lib\net40\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http.WebRequest, Version=2.1.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Microsoft.Net.Http.2.1.10\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Microsoft.Net.Http.2.2.29\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\..\lib\Rx-Core.2.2.5\lib\net40\System.Reactive.Core.dll</HintPath>
@@ -151,15 +162,18 @@
     <Reference Include="System.Reactive.Windows.Threading">
       <HintPath>..\..\lib\Rx-XAML.2.2.5\lib\net40\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime">
-      <HintPath>..\..\lib\Microsoft.Bcl.1.1.9\lib\net40\System.Runtime.dll</HintPath>
+    <Reference Include="System.Runtime, Version=2.6.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Microsoft.Bcl.1.1.10\lib\net40\System.Runtime.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Threading.Tasks">
-      <HintPath>..\..\lib\Microsoft.Bcl.1.1.9\lib\net40\System.Threading.Tasks.dll</HintPath>
+    <Reference Include="System.Threading.Tasks, Version=2.6.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Microsoft.Bcl.1.1.10\lib\net40\System.Threading.Tasks.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0045\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\..\lib\Fluent.Ribbon.3.4.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -379,9 +393,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\lib\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\lib\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
-    <Error Condition="!Exists('..\..\lib\Fody.1.26.4\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\lib\Fody.1.26.4\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\..\lib\Fody.1.28.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\lib\Fody.1.28.3\build\Fody.targets'))" />
   </Target>
-  <Import Project="..\..\lib\Fody.1.26.4\build\Fody.targets" Condition="Exists('..\..\lib\Fody.1.26.4\build\Fody.targets')" />
+  <Import Project="..\..\lib\Fody.1.28.3\build\Fody.targets" Condition="Exists('..\..\lib\Fody.1.28.3\build\Fody.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
