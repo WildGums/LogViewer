@@ -10,12 +10,18 @@ namespace LogViewer.Converters
     using System;
     using Catel.MVVM.Converters;
 
-    public class TimestampToStringConverter : ValueConverterBase<DateTime>
+    public class TimestampToStringConverter : ValueConverterBase
     {
         #region Methods
-        protected override object Convert(DateTime value, Type targetType, object parameter)
+        protected override object Convert(object value, Type targetType, object parameter)
         {
-            return value.ToString(CurrentCulture.DateTimeFormat);
+            if (!(value is DateTime))
+            {
+                return null;
+            }
+
+            var dateTimeValue = (DateTime) value;
+            return dateTimeValue.ToString(CurrentCulture.DateTimeFormat);
         }
         #endregion
     }
