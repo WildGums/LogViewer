@@ -87,7 +87,7 @@ namespace LogViewer.Services
                    }
                });                
 
-                _indexSearchService.EnsureFullTextIndexAsync(fileNode).Wait();
+                _indexSearchService.EnsureFullTextIndexAsync(fileNode);
             }
             catch (Exception ex)
             {

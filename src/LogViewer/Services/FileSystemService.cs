@@ -249,7 +249,10 @@ namespace LogViewer.Services
             Argument.IsNotNullOrEmpty(() => fullPath);
 
             var fileNode = GetFromCacheOrLoad(fullPath);
-            await _fileNodeService.ReloadFileNodeAsync(fileNode);
+            if (fileNode.IsItemSelected)
+            {
+                await _fileNodeService.ReloadFileNodeAsync(fileNode);
+            }
 
             _filterService.ApplyLogRecordsFilter(fileNode);
         }
