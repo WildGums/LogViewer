@@ -21,6 +21,8 @@ namespace LogViewer.Services
     using Models;
     using Version = Lucene.Net.Util.Version;
     using System.IO;
+    using System.Linq;
+    using Catel.Collections;
     using MethodTimer;
 
     // TODO: Replace by Orc.Search
@@ -86,7 +88,9 @@ namespace LogViewer.Services
         {
             var searcher = _searchers[file.FullName];
 
-            var search = searcher.Search(query, file.Records.Count);
+            var records = file.Records.ToArray();
+
+            var search = searcher.Search(query, records.Count());
             var result = new List<Tuple<LogRecord, float>>();
 
             foreach (var scoreDoc in search.ScoreDocs)
@@ -96,9 +100,9 @@ namespace LogViewer.Services
                 var doc = searcher.Doc(docId);
 
                 var n = int.Parse(doc.Get("id"));
-                if (where == null || where(file.Records[n]))
+                if (where == null || where(records[n]))
                 {
-                    result.Add(new Tuple<LogRecord, float>(file.Records[n], score));
+                    result.Add(new Tuple<LogRecord, float>(records[n], score));
                 }
             }
 
