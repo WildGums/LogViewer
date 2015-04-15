@@ -7,7 +7,6 @@
 
 namespace LogViewer.ViewModels
 {
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading.Tasks;
@@ -24,8 +23,8 @@ namespace LogViewer.ViewModels
         #region Fields
         private readonly IAppDataService _appDataService;
         private readonly IFileBrowserConfigurationService _fileBrowserConfigurationService;
-        private readonly IFileNodeService _fileNodeService;
         private readonly IFileBrowserService _fileBrowserService;
+        private readonly IFileNodeService _fileNodeService;
         private readonly IMessageService _messageService;
         private readonly ISelectDirectoryService _selectDirectoryService;
         private ObservableCollection<NavigationNode> _prevSelectedItems;
@@ -60,6 +59,44 @@ namespace LogViewer.ViewModels
         [Expose("RootDirectories")]
         [Expose("SelectedItems")]
         public FileBrowserModel FileBrowser { get; set; }
+        #endregion
+
+        #region Methods
+        public void OnSelectedItemsChanged()
+        {
+            if (_prevSelectedItems != null)
+            {
+                _prevSelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
+            }
+
+            if (FileBrowser.SelectedItems != null)
+            {
+                FileBrowser.SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
+            }
+
+            _prevSelectedItems = FileBrowser.SelectedItems;
+        }
+
+        private async void OnSelectedItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            DeleteFolder.RaiseCanExecuteChanged();
+            var fileNodes = FileBrowser.SelectedItems.OfType<FileNode>().ToArray();
+
+            foreach (var fileNode in fileNodes)
+            {
+                await _fileNodeService.LoadFileNodeAsync(fileNode);
+            }
+        }
+
+        protected override async Task Initialize()
+        {
+            await base.Initialize();
+        }
+
+        protected override async Task<bool> Save()
+        {
+            return await base.Save();
+        }
         #endregion
 
         #region Commands
@@ -111,44 +148,6 @@ namespace LogViewer.ViewModels
             }
 
             return FileBrowser.RootDirectories.Contains(folderNode);
-        }
-        #endregion
-
-        #region Methods
-        public void OnSelectedItemsChanged()
-        {
-            if (_prevSelectedItems != null)
-            {
-                _prevSelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
-            }
-
-            if (FileBrowser.SelectedItems != null)
-            {
-                FileBrowser.SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
-            }
-
-            _prevSelectedItems = FileBrowser.SelectedItems;
-        }
-
-        private void OnSelectedItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            DeleteFolder.RaiseCanExecuteChanged();
-            var fileNodes = FileBrowser.SelectedItems.OfType<FileNode>().ToArray();
-
-            foreach (var fileNode in fileNodes)
-            {
-                _fileNodeService.LoadFileNode(fileNode);
-            }
-        }
-
-        protected override async Task Initialize()
-        {
-            await base.Initialize();
-        }
-
-        protected override async Task<bool> Save()
-        {
-            return await base.Save();
         }
         #endregion
     }

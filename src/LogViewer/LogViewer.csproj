@@ -25,6 +25,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1998</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -206,6 +208,7 @@
     <Compile Include="Services\Extensions\IFileNodeServiceExtensions.cs" />
     <Compile Include="Services\Extensions\IFileSystemServiceExtensions.cs" />
     <Compile Include="Services\Extensions\IIndexSearchServiceExtensions.cs" />
+    <Compile Include="Services\Extensions\ILogReaderServiceExtensions.cs" />
     <Compile Include="Services\Interfaces\ILogTableConfigurationService.cs" />
     <Compile Include="Services\LogTableConfigurationService.cs" />
     <Compile Include="Services\LogTableService.cs" />

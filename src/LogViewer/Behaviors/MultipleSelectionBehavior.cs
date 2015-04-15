@@ -10,7 +10,6 @@ namespace LogViewer.Behaviors
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -117,7 +116,7 @@ namespace LogViewer.Behaviors
                     selectedItems.Add(node);
                 }
             }
-            
+
             StartItem = node;
         }
 

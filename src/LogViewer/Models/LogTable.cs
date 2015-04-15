@@ -7,7 +7,6 @@
 
 namespace LogViewer.Models
 {
-    using System.Collections.ObjectModel;
     using Catel.Collections;
     using Catel.Data;
 

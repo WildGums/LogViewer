@@ -69,7 +69,7 @@ namespace LogViewer.Controls
             set { HilightText(value); }
         }
 
-        private async Task HilightText(string value)
+        private async void HilightText(string value)
         {
             await Task.Factory.StartNew(() =>
             {

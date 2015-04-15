@@ -1,13 +1,12 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FileBrowserModel.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
+//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 
 namespace LogViewer.Models
 {
-    using System.Collections.ObjectModel;
     using Catel.Collections;
     using Catel.Data;
 
@@ -17,14 +16,13 @@ namespace LogViewer.Models
         public FileBrowserModel()
         {
             RootDirectories = new FastObservableCollection<FolderNode>();
-            SelectedItems = new FastObservableCollection<NavigationNode>();           
+            SelectedItems = new FastObservableCollection<NavigationNode>();
         }
         #endregion
 
         #region Properties
         public FastObservableCollection<FolderNode> RootDirectories { get; private set; }
-
-        public FastObservableCollection<NavigationNode> SelectedItems { get; private set; }        
+        public FastObservableCollection<NavigationNode> SelectedItems { get; private set; }
         #endregion
     }
 }

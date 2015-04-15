@@ -7,7 +7,6 @@
 
 namespace LogViewer.Services
 {
-    using System;
     using Models;
 
     public interface IFileSystemService
@@ -19,7 +18,6 @@ namespace LogViewer.Services
         #region Methods
         FolderNode LoadFileSystemContent(string path, bool isNavigationRoot = false);
         void ReleaseFileSystemContent(FolderNode folder);
-        
         #endregion
     }
 }

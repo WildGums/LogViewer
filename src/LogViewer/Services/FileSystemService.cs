@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-//#define LOADFILES_PARALLEL
-//#define LOADDIRECTORIES_PARALLEL
 
 namespace LogViewer.Services
 {
@@ -18,15 +16,12 @@ namespace LogViewer.Services
     using Catel;
     using Catel.Logging;
     using Catel.Services;
-    using Catel.Threading;
     using Models;
-    using System.Threading;
 
     internal class FileSystemService : IFileSystemService
     {
         #region Fields
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-
         private readonly IDispatcherService _dispatcherService;
         private readonly IFileNodeService _fileNodeService;
         private readonly IFileSystemWatchingService _fileSystemWatchingService;
@@ -79,7 +74,6 @@ namespace LogViewer.Services
         }
         #endregion
 
-        
         #region Methods
         public FolderNode LoadFileSystemContent(string path, bool isNavigationRoot = false)
         {
@@ -190,7 +184,7 @@ namespace LogViewer.Services
             }
         }
 
-        private async Task OnCreated(string fullPath)
+        private void OnCreated(string fullPath)
         {
             Argument.IsNotNullOrEmpty(() => fullPath);
 

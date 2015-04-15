@@ -7,6 +7,7 @@
 
 namespace LogViewer.Services
 {
+    using System.Threading.Tasks;
     using Models;
 
     public interface IFileNodeService

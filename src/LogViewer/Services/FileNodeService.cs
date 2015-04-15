@@ -12,9 +12,11 @@ namespace LogViewer.Services
     using System.Globalization;
     using System.IO;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
     using Catel;
     using Catel.Collections;
     using Catel.Logging;
+    using Catel.Services;
     using MethodTimer;
     using Models;
 
@@ -25,17 +27,20 @@ namespace LogViewer.Services
 
         private static readonly Regex _fileNameMask = new Regex(@"^[a-zA-Z\.]+_(\d{4}-\d{2}-\d{2})_\d{6}_\d+\.log$", RegexOptions.Compiled);
         private readonly IIndexSearchService _indexSearchService;
+        private readonly IDispatcherService _dispatcherService;
         private readonly ILogReaderService _logReaderService;
         #endregion
 
         #region Constructors
-        public FileNodeService(ILogReaderService logReaderService, IIndexSearchService indexSearchService)
+        public FileNodeService(ILogReaderService logReaderService, IIndexSearchService indexSearchService, IDispatcherService dispatcherService)
         {
             Argument.IsNotNull(() => logReaderService);
             Argument.IsNotNull(() => indexSearchService);
+            Argument.IsNotNull(() => dispatcherService);
 
             _logReaderService = logReaderService;
             _indexSearchService = indexSearchService;
+            _dispatcherService = dispatcherService;
         }
         #endregion
 
@@ -70,18 +75,19 @@ namespace LogViewer.Services
             Log.Debug("Loading file node '{0}'", fileNode);
 
             try
-            {
-                var logRecords = fileNode.Records;
+            {              
+                var fileRecords = _logReaderService.LoadRecordsFromFileAsync(fileNode).Result;
 
-                // TODO: Consider doing this async somehow, we only need to do dispatcher srevice when replacing 
-                var fileRecords = _logReaderService.LoadRecordsFromFile(fileNode);
+               _dispatcherService.Invoke(() =>
+               {
+                   var logRecords = fileNode.Records;
+                   using (logRecords.SuspendChangeNotifications())
+                   {
+                       logRecords.ReplaceRange(fileRecords);
+                   }
+               });                
 
-                using (logRecords.SuspendChangeNotifications())
-                {
-                    logRecords.ReplaceRange(fileRecords);
-                }
-
-                _indexSearchService.EnsureFullTextIndex(fileNode);
+                _indexSearchService.EnsureFullTextIndexAsync(fileNode).Wait();
             }
             catch (Exception ex)
             {
