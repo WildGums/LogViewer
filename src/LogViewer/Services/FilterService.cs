@@ -83,17 +83,18 @@ namespace LogViewer.Services
             var oldRecords = logRecords.ToArray();
             _dispatcherService.Invoke(() =>
             {
+                var filteredRecords = FilterRecords(Filter, selectedNodes).ToArray();
+
                 using (logRecords.SuspendChangeNotifications())
                 {
-                    var filteredRecords = FilterRecords(Filter, selectedNodes).ToArray();
                     logRecords.ReplaceRange(filteredRecords);
                 }
-            });
 
-            foreach (var record in logRecords.Except(oldRecords))
-            {
-                record.FileNode.IsExpanded = true;
-            }
+                foreach (var record in logRecords.Except(oldRecords))
+                {
+                    record.FileNode.IsExpanded = true;
+                }
+            });
         }
 
         private void FilterSelectedFiles()
