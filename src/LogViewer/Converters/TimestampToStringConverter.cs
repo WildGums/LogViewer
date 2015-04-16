@@ -8,6 +8,7 @@
 namespace LogViewer.Converters
 {
     using System;
+    using System.Globalization;
     using Catel.MVVM.Converters;
 
     public class TimestampToStringConverter : ValueConverterBase
@@ -19,9 +20,9 @@ namespace LogViewer.Converters
             {
                 return null;
             }
-
+            
             var dateTimeValue = (DateTime) value;
-            return dateTimeValue.ToString(CurrentCulture.DateTimeFormat);
+            return dateTimeValue.ToString(CultureInfo.CurrentCulture.DateTimeFormat);
         }
         #endregion
     }
