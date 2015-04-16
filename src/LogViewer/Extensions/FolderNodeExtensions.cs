@@ -3,6 +3,8 @@
 //   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+
 namespace LogViewer
 {
     using System.Collections.Generic;
@@ -11,6 +13,7 @@ namespace LogViewer
 
     public static class FolderNodeExtensions
     {
+        #region Methods
         public static IEnumerable<FileNode> GetAllNestedFiles(this FolderNode folder)
         {
             var stack = new Stack<FolderNode>();
@@ -42,5 +45,6 @@ namespace LogViewer
             var hasVisibleSubfolders = folder.Directories.Any() && folder.Directories.Any(dir => dir.IsVisible);
             folder.IsVisible = hasVisibleFiles || hasVisibleSubfolders;
         }
+        #endregion
     }
 }
