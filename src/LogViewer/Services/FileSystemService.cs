@@ -14,6 +14,7 @@ namespace LogViewer.Services
     using System.Linq;
     using System.Threading.Tasks;
     using Catel;
+    using Catel.Collections;
     using Catel.Logging;
     using Catel.Services;
     using Models;
@@ -26,6 +27,7 @@ namespace LogViewer.Services
         private readonly IFileNodeService _fileNodeService;
         private readonly IFileSystemWatchingService _fileSystemWatchingService;
         private readonly IFilterService _filterService;
+        private readonly IFileBrowserService _fileBrowserService;
         private readonly INavigationNodeCacheService _navigationNodeCacheService;
         private string _regexFilter;
         private string _wildcardsFilter;
@@ -33,19 +35,21 @@ namespace LogViewer.Services
 
         #region Constructors
         public FileSystemService(IDispatcherService dispatcherService, IFileNodeService fileNodeService, IFileSystemWatchingService fileSystemWatchingService,
-            INavigationNodeCacheService navigationNodeCacheService, IFilterService filterService)
+            INavigationNodeCacheService navigationNodeCacheService, IFilterService filterService, IFileBrowserService fileBrowserService)
         {
             Argument.IsNotNull(() => dispatcherService);
             Argument.IsNotNull(() => fileNodeService);
             Argument.IsNotNull(() => fileSystemWatchingService);
             Argument.IsNotNull(() => navigationNodeCacheService);
             Argument.IsNotNull(() => filterService);
+            Argument.IsNotNull(() => fileBrowserService);
 
             _dispatcherService = dispatcherService;
             _fileNodeService = fileNodeService;
             _fileSystemWatchingService = fileSystemWatchingService;
             _navigationNodeCacheService = navigationNodeCacheService;
             _filterService = filterService;
+            _fileBrowserService = fileBrowserService;
 
             Filter = "*.log";
 
@@ -182,6 +186,8 @@ namespace LogViewer.Services
             {
                 await RenameFolder(oldName, newName);
             }
+
+            _filterService.ApplyFilesFilter();
         }
 
         private void OnCreated(string fullPath)
@@ -189,6 +195,12 @@ namespace LogViewer.Services
             Argument.IsNotNullOrEmpty(() => fullPath);
 
             var folder = GetParentFolderNode(fullPath);
+
+            if (folder == null)
+            {
+                OnCreated(Catel.IO.Path.GetParentDirectory(fullPath));
+                return;
+            }
 
             if (fullPath.IsFile() && folder.Files.FirstOrDefault(x => string.Equals(x.FullName, fullPath)) == null)
             {
@@ -228,16 +240,15 @@ namespace LogViewer.Services
 
             var folder = GetParentFolderNode(fullPath);
 
-            var childDir = folder.Directories.FirstOrDefault(x => string.Equals(x.FullName, fullPath));
-            if (childDir != null)
+            if (folder != null)
             {
-                folder.Directories.Remove(childDir);
+                folder.Directories.RemoveByPredicate(x => string.Equals(x.FullName, fullPath));
+                folder.Files.RemoveByPredicate(x => string.Equals(x.FullName, fullPath));                
             }
-
-            var childFile = folder.Files.FirstOrDefault(x => string.Equals(x.FullName, fullPath));
-            if (childFile != null)
+            else
             {
-                folder.Files.Remove(childFile);
+                var rootDirectories = _fileBrowserService.FileBrowserModel.RootDirectories;
+                rootDirectories.RemoveByPredicate(x => string.Equals(x.FullName, fullPath));
             }
 
             _navigationNodeCacheService.RemoveFromCache(fullPath);
@@ -327,30 +338,31 @@ namespace LogViewer.Services
 
             var folder = GetParentFolderNode(newName);
 
-            var fileNode = folder.Files.FirstOrDefault(x => string.Equals(x.FullName, oldName));
-            if (!newName.IsSupportedFile(_regexFilter))
+            if (folder == null)
             {
-                if (fileNode != null)
-                {
-                    folder.Files.Remove(fileNode);
-                    _navigationNodeCacheService.RemoveFromCache(fileNode.FullName);
-                }
+                OnCreated(Catel.IO.Path.GetParentDirectory(newName));
                 return;
             }
 
+            var fileNode = folder.Files.FirstOrDefault(x => string.Equals(x.FullName, oldName));
             if (fileNode == null)
             {
-                var newFileNode = LoadFileFromFileSystem(newName);
-                folder.Files.AddDescendingly(newFileNode, CompareFileNodes);
+                OnCreated(newName);
+                return;
             }
-            else
+
+            if (!newName.IsSupportedFile(_regexFilter))
             {
                 folder.Files.Remove(fileNode);
                 _navigationNodeCacheService.RemoveFromCache(fileNode.FullName);
-                fileNode.FileInfo = new FileInfo(newName);
-                folder.Files.AddDescendingly(fileNode, CompareFileNodes);
-                _navigationNodeCacheService.AddToCache(fileNode);
+                return;
             }
+
+            folder.Files.Remove(fileNode);
+            _navigationNodeCacheService.RemoveFromCache(fileNode.FullName);
+            fileNode.FileInfo = new FileInfo(newName);
+            folder.Files.AddDescendingly(fileNode, CompareFileNodes);
+            _navigationNodeCacheService.AddToCache(fileNode);
         }
 
         private void OnFolderContentChanged(object sender, FolderNodeEventArgs e)

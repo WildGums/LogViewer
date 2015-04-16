@@ -39,7 +39,7 @@ namespace LogViewer
             }
 
             var hasVisibleFiles = folder.Files.Any(file => file.IsVisible);
-            var hasVisibleSubfolders = folder.Directories.Any() && folder.Directories.All(dir => dir.IsVisible);
+            var hasVisibleSubfolders = folder.Directories.Any() && folder.Directories.Any(dir => dir.IsVisible);
             folder.IsVisible = hasVisibleFiles || hasVisibleSubfolders;
         }
     }

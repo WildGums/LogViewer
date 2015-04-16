@@ -32,7 +32,7 @@ namespace LogViewer.Services
 
         public void RemoveFromCache(string fullPath)
         {
-            if (_navigationNodes.ContainsKey(fullPath))
+            if (!_navigationNodes.ContainsKey(fullPath))
             {
                 return;
             }
