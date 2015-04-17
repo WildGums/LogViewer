@@ -63,7 +63,13 @@
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
                                 <TextBlock Text="Find: " VerticalAlignment="Center"/>
-                                <TextBox Width="250" Margin="3" Text="{Binding Path=SearchTemplate.TemplateString, UpdateSourceTrigger=PropertyChanged}"/>
+                                <catel:WatermarkTextBox Width="250" Margin="3" Text="{Binding Path=SearchTemplate.TemplateString, UpdateSourceTrigger=PropertyChanged}">
+                                    <catel:WatermarkTextBox.Watermark>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Search terms" />
+                                        </StackPanel>
+                                    </catel:WatermarkTextBox.Watermark>
+                                </catel:WatermarkTextBox>
                             </StackPanel>
                             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
                                 <CheckBox Content="Match case" VerticalAlignment="Center" IsChecked="{Binding Path=SearchTemplate.MatchCase}" 

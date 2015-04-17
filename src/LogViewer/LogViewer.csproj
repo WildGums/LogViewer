@@ -91,6 +91,10 @@
       <HintPath>..\..\lib\Orc.Analytics.1.0.0-unstable0018\lib\net40\Orc.Analytics.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Orc.Controls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Orc.Controls.1.0.0-unstable0170\lib\net40\Orc.Controls.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Orc.FilterBuilder, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\lib\Orc.FilterBuilder.1.4.0-unstable0080\lib\net40\Orc.FilterBuilder.dll</HintPath>
       <Private>True</Private>
