@@ -9,10 +9,12 @@ namespace LogViewer.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using Catel;
     using Catel.Collections;
     using Catel.Services;
+    using MethodTimer;
     using Models;
 
     internal class FilterService : IFilterService
@@ -46,21 +48,27 @@ namespace LogViewer.Services
         #endregion
 
         #region IFilterService Members
+        [Time]
         private IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<FileNode> logFiles)
         {
             Argument.IsNotNull(() => filter);
             Argument.IsNotNull(() => logFiles);
 
-            if (!filter.SearchTemplate.UseFullTextSearch || string.IsNullOrEmpty(filter.SearchTemplate.TemplateString))
+            var templateString = filter.SearchTemplate.TemplateString;
+
+            if (!filter.SearchTemplate.UseFullTextSearch || string.IsNullOrEmpty(templateString))
             {
                 return logFiles.Where(filter.IsAcceptableTo).SelectMany(file => file.Records.ToArray()).Where(record => filter.IsAcceptableTo(record.LogEvent) && filter.IsAcceptableTo(record.Message));
             }
 
+            var compareInfo = CultureInfo.CurrentCulture.CompareInfo;
+
             Func<LogRecord, bool> where = record => filter.IsAcceptableTo(record.LogEvent);
             return logFiles.Where(file => filter.IsAcceptableTo(file) && file.Records.Any()) // select only approriate files
-                .SelectMany(file => _indexSearchService.Select(file, filter.SearchTemplate.TemplateString, where)) // select records and scores from each file
+                .SelectMany(x => x.Records.ToArray()).Where(x => compareInfo.IndexOf(x.Message, templateString, CompareOptions.IgnoreCase) >= 0);
+/*                .SelectMany(file => _indexSearchService.Select(file, filter.SearchTemplate.TemplateString, where)) // select records and scores from each file
                 .OrderBy(t => t.Item2) // sort by relevance
-                .Select(t => t.Item1); // we don't need score anymore
+                .Select(t => t.Item1); // we don't need score anymore*/
         }
 
         public void ApplyFilesFilter()
@@ -81,10 +89,11 @@ namespace LogViewer.Services
             var logRecords = _logTableService.LogTable.Records;
 
             var oldRecords = logRecords.ToArray();
-            _dispatcherService.Invoke(() =>
-            {
-                var filteredRecords = FilterRecords(Filter, selectedNodes).ToArray();
 
+            var filteredRecords = FilterRecords(Filter, selectedNodes).ToArray();
+
+            _dispatcherService.Invoke(() =>
+            {                
                 using (logRecords.SuspendChangeNotifications())
                 {
                     logRecords.ReplaceRange(filteredRecords);

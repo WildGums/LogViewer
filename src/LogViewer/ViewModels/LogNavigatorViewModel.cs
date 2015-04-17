@@ -23,7 +23,6 @@ namespace LogViewer.ViewModels
         #region Fields
         private readonly IAppDataService _appDataService;
         private readonly IFileBrowserConfigurationService _fileBrowserConfigurationService;
-        private readonly IFileBrowserService _fileBrowserService;
         private readonly IFileNodeService _fileNodeService;
         private readonly IMessageService _messageService;
         private readonly ISelectDirectoryService _selectDirectoryService;
@@ -43,11 +42,10 @@ namespace LogViewer.ViewModels
             _selectDirectoryService = selectDirectoryService;
             _messageService = messageService;
             _appDataService = appDataService;
-            _fileBrowserService = fileBrowserService;
             _fileBrowserConfigurationService = fileBrowserConfigurationService;
             _fileNodeService = fileNodeService;
 
-            FileBrowser = _fileBrowserService.FileBrowserModel;
+            FileBrowser = fileBrowserService.FileBrowserModel;
 
             AddFolder = new Command(OnAddFolderExecute);
             DeleteFolder = new Command(OnDeleteFolderExecute, OnDeleteFolderCanExecute);
@@ -77,15 +75,12 @@ namespace LogViewer.ViewModels
             _prevSelectedItems = FileBrowser.SelectedItems;
         }
 
-        private async void OnSelectedItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void OnSelectedItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             DeleteFolder.RaiseCanExecuteChanged();
             var fileNodes = FileBrowser.SelectedItems.OfType<FileNode>().ToArray();
 
-            foreach (var fileNode in fileNodes)
-            {
-                await _fileNodeService.LoadFileNodeAsync(fileNode);
-            }
+            _fileNodeService.ParallelLoadFileNodeBatch(fileNodes);
         }
 
         protected override async Task Initialize()

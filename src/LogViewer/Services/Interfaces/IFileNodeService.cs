@@ -7,7 +7,6 @@
 
 namespace LogViewer.Services
 {
-    using System.Threading.Tasks;
     using Models;
 
     public interface IFileNodeService
@@ -16,6 +15,7 @@ namespace LogViewer.Services
         FileNode CreateFileNode(string fileName);
         void LoadFileNode(FileNode fileNode);
         void ReloadFileNode(FileNode fileNode);
+        void ParallelLoadFileNodeBatch(FileNode[] fileNodes);
         #endregion
     }
 }

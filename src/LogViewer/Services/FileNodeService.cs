@@ -10,7 +10,10 @@ namespace LogViewer.Services
     using System;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Catel;
     using Catel.Collections;
     using Catel.Logging;
@@ -27,6 +30,8 @@ namespace LogViewer.Services
         private readonly IFilterService _filterService;
         private readonly IIndexSearchService _indexSearchService;
         private readonly ILogReaderService _logReaderService;
+        private CancellationTokenSource _cancellationTokenSource;
+        private Task _loadingFileNodeBatch;
         #endregion
 
         #region Constructors
@@ -87,9 +92,7 @@ namespace LogViewer.Services
                     }
                 });
 
-                _filterService.ApplyLogRecordsFilter();
-
-                _indexSearchService.EnsureFullTextIndexAsync(fileNode);
+                //   _indexSearchService.EnsureFullTextIndexAsync(fileNode);
             }
             catch (Exception ex)
             {
@@ -100,6 +103,52 @@ namespace LogViewer.Services
         public void ReloadFileNode(FileNode fileNode)
         {
             LoadFileNode(fileNode);
+            _filterService.ApplyFilesFilter();
+        }
+
+        public void ParallelLoadFileNodeBatch(FileNode[] fileNodes)
+        {
+            if (fileNodes == null || !fileNodes.Any())
+            {
+                return;
+            }
+
+            var tasks = fileNodes.Select(node => (Action) (() => LoadFileNode(node))).ToArray();
+
+            if (_loadingFileNodeBatch != null)
+            {
+                EndParallelFileNodesLoading();
+            }
+
+            _loadingFileNodeBatch = Task.Factory.StartNew(() => BeginParallelFileNodesLoading(tasks))
+                .ContinueWith(task => ResumeParallelFileNodesLoading());
+        }
+
+        private void BeginParallelFileNodesLoading(Action[] tasks)
+        {
+            Argument.IsNotNullOrEmptyArray(() => tasks);
+
+            _cancellationTokenSource = new CancellationTokenSource();
+            var parallelOptions = new ParallelOptions() {CancellationToken = _cancellationTokenSource.Token};
+            Parallel.Invoke(parallelOptions, tasks);
+        }
+
+        private void EndParallelFileNodesLoading()
+        {
+            if (_cancellationTokenSource != null)
+            {
+                _cancellationTokenSource.Cancel();
+                _loadingFileNodeBatch.Wait();
+            }
+            
+            _cancellationTokenSource = null;
+        }
+
+        private void ResumeParallelFileNodesLoading()
+        {
+            _filterService.ApplyLogRecordsFilter();
+
+            _loadingFileNodeBatch = null;
         }
         #endregion
     }
