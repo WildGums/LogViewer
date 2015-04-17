@@ -15,7 +15,7 @@ namespace LogViewer.Services
         FileNode CreateFileNode(string fileName);
         void LoadFileNode(FileNode fileNode);
         void ReloadFileNode(FileNode fileNode);
-        void ParallelLoadFileNodeBatch(FileNode[] fileNodes);
+        void ParallelLoadFileNodeBatch(params FileNode[] fileNodes);
         #endregion
     }
 }

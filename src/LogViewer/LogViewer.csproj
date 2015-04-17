@@ -265,6 +265,7 @@
     <Compile Include="Services\RibbonService.cs" />
     <Compile Include="Services\Interfaces\IFilterService.cs" />
     <Compile Include="Services\Interfaces\IRegexService.cs" />
+    <Compile Include="UnhandledExceptionWatcher.cs" />
     <Compile Include="ViewModels\LogRecordsTableViewModel.cs" />
     <Compile Include="Controls\HighlightableTextBlock.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />

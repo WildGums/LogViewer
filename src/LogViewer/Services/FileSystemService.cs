@@ -255,17 +255,17 @@ namespace LogViewer.Services
             _filterService.ApplyFilesFilter();
         }
 
-        private async void OnChanged(string fullPath)
+        private void OnChanged(string fullPath)
         {
             Argument.IsNotNullOrEmpty(() => fullPath);
 
             var fileNode = GetFromCacheOrLoad(fullPath);
             if (fileNode.IsItemSelected)
             {
-                await _fileNodeService.ReloadFileNodeAsync(fileNode);
+                _fileNodeService.ParallelLoadFileNodeBatch(fileNode);
             }
 
-            _filterService.ApplyLogRecordsFilter(fileNode);
+            //_filterService.ApplyLogRecordsFilter(fileNode);
         }
 
         private FileNode GetFromCacheOrLoad(string fullPath)

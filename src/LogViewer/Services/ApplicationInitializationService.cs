@@ -111,6 +111,8 @@ namespace LogViewer.Services
             serviceLocator.RegisterType<ILogTableConfigurationService, LogTableConfigurationService>();
 
             serviceLocator.RegisterTypeAndInstantiate<FileBrowserModel>();
+
+            serviceLocator.RegisterTypeAndInstantiate<UnhandledExceptionWatcher>();
         }
 
         [Time]

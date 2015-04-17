@@ -81,10 +81,12 @@ namespace LogViewer.Services
 
             try
             {
-                var fileRecords = _logReaderService.LoadRecordsFromFileAsync(fileNode).Result;
+                
 
                 _dispatcherService.Invoke(() =>
                 {
+                    var fileRecords = _logReaderService.LoadRecordsFromFileAsync(fileNode).Result;
+
                     var logRecords = fileNode.Records;
                     using (logRecords.SuspendChangeNotifications())
                     {
@@ -102,11 +104,15 @@ namespace LogViewer.Services
 
         public void ReloadFileNode(FileNode fileNode)
         {
-            LoadFileNode(fileNode);
+            lock (_lockObject)
+            {
+                LoadFileNode(fileNode);
+            }
+            
             _filterService.ApplyFilesFilter();
         }
 
-        public void ParallelLoadFileNodeBatch(FileNode[] fileNodes)
+        public void ParallelLoadFileNodeBatch(params FileNode[] fileNodes)
         {
             if (fileNodes == null || !fileNodes.Any())
             {
@@ -124,13 +130,18 @@ namespace LogViewer.Services
                 .ContinueWith(task => ResumeParallelFileNodesLoading());
         }
 
+        private object _lockObject = new object();
+
         private void BeginParallelFileNodesLoading(Action[] tasks)
         {
             Argument.IsNotNullOrEmptyArray(() => tasks);
 
-            _cancellationTokenSource = new CancellationTokenSource();
-            var parallelOptions = new ParallelOptions() {CancellationToken = _cancellationTokenSource.Token};
-            Parallel.Invoke(parallelOptions, tasks);
+            lock (_lockObject)
+            {
+                _cancellationTokenSource = new CancellationTokenSource();
+                var parallelOptions = new ParallelOptions() {CancellationToken = _cancellationTokenSource.Token};
+                Parallel.Invoke(parallelOptions, tasks);
+            }
         }
 
         private void EndParallelFileNodesLoading()
@@ -138,7 +149,10 @@ namespace LogViewer.Services
             if (_cancellationTokenSource != null)
             {
                 _cancellationTokenSource.Cancel();
-                _loadingFileNodeBatch.Wait();
+                if (!_loadingFileNodeBatch.Wait(100))
+                {
+                   Log.Warning("Loading FileNode batch was not awaited.");
+                }
             }
             
             _cancellationTokenSource = null;

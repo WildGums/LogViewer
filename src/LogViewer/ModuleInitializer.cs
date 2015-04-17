@@ -1,4 +1,5 @@
 ﻿using Catel.IoC;
+using LogViewer;
 using LogViewer.Services;
 using LogViewer.Models;
 using Orchestra.Services;
@@ -15,7 +16,7 @@ public static class ModuleInitializer
     public static void Initialize()
     {
         var serviceLocator = ServiceLocator.Default;
-
+        
         serviceLocator.RegisterType<IRibbonService, RibbonService>();
         serviceLocator.RegisterType<IApplicationInitializationService, ApplicationInitializationService>();
 
