@@ -29,6 +29,7 @@ namespace LogViewer.Services
         private readonly IDispatcherService _dispatcherService;
         private readonly IFilterService _filterService;
         private readonly IIndexSearchService _indexSearchService;
+        private readonly object _lockObject = new object();
         private readonly ILogReaderService _logReaderService;
         private CancellationTokenSource _cancellationTokenSource;
         private Task _loadingFileNodeBatch;
@@ -81,8 +82,6 @@ namespace LogViewer.Services
 
             try
             {
-                
-
                 _dispatcherService.Invoke(() =>
                 {
                     var fileRecords = _logReaderService.LoadRecordsFromFileAsync(fileNode).Result;
@@ -93,8 +92,6 @@ namespace LogViewer.Services
                         logRecords.ReplaceRange(fileRecords);
                     }
                 });
-
-                //   _indexSearchService.EnsureFullTextIndexAsync(fileNode);
             }
             catch (Exception ex)
             {
@@ -108,7 +105,7 @@ namespace LogViewer.Services
             {
                 LoadFileNode(fileNode);
             }
-            
+
             _filterService.ApplyFilesFilter();
         }
 
@@ -130,8 +127,6 @@ namespace LogViewer.Services
                 .ContinueWith(task => ResumeParallelFileNodesLoading());
         }
 
-        private object _lockObject = new object();
-
         private void BeginParallelFileNodesLoading(Action[] tasks)
         {
             Argument.IsNotNullOrEmptyArray(() => tasks);
@@ -151,10 +146,10 @@ namespace LogViewer.Services
                 _cancellationTokenSource.Cancel();
                 if (!_loadingFileNodeBatch.Wait(100))
                 {
-                   Log.Warning("Loading FileNode batch was not awaited.");
+                    Log.Warning("Loading FileNode batch was not awaited.");
                 }
             }
-            
+
             _cancellationTokenSource = null;
         }
 

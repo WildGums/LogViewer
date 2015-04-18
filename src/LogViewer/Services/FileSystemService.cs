@@ -107,7 +107,7 @@ namespace LogViewer.Services
 
                     lock (fileTasks)
                     {
-                        fileNodes.Add(fileNode);
+                        fileNodes.AddDescendingly(fileNode, CompareFileNodes);
                     }
                 });
             }
@@ -118,7 +118,7 @@ namespace LogViewer.Services
             foreach (var logFile in logFiles)
             {
                 var fileNode = LoadFileFromFileSystem(Path.Combine(path, logFile));
-                fileNodes.Add(fileNode);
+                fileNodes.AddDescendingly(fileNode, CompareFileNodes);
             }
 #endif
 
