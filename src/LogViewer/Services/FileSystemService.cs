@@ -118,11 +118,11 @@ namespace LogViewer.Services
             foreach (var logFile in logFiles)
             {
                 var fileNode = LoadFileFromFileSystem(Path.Combine(path, logFile));
-                fileNodes.AddDescendingly(fileNode, CompareFileNodes);
+                fileNodes.Add(fileNode);
             }
 #endif
 
-            _dispatcherService.Invoke(() => folder.Files = new ObservableCollection<FileNode>(fileNodes));
+            _dispatcherService.Invoke(() => folder.Files = new ObservableCollection<FileNode>(fileNodes.OrderByDescending( x => x.FileInfo.CreationTime)));
 
             var logDirectories = Directory.GetDirectories(path).Select(x => Path.Combine(path, x));
 
@@ -207,7 +207,7 @@ namespace LogViewer.Services
                 if (fullPath.IsSupportedFile(_regexFilter))
                 {
                     var fileNode = GetFromCacheOrLoad(fullPath);
-                    folder.Files.AddDescendingly(fileNode, CompareFileNodes);
+                    folder.Files.Add(fileNode);
                     _navigationNodeCacheService.AddToCache(fileNode);
                 }
             }
@@ -221,17 +221,6 @@ namespace LogViewer.Services
             }
 
             _filterService.ApplyFilesFilter();
-        }
-
-        private int CompareFileNodes(FileNode fileNode1, FileNode fileNode2)
-        {
-            Argument.IsNotNull(() => fileNode1);
-            Argument.IsNotNull(() => fileNode2);
-
-            var name1 = fileNode1.Name;
-            var name2 = fileNode2.Name;
-
-            return string.Compare(name1, 0, name2, 0, Math.Min(name1.Length, name2.Length));
         }
 
         private void OnDeleted(string fullPath)
@@ -361,7 +350,7 @@ namespace LogViewer.Services
             folder.Files.Remove(fileNode);
             _navigationNodeCacheService.RemoveFromCache(fileNode.FullName);
             fileNode.FileInfo = new FileInfo(newName);
-            folder.Files.AddDescendingly(fileNode, CompareFileNodes);
+            folder.Files.Add(fileNode);
             _navigationNodeCacheService.AddToCache(fileNode);
         }
 
