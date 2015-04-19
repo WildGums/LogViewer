@@ -208,6 +208,7 @@ namespace LogViewer.Services
                 {
                     var fileNode = GetFromCacheOrLoad(fullPath);
                     folder.Files.Add(fileNode);
+                    folder.Files.SortDescending(x => x.FileInfo.CreationTime);
                     _navigationNodeCacheService.AddToCache(fileNode);
                 }
             }
@@ -351,6 +352,7 @@ namespace LogViewer.Services
             _navigationNodeCacheService.RemoveFromCache(fileNode.FullName);
             fileNode.FileInfo = new FileInfo(newName);
             folder.Files.Add(fileNode);
+            folder.Files.SortDescending(x => x.FileInfo.CreationTime);
             _navigationNodeCacheService.AddToCache(fileNode);
         }
 
