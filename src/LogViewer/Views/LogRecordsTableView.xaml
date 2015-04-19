@@ -277,9 +277,8 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <catel:BooleanToHidingVisibilityConverter x:Key="BooleanToHidingVisibilityConverter"/>
-        <converters:BoolToInvisibilityConverter x:Key="BoolToInvisibilityConverter"/>
     </catel:UserControl.Resources>
+    
     <Grid>
         <Grid.Resources>
             <logViewer:BindingProxy x:Key="Proxy" Data="{Binding}"/>
@@ -300,14 +299,14 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Timestamp" Width="Auto" Binding="{Binding DateTime, Converter={converters:TimestampToStringConverter}}" IsReadOnly="True"
-                                    Visibility="{Binding Path=Data.IsTimestampVisible, Source={StaticResource Proxy}, Converter={StaticResource BooleanToHidingVisibilityConverter}}"/>
+                                    Visibility="{Binding Path=Data.IsTimestampVisible, Source={StaticResource Proxy}, Converter={catel:BooleanToHidingVisibilityConverter}}"/>
                 
                 <DataGridTemplateColumn Header="Level" Width="Auto" IsReadOnly="True" CellStyle="{StaticResource IconColumnCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Label Style="{StaticResource DataGridLevelLabelStyle}">
                                 <Label.ToolTip >
-                                    <ToolTip Visibility="{Binding Path=Data.IsTimestampVisible, Source={StaticResource Proxy}, Converter={StaticResource BoolToInvisibilityConverter}}"
+                                    <ToolTip Visibility="{Binding Path=Data.IsTimestampVisible, Source={StaticResource Proxy}, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
                                              Content="{Binding DateTime, Converter={converters:TimestampToStringConverter}}"/>
                                 </Label.ToolTip>
                             </Label> 
