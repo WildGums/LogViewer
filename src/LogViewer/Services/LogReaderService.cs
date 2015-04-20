@@ -107,7 +107,7 @@ namespace LogViewer.Services
         {
             var dateTimeString = DateTimePattern.Match(line).Value;
             line = line.Substring(dateTimeString.Length + " => ".Length).TrimStart();
-            return DateTime.ParseExact(dateTimeString, new[] { "hh:mm:ss:fff", "yyyy-MM-dd hh:mm:ss:fff" }, null, DateTimeStyles.NoCurrentDateDefault);
+            return DateTime.ParseExact(dateTimeString, new[] { "HH:mm:ss:fff", "yyyy-MM-dd HH:mm:ss:fff" }, null, DateTimeStyles.NoCurrentDateDefault);
         }
 
         private LogEvent ExtractLogEventType(ref string line)
