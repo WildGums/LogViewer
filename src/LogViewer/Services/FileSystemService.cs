@@ -207,8 +207,7 @@ namespace LogViewer.Services
                 if (fullPath.IsSupportedFile(_regexFilter))
                 {
                     var fileNode = GetFromCacheOrLoad(fullPath);
-                    folder.Files.Add(fileNode);
-                    folder.Files.SortDescending(x => x.FileInfo.CreationTime);
+                    folder.Files.InsertInDescendingOrder(fileNode, CompareFileNodesByCreateTime);
                     _navigationNodeCacheService.AddToCache(fileNode);
                 }
             }
@@ -351,9 +350,16 @@ namespace LogViewer.Services
             folder.Files.Remove(fileNode);
             _navigationNodeCacheService.RemoveFromCache(fileNode.FullName);
             fileNode.FileInfo = new FileInfo(newName);
-            folder.Files.Add(fileNode);
-            folder.Files.SortDescending(x => x.FileInfo.CreationTime);
+            folder.Files.InsertInDescendingOrder(fileNode, CompareFileNodesByCreateTime);
             _navigationNodeCacheService.AddToCache(fileNode);
+        }
+
+        private int CompareFileNodesByCreateTime(FileNode fileNode1, FileNode fileNode2)
+        {
+            Argument.IsNotNull(() => fileNode1);
+            Argument.IsNotNull(() => fileNode2);
+
+            return fileNode1.FileInfo.CreationTime.CompareTo(fileNode2.FileInfo.CreationTime);
         }
 
         private void OnFolderContentChanged(object sender, FolderNodeEventArgs e)

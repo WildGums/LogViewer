@@ -14,34 +14,55 @@ namespace LogViewer
 
     public static class IListExtensions
     {
-        // See: http://stackoverflow.com/questions/1945461/how-do-i-sort-an-observable-collection
-
-        public static void Sort<TSource, TKey>(this IList<TSource> source, Func<TSource, TKey> keySelector)
+        /// <summary>
+        /// The list must already be sorted by descending order.
+        /// We will insert the new item and preserve the sortedness.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="item"></param>
+        /// <param name="comparison"></param>
+        public static void InsertInDescendingOrder<T>(this IList<T> list, T item, Comparison<T> comparison)
         {
-            Argument.IsNotNull(() => source);
-            Argument.IsNotNull(() => keySelector);
+            Argument.IsNotNull(() => list);
+            Argument.IsNotNull(() => item);
+            Argument.IsNotNull(() => comparison);
 
-            var sortedList = source.OrderBy(keySelector).ToList();
-            source.Clear();
-
-            foreach (var sortedItem in sortedList)
+            if (list.Count == 0)
             {
-                source.Add(sortedItem);
+                list.Add(item);
+                return;
             }
-        }
 
-        public static void SortDescending<TSource, TKey>(this IList<TSource> source, Func<TSource, TKey> keySelector)
-        {
-            Argument.IsNotNull(() => source);
-            Argument.IsNotNull(() => keySelector);
-
-            var sortedList = source.OrderByDescending(keySelector).ToList();
-            source.Clear();
-
-            foreach (var sortedItem in sortedList)
+            if(comparison(list.Last(), item) >= 0)
             {
-                source.Add(sortedItem);
+                list.Add(item);
+                return;
             }
+
+            var index = 0;
+            var lowerIndex = -1;
+
+            while (index < list.Count && lowerIndex == -1)
+            {
+                var compareResult = comparison(list[index], item);
+
+                if (compareResult < 0)
+                {
+                    lowerIndex = index;
+                    break;
+                }
+
+                index++;
+            }
+
+            if (lowerIndex >= 0)
+            {
+                list.Insert(lowerIndex, item);
+                return;
+            }
+
+            list.Add(item);
         }
     }
 }
