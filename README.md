@@ -7,8 +7,7 @@ LogViewer is a simple application used to read log files created by the Catel lo
 
 It is also used as an example on how to build an application using [Orchestra](https://github.com/WildGums/Orchestra) and the various [Orc.* libraries](https://github.com/WildGums).
 
-Features
-----------
+##Features
 
 * Build-in filesystem browser with multiselection support:
     - Easily switch between log files
@@ -19,13 +18,20 @@ Features
      - Date range
      - Keyword
 
-Screenshots
-------------
+## How to get it
+
+The tool is available in several ways:
+
+1. Build it from source
+2. Download it here: (includes automatic updates):
+   - [Stable with support for updates](http://downloads.sesolutions.net.au/logviewer/stable/logviewer.exe) (**not yet available**)
+   - [Beta with support for updates](http://downloads.sesolutions.net.au/logviewer/beta/logviewer.exe)
+
+## Screenshots
 
 ![LogViewer 01](doc/images/LogViewer_01.png)
 
 
-License
--------
+## License
 
-MIT license.
+MIT license
