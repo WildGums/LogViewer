@@ -216,7 +216,7 @@ namespace LogViewer.Services
             {
                 var folderNode = LoadFileSystemContent(fullPath);
                 folderNode.IsVisible = false;
-                folder.Directories.Add(folderNode);
+                folder.Directories.InsertInAscendingOrder(folderNode, (node, node1) => string.CompareOrdinal(node.Name, node1.Name));
                 _navigationNodeCacheService.AddToCache(folderNode);
             }
 
@@ -297,7 +297,7 @@ namespace LogViewer.Services
             if (Directory.Exists(newName))
             {
                 var newDir = LoadFileSystemContent(newName);
-                folder.Directories.Add(newDir);
+                folder.Directories.InsertInAscendingOrder(newDir, (node, node1) => string.CompareOrdinal(node.Name, node1.Name));
                 _navigationNodeCacheService.AddToCache(newDir);
             }
         }
