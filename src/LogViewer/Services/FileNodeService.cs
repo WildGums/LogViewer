@@ -28,7 +28,6 @@ namespace LogViewer.Services
         private static readonly Regex _fileNameMask = new Regex(@"^[a-zA-Z\.]+_(\d{4}-\d{2}-\d{2})_\d{6}_\d+\.log$", RegexOptions.Compiled);
         private readonly IDispatcherService _dispatcherService;
         private readonly IFilterService _filterService;
-        private readonly IIndexSearchService _indexSearchService;
         private readonly object _lockObject = new object();
         private readonly ILogReaderService _logReaderService;
         private CancellationTokenSource _cancellationTokenSource;
@@ -36,15 +35,13 @@ namespace LogViewer.Services
         #endregion
 
         #region Constructors
-        public FileNodeService(ILogReaderService logReaderService, IIndexSearchService indexSearchService, IDispatcherService dispatcherService, IFilterService filterService)
+        public FileNodeService(ILogReaderService logReaderService, IDispatcherService dispatcherService, IFilterService filterService)
         {
             Argument.IsNotNull(() => logReaderService);
-            Argument.IsNotNull(() => indexSearchService);
             Argument.IsNotNull(() => dispatcherService);
             Argument.IsNotNull(() => filterService);
 
             _logReaderService = logReaderService;
-            _indexSearchService = indexSearchService;
             _dispatcherService = dispatcherService;
             _filterService = filterService;
         }

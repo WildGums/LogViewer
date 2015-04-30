@@ -22,19 +22,16 @@ namespace LogViewer.Services
         #region Fields
         private readonly IDispatcherService _dispatcherService;
         private readonly FileBrowserModel _fileBrowser;
-        private readonly IIndexSearchService _indexSearchService;
         private readonly ILogTableService _logTableService;
         #endregion
 
         #region Constructors
-        public FilterService(IIndexSearchService indexSearchService, IDispatcherService dispatcherService, ILogTableService logTableService,
+        public FilterService(IDispatcherService dispatcherService, ILogTableService logTableService,
             IFileBrowserService fileBrowserService)
         {
-            Argument.IsNotNull(() => indexSearchService);
             Argument.IsNotNull(() => dispatcherService);
             Argument.IsNotNull(() => logTableService);
 
-            _indexSearchService = indexSearchService;
             _dispatcherService = dispatcherService;
             _logTableService = logTableService;
 
@@ -64,11 +61,8 @@ namespace LogViewer.Services
             var compareInfo = CultureInfo.CurrentCulture.CompareInfo;
 
             Func<LogRecord, bool> where = record => filter.IsAcceptableTo(record.LogEvent);
-            return logFiles.Where(file => filter.IsAcceptableTo(file) && file.Records.Any()) // select only approriate files
+            return logFiles.Where(file => filter.IsAcceptableTo(file) && file.Records.Any()) // select only appropriate files
                 .SelectMany(x => x.Records.ToArray()).Where(x => compareInfo.IndexOf(x.Message, templateString, CompareOptions.IgnoreCase) >= 0);
-/*                .SelectMany(file => _indexSearchService.Select(file, filter.SearchTemplate.TemplateString, where)) // select records and scores from each file
-                .OrderBy(t => t.Item2) // sort by relevance
-                .Select(t => t.Item1); // we don't need score anymore*/
         }
 
         public void ApplyFilesFilter()

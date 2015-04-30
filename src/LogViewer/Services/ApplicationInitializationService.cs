@@ -104,7 +104,6 @@ namespace LogViewer.Services
             serviceLocator.RegisterType<IFileBrowserConfigurationService, FileBrowserConfigurationService>();
             serviceLocator.RegisterType<IFileSystemService, FileSystemService>();
             serviceLocator.RegisterType<IFileBrowserService, FileBrowserService>();
-            serviceLocator.RegisterType<IIndexSearchService, IndexSearchService>();
             serviceLocator.RegisterType<IFileSystemWatchingService, FileSystemWatchingService>();
             serviceLocator.RegisterType<ILogTableService, LogTableService>();
             serviceLocator.RegisterType<INavigationNodeCacheService, NavigationNodeCacheService>();
