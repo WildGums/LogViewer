@@ -15,6 +15,11 @@
         <Style TargetType="{x:Type Image}">
             <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
         </Style>
+        <Style TargetType="{x:Type controls:DatePickerControl}">
+            <Setter Property="AccentColorBrush" Value="{StaticResource AccentColorBrush}"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Height" Value="25"/>
+        </Style>
     </catel:UserControl.Resources>
     
     <fluent:Ribbon x:Name="ribbon"  IsQuickAccessToolBarVisible="False" CanCustomizeRibbon="False" AutomaticStateManagement="False">
@@ -45,13 +50,16 @@
                             
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="135"/>
                             </Grid.ColumnDefinitions>
                             
                             <TextBlock Grid.Column="0" Grid.Row="0" Text="Start: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                            <controls:DatePickerControl Grid.Column="1" Grid.Row="0" Height="25" Value="{Binding StartDate}" VerticalAlignment="Center" IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
-                            <TextBlock Grid.Column="0" Grid.Row="1"  Text="End: " HorizontalAlignment="Right" />
-                            <controls:DatePickerControl  Grid.Column="1" Grid.Row="1" Height="25" Value="{Binding EndDate}" IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
+                            <controls:DatePickerControl Grid.Column="1" Grid.Row="0" Value="{Binding StartDate}"
+                                                        IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
+
+                            <TextBlock Grid.Column="0" Grid.Row="1"  Text="End: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <controls:DatePickerControl Grid.Column="1" Grid.Row="1" Value="{Binding EndDate}" 
+                                                        IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
                         </Grid>
                     </fluent:GalleryPanel>
                     <fluent:ToggleButton x:Name="toggleButton" Header="Enable" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding IsUseDateRange}"/>
