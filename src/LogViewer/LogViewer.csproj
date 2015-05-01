@@ -86,7 +86,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Orc.Controls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Orc.Controls.1.0.0-unstable0196\lib\net40\Orc.Controls.dll</HintPath>
+      <HintPath>..\..\lib\Orc.Controls.1.0.0-unstable0208\lib\net40\Orc.Controls.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Orc.FilterBuilder, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
