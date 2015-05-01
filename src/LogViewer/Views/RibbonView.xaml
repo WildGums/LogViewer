@@ -44,15 +44,14 @@
                             </Grid.RowDefinitions>
                             
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             
                             <TextBlock Grid.Column="0" Grid.Row="0" Text="Start: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                            <!--<controls:DateTimePickerControl Grid.Column="1" Grid.Row="0" Value="{Binding StartDate}" ShowOptionsButton="True" IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}" />-->
-                            <DatePicker Grid.Column="1" Grid.Row="0" Height="25" SelectedDate="{Binding StartDate}" VerticalAlignment="Center" IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
+                            <controls:DatePickerControl Grid.Column="1" Grid.Row="0" Height="25" Value="{Binding StartDate}" VerticalAlignment="Center" IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
                             <TextBlock Grid.Column="0" Grid.Row="1"  Text="End: " HorizontalAlignment="Right" />
-                            <DatePicker Grid.Column="1" Grid.Row="1" Height="25" SelectedDate="{Binding EndDate}" IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
+                            <controls:DatePickerControl  Grid.Column="1" Grid.Row="1" Height="25" Value="{Binding EndDate}" IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
                         </Grid>
                     </fluent:GalleryPanel>
                     <fluent:ToggleButton x:Name="toggleButton" Header="Enable" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding IsUseDateRange}"/>
