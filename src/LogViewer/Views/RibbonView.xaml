@@ -45,7 +45,7 @@
                             
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="130"/>
                             </Grid.ColumnDefinitions>
                             
                             <TextBlock Grid.Column="0" Grid.Row="0" Text="Start: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
