@@ -9,6 +9,7 @@
                    xmlns:logViewer="clr-namespace:LogViewer"
                    xmlns:views="clr-namespace:Orc.WorkspaceManagement.Views;assembly=Orc.WorkspaceManagement.Xaml"
                    xmlns:controls="clr-namespace:Orc.Controls;assembly=Orc.Controls"
+                   xmlns:converters="clr-namespace:Orc.WorkspaceManagement.Converters;assembly=Orc.WorkspaceManagement.Xaml"
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
     
     <catel:UserControl.Resources>
@@ -100,7 +101,7 @@
                 </fluent:RibbonGroupBox>-->
 
                 <fluent:RibbonGroupBox Header="Workspaces">
-                    <fluent:SplitButton Header="{Binding CurrentWorkspace.Title}"
+                    <fluent:SplitButton Header="{Binding CurrentWorkspace.Title, Converter={converters:UnderscoreToDoubleUnderscoresStringConverter}}"
                                         LargeIcon="/LogViewer;component\Resources\Images\addWorkspace.png" 
                                         Command="{Binding CreateWorkspace}" ToolTip="{Binding CurrentWorkspace.Title}"
                                         ClosePopupOnMouseDown="True" IsCheckable="False"
