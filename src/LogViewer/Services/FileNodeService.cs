@@ -88,7 +88,7 @@ namespace LogViewer.Services
                     {
                         logRecords.ReplaceRange(fileRecords);
                     }
-                });
+                }, true);
             }
             catch (Exception ex)
             {

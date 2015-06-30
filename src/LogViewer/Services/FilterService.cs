@@ -97,7 +97,7 @@ namespace LogViewer.Services
                 {
                     record.FileNode.IsExpanded = true;
                 }
-            });
+            }, true);
         }
 
         private void FilterSelectedFiles()

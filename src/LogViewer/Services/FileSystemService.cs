@@ -88,7 +88,7 @@ namespace LogViewer.Services
             var directoryInfo = new DirectoryInfo(path);
 
             FolderNode folder = null;
-            _dispatcherService.Invoke(() => { folder = new FolderNode(directoryInfo); });
+            _dispatcherService.Invoke(() => { folder = new FolderNode(directoryInfo); }, true);
 
             var logFiles = Directory.GetFiles(path, _wildcardsFilter, SearchOption.TopDirectoryOnly).Where(x => x.IsSupportedFile(_regexFilter)).OrderBy(x => new FileInfo(x).Name).ToList();
 
@@ -122,7 +122,7 @@ namespace LogViewer.Services
             }
 #endif
 
-            _dispatcherService.Invoke(() => folder.Files = new ObservableCollection<FileNode>(fileNodes.OrderByDescending( x => x.FileInfo.CreationTime)));
+            _dispatcherService.Invoke(() => folder.Files = new ObservableCollection<FileNode>(fileNodes.OrderByDescending( x => x.FileInfo.CreationTime)), true);
 
             var logDirectories = Directory.GetDirectories(path).Select(x => Path.Combine(path, x));
 
@@ -146,7 +146,7 @@ namespace LogViewer.Services
             foreach (var directory in logDirectories)
             {
                 var fileSystemContent = LoadFileSystemContent(directory);
-                _dispatcherService.Invoke(() => folder.Directories.Add(fileSystemContent));
+                _dispatcherService.Invoke(() => folder.Directories.Add(fileSystemContent), true);
             }
 #endif
 

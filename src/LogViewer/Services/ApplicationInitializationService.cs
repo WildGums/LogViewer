@@ -109,6 +109,11 @@ namespace LogViewer.Services
             serviceLocator.RegisterType<INavigationNodeCacheService, NavigationNodeCacheService>();
             serviceLocator.RegisterType<ILogTableConfigurationService, LogTableConfigurationService>();
 
+            var workspaceManager = serviceLocator.ResolveType<IWorkspaceManager>();
+            workspaceManager.AddProvider<FilterWorkspaceProvider>(true);
+
+            serviceLocator.RegisterType<IWorkspaceInitializer, WorkspaceInitializer>();
+
             serviceLocator.RegisterTypeAndInstantiate<FileBrowserModel>();
 
             serviceLocator.RegisterTypeAndInstantiate<UnhandledExceptionWatcher>();

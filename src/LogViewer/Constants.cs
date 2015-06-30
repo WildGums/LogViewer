@@ -52,6 +52,22 @@ namespace LogViewer
                 public const string EnableTooltips = "General.EnableToolips";
                 public const bool EnableTooltipsDefaultValue = false;
             }
+
+            public static class Filter
+            {
+                public const string ShowDebug = "ShowDebug";
+                public const bool ShowDebugDefaultValue = true;
+                public const string ShowError = "ShowError";
+                public const bool ShowErrorDefaultValue = true;
+                public const string ShowInfo = "ShowInfo";
+                public const bool ShowInfoDefaultValue = true;
+                public const string ShowWarning = "ShowWarning";
+                public const bool ShowWarningDefaultValue = true;
+                public const string IsUseDateRange = "IsUseDateRange";
+                public const bool IsUseDateRangeDefaultValue = false;
+                public const string StartDate = "StartDate";
+                public const string EndDate = "EndDate";
+            }
         }
     }
 

@@ -78,22 +78,22 @@ namespace LogViewer.Controls
                 _dispatcherService.Invoke(() =>
                 {
                     regEx = RegularExpression;
-                });
+                }, true);
 
                 if (string.IsNullOrWhiteSpace(regEx) || !IsValidRegex(regEx))
                 {
-                    _dispatcherService.Invoke(() => { base.Text = value; });
+                    _dispatcherService.Invoke(() => { base.Text = value; }, true);
                     return;
                 }
 
                 var inlines = Inlines;
 
-                _dispatcherService.Invoke(() => inlines.Clear());
+                _dispatcherService.Invoke(() => inlines.Clear(), true);
 
                 var split = Regex.Split(value, regEx, RegexOptions.ExplicitCapture);
                 if (split.Max(x => x.Length) == 1)
                 {
-                    _dispatcherService.Invoke(() => { base.Text = value; });
+                    _dispatcherService.Invoke(() => { base.Text = value; }, true);
                     return;
                 }
 
@@ -110,7 +110,7 @@ namespace LogViewer.Controls
                         }
 
                         inlines.Add(run);
-                    });
+                    }, true);
                     
                 }
             });

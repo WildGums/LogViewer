@@ -22,7 +22,7 @@ namespace LogViewer
         /// <param name="list"></param>
         /// <param name="item"></param>
         /// <param name="comparison"></param>
-        public static void InsertInAscendingOrder<T>(this IList<T> list, T item, Comparison<T> comparison)
+        public static void InsertInAscendingOrder<T>(this IList<T> list, T item, Comparison<T> comparison) where T : class 
         {
             Argument.IsNotNull(() => list);
             Argument.IsNotNull(() => item);
@@ -68,7 +68,7 @@ namespace LogViewer
         /// <param name="list"></param>
         /// <param name="item"></param>
         /// <param name="comparison"></param>
-        public static void InsertInDescendingOrder<T>(this IList<T> list, T item, Comparison<T> comparison)
+        public static void InsertInDescendingOrder<T>(this IList<T> list, T item, Comparison<T> comparison) where T : class 
         {
             Argument.IsNotNull(() => list);
             Argument.IsNotNull(() => item);

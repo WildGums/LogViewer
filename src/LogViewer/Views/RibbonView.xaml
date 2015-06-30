@@ -100,8 +100,11 @@
                 </fluent:RibbonGroupBox>-->
 
                 <fluent:RibbonGroupBox Header="Workspaces">
-                    <fluent:SplitButton Header="{Binding CurrentWorkspace.Title}" LargeIcon="/LogViewer;component\Resources\Images\addWorkspace.png" 
-                                        Command="{Binding CreateWorkspace}" ToolTip="{Binding CurrentWorkspace.Title}" Size="Large" Width="75">
+                    <fluent:SplitButton Header="{Binding CurrentWorkspace.Title}"
+                                        LargeIcon="/LogViewer;component\Resources\Images\addWorkspace.png" 
+                                        Command="{Binding CreateWorkspace}" ToolTip="{Binding CurrentWorkspace.Title}"
+                                        ClosePopupOnMouseDown="True" IsCheckable="False"
+                                        Size="Large" Width="75">
                         <views:WorkspacesView />
                     </fluent:SplitButton>
 
