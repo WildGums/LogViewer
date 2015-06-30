@@ -53,16 +53,21 @@ namespace LogViewer.Services
 
             var templateString = filter.SearchTemplate.TemplateString;
 
-            if (!filter.SearchTemplate.UseFullTextSearch || string.IsNullOrEmpty(templateString))
+            var logRecords = logFiles.Where(filter.IsAcceptableTo).SelectMany(file => file.Records.ToArray()).Where(record => filter.IsAcceptableTo(record.LogEvent));
+
+            if (!filter.UseTextSearch)
             {
-                return logFiles.Where(filter.IsAcceptableTo).SelectMany(file => file.Records.ToArray()).Where(record => filter.IsAcceptableTo(record.LogEvent) && filter.IsAcceptableTo(record.Message));
+                return logRecords;
+            }
+
+            if (filter.SearchTemplate.UseFullTextSearch || string.IsNullOrEmpty(templateString))
+            {
+                return logRecords.Where(record => filter.IsAcceptableTo(record.Message));
             }
 
             var compareInfo = CultureInfo.CurrentCulture.CompareInfo;
 
-            Func<LogRecord, bool> where = record => filter.IsAcceptableTo(record.LogEvent);
-            return logFiles.Where(file => filter.IsAcceptableTo(file) && file.Records.Any()) // select only appropriate files
-                .SelectMany(x => x.Records.ToArray()).Where(x => compareInfo.IndexOf(x.Message, templateString, CompareOptions.IgnoreCase) >= 0);
+            return logRecords.Where(x => compareInfo.IndexOf(x.Message, templateString, CompareOptions.IgnoreCase) >= 0);
         }
 
         public void ApplyFilesFilter()
