@@ -32,7 +32,7 @@ namespace LogViewer.Services
         #region Methods
 
         #region ILogReaderService Members
-        [Time]
+        
         public IEnumerable<LogRecord> LoadRecordsFromFile(FileNode fileNode)
         {
             Argument.IsNotNull(() => fileNode);
