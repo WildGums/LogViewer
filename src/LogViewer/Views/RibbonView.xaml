@@ -10,6 +10,7 @@
                    xmlns:views="clr-namespace:Orc.WorkspaceManagement.Views;assembly=Orc.WorkspaceManagement.Xaml"
                    xmlns:controls="clr-namespace:Orc.Controls;assembly=Orc.Controls"
                    xmlns:converters="clr-namespace:Orc.WorkspaceManagement.Converters;assembly=Orc.WorkspaceManagement.Xaml"
+                   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
     
     <catel:UserControl.Resources>
@@ -73,9 +74,13 @@
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="30"/>
                             </Grid.RowDefinitions>
+                            
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
                                 <TextBlock Text="Find: " VerticalAlignment="Center"/>
-                                <catel:WatermarkTextBox Width="250" Margin="3" Text="{Binding Path=SearchTemplate.TemplateString, UpdateSourceTrigger=PropertyChanged}">
+                                <catel:WatermarkTextBox Width="250" Margin="3" Text="{Binding SearchTemplate.TemplateString}">
+                                    <i:Interaction.Behaviors>
+                                        <catel:UpdateBindingOnTextChanged UpdateDelay="300" />
+                                    </i:Interaction.Behaviors>
                                     <catel:WatermarkTextBox.Watermark>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Search terms" />

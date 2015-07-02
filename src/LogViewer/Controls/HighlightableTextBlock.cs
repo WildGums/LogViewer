@@ -17,17 +17,13 @@ namespace LogViewer.Controls
     using System.Windows.Media;
     using Catel.IoC;
     using Catel.Services;
+    using Catel.Windows.Threading;
 
     public class HighlightableTextBlock : TextBlock
     {
-        #region Fields
-        private readonly IDispatcherService _dispatcherService;
-        #endregion
-
         public HighlightableTextBlock()
         {
-            var serviceLocator = this.GetServiceLocator();
-            _dispatcherService = serviceLocator.ResolveType<IDispatcherService>();
+
         }
 
         #region Properties
@@ -37,7 +33,8 @@ namespace LogViewer.Controls
             set { SetValue(RegularExpressionProperty, value); }
         }
 
-        public static readonly DependencyProperty RegularExpressionProperty = DependencyProperty.Register("RegularExpression", typeof(string), typeof(HighlightableTextBlock), new PropertyMetadata(string.Empty, RegularExpressionPropertyChanged));
+        public static readonly DependencyProperty RegularExpressionProperty = DependencyProperty.Register("RegularExpression", typeof(string), typeof(HighlightableTextBlock),
+            new PropertyMetadata(string.Empty, async (sender, e) => await ((HighlightableTextBlock)sender).UpdateHighlighting()));
 
         public string HighlightableText
         {
@@ -45,7 +42,8 @@ namespace LogViewer.Controls
             set { SetValue(HighlightableTextProperty, value); }
         }
 
-        public static readonly DependencyProperty HighlightableTextProperty = DependencyProperty.Register("HighlightableText", typeof(string), typeof(HighlightableTextBlock), new PropertyMetadata(HighlightableTextChanged));
+        public static readonly DependencyProperty HighlightableTextProperty = DependencyProperty.Register("HighlightableText", typeof(string), typeof(HighlightableTextBlock),
+            new PropertyMetadata(async (sender, e) => await ((HighlightableTextBlock)sender).UpdateHighlighting()));
 
         public Brush HighlightForeground
         {
@@ -62,45 +60,41 @@ namespace LogViewer.Controls
         }
 
         public static readonly DependencyProperty HighlightBackgroundProperty = DependencyProperty.Register("HighlightBackground", typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Yellow));
-        
 
-        private new string Text
-        {
-            set { HilightText(value); }
-        }
 
-        private async void HilightText(string value)
+        private async Task UpdateHighlighting()
         {
+            var textToCheck = HighlightableText;
+            var regex = RegularExpression;
+            // TODO: what should we do with value? Only add highlighted text?
+            var value = textToCheck;
+            var inlines = Inlines;
+
+            if (string.IsNullOrWhiteSpace(textToCheck) || string.IsNullOrWhiteSpace(regex) || !IsValidRegex(regex))
+            {
+                UpdateText(value, false);
+                return;
+            }
+
             await Task.Factory.StartNew(() =>
             {
-                string regEx = string.Empty;
-
-                _dispatcherService.Invoke(() =>
+                var split = Regex.Split(textToCheck, regex, RegexOptions.ExplicitCapture);
+                if (split.Max(x => x.Length) == 1)
                 {
-                    regEx = RegularExpression;
-                }, true);
-
-                if (string.IsNullOrWhiteSpace(regEx) || !IsValidRegex(regEx))
-                {
-                    _dispatcherService.Invoke(() => { base.Text = value; }, true);
+                    UpdateText(value, true);
                     return;
                 }
 
-                var inlines = Inlines;
-
-                _dispatcherService.Invoke(() => inlines.Clear(), true);
-
-                var split = Regex.Split(value, regEx, RegexOptions.ExplicitCapture);
-                if (split.Max(x => x.Length) == 1)
+                if (split.Length == 0)
                 {
-                    _dispatcherService.Invoke(() => { base.Text = value; }, true);
+                    UpdateText(value, true);
                     return;
                 }
 
                 foreach (var str in split)
                 {
-                    var match = Regex.IsMatch(str, regEx, RegexOptions.ExplicitCapture);
-                    _dispatcherService.Invoke(() =>
+                    var match = Regex.IsMatch(str, regex, RegexOptions.ExplicitCapture);
+                    Dispatcher.BeginInvokeIfRequired(() =>
                     {
                         var run = new Run(str);
                         if (match)
@@ -110,49 +104,40 @@ namespace LogViewer.Controls
                         }
 
                         inlines.Add(run);
-                    }, true);
-                    
+                    });
                 }
             });
         }
         #endregion
 
         #region Methods
-        private void UpdateText()
+        private void UpdateText(string newText, bool clearInlines)
         {
-            Text = base.Text;
-        }
-
-        public static void RegularExpressionPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
-        {
-            var textBlock = obj as HighlightableTextBlock;
-            if (textBlock == null)
+            Dispatcher.BeginInvokeIfRequired(() =>
             {
-                return;
-            }
+                if (clearInlines)
+                {
+                    var inlines = Inlines;
+                    inlines.Clear();
+                }
 
-            textBlock.UpdateText();
+                if (!string.Equals(Text, newText))
+                {
+                    Text = newText;
+                }
+            });
         }
 
-        public static void HighlightableTextChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+        public bool IsValidRegex(string regex)
         {
-            var textBlock = obj as HighlightableTextBlock;
-            if (textBlock != null)
-            {
-                textBlock.Text = textBlock.HighlightableText;
-            }
-        }
-
-        public bool IsValidRegex(string regEx)
-        {
-            if (string.IsNullOrEmpty(regEx))
+            if (string.IsNullOrEmpty(regex))
             {
                 return false;
             }
 
             try
             {
-                Regex.Match(string.Empty, regEx);
+                Regex.Match(string.Empty, regex);
             }
             catch (ArgumentException)
             {
