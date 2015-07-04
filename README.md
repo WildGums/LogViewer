@@ -24,7 +24,7 @@ The tool is available in several ways:
 
 1. Build it from source
 2. Download it here: (includes automatic updates):
-   - [Stable with support for updates](http://downloads.sesolutions.net.au/logviewer/stable/logviewer.exe) (**not yet available**)
+   - [Stable with support for updates](http://downloads.sesolutions.net.au/logviewer/stable/logviewer.exe)
    - [Beta with support for updates](http://downloads.sesolutions.net.au/logviewer/beta/logviewer.exe)
    - [Alpha with support for updates](http://downloads.sesolutions.net.au/logviewer/alpha/logviewer.exe)
 
