@@ -72,7 +72,7 @@ namespace LogViewer.ViewModels
         #endregion
 
         #region Properties
-        [Model]
+        [Model(SupportIEditableObject = false)]
         [Expose("StartDate")]
         [Expose("EndDate")]
         [Expose("ShowInfo")]

@@ -52,22 +52,22 @@ namespace LogViewer.ViewModels
         #region Properties
         public Command ResetSearchTemplate { get; private set; }
 
-        [Model]
+        [Model(SupportIEditableObject = false)]
         [Expose("SelectedItems")]
         public FileBrowserModel FileBrowser { get; set; }
 
-        [Model]
+        [Model(SupportIEditableObject = false)]
         [Expose("Records")]
         [Expose("IsTimestampVisible")]
         public LogTable LogTable { get; private set; }
 
-        [Model]
+        [Model(SupportIEditableObject = false)]
         [Expose("IsUseDateRange")]
         [Expose("StartDate")]
         [Expose("EndDate")]
         public Filter Filter { get; set; }
 
-        [Model]
+        [Model(SupportIEditableObject = false)]
         [Expose("RegularExpression")]
         [ViewModelToModel("Filter")]
         public SearchTemplate SearchTemplate { get; set; }
