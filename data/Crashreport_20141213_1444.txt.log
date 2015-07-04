@@ -1,0 +1,65 @@
+02:44:14:826 => [DEBUG] [Catel.Logging.LogManager] Added listener 'Catel.Logging.FileLogListener' to log manager
+02:44:14:829 => [INFO] [Orchestra.LogHelper] 
+02:44:14:829 => [INFO] [Orchestra.LogHelper] **************************************************************************
+02:44:14:829 => [INFO] [Orchestra.LogHelper] 
+02:44:14:829 => [INFO] [Orchestra.LogHelper] PRODUCT INFO
+02:44:14:829 => [INFO] [Orchestra.LogHelper] 
+02:44:14:829 => [INFO] [Orchestra.LogHelper] Assembly:              LogViewer
+02:44:14:831 => [INFO] [Orchestra.LogHelper] Version:               1.0.0.0
+02:44:14:831 => [INFO] [Orchestra.LogHelper] 
+02:44:14:831 => [INFO] [Orchestra.LogHelper] Company:               Orcomp
+02:44:14:831 => [INFO] [Orchestra.LogHelper] Copyright:             Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+02:44:14:831 => [INFO] [Orchestra.LogHelper] 
+02:44:14:832 => [INFO] [Orchestra.LogHelper] **************************************************************************
+02:44:14:832 => [INFO] [Orchestra.LogHelper] 
+02:44:14:834 => [INFO] [Orchestra.LogHelper] 
+02:44:14:834 => [INFO] [Orchestra.LogHelper] **************************************************************************
+02:44:14:834 => [INFO] [Orchestra.LogHelper] 
+02:44:14:834 => [INFO] [Orchestra.LogHelper] DEVICE INFO
+02:44:14:834 => [INFO] [Orchestra.LogHelper] 
+02:44:14:834 => [INFO] [Orchestra.LogHelper] Platform:              Win32NT
+02:44:14:834 => [INFO] [Orchestra.LogHelper] OS Version:            6.2.9200.0
+02:44:14:834 => [INFO] [Orchestra.LogHelper] 64-bit OS:             True
+02:44:14:834 => [INFO] [Orchestra.LogHelper] 64-bit process:        True
+02:44:14:834 => [INFO] [Orchestra.LogHelper] Processor count:       4
+02:44:14:834 => [INFO] [Orchestra.LogHelper] System page size:      4096
+02:44:14:834 => [INFO] [Orchestra.LogHelper] 
+02:44:14:834 => [INFO] [Orchestra.LogHelper] **************************************************************************
+02:44:14:834 => [INFO] [Orchestra.LogHelper] 
+02:44:14:959 => [ERROR] [Orchestra.LogHelper] Application crashed | [InvalidOperationException] System.InvalidOperationException: Must be selected subdirectory of the"C:\Users\User\AppData\Roaming" directory
+   в LogViewer.ViewModels.LogTreeViewModel.OnAddCompanyCommandExecute() в c:\Users\User\Documents\GitHub\LogViewer\src\LogViewer\ViewModels\LogTreeViewModel.cs:строка 64
+   в Catel.MVVM.Command`2.Execute(TExecuteParameter parameter, Boolean ignoreCanExecuteCheck) в c:\CI_WS\Ws\5444\Source\Catel\src\Catel.MVVM\Catel.MVVM.Shared\MVVM\Commands\Command.cs:строка 258
+   в Catel.MVVM.Command`2.Execute(TExecuteParameter parameter) в c:\CI_WS\Ws\5444\Source\Catel\src\Catel.MVVM\Catel.MVVM.Shared\MVVM\Commands\Command.cs:строка 235
+   в Catel.MVVM.Command`2.Execute(Object parameter) в c:\CI_WS\Ws\5444\Source\Catel\src\Catel.MVVM\Catel.MVVM.Shared\MVVM\Commands\Command.cs:строка 226
+   в System.Windows.Controls.Button.OnClick()
+   в System.Windows.Controls.Primitives.ButtonBase.OnMouseLeftButtonUp(MouseButtonEventArgs e)
+   в System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   в System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   в System.Windows.UIElement.ReRaiseEventAs(DependencyObject sender, RoutedEventArgs args, RoutedEvent newEvent)
+   в System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   в System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   в System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   в System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   в System.Windows.Input.InputManager.ProcessStagingArea()
+   в System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   в System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   в System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   в System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   в MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   в MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   в System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   в MS.Internal.Threading.ExceptionFilterHelper.TryCatchWhen(Object source, Delegate method, Object args, Int32 numArgs, Delegate catchHandler)
+   в System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   в MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   в MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   в System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+   в System.Windows.Application.RunInternal(Window window)
+   в System.Windows.Application.Run()
+   в LogViewer.App.Main() в c:\Users\User\Documents\GitHub\LogViewer\src\LogViewer\obj\Debug\App.g.cs:строка 0
+   в System.AppDomain._nExecuteAssembly(RuntimeAssembly assembly, String[] args)
+   в Microsoft.VisualStudio.HostingProcess.HostProc.RunUsersAssembly()
+   в System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   в System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   в System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   в System.Threading.ThreadHelper.ThreadStart()
+02:44:14:963 => [INFO] [Orchestra.DotNetPatchHelper] An unhandled exception occurred, checking if it is a known KB issue: Must be selected subdirectory of the"C:\Users\User\AppData\Roaming" directory

@@ -1,0 +1,133 @@
+﻿<catel:UserControl x:Class="LogViewer.Views.RibbonView"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:catel="http://catel.codeplex.com"
+                   xmlns:fluent="urn:fluent-ribbon"
+                   xmlns:orchestra="https://github.com/orcomp/orchestra"
+                   xmlns:logViewer="clr-namespace:LogViewer"
+                   xmlns:views="clr-namespace:Orc.WorkspaceManagement.Views;assembly=Orc.WorkspaceManagement.Xaml"
+                   xmlns:controls="clr-namespace:Orc.Controls;assembly=Orc.Controls"
+                   xmlns:converters="clr-namespace:Orc.WorkspaceManagement.Converters;assembly=Orc.WorkspaceManagement.Xaml"
+                   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                   mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+    
+    <catel:UserControl.Resources>
+        <Style TargetType="{x:Type Image}">
+            <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
+        </Style>
+        <Style TargetType="{x:Type controls:DatePickerControl}">
+            <Setter Property="AccentColorBrush" Value="{StaticResource AccentColorBrush}"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Height" Value="25"/>
+        </Style>
+    </catel:UserControl.Resources>
+    
+    <fluent:Ribbon x:Name="ribbon"  IsQuickAccessToolBarVisible="False" CanCustomizeRibbon="False" AutomaticStateManagement="False">
+        <fluent:Ribbon.Menu>
+            <fluent:Backstage Header="File">
+                <fluent:BackstageTabControl>
+                    <fluent:Button Header="Exit" Command="{catel:CommandManagerBinding File.Exit}"/>
+                </fluent:BackstageTabControl>
+            </fluent:Backstage>
+        </fluent:Ribbon.Menu>
+
+        <fluent:Ribbon.Tabs >
+            <fluent:RibbonTabItem Header="View">
+                <fluent:RibbonGroupBox Header="Level">
+                    <fluent:ToggleButton Header="Debug" LargeIcon="/LogViewer;component\Resources\Images\debug.png" SnapsToDevicePixels="True" UseLayoutRounding="True" IsChecked="{Binding ShowDebug}"/>
+                    <fluent:ToggleButton Header="Info" LargeIcon="/LogViewer;component\Resources\Images\info.png" SnapsToDevicePixels="True" UseLayoutRounding="True" IsChecked="{Binding ShowInfo}"/>
+                    <fluent:ToggleButton Header="Warning" LargeIcon="/LogViewer;component\Resources\Images\warning.png" IsChecked="{Binding ShowWarning}"/>
+                    <fluent:ToggleButton Header="Error" LargeIcon="/LogViewer;component\Resources\Images\error.png" IsChecked="{Binding ShowError}"/>
+                </fluent:RibbonGroupBox>
+                
+                <fluent:RibbonGroupBox Header="Date range">
+                    <fluent:GalleryPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                            </Grid.RowDefinitions>
+                            
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="135"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Start: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <controls:DatePickerControl Grid.Column="1" Grid.Row="0" Value="{Binding StartDate}"
+                                                        IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
+
+                            <TextBlock Grid.Column="0" Grid.Row="1"  Text="End: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <controls:DatePickerControl Grid.Column="1" Grid.Row="1" Value="{Binding EndDate}" 
+                                                        IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
+                        </Grid>
+                    </fluent:GalleryPanel>
+                    <fluent:ToggleButton x:Name="toggleButton" Header="Enable" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding IsUseDateRange}"/>
+                </fluent:RibbonGroupBox>
+
+                <fluent:RibbonGroupBox Header="Highlighting">
+                    <fluent:GalleryPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                            </Grid.RowDefinitions>
+                            
+                            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                <TextBlock Text="Find: " VerticalAlignment="Center"/>
+                                <catel:WatermarkTextBox Width="250" Margin="3" Text="{Binding SearchTemplate.TemplateString}">
+                                    <i:Interaction.Behaviors>
+                                        <catel:UpdateBindingOnTextChanged UpdateDelay="300" />
+                                    </i:Interaction.Behaviors>
+                                    <catel:WatermarkTextBox.Watermark>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Search terms" />
+                                        </StackPanel>
+                                    </catel:WatermarkTextBox.Watermark>
+                                </catel:WatermarkTextBox>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <CheckBox Content="Match case" VerticalAlignment="Center" IsChecked="{Binding Path=SearchTemplate.MatchCase}" 
+                                          Visibility="{Binding SearchTemplate.UseFullTextSearch, Converter={catel:BooleanToCollapsingVisibilityConverter}}"/>
+                                <CheckBox Content="Match whole word" VerticalAlignment="Center" IsChecked="{Binding Path=SearchTemplate.MatchWholeWord}"
+                                          Visibility="{Binding SearchTemplate.UseFullTextSearch, Converter={catel:BooleanToCollapsingVisibilityConverter}}"/>
+                            </StackPanel>
+                        </Grid>
+                        <fluent:Button Header="Reset" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Eraser}}" Command="{catel:CommandManagerBinding Filter.ResetSearchTemplate}"/>
+                        <fluent:ToggleButton Header="Full Text" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.FileText}}" IsChecked="{Binding Path=SearchTemplate.UseFullTextSearch}" />
+                        <fluent:ToggleButton Header="Filter" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding UseTextSearch}"/>
+                    </fluent:GalleryPanel>
+                </fluent:RibbonGroupBox>
+
+                <!--<fluent:RibbonGroupBox Header="Filter" MinWidth="175">
+                    <fbviews:FilterBuilderControl RawCollection="{Binding AllOperations}" AutoApplyFilter="False" />
+                </fluent:RibbonGroupBox>-->
+
+                <fluent:RibbonGroupBox Header="Workspaces">
+                    <fluent:SplitButton Header="{Binding CurrentWorkspace.Title, Converter={converters:UnderscoreToDoubleUnderscoresStringConverter}}"
+                                        LargeIcon="/LogViewer;component\Resources\Images\addWorkspace.png" 
+                                        Command="{Binding CreateWorkspace}" ToolTip="{Binding CurrentWorkspace.Title}"
+                                        ClosePopupOnMouseDown="True" IsCheckable="False"
+                                        Size="Large" Width="75">
+                        <views:WorkspacesView />
+                    </fluent:SplitButton>
+
+                    <fluent:Button Header="Save" LargeIcon="/LogViewer;component\Resources\Images\saveWorkspace.png"
+                                   Command="{Binding SaveWorkspace}" Size="Large" />
+                </fluent:RibbonGroupBox>
+
+                <fluent:RibbonGroupBox Header="Settings">
+                    <fluent:Button Header="Settings" LargeIcon="/LogViewer;component\Resources\Images\settings.png"
+                                   Command="{catel:CommandManagerBinding Settings.General}" Size="Large" />
+
+                    <fluent:SplitButton Header="Shortcuts" LargeIcon="/LogViewer;component\Resources\Images\shortcuts.png"
+                                        Command="{Binding ShowKeyboardMappings}" Size="Large">
+                        <orchestra:KeyboardMappingsOverviewView />
+                    </fluent:SplitButton>
+                </fluent:RibbonGroupBox>                
+            </fluent:RibbonTabItem>
+        </fluent:Ribbon.Tabs>
+    </fluent:Ribbon>
+</catel:UserControl>

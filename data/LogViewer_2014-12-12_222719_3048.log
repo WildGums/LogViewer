@@ -1,0 +1,6 @@
+10:27:20:364 => [INFO] [Orchestra.Services.ShellService] Checking if software was correctly closed previously
+10:27:20:436 => [INFO] [Orchestra.ThemeHelper] Setting theme to '#FF381B68'
+10:27:21:442 => [INFO] [Orchestra.Services.ShellService] Loading keyboard mappings
+10:27:21:447 => [INFO] [Orchestra.Services.KeyboardMappingsService] Loading keyboard mappings
+10:27:21:448 => [WARNING] [Orchestra.Services.KeyboardMappingsService] Keyboard mapping file not found at 'C:\Users\User\AppData\Roaming\Orcomp\LogViewer\keyboardmappings.xml'
+10:27:21:453 => [INFO] [Orchestra.Services.ShellService] Confirming that application was started successfully
