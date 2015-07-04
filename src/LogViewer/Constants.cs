@@ -38,7 +38,8 @@ namespace LogViewer
                 public static readonly UpdateChannel[] AvailableChannels =
                 {
                     new UpdateChannel("Stable", "http://downloads.sesolutions.net.au/logviewer/stable"),
-                    new UpdateChannel("Beta", "http://downloads.sesolutions.net.au/logviewer/beta")
+                    new UpdateChannel("Beta", "http://downloads.sesolutions.net.au/logviewer/beta"),
+                    new UpdateChannel("Alpha", "http://downloads.sesolutions.net.au/logviewer/alpha")
                 };
 
                 public static readonly UpdateChannel DefaultChannel = AvailableChannels[0];
