@@ -59,13 +59,7 @@ namespace LogViewer.ViewModels
             SaveWorkspace = new Command(OnSaveWorkspaceExecute, OnSaveWorkspaceCanExecute);
             CreateWorkspace = new Command(OnCreateWorkspaceExecute);
 
-            ShowSettings = new Command(OnShowSettingsExecute);
             ShowKeyboardMappings = new Command(OnShowKeyboardMappingsExecute);
-
-            Exit = new Command(OnExitExecute);
-
-            commandManager.RegisterCommand(Commands.Settings.General, ShowSettings, this);
-            commandManager.RegisterCommand(Commands.File.Exit, Exit, this);
 
             Title = AssemblyHelper.GetEntryAssembly().Title();
         }
@@ -127,13 +121,6 @@ namespace LogViewer.ViewModels
             }
         }
 
-        public Command ShowSettings { get; private set; }
-
-        private async void OnShowSettingsExecute()
-        {
-            _uiVisualizerService.ShowDialog<SettingsViewModel>();
-        }
-
         public Command ShowKeyboardMappings { get; private set; }
 
         private async void OnShowKeyboardMappingsExecute()
@@ -141,12 +128,6 @@ namespace LogViewer.ViewModels
             _uiVisualizerService.ShowDialog<KeyboardMappingsCustomizationViewModel>();
         }
 
-        public Command Exit { get; private set; }
-
-        private void OnExitExecute()
-        {
-            _navigationService.CloseApplication();
-        }
         #endregion
 
         #region Methods

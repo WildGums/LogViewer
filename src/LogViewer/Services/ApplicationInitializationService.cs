@@ -58,6 +58,7 @@ namespace LogViewer.Services
             await RegisterTypes();
             await InitializeFonts();
             await InitializeSettings();
+                  InitializeCommands();
 
             await RunAndWaitAsync(new Func<Task>[]
             {
@@ -73,19 +74,20 @@ namespace LogViewer.Services
 
         public override async Task InitializeAfterCreatingShell()
         {
-            await InitializeCommands();
             await base.InitializeAfterCreatingShell();
         }
 
-        private async Task InitializeCommands()
+        private void InitializeCommands()
         {
-            _commandManager.CreateCommand(Commands.File.Exit, throwExceptionWhenCommandIsAlreadyCreated: false);
+            Log.Info("Initializing commands");
 
-            _commandManager.CreateCommand(Commands.Filter.ResetSearchTemplate, throwExceptionWhenCommandIsAlreadyCreated: false);
+            _commandManager.CreateCommandWithGesture(typeof(Commands.File), "Exit");
 
-            _commandManager.CreateCommand(Commands.Settings.General, throwExceptionWhenCommandIsAlreadyCreated: false);
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), "ResetSearchTemplate");
 
-            _commandManager.CreateCommand(Commands.Help.About, throwExceptionWhenCommandIsAlreadyCreated: false);
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Settings), "General");
+
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Help), "About");
         }
 
         private async Task RegisterTypes()

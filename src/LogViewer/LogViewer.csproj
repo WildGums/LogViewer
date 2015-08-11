@@ -200,6 +200,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\MultipleSelectionBehavior.cs" />
+    <Compile Include="Commands\FileExitCommandContainer.cs" />
+    <Compile Include="Commands\HelpAboutCommandContainer.cs" />
+    <Compile Include="Commands\SettingsGeneralCommandContainer.cs" />
     <Compile Include="Configuration\AnalyticsConfigurationSynchronizer.cs" />
     <Compile Include="Configuration\NavigatorConfigurationSynchronizer.cs" />
     <Compile Include="Configuration\TimestampVisibilityConfigurationSynchronizer.cs" />
@@ -385,7 +388,8 @@
     <Resource Include="Resources\Images\shortcuts.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Commands\" />
+    <Resource Include="Resources\Images\CompanyLogo.png" />
+    <Resource Include="Resources\Images\CompanyLogoForSplashScreen.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\lib\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\lib\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
