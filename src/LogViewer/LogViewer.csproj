@@ -201,6 +201,7 @@
     </Compile>
     <Compile Include="Behaviors\MultipleSelectionBehavior.cs" />
     <Compile Include="Commands\FileExitCommandContainer.cs" />
+    <Compile Include="Commands\FilterResetSearchTemplateCommandContainer.cs" />
     <Compile Include="Commands\HelpAboutCommandContainer.cs" />
     <Compile Include="Commands\SettingsGeneralCommandContainer.cs" />
     <Compile Include="Configuration\AnalyticsConfigurationSynchronizer.cs" />

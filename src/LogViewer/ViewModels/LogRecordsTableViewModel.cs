@@ -39,18 +39,14 @@ namespace LogViewer.ViewModels
 
             _filterService = filterService;
             _logTableService = logTableService;
+
             FileBrowser = fileBrowserService.FileBrowserModel;
             Filter = filterService.Filter;
             LogTable = logTableService.LogTable;
-
-            ResetSearchTemplate = new Command(OnResetSearchTemplateExecute);
-
-            commandManager.RegisterCommand(Commands.Filter.ResetSearchTemplate, ResetSearchTemplate, this);
         }
         #endregion
 
         #region Properties
-        public Command ResetSearchTemplate { get; private set; }
 
         [Model(SupportIEditableObject = false)]
         [Expose("SelectedItems")]
@@ -122,10 +118,6 @@ namespace LogViewer.ViewModels
             await ApplyFilter(Filter);
         }
 
-        private void OnResetSearchTemplateExecute()
-        {
-            SearchTemplate.TemplateString = string.Empty;
-        }
 
         public async void OnSelectedItemChanged()
         {
