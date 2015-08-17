@@ -40,9 +40,9 @@ namespace LogViewer.Services
             _workspaceManager = workspaceManager;
         }
 
-        public async Task<bool> ResetFilters()
+        public async Task<bool> ResetFiltersAsync()
         {
-            if (await _messageService.Show("Resetting filters will delete all your current filters. This action cannot be undone. Are you sure you want to reset the filters?", string.Empty, MessageButton.YesNo) == MessageResult.No)
+            if (await _messageService.ShowAsync("Resetting filters will delete all your current filters. This action cannot be undone. Are you sure you want to reset the filters?", string.Empty, MessageButton.YesNo) == MessageResult.No)
             {
                 return false;
             }
@@ -57,9 +57,9 @@ namespace LogViewer.Services
             return true;
         }
 
-        public async Task<bool> ResetWorkspaces()
+        public async Task<bool> ResetWorkspacesAsync()
         {
-            if (await _messageService.Show("Resetting workspaces will delete all your current workspaces. This action cannot be undone. Are you sure you want to reset the workspaces?", string.Empty, MessageButton.YesNo) == MessageResult.No)
+            if (await _messageService.ShowAsync("Resetting workspaces will delete all your current workspaces. This action cannot be undone. Are you sure you want to reset the workspaces?", string.Empty, MessageButton.YesNo) == MessageResult.No)
             {
                 return false;
             }

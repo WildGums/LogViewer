@@ -17,6 +17,7 @@ namespace LogViewer.Services
     using Catel.Logging;
     using Catel.MVVM;
     using Catel.Services;
+    using Catel.Threading;
     using Catel.Windows.Controls;
     using Configuration;
     using MethodTimer;
@@ -52,16 +53,15 @@ namespace LogViewer.Services
         #endregion
 
         #region Methods
-        public override async Task InitializeBeforeCreatingShell()
+        public override async Task InitializeBeforeCreatingShellAsync()
         {
             // Non-async first
-            await RegisterTypes();
-            await InitializeFonts();
-            await InitializeSettings();
-                  InitializeCommands();
+            RegisterTypes();
+            InitializeFonts();
+            InitializeSettings();
+            InitializeCommands();
 
-            await RunAndWaitAsync(new Func<Task>[]
-            {
+            await TaskHelper.RunAndWaitAsync(new Action[] {
                 ImprovePerformance,
                 InitializeAnalytics,
                 //InitializeAutomaticSupport,
@@ -72,9 +72,9 @@ namespace LogViewer.Services
             });
         }
 
-        public override async Task InitializeAfterCreatingShell()
+        public override async Task InitializeAfterCreatingShellAsync()
         {
-            await base.InitializeAfterCreatingShell();
+            await base.InitializeAfterCreatingShellAsync();
         }
 
         private void InitializeCommands()
@@ -90,7 +90,7 @@ namespace LogViewer.Services
             _commandManager.CreateCommandWithGesture(typeof(Commands.Help), "About");
         }
 
-        private async Task RegisterTypes()
+        private void RegisterTypes()
         {
             var serviceLocator = ServiceLocator.Default;
 
@@ -122,7 +122,7 @@ namespace LogViewer.Services
         }
 
         [Time]
-        private async Task ImprovePerformance()
+        private void ImprovePerformance()
         {
             Log.Info("Improving performance");
 
@@ -132,7 +132,7 @@ namespace LogViewer.Services
         }
 
         [Time]
-        private async Task InitializeAnalytics()
+        private void InitializeAnalytics()
         {
             Log.Info("Initializing analytics");
 
@@ -147,7 +147,7 @@ namespace LogViewer.Services
         }
 
         [Time]
-        private async Task InitializeFonts()
+        private void InitializeFonts()
         {
             FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/LogViewer;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
 
@@ -157,7 +157,7 @@ namespace LogViewer.Services
         }
 
         [Time]
-        private async Task InitializeSettings()
+        private void InitializeSettings()
         {
             Log.Info("Initializing settings");
 
@@ -166,7 +166,7 @@ namespace LogViewer.Services
         }
 
         [Time]
-        private async Task CheckForUpdates()
+        private void CheckForUpdates()
         {
             Log.Info("Checking for updates");
 
@@ -178,12 +178,12 @@ namespace LogViewer.Services
 
 #pragma warning disable 4014
             // Not dot await, it's a background thread
-            updateService.HandleUpdates(maximumReleaseDate);
+            updateService.HandleUpdatesAsync(maximumReleaseDate);
 #pragma warning restore 4014
         }
 
         [Time]
-        private async Task InitializeFilters()
+        private void InitializeFilters()
         {
             Log.Info("Initializing filters");
 
@@ -192,16 +192,16 @@ namespace LogViewer.Services
         }
 
         [Time]
-        private async Task InitializeWorkspaces()
+        private void InitializeWorkspaces()
         {
             Log.Info("Initializing workspaces");
 
             var workspaceManager = _serviceLocator.ResolveType<IWorkspaceManager>();
-            await workspaceManager.Initialize(defaultWorkspaceName: Workspaces.DefaultWorkspaceName);
+            workspaceManager.Initialize(defaultWorkspaceName: Workspaces.DefaultWorkspaceName);
 
             var defaultWorkspace = (from workspace in workspaceManager.Workspaces
-                where string.Equals(workspace.Title, Workspaces.DefaultWorkspaceName)
-                select workspace).FirstOrDefault();
+                                    where string.Equals(workspace.Title, Workspaces.DefaultWorkspaceName)
+                                    select workspace).FirstOrDefault();
             if (defaultWorkspace != null)
             {
                 defaultWorkspace.CanDelete = false;

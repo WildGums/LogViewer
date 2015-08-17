@@ -100,7 +100,7 @@ namespace LogViewer
             try
             {
                 var message = string.Format("{0}\n\n The application will be terminated.", exception.Message);
-                _messageService.Show(message, "Fatal Error", MessageButton.YesNo, MessageImage.Error).Wait();                
+                _messageService.ShowAsync(message, "Fatal Error", MessageButton.YesNo, MessageImage.Error).Wait();                
             }
             catch (Exception ex)
             {

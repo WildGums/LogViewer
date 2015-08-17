@@ -13,8 +13,8 @@ namespace LogViewer.Services
     public interface IManageUserDataService : IAppDataService
     {
         #region Methods
-        Task<bool> ResetFilters();
-        Task<bool> ResetWorkspaces();
+        Task<bool> ResetFiltersAsync();
+        Task<bool> ResetWorkspacesAsync();
         #endregion
     }
 }

@@ -142,7 +142,7 @@ namespace LogViewer.ViewModels
             });
         }
 
-        protected override async Task Initialize()
+        protected override async Task InitializeAsync()
         {
             Filter.PropertyChanged += OnFilterIsDirtyChanged;
 
@@ -162,16 +162,16 @@ namespace LogViewer.ViewModels
                     }
                 });
 
-            await base.Initialize();
+            await base.InitializeAsync();
         }
 
-        protected override async Task Close()
+        protected override async Task CloseAsync()
         {
             Filter.PropertyChanged -= OnFilterIsDirtyChanged;
 
             _applyFilterListener.Dispose();
 
-            await base.Close();
+            await base.CloseAsync();
         }
         #endregion
     }

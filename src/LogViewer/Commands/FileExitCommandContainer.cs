@@ -13,7 +13,7 @@ namespace LogViewer
 
     public class FileExitCommandContainer : CommandContainerBase
     {
-        private INavigationService _navigationService;
+        private readonly INavigationService _navigationService;
 
         public FileExitCommandContainer(ICommandManager commandManager, INavigationService navigationService)
             : base(Commands.File.Exit, commandManager)

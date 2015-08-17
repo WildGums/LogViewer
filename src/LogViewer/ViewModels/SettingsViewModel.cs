@@ -63,9 +63,9 @@ namespace LogViewer.ViewModels
         #endregion
 
         #region Methods
-        protected override async Task Initialize()
+        protected override async Task InitializeAsync()
         {
-            await base.Initialize();
+            await base.InitializeAsync();
 
             var workspace = _workspaceManager.Workspace;
             EnableTooltips = workspace.GetWorkspaceValue(Settings.Workspace.General.EnableTooltips, Settings.Workspace.General.EnableTooltipsDefaultValue);
@@ -80,12 +80,12 @@ namespace LogViewer.ViewModels
             IsTimestampVisible = _logTableConfigurationService.GetIsTimestampVisibile();
         }
 
-        protected override async Task<bool> Save()
+        protected override async Task<bool> SaveAsync()
         {
             var workspace = _workspaceManager.Workspace;
             workspace.SetWorkspaceValue(Settings.Workspace.General.EnableTooltips, EnableTooltips);
 
-            await _workspaceManager.StoreAndSave();
+            _workspaceManager.StoreAndSave();
 
             _configurationService.SetValue(Settings.Application.General.EnableAnalytics, EnableAnalytics);
 
@@ -94,37 +94,37 @@ namespace LogViewer.ViewModels
 
             _logTableConfigurationService.SetIsTimestampVisibile(IsTimestampVisible);
 
-            return await base.Save();
+            return await base.SaveAsync();
         }
         #endregion
 
         #region Commands
         public Command OpenApplicationDataDirectory { get; private set; }
 
-        private async void OnOpenApplicationDataDirectoryExecute()
+        private void OnOpenApplicationDataDirectoryExecute()
         {
-            await _manageUserDataService.OpenApplicationDataDirectory();
+            _manageUserDataService.OpenApplicationDataDirectory();
         }
 
         public Command BackupUserData { get; private set; }
 
-        private async void OnBackupUserDataExecute()
+        private void OnBackupUserDataExecute()
         {
-            await _manageUserDataService.BackupUserData();
+            _manageUserDataService.BackupUserData();
         }
 
         public Command ResetFilters { get; private set; }
 
         private async void OnResetFiltersExecute()
         {
-            await _manageUserDataService.ResetFilters();
+            await _manageUserDataService.ResetFiltersAsync();
         }
 
         public Command ResetWorkspaces { get; private set; }
 
         private async void OnResetWorkspacesExecute()
         {
-            await _manageUserDataService.ResetWorkspaces();
+            await _manageUserDataService.ResetWorkspacesAsync();
         }
         #endregion
     }

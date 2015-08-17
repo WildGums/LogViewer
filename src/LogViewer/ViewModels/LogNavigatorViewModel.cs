@@ -82,16 +82,6 @@ namespace LogViewer.ViewModels
 
             _fileNodeService.ParallelLoadFileNodeBatch(fileNodes);
         }
-
-        protected override async Task Initialize()
-        {
-            await base.Initialize();
-        }
-
-        protected override async Task<bool> Save()
-        {
-            return await base.Save();
-        }
         #endregion
 
         #region Commands
@@ -110,7 +100,7 @@ namespace LogViewer.ViewModels
 
                 if (FileBrowser.RootDirectories.Any(x => string.Equals(x.FullName, folder)))
                 {
-                    await _messageService.ShowError(string.Format("The directory {0} is already added", folder));
+                    await _messageService.ShowErrorAsync(string.Format("The directory {0} is already added", folder));
                     return;
                 }
 

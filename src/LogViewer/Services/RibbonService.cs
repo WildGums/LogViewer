@@ -11,7 +11,7 @@ namespace LogViewer.Services
 
     using LogViewer.Views;
 
-    using Orchestra.Shell.Services;
+    using Orchestra.Services;
 
     public class RibbonService : IRibbonService
     {

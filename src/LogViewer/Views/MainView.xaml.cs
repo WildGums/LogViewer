@@ -18,7 +18,7 @@ namespace LogViewer.Views
         {
             InitializeComponent();
 
-            this.TrackViewForAnalytics();
+            this.TrackViewForAnalyticsAsync();
         }
     }
 }

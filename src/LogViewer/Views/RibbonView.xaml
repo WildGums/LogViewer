@@ -77,16 +77,16 @@
                             
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
                                 <TextBlock Text="Find: " VerticalAlignment="Center"/>
-                                <catel:WatermarkTextBox Width="250" Margin="3" Text="{Binding SearchTemplate.TemplateString}">
+                                <controls:WatermarkTextBox Width="250" Margin="3" Text="{Binding SearchTemplate.TemplateString}">
                                     <i:Interaction.Behaviors>
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="300" />
                                     </i:Interaction.Behaviors>
-                                    <catel:WatermarkTextBox.Watermark>
+                                    <controls:WatermarkTextBox.Watermark>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Search terms" />
                                         </StackPanel>
-                                    </catel:WatermarkTextBox.Watermark>
-                                </catel:WatermarkTextBox>
+                                    </controls:WatermarkTextBox.Watermark>
+                                </controls:WatermarkTextBox>
                             </StackPanel>
                             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
                                 <CheckBox Content="Match case" VerticalAlignment="Center" IsChecked="{Binding Path=SearchTemplate.MatchCase}" 

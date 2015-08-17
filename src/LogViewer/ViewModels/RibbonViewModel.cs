@@ -102,14 +102,14 @@ namespace LogViewer.ViewModels
             return true;
         }
 
-        private async void OnSaveWorkspaceExecute()
+        private void OnSaveWorkspaceExecute()
         {
-            await _workspaceManager.StoreAndSave();
+            _workspaceManager.StoreAndSave();
         }
 
         public Command CreateWorkspace { get; private set; }
 
-        private async void OnCreateWorkspaceExecute()
+        private void OnCreateWorkspaceExecute()
         {
             var workspace = new Workspace();
 
@@ -117,7 +117,7 @@ namespace LogViewer.ViewModels
             {
                 _workspaceManager.Add(workspace, true);
 
-                await _workspaceManager.StoreAndSave();
+                _workspaceManager.StoreAndSave();
             }
         }
 
@@ -141,9 +141,9 @@ namespace LogViewer.ViewModels
             SearchTemplate.RegularExpression = SearchTemplate.IsEmpty() ? string.Empty : _regexService.ConvertToRegex(SearchTemplate.TemplateString, SearchTemplate.MatchCase, SearchTemplate.MatchWholeWord);
         }
 
-        protected override async Task Initialize()
+        protected override async Task InitializeAsync()
         {
-            await base.Initialize();
+            await base.InitializeAsync();
 
             SearchTemplate.PropertyChanged += OnSearchTemplatePropertyChanged;
 
@@ -152,13 +152,13 @@ namespace LogViewer.ViewModels
             UpdateCurrentWorkspace();
         }
 
-        protected override async Task Close()
+        protected override async Task CloseAsync()
         {
             SearchTemplate.PropertyChanged -= OnSearchTemplatePropertyChanged;
 
             _workspaceManager.WorkspaceUpdated -= OnCurrentWorkspaceChanged;
 
-            await base.Close();
+            await base.CloseAsync();
         }
 
         private void OnCurrentWorkspaceChanged(object sender, WorkspaceUpdatedEventArgs e)
