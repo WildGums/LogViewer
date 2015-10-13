@@ -56,8 +56,8 @@ namespace LogViewer.ViewModels
             _pleaseWaitService = pleaseWaitService;
             _filterService = filterService;
 
-            SaveWorkspace = new Command(OnSaveWorkspaceExecute, OnSaveWorkspaceCanExecute);
-            CreateWorkspace = new Command(OnCreateWorkspaceExecute);
+            SaveWorkspace = new TaskCommand(OnSaveWorkspaceExecuteAsync, OnSaveWorkspaceCanExecute);
+            CreateWorkspace = new TaskCommand(OnCreateWorkspaceExecuteAsync);
 
             ShowKeyboardMappings = new Command(OnShowKeyboardMappingsExecute);
 
@@ -84,7 +84,7 @@ namespace LogViewer.ViewModels
         #endregion
 
         #region Commands
-        public Command SaveWorkspace { get; private set; }
+        public TaskCommand SaveWorkspace { get; private set; }
 
         private bool OnSaveWorkspaceCanExecute()
         {
@@ -102,22 +102,21 @@ namespace LogViewer.ViewModels
             return true;
         }
 
-        private void OnSaveWorkspaceExecute()
+        private Task OnSaveWorkspaceExecuteAsync()
         {
-            _workspaceManager.StoreAndSave();
+            return _workspaceManager.StoreAndSaveAsync();
         }
 
-        public Command CreateWorkspace { get; private set; }
+        public TaskCommand CreateWorkspace { get; private set; }
 
-        private void OnCreateWorkspaceExecute()
+        private async Task OnCreateWorkspaceExecuteAsync()
         {
             var workspace = new Workspace();
 
             if (_uiVisualizerService.ShowDialog<WorkspaceViewModel>(workspace) ?? false)
             {
-                _workspaceManager.Add(workspace, true);
-
-                _workspaceManager.StoreAndSave();
+                await _workspaceManager.AddAsync(workspace, true);
+                await _workspaceManager.StoreAndSaveAsync();
             }
         }
 

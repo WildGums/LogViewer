@@ -71,14 +71,14 @@ namespace LogViewer.Services
             {
                 if (workspace.CanDelete)
                 {
-                    _workspaceManager.Remove(workspace);
+                    await _workspaceManager.RemoveAsync(workspace);
                 }
             }
 
             var newWorkspace = _workspaceManager.Workspaces.FirstOrDefault();
             if (newWorkspace != null)
             {
-                _workspaceManager.Workspace = newWorkspace;
+                await _workspaceManager.SetWorkspaceAsync(newWorkspace);
             }
 
             return true;

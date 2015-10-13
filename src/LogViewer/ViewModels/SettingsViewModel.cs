@@ -85,7 +85,7 @@ namespace LogViewer.ViewModels
             var workspace = _workspaceManager.Workspace;
             workspace.SetWorkspaceValue(Settings.Workspace.General.EnableTooltips, EnableTooltips);
 
-            _workspaceManager.StoreAndSave();
+            await _workspaceManager.StoreAndSaveAsync();
 
             _configurationService.SetValue(Settings.Application.General.EnableAnalytics, EnableAnalytics);
 

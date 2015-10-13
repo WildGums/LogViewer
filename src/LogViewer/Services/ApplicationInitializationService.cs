@@ -61,14 +61,12 @@ namespace LogViewer.Services
             InitializeSettings();
             InitializeCommands();
 
-            await TaskHelper.RunAndWaitAsync(new Action[] {
-                ImprovePerformance,
-                InitializeAnalytics,
-                //InitializeAutomaticSupport,
-                //InitializeFeedback,
-                InitializeFilters,
-                InitializeWorkspaces,
-                CheckForUpdates
+            await TaskHelper.RunAndWaitAsync(new Func<Task>[] {
+                ImprovePerformanceAsync,
+                InitializeAnalyticsAsync,
+                InitializeFiltersAsync,
+                InitializeWorkspacesAsync,
+                CheckForUpdatesAsync
             });
         }
 
@@ -111,18 +109,14 @@ namespace LogViewer.Services
             serviceLocator.RegisterType<INavigationNodeCacheService, NavigationNodeCacheService>();
             serviceLocator.RegisterType<ILogTableConfigurationService, LogTableConfigurationService>();
 
-            var workspaceManager = serviceLocator.ResolveType<IWorkspaceManager>();
-            workspaceManager.AddProvider<FilterWorkspaceProvider>(true);
-
             serviceLocator.RegisterType<IWorkspaceInitializer, WorkspaceInitializer>();
 
             serviceLocator.RegisterTypeAndInstantiate<FileBrowserModel>();
-
             serviceLocator.RegisterTypeAndInstantiate<UnhandledExceptionWatcher>();
         }
 
         [Time]
-        private void ImprovePerformance()
+        private async Task ImprovePerformanceAsync()
         {
             Log.Info("Improving performance");
 
@@ -132,7 +126,7 @@ namespace LogViewer.Services
         }
 
         [Time]
-        private void InitializeAnalytics()
+        private async Task InitializeAnalyticsAsync()
         {
             Log.Info("Initializing analytics");
 
@@ -166,7 +160,7 @@ namespace LogViewer.Services
         }
 
         [Time]
-        private void CheckForUpdates()
+        private async Task CheckForUpdatesAsync()
         {
             Log.Info("Checking for updates");
 
@@ -183,7 +177,7 @@ namespace LogViewer.Services
         }
 
         [Time]
-        private void InitializeFilters()
+        private async Task InitializeFiltersAsync()
         {
             Log.Info("Initializing filters");
 
@@ -192,12 +186,14 @@ namespace LogViewer.Services
         }
 
         [Time]
-        private void InitializeWorkspaces()
+        private async Task InitializeWorkspacesAsync()
         {
             Log.Info("Initializing workspaces");
 
             var workspaceManager = _serviceLocator.ResolveType<IWorkspaceManager>();
-            workspaceManager.Initialize(defaultWorkspaceName: Workspaces.DefaultWorkspaceName);
+
+            await workspaceManager.AddProviderAsync<FilterWorkspaceProvider>(true);
+            await workspaceManager.InitializeAsync(defaultWorkspaceName: Workspaces.DefaultWorkspaceName);
 
             var defaultWorkspace = (from workspace in workspaceManager.Workspaces
                                     where string.Equals(workspace.Title, Workspaces.DefaultWorkspaceName)

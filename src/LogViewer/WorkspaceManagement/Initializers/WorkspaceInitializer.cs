@@ -7,6 +7,7 @@
 
 namespace LogViewer
 {
+    using System.Threading.Tasks;
     using Catel;
     using Catel.IoC;
     using Orc.WorkspaceManagement;
@@ -14,7 +15,7 @@ namespace LogViewer
     public class WorkspaceInitializer : IWorkspaceInitializer
     {
         #region Methods
-        public void Initialize(IWorkspace workspace)
+        public async Task InitializeAsync(IWorkspace workspace)
         {
             Argument.IsNotNull(() => workspace);
 
@@ -24,7 +25,7 @@ namespace LogViewer
 
             foreach (var provider in workspaceManager.Providers)
             {
-                provider.ProvideInformation(workspace);
+                await provider.ProvideInformationAsync(workspace);
             }
         }
         #endregion

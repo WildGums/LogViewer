@@ -8,6 +8,7 @@
 namespace LogViewer
 {
     using System;
+    using System.Threading.Tasks;
     using Catel;
     using Orc.WorkspaceManagement;
     using Services;
@@ -28,7 +29,7 @@ namespace LogViewer
         }
         #endregion
 
-        public override void ProvideInformation(IWorkspace workspace)
+        public override async Task ProvideInformationAsync(IWorkspace workspace)
         {
             Argument.IsNotNull(() => workspace);
 
@@ -42,7 +43,7 @@ namespace LogViewer
             workspace.SetWorkspaceValue(Settings.Workspace.Filter.EndDate, _filterService.Filter.EndDate);
         }
 
-        public override void ApplyWorkspace(IWorkspace workspace)
+        public override async Task ApplyWorkspaceAsync(IWorkspace workspace)
         {
             Argument.IsNotNull(() => workspace);
 
