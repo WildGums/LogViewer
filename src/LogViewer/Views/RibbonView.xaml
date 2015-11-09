@@ -17,19 +17,12 @@
         <Style TargetType="{x:Type Image}">
             <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
         </Style>
-        <Style TargetType="{x:Type controls:DatePickerControl}">
-            <Setter Property="AccentColorBrush" Value="{StaticResource AccentColorBrush}"/>
-            <Setter Property="Margin" Value="3"/>
-            <Setter Property="Height" Value="25"/>
-        </Style>
     </catel:UserControl.Resources>
     
     <fluent:Ribbon x:Name="ribbon"  IsQuickAccessToolBarVisible="False" CanCustomizeRibbon="False" AutomaticStateManagement="False">
         <fluent:Ribbon.Menu>
             <fluent:Backstage Header="File">
-                <fluent:BackstageTabControl>
-                    <fluent:Button Header="Exit" Command="{catel:CommandManagerBinding File.Exit}"/>
-                </fluent:BackstageTabControl>
+                <fluent:BackstageTabControl/>
             </fluent:Backstage>
         </fluent:Ribbon.Menu>
 
