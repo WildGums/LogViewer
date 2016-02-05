@@ -8,7 +8,7 @@
 #define AppNameWithVersion AppName + " " + AppVersion
 #define OutputPrefix "LogViewer"
 #define Website "http://www.wildgums.com/"
-#define Company "Wild Gums"
+#define Company "WildGums"
 #define IconName "logo"
 #define ExecutableName "LogViewer.exe"
 #define AppMutex Company + "_" + AppName
