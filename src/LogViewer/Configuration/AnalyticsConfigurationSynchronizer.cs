@@ -41,7 +41,7 @@ namespace LogViewer.Configuration
 
         private void ApplyConfiguration()
         {
-            _googleAnalyticsService.IsEnabled = _configurationService.GetValue(Settings.Application.General.EnableAnalytics,
+            _googleAnalyticsService.IsEnabled = _configurationService.GetRoamingValue(Settings.Application.General.EnableAnalytics,
                 Settings.Application.General.EnableAnalyticsDefaultValue);
         }
         #endregion

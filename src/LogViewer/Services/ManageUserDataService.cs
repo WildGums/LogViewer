@@ -13,6 +13,7 @@ namespace LogViewer.Services
     using Catel.Logging;
     using Catel.Services;
     using LogViewer.Services;
+    using Orc.FileSystem;
     using Orc.FilterBuilder.Services;
     using Orc.WorkspaceManagement;
     using Orchestra.Services;
@@ -26,8 +27,10 @@ namespace LogViewer.Services
         private readonly IMessageService _messageService;
         private readonly IWorkspaceManager _workspaceManager;
 
-        public ManageUserDataService(IMessageService messageService, OrcFilterService filterService, IFilterSchemeManager filterSchemeManager, IWorkspaceManager workspaceManager, ISaveFileService saveFileService, IProcessService processService)
-            : base(messageService, saveFileService, processService)
+        public ManageUserDataService(IMessageService messageService, OrcFilterService filterService, IFilterSchemeManager filterSchemeManager, 
+            IWorkspaceManager workspaceManager, ISaveFileService saveFileService, IProcessService processService, IDirectoryService directoryService,
+            IFileService fileService)
+            : base(messageService, saveFileService, processService, directoryService, fileService)
         {
             Argument.IsNotNull(() => messageService);
             Argument.IsNotNull(() => filterService);

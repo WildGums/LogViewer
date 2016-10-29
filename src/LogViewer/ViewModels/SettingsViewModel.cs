@@ -70,7 +70,7 @@ namespace LogViewer.ViewModels
             var workspace = _workspaceManager.Workspace;
             EnableTooltips = workspace.GetWorkspaceValue(Settings.Workspace.General.EnableTooltips, Settings.Workspace.General.EnableTooltipsDefaultValue);
 
-            EnableAnalytics = _configurationService.GetValue<bool>(Settings.Application.General.EnableAnalytics);
+            EnableAnalytics = _configurationService.GetRoamingValue<bool>(Settings.Application.General.EnableAnalytics);
 
             IsUpdateSystemAvailable = _updateService.IsUpdateSystemAvailable;
             CheckForUpdates = _updateService.CheckForUpdates;
@@ -87,7 +87,7 @@ namespace LogViewer.ViewModels
 
             await _workspaceManager.StoreAndSaveAsync();
 
-            _configurationService.SetValue(Settings.Application.General.EnableAnalytics, EnableAnalytics);
+            _configurationService.SetRoamingValue(Settings.Application.General.EnableAnalytics, EnableAnalytics);
 
             _updateService.CheckForUpdates = CheckForUpdates;
             _updateService.CurrentChannel = UpdateChannel;

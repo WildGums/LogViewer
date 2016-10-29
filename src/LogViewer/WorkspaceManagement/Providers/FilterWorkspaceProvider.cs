@@ -10,6 +10,7 @@ namespace LogViewer
     using System;
     using System.Threading.Tasks;
     using Catel;
+    using Catel.IoC;
     using Orc.WorkspaceManagement;
     using Services;
 
@@ -20,8 +21,8 @@ namespace LogViewer
         #endregion
 
         #region Constructors
-        public FilterWorkspaceProvider(IWorkspaceManager workspaceManager, IFilterService filterService)
-            : base(workspaceManager)
+        public FilterWorkspaceProvider(IWorkspaceManager workspaceManager, IFilterService filterService, IServiceLocator serviceLocator)
+            : base(workspaceManager, serviceLocator)
         {
             Argument.IsNotNull(() => filterService);
 

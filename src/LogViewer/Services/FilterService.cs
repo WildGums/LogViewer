@@ -95,7 +95,7 @@ namespace LogViewer.Services
             {                
                 using (logRecords.SuspendChangeNotifications())
                 {
-                    logRecords.ReplaceRange(filteredRecords);
+                    ((ICollection<LogRecord>)logRecords).ReplaceRange(filteredRecords);
                 }
 
                 foreach (var record in logRecords.Except(oldRecords))

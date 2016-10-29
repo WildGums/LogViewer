@@ -159,7 +159,7 @@ namespace LogViewer.Behaviors
         {
             using (selectedItems.SuspendChangeNotifications())
             {
-                SelectedItems.ReplaceRange(navigationNodes);
+                ((ICollection<NavigationNode>)SelectedItems).ReplaceRange(navigationNodes);
             }
         }
 

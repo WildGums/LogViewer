@@ -29,7 +29,7 @@ namespace LogViewer.Services
 
         private void InitializeConfigurationKey(string key, object defaultValue)
         {
-            _configurationService.InitializeValue(key, defaultValue);
+            _configurationService.InitializeRoamingValue(key, defaultValue);
         }
     }
 }

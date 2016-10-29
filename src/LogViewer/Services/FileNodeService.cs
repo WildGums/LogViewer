@@ -8,6 +8,7 @@
 namespace LogViewer.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -86,7 +87,7 @@ namespace LogViewer.Services
                     var logRecords = fileNode.Records;
                     using (logRecords.SuspendChangeNotifications())
                     {
-                        logRecords.ReplaceRange(fileRecords);
+                        ((ICollection<LogRecord>)logRecords).ReplaceRange(fileRecords);
                     }
                 }, true);
             }

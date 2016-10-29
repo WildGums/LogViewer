@@ -30,13 +30,13 @@ namespace LogViewer.Services
         #region Methods
         public bool GetIsTimestampVisibile()
         {
-            var stringValue = _configurationService.GetValue(IsTimestampVisibile, IsTimestampVisibileDefaulValue.ToString());
+            var stringValue = _configurationService.GetRoamingValue(IsTimestampVisibile, IsTimestampVisibileDefaulValue.ToString());
             return bool.Parse(stringValue);
         }
 
         public void SetIsTimestampVisibile(bool value)
         {
-            _configurationService.SetValue(IsTimestampVisibile, value.ToString());
+            _configurationService.SetRoamingValue(IsTimestampVisibile, value.ToString());
         }
         #endregion
     }
