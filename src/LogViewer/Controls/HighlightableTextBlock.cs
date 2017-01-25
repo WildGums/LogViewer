@@ -34,7 +34,9 @@ namespace LogViewer.Controls
         }
 
         public static readonly DependencyProperty RegularExpressionProperty = DependencyProperty.Register("RegularExpression", typeof(string), typeof(HighlightableTextBlock),
-            new PropertyMetadata(string.Empty, async (sender, e) => await ((HighlightableTextBlock)sender).UpdateHighlighting()));
+#pragma warning disable AvoidAsyncVoid // Avoid async void
+            new PropertyMetadata(string.Empty, async (sender, e) => await ((HighlightableTextBlock)sender).UpdateHighlightingAsync()));
+#pragma warning restore AvoidAsyncVoid // Avoid async void
 
         public string HighlightableText
         {
@@ -43,7 +45,9 @@ namespace LogViewer.Controls
         }
 
         public static readonly DependencyProperty HighlightableTextProperty = DependencyProperty.Register("HighlightableText", typeof(string), typeof(HighlightableTextBlock),
-            new PropertyMetadata(async (sender, e) => await ((HighlightableTextBlock)sender).UpdateHighlighting()));
+#pragma warning disable AvoidAsyncVoid // Avoid async void
+            new PropertyMetadata(async (sender, e) => await ((HighlightableTextBlock)sender).UpdateHighlightingAsync()));
+#pragma warning restore AvoidAsyncVoid // Avoid async void
 
         public Brush HighlightForeground
         {
@@ -62,7 +66,7 @@ namespace LogViewer.Controls
         public static readonly DependencyProperty HighlightBackgroundProperty = DependencyProperty.Register("HighlightBackground", typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Yellow));
 
 
-        private async Task UpdateHighlighting()
+        private async Task UpdateHighlightingAsync()
         {
             var textToCheck = HighlightableText;
             var regex = RegularExpression;
@@ -123,7 +127,7 @@ namespace LogViewer.Controls
 
                 if (!string.Equals(Text, newText))
                 {
-                    Text = newText;
+                    SetCurrentValue(TextProperty, newText);
                 }
             });
         }

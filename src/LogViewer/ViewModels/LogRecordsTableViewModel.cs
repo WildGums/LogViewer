@@ -85,9 +85,11 @@ namespace LogViewer.ViewModels
             _prevSelectedItems = FileBrowser.SelectedItems;
         }
 
+#pragma warning disable AvoidAsyncVoid // Avoid async void
         private async void OnSelectedItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+#pragma warning restore AvoidAsyncVoid // Avoid async void
         {
-            await ApplyFilter();
+            await ApplyFilterAsync();
         }
 
         public void OnEndDateChanged()
@@ -105,26 +107,32 @@ namespace LogViewer.ViewModels
             _filterService.ApplyFilesFilter();
         }
 
+#pragma warning disable AvoidAsyncVoid // Avoid async void
         private async void OnSearchTemplateIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+#pragma warning restore AvoidAsyncVoid // Avoid async void
         {
             if (Filter.UseTextSearch)
             {
-                await ApplyFilter(SearchTemplate);
+                await ApplyFilterAsync(SearchTemplate);
             }
         }
 
+#pragma warning disable AvoidAsyncVoid // Avoid async void
         private async void OnFilterIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+#pragma warning restore AvoidAsyncVoid // Avoid async void
         {
-            await ApplyFilter(Filter);
+            await ApplyFilterAsync(Filter);
         }
 
 
+#pragma warning disable AvoidAsyncVoid // Avoid async void
         public async void OnSelectedItemChanged()
+#pragma warning restore AvoidAsyncVoid // Avoid async void
         {
-            await ApplyFilter();
+            await ApplyFilterAsync();
         }
 
-        private async Task ApplyFilter(SimplyClearableModel clearableModel = null)
+        private async Task ApplyFilterAsync(SimplyClearableModel clearableModel = null)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -154,11 +162,13 @@ namespace LogViewer.ViewModels
                 .Delay(TimeSpan.FromMilliseconds(500))
                 .Throttle(TimeSpan.FromMilliseconds(500))
                 .ObserveOnDispatcher()
+#pragma warning disable AvoidAsyncVoid // Avoid async void
                 .Subscribe(async e =>
+#pragma warning restore AvoidAsyncVoid // Avoid async void
                 {
                     if (Filter.UseTextSearch)
                     {
-                        await ApplyFilter(SearchTemplate);
+                        await ApplyFilterAsync(SearchTemplate);
                     }
                 });
 

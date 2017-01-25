@@ -59,7 +59,7 @@ namespace LogViewer.ViewModels
             SaveWorkspace = new TaskCommand(OnSaveWorkspaceExecuteAsync, OnSaveWorkspaceCanExecute);
             CreateWorkspace = new TaskCommand(OnCreateWorkspaceExecuteAsync);
 
-            ShowKeyboardMappings = new Command(OnShowKeyboardMappingsExecute);
+            ShowKeyboardMappings = new TaskCommand(OnShowKeyboardMappingsExecuteAsync);
 
             Title = AssemblyHelper.GetEntryAssembly().Title();
         }
@@ -120,9 +120,9 @@ namespace LogViewer.ViewModels
             }
         }
 
-        public Command ShowKeyboardMappings { get; private set; }
+        public TaskCommand ShowKeyboardMappings { get; private set; }
 
-        private async void OnShowKeyboardMappingsExecute()
+        private async Task OnShowKeyboardMappingsExecuteAsync()
         {
             _uiVisualizerService.ShowDialog<KeyboardMappingsCustomizationViewModel>();
         }

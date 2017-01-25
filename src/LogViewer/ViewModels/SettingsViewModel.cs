@@ -45,8 +45,8 @@ namespace LogViewer.ViewModels
 
             OpenApplicationDataDirectory = new Command(OnOpenApplicationDataDirectoryExecute);
             BackupUserData = new Command(OnBackupUserDataExecute);
-            ResetFilters = new Command(OnResetFiltersExecute);
-            ResetWorkspaces = new Command(OnResetWorkspacesExecute);
+            ResetFilters = new TaskCommand(OnResetFiltersExecuteAsync);
+            ResetWorkspaces = new TaskCommand(OnResetWorkspacesExecuteAsync);
 
             Title = "Settings";
         }
@@ -113,16 +113,16 @@ namespace LogViewer.ViewModels
             _manageUserDataService.BackupUserData();
         }
 
-        public Command ResetFilters { get; private set; }
+        public TaskCommand ResetFilters { get; private set; }
 
-        private async void OnResetFiltersExecute()
+        private async Task OnResetFiltersExecuteAsync()
         {
             await _manageUserDataService.ResetFiltersAsync();
         }
 
-        public Command ResetWorkspaces { get; private set; }
+        public TaskCommand ResetWorkspaces { get; private set; }
 
-        private async void OnResetWorkspacesExecute()
+        private async Task OnResetWorkspacesExecuteAsync()
         {
             await _manageUserDataService.ResetWorkspacesAsync();
         }

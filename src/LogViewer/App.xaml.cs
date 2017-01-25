@@ -44,7 +44,9 @@ namespace LogViewer
         #endregion
 
         #region Methods
+#pragma warning disable AvoidAsyncVoid // Avoid async void
         protected override async void OnStartup(StartupEventArgs e)
+#pragma warning restore AvoidAsyncVoid // Avoid async void
         {
 #if DEBUG
             LogManager.AddDebugListener(true);

@@ -47,8 +47,8 @@ namespace LogViewer.ViewModels
 
             FileBrowser = fileBrowserService.FileBrowserModel;
 
-            AddFolder = new Command(OnAddFolderExecute);
-            DeleteFolder = new Command(OnDeleteFolderExecute, OnDeleteFolderCanExecute);
+            AddFolder = new TaskCommand(OnAddFolderExecuteAsync);
+            DeleteFolder = new TaskCommand(OnDeleteFolderExecuteAsync, OnDeleteFolderCanExecute);
         }
         #endregion
 
@@ -85,9 +85,9 @@ namespace LogViewer.ViewModels
         #endregion
 
         #region Commands
-        public Command AddFolder { get; private set; }
+        public TaskCommand AddFolder { get; private set; }
 
-        private async void OnAddFolderExecute()
+        private async Task OnAddFolderExecuteAsync()
         {
             var rootAppDataDir = _appDataService.GetRootAppDataFolder();
 
@@ -108,9 +108,9 @@ namespace LogViewer.ViewModels
             }
         }
 
-        public Command DeleteFolder { get; private set; }
+        public TaskCommand DeleteFolder { get; private set; }
 
-        private void OnDeleteFolderExecute()
+        private async Task OnDeleteFolderExecuteAsync()
         {
             var folder = FileBrowser.SelectedItems.SingleOrDefault() as FolderNode;
             if (folder != null)
