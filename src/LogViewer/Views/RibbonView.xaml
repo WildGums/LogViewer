@@ -67,7 +67,7 @@
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="30"/>
                             </Grid.RowDefinitions>
-                            
+
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
                                 <TextBlock Text="Find: " VerticalAlignment="Center"/>
                                 <controls:WatermarkTextBox Width="250" Margin="3" Text="{Binding SearchTemplate.TemplateString}">
@@ -88,10 +88,10 @@
                                           Visibility="{Binding SearchTemplate.UseFullTextSearch, Converter={catel:BooleanToCollapsingVisibilityConverter}}"/>
                             </StackPanel>
                         </Grid>
-                        <fluent:Button Header="Reset" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Eraser}}" Command="{catel:CommandManagerBinding Filter.ResetSearchTemplate}"/>
-                        <fluent:ToggleButton Header="Full Text" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.FileText}}" IsChecked="{Binding Path=SearchTemplate.UseFullTextSearch}" />
-                        <fluent:ToggleButton Header="Filter" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding UseTextSearch}"/>
                     </fluent:GalleryPanel>
+                    <fluent:Button Header="Reset" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Eraser}}" Command="{catel:CommandManagerBinding Filter.ResetSearchTemplate}"/>
+                    <fluent:ToggleButton Header="Full Text" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.FileText}}" IsChecked="{Binding Path=SearchTemplate.UseFullTextSearch}" />
+                    <fluent:ToggleButton Header="Filter" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding UseTextSearch}"/>
                 </fluent:RibbonGroupBox>
 
                 <!--<fluent:RibbonGroupBox Header="Filter" MinWidth="175">
