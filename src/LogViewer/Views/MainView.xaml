@@ -7,7 +7,16 @@
                    xmlns:views="clr-namespace:LogViewer.Views"
                    mc:Ignorable="d" 
                    d:DesignHeight="300" d:DesignWidth="300">
-    
+
+    <catel:UserControl.Resources>
+        <Style x:Key="VerticalGridSplitterStyle"  TargetType="{x:Type GridSplitter}" >
+            <Setter Property="Width" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Background" Value="LightGray"/>
+        </Style>
+    </catel:UserControl.Resources>
+
     <catel:StackGrid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
@@ -16,8 +25,8 @@
         </Grid.ColumnDefinitions>
         
         <views:LogNavigatorView />
-        
-        <GridSplitter Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Center" />
+
+        <GridSplitter Style="{StaticResource VerticalGridSplitterStyle}" />
         
         <views:LogRecordsTableView />
     </catel:StackGrid>

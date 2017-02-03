@@ -206,6 +206,7 @@
         <!--Default DataGrid Style-->
         <Style x:Key="DefaultDataGridStyle" TargetType="{x:Type DataGrid}">
             <Setter Property="Margin" Value="-2 -1 0 0" />
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="LightGray" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="SelectionMode" Value="Single" />
