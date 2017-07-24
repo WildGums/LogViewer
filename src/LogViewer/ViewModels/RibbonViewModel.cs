@@ -113,7 +113,7 @@ namespace LogViewer.ViewModels
         {
             var workspace = new Workspace();
 
-            if (_uiVisualizerService.ShowDialog<WorkspaceViewModel>(workspace) ?? false)
+            if (await _uiVisualizerService.ShowDialogAsync<WorkspaceViewModel>(workspace) ?? false)
             {
                 await _workspaceManager.AddAsync(workspace, true);
                 await _workspaceManager.StoreAndSaveAsync();
@@ -124,7 +124,7 @@ namespace LogViewer.ViewModels
 
         private async Task OnShowKeyboardMappingsExecuteAsync()
         {
-            _uiVisualizerService.ShowDialog<KeyboardMappingsCustomizationViewModel>();
+            await _uiVisualizerService.ShowDialogAsync<KeyboardMappingsCustomizationViewModel>();
         }
 
         #endregion

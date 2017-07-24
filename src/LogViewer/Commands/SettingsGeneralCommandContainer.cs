@@ -9,6 +9,7 @@ namespace LogViewer
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using Catel;
     using Catel.Logging;
     using Catel.MVVM;
@@ -34,7 +35,7 @@ namespace LogViewer
             _viewModelFactory = viewModelFactory;
         }
 
-        protected override void Execute(object parameter)
+        protected override async Task ExecuteAsync(object parameter)
         {
             base.Execute(parameter);
 
@@ -46,7 +47,7 @@ namespace LogViewer
 
             var viewModel = _viewModelFactory.CreateViewModel(settingsViewModelType, null, null);
 
-            _uiVisualizerService.ShowDialog(viewModel);
+            await _uiVisualizerService.ShowDialogAsync(viewModel);
         }
     }
 }

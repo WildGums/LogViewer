@@ -94,7 +94,7 @@ namespace LogViewer.ViewModels
             _selectDirectoryService.Title = "Select FolderNode's application data folder";
             _selectDirectoryService.InitialDirectory = rootAppDataDir;
 
-            if (_selectDirectoryService.DetermineDirectory())
+            if (await _selectDirectoryService.DetermineDirectoryAsync())
             {
                 var folder = _selectDirectoryService.DirectoryName;
 

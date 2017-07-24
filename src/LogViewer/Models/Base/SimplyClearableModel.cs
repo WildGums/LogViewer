@@ -14,13 +14,7 @@ namespace LogViewer.Models
         #region Methods
         public void MarkClean()
         {
-            var oldValue = HandlePropertyAndCollectionChanges;
-
-            HandlePropertyAndCollectionChanges = false;
-
             IsDirty = false;
-
-            HandlePropertyAndCollectionChanges = oldValue;
         }
         #endregion
     }

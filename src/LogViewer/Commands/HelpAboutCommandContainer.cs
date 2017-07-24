@@ -7,6 +7,7 @@
 
 namespace LogViewer
 {
+    using System.Threading.Tasks;
     using Catel;
     using Catel.MVVM;
     using Orchestra.Services;
@@ -23,9 +24,9 @@ namespace LogViewer
             _aboutService = aboutService;
         }
 
-        protected override void Execute(object parameter)
+        protected override Task ExecuteAsync(object parameter)
         {
-            _aboutService.ShowAbout();
+            return _aboutService.ShowAboutAsync();
         }
     }
 }

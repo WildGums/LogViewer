@@ -52,7 +52,7 @@ namespace LogViewer
             LogManager.AddDebugListener(true);
 #endif
 
-            SquirrelHelper.HandleSquirrelAutomatically();
+            await SquirrelHelper.HandleSquirrelAutomaticallyAsync();
 
             var serviceLocator = ServiceLocator.Default;
             var shellService = serviceLocator.ResolveType<IShellService>();

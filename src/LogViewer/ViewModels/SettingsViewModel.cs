@@ -44,7 +44,7 @@ namespace LogViewer.ViewModels
             _logTableConfigurationService = logTableConfigurationService;
 
             OpenApplicationDataDirectory = new Command(OnOpenApplicationDataDirectoryExecute);
-            BackupUserData = new Command(OnBackupUserDataExecute);
+            BackupUserData = new TaskCommand(OnBackupUserDataExecuteAsync);
             ResetFilters = new TaskCommand(OnResetFiltersExecuteAsync);
             ResetWorkspaces = new TaskCommand(OnResetWorkspacesExecuteAsync);
 
@@ -106,11 +106,11 @@ namespace LogViewer.ViewModels
             _manageUserDataService.OpenApplicationDataDirectory();
         }
 
-        public Command BackupUserData { get; private set; }
+        public TaskCommand BackupUserData { get; private set; }
 
-        private void OnBackupUserDataExecute()
+        private async Task OnBackupUserDataExecuteAsync()
         {
-            _manageUserDataService.BackupUserData();
+            await _manageUserDataService.BackupUserDataAsync();
         }
 
         public TaskCommand ResetFilters { get; private set; }
