@@ -7,7 +7,7 @@ LogViewer is a simple application used to read log files created by the Catel lo
 
 It is also used as an example on how to build an application using [Orchestra](https://github.com/WildGums/Orchestra) and the various [Orc.* libraries](https://github.com/WildGums).
 
-##Features
+## Features
 
 * Build-in filesystem browser with multiselection support:
     - Easily switch between log files
