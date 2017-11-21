@@ -7,19 +7,26 @@
 
 namespace LogViewer
 {
-    using System.IO;
+    using System.Linq;
+    using System.Text;
+
     using Catel;
     using Catel.MVVM;
+
+    using LogViewer.Services;
+
     using Orchestra.Services;
-    using Services;
 
     public class FilterCopyResultToClipboardCommandContainer : CommandContainerBase
     {
+        #region Fields
         private readonly IClipboardService _clipboardService;
-        private readonly ILogTableService _logTableService;
 
-        public FilterCopyResultToClipboardCommandContainer(ICommandManager commandManager, IClipboardService clipboardService,
-            ILogTableService logTableService)
+        private readonly ILogTableService _logTableService;
+        #endregion
+
+        #region Constructors
+        public FilterCopyResultToClipboardCommandContainer(ICommandManager commandManager, IClipboardService clipboardService, ILogTableService logTableService)
             : base(Commands.Filter.CopyResultToClipboard, commandManager)
         {
             Argument.IsNotNull(() => clipboardService);
@@ -28,16 +35,19 @@ namespace LogViewer
             _clipboardService = clipboardService;
             _logTableService = logTableService;
         }
+        #endregion
 
+        #region Methods
         protected override void Execute(object parameter)
         {
-            StringWriter writer = new StringWriter();
+            var stringBuilder = new StringBuilder();
             foreach (var record in _logTableService.LogTable.Records)
             {
-                writer.WriteLine(record.ToString());
+                stringBuilder.AppendLine(record.ToString());
             }
 
-            _clipboardService.CopyToClipboard(writer.GetStringBuilder().ToString());
+            _clipboardService.CopyToClipboard(stringBuilder.ToString());
         }
+        #endregion
     }
 }

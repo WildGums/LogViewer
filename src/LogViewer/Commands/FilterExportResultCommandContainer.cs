@@ -8,6 +8,9 @@
 namespace LogViewer
 {
     using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     using Catel;
     using Catel.MVVM;
     using Catel.Services;
@@ -35,21 +38,12 @@ namespace LogViewer
             _logTableService = logTableService;
         }
 
-        protected override void Execute(object parameter)
+        protected override async Task ExecuteAsync(object parameter)
         {
             _saveFileService.FileName = "LogViewerFilterExport_" + FastDateTime.Now.ToString("yy-MM-dd_HHmmss_ms") + ".log";
-            var determineFileAsync = _saveFileService.DetermineFileAsync();
-            determineFileAsync.Wait();
-
-            if (determineFileAsync.Result)
+            if (await _saveFileService.DetermineFileAsync())
             {
-                using (var writer = new StreamWriter(_fileService.Open(_saveFileService.FileName, FileMode.Create, FileAccess.Write)))
-                {
-                    foreach (var record in _logTableService.LogTable.Records)
-                    {
-                        writer.WriteLine(record.ToString());
-                    }
-                }
+                _fileService.WriteAllLines(_saveFileService.FileName, _logTableService.LogTable.Records.Select(record => record.ToString()));
             }
         }
     }

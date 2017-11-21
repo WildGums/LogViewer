@@ -8,12 +8,27 @@
 namespace LogViewer.Models
 {
     using System;
+    using System.Collections.Generic;
 
     using Catel.Data;
     using Catel.Logging;
 
     public class LogRecord : ModelBase
     {
+        #region Fields
+        private static readonly Dictionary<LogEvent, string> LogEventCache = new Dictionary<LogEvent, string>();
+        #endregion
+
+        #region Constructors
+        static LogRecord()
+        {
+            foreach (LogEvent value in Enum.GetValues(typeof(LogEvent)))
+            {
+                LogEventCache.Add(value, value.ToString().ToUpper());
+            }
+        }
+        #endregion
+
         #region Properties
         public FileNode FileNode { get; set; }
 
@@ -35,9 +50,11 @@ namespace LogViewer.Models
         public bool IsSelected { get; set; }
         #endregion
 
+        #region Methods
         public override string ToString()
         {
-            return $"{DateTime:HH:mm:ss:ms} => [{LogEvent.ToString().ToUpper()}] [{TargetTypeName}] [{ThreadId}] {Message}";
+            return $"{DateTime:HH:mm:ss:ms} => [{LogEventCache[LogEvent]}] [{TargetTypeName}] [{ThreadId}] {Message}";
         }
+        #endregion
     }
 }
