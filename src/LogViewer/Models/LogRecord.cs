@@ -34,5 +34,10 @@ namespace LogViewer.Models
 
         public bool IsSelected { get; set; }
         #endregion
+
+        public override string ToString()
+        {
+            return $"{DateTime:HH:mm:ss:ms} => [{LogEvent.ToString().ToUpper()}] [{TargetTypeName}] [{ThreadId}] {Message}";
+        }
     }
 }

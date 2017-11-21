@@ -86,6 +86,12 @@ namespace LogViewer
         {
             public const string ResetSearchTemplate = "Filter.ResetSearchTemplate";
             public static readonly InputGesture ResetSearchTemplateInputGesture = null;
+
+            public const string ExportResult = "Filter.ExportResult";
+            public static readonly InputGesture ExportResultInputGesture = null;
+
+            public const string CopyResultToClipboard = "Filter.CopyResultToClipboard";
+            public static readonly InputGesture CopyResultToClipboardInputGesture = null;
         }
 
         public static class Settings
