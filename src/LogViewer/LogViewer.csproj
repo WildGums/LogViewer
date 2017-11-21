@@ -224,6 +224,8 @@
     </Compile>
     <Compile Include="Behaviors\MultipleSelectionBehavior.cs" />
     <Compile Include="Commands\FileExitCommandContainer.cs" />
+    <Compile Include="Commands\FilterCopyResultToClipboardCommandContainer.cs" />
+    <Compile Include="Commands\FilterExportResultCommandContainer.cs" />
     <Compile Include="Commands\FilterResetSearchTemplateCommandContainer.cs" />
     <Compile Include="Commands\HelpAboutCommandContainer.cs" />
     <Compile Include="Commands\SettingsGeneralCommandContainer.cs" />

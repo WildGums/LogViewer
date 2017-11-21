@@ -82,6 +82,8 @@ namespace LogViewer.Services
             _commandManager.CreateCommandWithGesture(typeof(Commands.File), "Exit");
 
             _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), "ResetSearchTemplate");
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), "ExportResult");
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), "CopyResultToClipboard");
 
             _commandManager.CreateCommandWithGesture(typeof(Commands.Settings), "General");
 
