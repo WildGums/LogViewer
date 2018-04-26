@@ -134,8 +134,8 @@ namespace LogViewer.Services
             var analyticsConfigurationSynchronizer = _typeFactory.CreateInstance<AnalyticsConfigurationSynchronizer>();
             _serviceLocator.RegisterInstance(analyticsConfigurationSynchronizer);
 
-            var googleAnalyticsService = _serviceLocator.ResolveType<IGoogleAnalyticsService>();
-            googleAnalyticsService.AccountId = Analytics.AccountId;
+            var analyticsService = _serviceLocator.ResolveType<IAnalyticsService>();
+            analyticsService.AccountId = Analytics.AccountId;
 
             _serviceLocator.RegisterTypeAndInstantiate<NavigatorConfigurationSynchronizer>();
             _serviceLocator.RegisterTypeAndInstantiate<TimestampVisibilityConfigurationSynchronizer>();

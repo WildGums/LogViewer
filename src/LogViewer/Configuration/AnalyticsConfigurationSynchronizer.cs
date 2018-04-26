@@ -14,13 +14,13 @@ namespace LogViewer.Configuration
     internal class AnalyticsConfigurationSynchronizer
     {
         #region Constructors
-        public AnalyticsConfigurationSynchronizer(IConfigurationService configurationService, IGoogleAnalyticsService googleAnalyticsService)
+        public AnalyticsConfigurationSynchronizer(IConfigurationService configurationService, IAnalyticsService analyticsService)
         {
             Argument.IsNotNull(() => configurationService);
-            Argument.IsNotNull(() => googleAnalyticsService);
+            Argument.IsNotNull(() => analyticsService);
 
             _configurationService = configurationService;
-            _googleAnalyticsService = googleAnalyticsService;
+            _analyticsService = analyticsService;
 
             _configurationService.ConfigurationChanged += OnConfigurationChanged;
 
@@ -30,7 +30,7 @@ namespace LogViewer.Configuration
 
         #region Fields
         private readonly IConfigurationService _configurationService;
-        private readonly IGoogleAnalyticsService _googleAnalyticsService;
+        private readonly IAnalyticsService _analyticsService;
         #endregion
 
         #region Methods
@@ -41,7 +41,7 @@ namespace LogViewer.Configuration
 
         private void ApplyConfiguration()
         {
-            _googleAnalyticsService.IsEnabled = _configurationService.GetRoamingValue(Settings.Application.General.EnableAnalytics,
+            _analyticsService.IsEnabled = _configurationService.GetRoamingValue(Settings.Application.General.EnableAnalytics,
                 Settings.Application.General.EnableAnalyticsDefaultValue);
         }
         #endregion

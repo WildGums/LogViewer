@@ -58,13 +58,13 @@ namespace LogViewer
             var shellService = serviceLocator.ResolveType<IShellService>();
             await shellService.CreateWithSplashAsync<ShellWindow>();
 
-            var googleAnalyticsService = serviceLocator.ResolveType<IGoogleAnalyticsService>();
+            var analyticsService = serviceLocator.ResolveType<IAnalyticsService>();
 
             _end = DateTime.Now;
             _stopwatch.Stop();
 
 #pragma warning disable 4014
-            googleAnalyticsService.SendTimingAsync(_stopwatch.Elapsed, Analytics.Application.Name, Analytics.Application.StartupTime);
+            analyticsService.SendTimingAsync(_stopwatch.Elapsed, Analytics.Application.Name, Analytics.Application.StartupTime);
 #pragma warning restore 4014
 
             Log.Info("Elapsed startup stopwatch time: {0}", _stopwatch.Elapsed);
