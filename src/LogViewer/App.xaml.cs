@@ -56,7 +56,7 @@ namespace LogViewer
 
             var serviceLocator = ServiceLocator.Default;
             var shellService = serviceLocator.ResolveType<IShellService>();
-            await shellService.CreateWithSplashAsync<ShellWindow>();
+            await shellService.CreateAsync<ShellWindow>();
 
             var analyticsService = serviceLocator.ResolveType<IAnalyticsService>();
 

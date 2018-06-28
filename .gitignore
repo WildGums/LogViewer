@@ -74,9 +74,6 @@ CatelLogging.txt
 # Ghostdoc
 *.GhostDoc.xml
 
-# Data
-data/sensitive
-
 # Deployments
 deployment/FinalBuilder/backup
 deployment/InnoSetup/template/templates
@@ -124,6 +121,15 @@ Thumbs.db
 # Folder config file
 Desktop.ini
 
+# Cake - Uncomment if you are using it
+tools/**
+!tools/packages.config
+build.cakeoverrides
+
 # mstest test results
 TestResults
 .vs/
+.sonarqube/
+.github/
+BundleArtifacts/
+
