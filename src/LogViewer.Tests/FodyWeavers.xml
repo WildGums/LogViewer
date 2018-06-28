@@ -1,7 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Weavers VerifyAssembly="true">
-  <MethodTimer />
-  <Catel />
-  <LoadAssembliesOnStartup />
-  <ModuleInit />
+  <ModuleInit/>
+  <Costura DisableCleanup="true">
+    <IncludeAssemblies>
+    </IncludeAssemblies>
+  </Costura>
+  <MethodTimer/>
+  <Obsolete/>
+  <Catel/>
 </Weavers>
