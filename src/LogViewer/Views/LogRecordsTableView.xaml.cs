@@ -26,7 +26,7 @@ namespace LogViewer.Views
             Loaded += LogRecordsTableView_Loaded;
         }
 
-        void LogRecordsTableView_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void LogRecordsTableView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             //throw new System.NotImplementedException();
         }

@@ -30,7 +30,7 @@ namespace LogViewer.Services
         public ManageUserDataService(IMessageService messageService, OrcFilterService filterService, IFilterSchemeManager filterSchemeManager, 
             IWorkspaceManager workspaceManager, ISaveFileService saveFileService, IProcessService processService, IDirectoryService directoryService,
             IFileService fileService)
-            : base(messageService, saveFileService, processService, directoryService, fileService)
+            : base(saveFileService, processService, directoryService, fileService)
         {
             Argument.IsNotNull(() => messageService);
             Argument.IsNotNull(() => filterService);
