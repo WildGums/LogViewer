@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FileSystemService.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// <copyright file="FileSystemService.cs" company="WildGums">
+//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -172,19 +172,21 @@ namespace LogViewer.Services
             OnDeleted(folder.FullName);
         }
 
+#pragma warning disable AvoidAsyncVoid // Avoid async void
         private async void OnRenamed(string newName, string oldName)
+#pragma warning restore AvoidAsyncVoid // Avoid async void
         {
             Argument.IsNotNullOrEmpty(() => oldName);
             Argument.IsNotNullOrEmpty(() => newName);
 
             if (newName.IsFile())
             {
-                await RenameFile(oldName, newName);
+                await RenameFileAsync(oldName, newName);
             }
 
             if (newName.IsDirectory())
             {
-                await RenameFolder(oldName, newName);
+                await RenameFolderAsync(oldName, newName);
             }
 
             _filterService.ApplyFilesFilter();
@@ -270,7 +272,7 @@ namespace LogViewer.Services
             return fileNode;
         }
 
-        private async Task RenameFolder(string oldName, string newName)
+        private async Task RenameFolderAsync(string oldName, string newName)
         {
             Argument.IsNotNullOrEmpty(() => oldName);
             Argument.IsNotNullOrEmpty(() => newName);
@@ -314,7 +316,7 @@ namespace LogViewer.Services
             folder.Directories.Clear();
         }
 
-        private async Task RenameFile(string oldName, string newName)
+        private async Task RenameFileAsync(string oldName, string newName)
         {
             Argument.IsNotNullOrEmpty(() => oldName);
             Argument.IsNotNullOrEmpty(() => newName);

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SettingsViewModel.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// <copyright file="SettingsViewModel.cs" company="WildGums">
+//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -44,9 +44,9 @@ namespace LogViewer.ViewModels
             _logTableConfigurationService = logTableConfigurationService;
 
             OpenApplicationDataDirectory = new Command(OnOpenApplicationDataDirectoryExecute);
-            BackupUserData = new Command(OnBackupUserDataExecute);
-            ResetFilters = new Command(OnResetFiltersExecute);
-            ResetWorkspaces = new Command(OnResetWorkspacesExecute);
+            BackupUserData = new TaskCommand(OnBackupUserDataExecuteAsync);
+            ResetFilters = new TaskCommand(OnResetFiltersExecuteAsync);
+            ResetWorkspaces = new TaskCommand(OnResetWorkspacesExecuteAsync);
 
             Title = "Settings";
         }
@@ -63,14 +63,14 @@ namespace LogViewer.ViewModels
         #endregion
 
         #region Methods
-        protected override async Task Initialize()
+        protected override async Task InitializeAsync()
         {
-            await base.Initialize();
+            await base.InitializeAsync();
 
             var workspace = _workspaceManager.Workspace;
             EnableTooltips = workspace.GetWorkspaceValue(Settings.Workspace.General.EnableTooltips, Settings.Workspace.General.EnableTooltipsDefaultValue);
 
-            EnableAnalytics = _configurationService.GetValue<bool>(Settings.Application.General.EnableAnalytics);
+            EnableAnalytics = _configurationService.GetRoamingValue<bool>(Settings.Application.General.EnableAnalytics);
 
             IsUpdateSystemAvailable = _updateService.IsUpdateSystemAvailable;
             CheckForUpdates = _updateService.CheckForUpdates;
@@ -80,51 +80,51 @@ namespace LogViewer.ViewModels
             IsTimestampVisible = _logTableConfigurationService.GetIsTimestampVisibile();
         }
 
-        protected override async Task<bool> Save()
+        protected override async Task<bool> SaveAsync()
         {
             var workspace = _workspaceManager.Workspace;
             workspace.SetWorkspaceValue(Settings.Workspace.General.EnableTooltips, EnableTooltips);
 
-            await _workspaceManager.StoreAndSave();
+            await _workspaceManager.StoreAndSaveAsync();
 
-            _configurationService.SetValue(Settings.Application.General.EnableAnalytics, EnableAnalytics);
+            _configurationService.SetRoamingValue(Settings.Application.General.EnableAnalytics, EnableAnalytics);
 
             _updateService.CheckForUpdates = CheckForUpdates;
             _updateService.CurrentChannel = UpdateChannel;
 
             _logTableConfigurationService.SetIsTimestampVisibile(IsTimestampVisible);
 
-            return await base.Save();
+            return await base.SaveAsync();
         }
         #endregion
 
         #region Commands
         public Command OpenApplicationDataDirectory { get; private set; }
 
-        private async void OnOpenApplicationDataDirectoryExecute()
+        private void OnOpenApplicationDataDirectoryExecute()
         {
-            await _manageUserDataService.OpenApplicationDataDirectory();
+            _manageUserDataService.OpenApplicationDataDirectory();
         }
 
-        public Command BackupUserData { get; private set; }
+        public TaskCommand BackupUserData { get; private set; }
 
-        private async void OnBackupUserDataExecute()
+        private async Task OnBackupUserDataExecuteAsync()
         {
-            await _manageUserDataService.BackupUserData();
+            await _manageUserDataService.BackupUserDataAsync();
         }
 
-        public Command ResetFilters { get; private set; }
+        public TaskCommand ResetFilters { get; private set; }
 
-        private async void OnResetFiltersExecute()
+        private async Task OnResetFiltersExecuteAsync()
         {
-            await _manageUserDataService.ResetFilters();
+            await _manageUserDataService.ResetFiltersAsync();
         }
 
-        public Command ResetWorkspaces { get; private set; }
+        public TaskCommand ResetWorkspaces { get; private set; }
 
-        private async void OnResetWorkspacesExecute()
+        private async Task OnResetWorkspacesExecuteAsync()
         {
-            await _manageUserDataService.ResetWorkspaces();
+            await _manageUserDataService.ResetWorkspacesAsync();
         }
         #endregion
     }

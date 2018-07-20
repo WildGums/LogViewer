@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RibbonViewModel.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
+// <copyright file="RibbonViewModel.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -56,16 +56,10 @@ namespace LogViewer.ViewModels
             _pleaseWaitService = pleaseWaitService;
             _filterService = filterService;
 
-            SaveWorkspace = new Command(OnSaveWorkspaceExecute, OnSaveWorkspaceCanExecute);
-            CreateWorkspace = new Command(OnCreateWorkspaceExecute);
+            SaveWorkspace = new TaskCommand(OnSaveWorkspaceExecuteAsync, OnSaveWorkspaceCanExecute);
+            CreateWorkspace = new TaskCommand(OnCreateWorkspaceExecuteAsync);
 
-            ShowSettings = new Command(OnShowSettingsExecute);
-            ShowKeyboardMappings = new Command(OnShowKeyboardMappingsExecute);
-
-            Exit = new Command(OnExitExecute);
-
-            commandManager.RegisterCommand(Commands.Settings.General, ShowSettings, this);
-            commandManager.RegisterCommand(Commands.File.Exit, Exit, this);
+            ShowKeyboardMappings = new TaskCommand(OnShowKeyboardMappingsExecuteAsync);
 
             Title = AssemblyHelper.GetEntryAssembly().Title();
         }
@@ -90,7 +84,7 @@ namespace LogViewer.ViewModels
         #endregion
 
         #region Commands
-        public Command SaveWorkspace { get; private set; }
+        public TaskCommand SaveWorkspace { get; private set; }
 
         private bool OnSaveWorkspaceCanExecute()
         {
@@ -108,45 +102,31 @@ namespace LogViewer.ViewModels
             return true;
         }
 
-        private async void OnSaveWorkspaceExecute()
+        private Task OnSaveWorkspaceExecuteAsync()
         {
-            await _workspaceManager.StoreAndSave();
+            return _workspaceManager.StoreAndSaveAsync();
         }
 
-        public Command CreateWorkspace { get; private set; }
+        public TaskCommand CreateWorkspace { get; private set; }
 
-        private async void OnCreateWorkspaceExecute()
+        private async Task OnCreateWorkspaceExecuteAsync()
         {
             var workspace = new Workspace();
 
-            if (_uiVisualizerService.ShowDialog<WorkspaceViewModel>(workspace) ?? false)
+            if (await _uiVisualizerService.ShowDialogAsync<WorkspaceViewModel>(workspace) ?? false)
             {
-                _workspaceManager.Add(workspace, true);
-
-                await _workspaceManager.StoreAndSave();
+                await _workspaceManager.AddAsync(workspace, true);
+                await _workspaceManager.StoreAndSaveAsync();
             }
         }
 
-        public Command ShowSettings { get; private set; }
+        public TaskCommand ShowKeyboardMappings { get; private set; }
 
-        private async void OnShowSettingsExecute()
+        private async Task OnShowKeyboardMappingsExecuteAsync()
         {
-            _uiVisualizerService.ShowDialog<SettingsViewModel>();
+            await _uiVisualizerService.ShowDialogAsync<KeyboardMappingsCustomizationViewModel>();
         }
 
-        public Command ShowKeyboardMappings { get; private set; }
-
-        private async void OnShowKeyboardMappingsExecute()
-        {
-            _uiVisualizerService.ShowDialog<KeyboardMappingsCustomizationViewModel>();
-        }
-
-        public Command Exit { get; private set; }
-
-        private void OnExitExecute()
-        {
-            _navigationService.CloseApplication();
-        }
         #endregion
 
         #region Methods
@@ -160,9 +140,9 @@ namespace LogViewer.ViewModels
             SearchTemplate.RegularExpression = SearchTemplate.IsEmpty() ? string.Empty : _regexService.ConvertToRegex(SearchTemplate.TemplateString, SearchTemplate.MatchCase, SearchTemplate.MatchWholeWord);
         }
 
-        protected override async Task Initialize()
+        protected override async Task InitializeAsync()
         {
-            await base.Initialize();
+            await base.InitializeAsync();
 
             SearchTemplate.PropertyChanged += OnSearchTemplatePropertyChanged;
 
@@ -171,13 +151,13 @@ namespace LogViewer.ViewModels
             UpdateCurrentWorkspace();
         }
 
-        protected override async Task Close()
+        protected override async Task CloseAsync()
         {
             SearchTemplate.PropertyChanged -= OnSearchTemplatePropertyChanged;
 
             _workspaceManager.WorkspaceUpdated -= OnCurrentWorkspaceChanged;
 
-            await base.Close();
+            await base.CloseAsync();
         }
 
         private void OnCurrentWorkspaceChanged(object sender, WorkspaceUpdatedEventArgs e)

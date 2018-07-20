@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StatusBarViewModel.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
+// <copyright file="StatusBarViewModel.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -42,9 +42,9 @@ namespace LogViewer.ViewModels
         #endregion
 
         #region Methods
-        protected override async Task Initialize()
+        protected override async Task InitializeAsync()
         {
-            await base.Initialize();
+            await base.InitializeAsync();
 
             _configurationService.ConfigurationChanged += OnConfigurationChanged;
             _updateService.UpdateInstalled += OnUpdateInstalled;
@@ -55,12 +55,12 @@ namespace LogViewer.ViewModels
             UpdateAutoUpdateInfo();
         }
 
-        protected override async Task Close()
+        protected override async Task CloseAsync()
         {
             _configurationService.ConfigurationChanged -= OnConfigurationChanged;
             _updateService.UpdateInstalled -= OnUpdateInstalled;
 
-            await base.Close();
+            await base.CloseAsync();
         }
 
         private void OnConfigurationChanged(object sender, ConfigurationChangedEventArgs e)

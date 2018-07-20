@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LogNavigatorViewModel.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// <copyright file="LogNavigatorViewModel.cs" company="WildGums">
+//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -47,8 +47,8 @@ namespace LogViewer.ViewModels
 
             FileBrowser = fileBrowserService.FileBrowserModel;
 
-            AddFolder = new Command(OnAddFolderExecute);
-            DeleteFolder = new Command(OnDeleteFolderExecute, OnDeleteFolderCanExecute);
+            AddFolder = new TaskCommand(OnAddFolderExecuteAsync);
+            DeleteFolder = new TaskCommand(OnDeleteFolderExecuteAsync, OnDeleteFolderCanExecute);
         }
         #endregion
 
@@ -82,35 +82,25 @@ namespace LogViewer.ViewModels
 
             _fileNodeService.ParallelLoadFileNodeBatch(fileNodes);
         }
-
-        protected override async Task Initialize()
-        {
-            await base.Initialize();
-        }
-
-        protected override async Task<bool> Save()
-        {
-            return await base.Save();
-        }
         #endregion
 
         #region Commands
-        public Command AddFolder { get; private set; }
+        public TaskCommand AddFolder { get; private set; }
 
-        private async void OnAddFolderExecute()
+        private async Task OnAddFolderExecuteAsync()
         {
             var rootAppDataDir = _appDataService.GetRootAppDataFolder();
 
             _selectDirectoryService.Title = "Select FolderNode's application data folder";
             _selectDirectoryService.InitialDirectory = rootAppDataDir;
 
-            if (_selectDirectoryService.DetermineDirectory())
+            if (await _selectDirectoryService.DetermineDirectoryAsync())
             {
                 var folder = _selectDirectoryService.DirectoryName;
 
                 if (FileBrowser.RootDirectories.Any(x => string.Equals(x.FullName, folder)))
                 {
-                    await _messageService.ShowError(string.Format("The directory {0} is already added", folder));
+                    await _messageService.ShowErrorAsync(string.Format("The directory {0} is already added", folder));
                     return;
                 }
 
@@ -118,9 +108,9 @@ namespace LogViewer.ViewModels
             }
         }
 
-        public Command DeleteFolder { get; private set; }
+        public TaskCommand DeleteFolder { get; private set; }
 
-        private void OnDeleteFolderExecute()
+        private async Task OnDeleteFolderExecuteAsync()
         {
             var folder = FileBrowser.SelectedItems.SingleOrDefault() as FolderNode;
             if (folder != null)

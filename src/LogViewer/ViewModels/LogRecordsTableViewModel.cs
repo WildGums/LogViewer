@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LogRecordsTableViewModel.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// <copyright file="LogRecordsTableViewModel.cs" company="WildGums">
+//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -39,18 +39,14 @@ namespace LogViewer.ViewModels
 
             _filterService = filterService;
             _logTableService = logTableService;
+
             FileBrowser = fileBrowserService.FileBrowserModel;
             Filter = filterService.Filter;
             LogTable = logTableService.LogTable;
-
-            ResetSearchTemplate = new Command(OnResetSearchTemplateExecute);
-
-            commandManager.RegisterCommand(Commands.Filter.ResetSearchTemplate, ResetSearchTemplate, this);
         }
         #endregion
 
         #region Properties
-        public Command ResetSearchTemplate { get; private set; }
 
         [Model(SupportIEditableObject = false)]
         [Expose("SelectedItems")]
@@ -89,9 +85,11 @@ namespace LogViewer.ViewModels
             _prevSelectedItems = FileBrowser.SelectedItems;
         }
 
+#pragma warning disable AvoidAsyncVoid // Avoid async void
         private async void OnSelectedItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+#pragma warning restore AvoidAsyncVoid // Avoid async void
         {
-            await ApplyFilter();
+            await ApplyFilterAsync();
         }
 
         public void OnEndDateChanged()
@@ -109,30 +107,32 @@ namespace LogViewer.ViewModels
             _filterService.ApplyFilesFilter();
         }
 
+#pragma warning disable AvoidAsyncVoid // Avoid async void
         private async void OnSearchTemplateIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+#pragma warning restore AvoidAsyncVoid // Avoid async void
         {
             if (Filter.UseTextSearch)
             {
-                await ApplyFilter(SearchTemplate);
+                await ApplyFilterAsync(SearchTemplate);
             }
         }
 
+#pragma warning disable AvoidAsyncVoid // Avoid async void
         private async void OnFilterIsDirtyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+#pragma warning restore AvoidAsyncVoid // Avoid async void
         {
-            await ApplyFilter(Filter);
+            await ApplyFilterAsync(Filter);
         }
 
-        private void OnResetSearchTemplateExecute()
-        {
-            SearchTemplate.TemplateString = string.Empty;
-        }
 
+#pragma warning disable AvoidAsyncVoid // Avoid async void
         public async void OnSelectedItemChanged()
+#pragma warning restore AvoidAsyncVoid // Avoid async void
         {
-            await ApplyFilter();
+            await ApplyFilterAsync();
         }
 
-        private async Task ApplyFilter(SimplyClearableModel clearableModel = null)
+        private async Task ApplyFilterAsync(SimplyClearableModel clearableModel = null)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -150,7 +150,7 @@ namespace LogViewer.ViewModels
             });
         }
 
-        protected override async Task Initialize()
+        protected override async Task InitializeAsync()
         {
             Filter.PropertyChanged += OnFilterIsDirtyChanged;
 
@@ -162,24 +162,26 @@ namespace LogViewer.ViewModels
                 .Delay(TimeSpan.FromMilliseconds(500))
                 .Throttle(TimeSpan.FromMilliseconds(500))
                 .ObserveOnDispatcher()
+#pragma warning disable AvoidAsyncVoid // Avoid async void
                 .Subscribe(async e =>
+#pragma warning restore AvoidAsyncVoid // Avoid async void
                 {
                     if (Filter.UseTextSearch)
                     {
-                        await ApplyFilter(SearchTemplate);
+                        await ApplyFilterAsync(SearchTemplate);
                     }
                 });
 
-            await base.Initialize();
+            await base.InitializeAsync();
         }
 
-        protected override async Task Close()
+        protected override async Task CloseAsync()
         {
             Filter.PropertyChanged -= OnFilterIsDirtyChanged;
 
             _applyFilterListener.Dispose();
 
-            await base.Close();
+            await base.CloseAsync();
         }
         #endregion
     }

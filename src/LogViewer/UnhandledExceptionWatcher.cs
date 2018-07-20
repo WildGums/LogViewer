@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UnhandledExceptionWatcher.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// <copyright file="UnhandledExceptionWatcher.cs" company="WildGums">
+//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 namespace LogViewer
@@ -100,7 +100,7 @@ namespace LogViewer
             try
             {
                 var message = string.Format("{0}\n\n The application will be terminated.", exception.Message);
-                _messageService.Show(message, "Fatal Error", MessageButton.YesNo, MessageImage.Error).Wait();                
+                _messageService.ShowAsync(message, "Fatal Error", MessageButton.YesNo, MessageImage.Error).Wait();                
             }
             catch (Exception ex)
             {

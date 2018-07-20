@@ -3,12 +3,22 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                   xmlns:catel="http://catel.codeplex.com"
+                   xmlns:catel="http://schemas.catelproject.com"
                    xmlns:views="clr-namespace:LogViewer.Views"
+                   xmlns:orccontrols="http://schemas.wildgums.com/orc/controls"
                    mc:Ignorable="d" 
                    d:DesignHeight="300" d:DesignWidth="300">
-    
-    <catel:StackGrid>
+
+    <catel:UserControl.Resources>
+        <Style x:Key="VerticalGridSplitterStyle"  TargetType="{x:Type GridSplitter}" >
+            <Setter Property="Width" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Background" Value="LightGray"/>
+        </Style>
+    </catel:UserControl.Resources>
+
+    <orccontrols:StackGrid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="Auto"/>
@@ -16,10 +26,11 @@
         </Grid.ColumnDefinitions>
         
         <views:LogNavigatorView />
-        
-        <GridSplitter Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Center" />
+
+        <GridSplitter Style="{StaticResource VerticalGridSplitterStyle}" />
         
         <views:LogRecordsTableView />
-    </catel:StackGrid>
+    </orccontrols:StackGrid>
     
 </catel:UserControl>
+

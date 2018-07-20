@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SimplyClearableModel.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
+// <copyright file="SimplyClearableModel.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,13 +14,7 @@ namespace LogViewer.Models
         #region Methods
         public void MarkClean()
         {
-            var oldValue = HandlePropertyAndCollectionChanges;
-
-            HandlePropertyAndCollectionChanges = false;
-
             IsDirty = false;
-
-            HandlePropertyAndCollectionChanges = oldValue;
         }
         #endregion
     }

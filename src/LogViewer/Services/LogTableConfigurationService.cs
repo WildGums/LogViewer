@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LogTableConfigurationService.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// <copyright file="LogTableConfigurationService.cs" company="WildGums">
+//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -30,13 +30,13 @@ namespace LogViewer.Services
         #region Methods
         public bool GetIsTimestampVisibile()
         {
-            var stringValue = _configurationService.GetValue(IsTimestampVisibile, IsTimestampVisibileDefaulValue.ToString());
+            var stringValue = _configurationService.GetRoamingValue(IsTimestampVisibile, IsTimestampVisibileDefaulValue.ToString());
             return bool.Parse(stringValue);
         }
 
         public void SetIsTimestampVisibile(bool value)
         {
-            _configurationService.SetValue(IsTimestampVisibile, value.ToString());
+            _configurationService.SetRoamingValue(IsTimestampVisibile, value.ToString());
         }
         #endregion
     }

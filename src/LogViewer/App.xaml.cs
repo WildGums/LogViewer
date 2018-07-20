@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="App.xaml.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
+// <copyright file="App.xaml.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -44,25 +44,27 @@ namespace LogViewer
         #endregion
 
         #region Methods
+#pragma warning disable AvoidAsyncVoid // Avoid async void
         protected override async void OnStartup(StartupEventArgs e)
+#pragma warning restore AvoidAsyncVoid // Avoid async void
         {
 #if DEBUG
             LogManager.AddDebugListener(true);
 #endif
 
-            SquirrelHelper.HandleSquirrelAutomatically();
+            await SquirrelHelper.HandleSquirrelAutomaticallyAsync();
 
             var serviceLocator = ServiceLocator.Default;
             var shellService = serviceLocator.ResolveType<IShellService>();
-            await shellService.CreateWithSplash<ShellWindow>();
+            await shellService.CreateAsync<ShellWindow>();
 
-            var googleAnalyticsService = serviceLocator.ResolveType<IGoogleAnalyticsService>();
+            var analyticsService = serviceLocator.ResolveType<IAnalyticsService>();
 
             _end = DateTime.Now;
             _stopwatch.Stop();
 
 #pragma warning disable 4014
-            googleAnalyticsService.SendTiming(_stopwatch.Elapsed, Analytics.Application.Name, Analytics.Application.StartupTime);
+            analyticsService.SendTimingAsync(_stopwatch.Elapsed, Analytics.Application.Name, Analytics.Application.StartupTime);
 #pragma warning restore 4014
 
             Log.Info("Elapsed startup stopwatch time: {0}", _stopwatch.Elapsed);

@@ -3,12 +3,12 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                   xmlns:catel="http://catel.codeplex.com"
+                   xmlns:catel="http://schemas.catelproject.com"
                    xmlns:fluent="urn:fluent-ribbon"
-                   xmlns:orchestra="https://github.com/orcomp/orchestra"
+                   xmlns:orchestra="http://schemas.wildgums.com/orchestra"
                    xmlns:logViewer="clr-namespace:LogViewer"
                    xmlns:views="clr-namespace:Orc.WorkspaceManagement.Views;assembly=Orc.WorkspaceManagement.Xaml"
-                   xmlns:controls="clr-namespace:Orc.Controls;assembly=Orc.Controls"
+                   xmlns:orccontrols="http://schemas.wildgums.com/orc/controls"
                    xmlns:converters="clr-namespace:Orc.WorkspaceManagement.Converters;assembly=Orc.WorkspaceManagement.Xaml"
                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
@@ -17,19 +17,12 @@
         <Style TargetType="{x:Type Image}">
             <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
         </Style>
-        <Style TargetType="{x:Type controls:DatePickerControl}">
-            <Setter Property="AccentColorBrush" Value="{StaticResource AccentColorBrush}"/>
-            <Setter Property="Margin" Value="3"/>
-            <Setter Property="Height" Value="25"/>
-        </Style>
     </catel:UserControl.Resources>
     
     <fluent:Ribbon x:Name="ribbon"  IsQuickAccessToolBarVisible="False" CanCustomizeRibbon="False" AutomaticStateManagement="False">
         <fluent:Ribbon.Menu>
             <fluent:Backstage Header="File">
-                <fluent:BackstageTabControl>
-                    <fluent:Button Header="Exit" Command="{catel:CommandManagerBinding File.Exit}"/>
-                </fluent:BackstageTabControl>
+                <fluent:BackstageTabControl/>
             </fluent:Backstage>
         </fluent:Ribbon.Menu>
 
@@ -56,12 +49,12 @@
                             </Grid.ColumnDefinitions>
                             
                             <TextBlock Grid.Column="0" Grid.Row="0" Text="Start: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                            <controls:DatePickerControl Grid.Column="1" Grid.Row="0" Value="{Binding StartDate}"
-                                                        IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
+                            <orccontrols:DatePicker Grid.Column="1" Grid.Row="0" Value="{Binding StartDate}"
+                                                 IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
 
                             <TextBlock Grid.Column="0" Grid.Row="1"  Text="End: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                            <controls:DatePickerControl Grid.Column="1" Grid.Row="1" Value="{Binding EndDate}" 
-                                                        IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
+                            <orccontrols:DatePicker Grid.Column="1" Grid.Row="1" Value="{Binding EndDate}" 
+                                                 IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
                         </Grid>
                     </fluent:GalleryPanel>
                     <fluent:ToggleButton x:Name="toggleButton" Header="Enable" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding IsUseDateRange}"/>
@@ -74,20 +67,22 @@
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="30"/>
                             </Grid.RowDefinitions>
-                            
+
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
                                 <TextBlock Text="Find: " VerticalAlignment="Center"/>
-                                <catel:WatermarkTextBox Width="250" Margin="3" Text="{Binding SearchTemplate.TemplateString}">
+                                <orccontrols:WatermarkTextBox Width="250" Margin="3" Text="{Binding SearchTemplate.TemplateString}">
                                     <i:Interaction.Behaviors>
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="300" />
                                     </i:Interaction.Behaviors>
-                                    <catel:WatermarkTextBox.Watermark>
+
+                                    <orccontrols:WatermarkTextBox.Watermark>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Search terms" />
                                         </StackPanel>
-                                    </catel:WatermarkTextBox.Watermark>
-                                </catel:WatermarkTextBox>
+                                    </orccontrols:WatermarkTextBox.Watermark>
+                                </orccontrols:WatermarkTextBox>
                             </StackPanel>
+
                             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
                                 <CheckBox Content="Match case" VerticalAlignment="Center" IsChecked="{Binding Path=SearchTemplate.MatchCase}" 
                                           Visibility="{Binding SearchTemplate.UseFullTextSearch, Converter={catel:BooleanToCollapsingVisibilityConverter}}"/>
@@ -95,10 +90,12 @@
                                           Visibility="{Binding SearchTemplate.UseFullTextSearch, Converter={catel:BooleanToCollapsingVisibilityConverter}}"/>
                             </StackPanel>
                         </Grid>
-                        <fluent:Button Header="Reset" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Eraser}}" Command="{catel:CommandManagerBinding Filter.ResetSearchTemplate}"/>
-                        <fluent:ToggleButton Header="Full Text" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.FileText}}" IsChecked="{Binding Path=SearchTemplate.UseFullTextSearch}" />
-                        <fluent:ToggleButton Header="Filter" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding UseTextSearch}"/>
                     </fluent:GalleryPanel>
+                    <fluent:Button Header="Reset" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Eraser}}" Command="{catel:CommandManagerBinding Filter.ResetSearchTemplate}"/>
+                    <fluent:ToggleButton Header="Full Text" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.FileText}}" IsChecked="{Binding Path=SearchTemplate.UseFullTextSearch}" />
+                    <fluent:ToggleButton Header="Filter" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding UseTextSearch}"/>
+                    <fluent:Button Header="Export Result" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Save}}" Command="{catel:CommandManagerBinding Filter.ExportResult}"/>
+                    <fluent:Button Header="Copy Result to Clipboard" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Copy}}" Command="{catel:CommandManagerBinding Filter.CopyResultToClipboard}"/>
                 </fluent:RibbonGroupBox>
 
                 <!--<fluent:RibbonGroupBox Header="Filter" MinWidth="175">

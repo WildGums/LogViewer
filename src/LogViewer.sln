@@ -1,26 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26020.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4A84B079-FA8C-4EBB-88CE-6B07E2615AF4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{F7BC922D-7358-43E1-9E7E-2309EE431007}"
-	ProjectSection(SolutionItems) = preProject
-		..\lib\repositories.config = ..\lib\repositories.config
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{60829ACC-0690-4BD0-806E-5424AD1A5A3F}"
 	ProjectSection(SolutionItems) = preProject
+		GlobalSuppressions.cs = GlobalSuppressions.cs
 		LogViewer.sln.DotSettings = LogViewer.sln.DotSettings
 		nuget.config = nuget.config
 		Settings.StyleCop = Settings.StyleCop
 		SolutionAssemblyInfo.cs = SolutionAssemblyInfo.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogViewer", "LogViewer\LogViewer.csproj", "{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogViewer", "LogViewer\LogViewer.csproj", "{A396337F-FE94-454E-9BC7-369A5B140FE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogViewer.Tests", "LogViewer.Tests\LogViewer.Tests.csproj", "{990340FE-7134-4917-BCE5-0BC1391418B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogViewer.Tests", "LogViewer.Tests\LogViewer.Tests.csproj", "{990340FE-7134-4917-BCE5-0BC1391418B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,10 +24,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A396337F-FE94-454E-9BC7-369A5B140FE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A396337F-FE94-454E-9BC7-369A5B140FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A396337F-FE94-454E-9BC7-369A5B140FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A396337F-FE94-454E-9BC7-369A5B140FE5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{990340FE-7134-4917-BCE5-0BC1391418B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{990340FE-7134-4917-BCE5-0BC1391418B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{990340FE-7134-4917-BCE5-0BC1391418B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,7 +37,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{0FCF98E8-C9E7-4736-AC26-1D5DD977C2AF} = {4A84B079-FA8C-4EBB-88CE-6B07E2615AF4}
+		{A396337F-FE94-454E-9BC7-369A5B140FE5} = {4A84B079-FA8C-4EBB-88CE-6B07E2615AF4}
 		{990340FE-7134-4917-BCE5-0BC1391418B6} = {4A84B079-FA8C-4EBB-88CE-6B07E2615AF4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {438B5460-302A-4990-88A8-D53C0AF4B2E7}
 	EndGlobalSection
 EndGlobal

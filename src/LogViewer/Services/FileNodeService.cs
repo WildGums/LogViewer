@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FileNodeService.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// <copyright file="FileNodeService.cs" company="WildGums">
+//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -8,6 +8,7 @@
 namespace LogViewer.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -86,7 +87,7 @@ namespace LogViewer.Services
                     var logRecords = fileNode.Records;
                     using (logRecords.SuspendChangeNotifications())
                     {
-                        logRecords.ReplaceRange(fileRecords);
+                        ((ICollection<LogRecord>)logRecords).ReplaceRange(fileRecords);
                     }
                 }, true);
             }

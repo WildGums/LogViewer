@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ManageUserDataService.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// <copyright file="ManageUserDataService.cs" company="WildGums">
+//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,6 +13,7 @@ namespace LogViewer.Services
     using Catel.Logging;
     using Catel.Services;
     using LogViewer.Services;
+    using Orc.FileSystem;
     using Orc.FilterBuilder.Services;
     using Orc.WorkspaceManagement;
     using Orchestra.Services;
@@ -26,8 +27,10 @@ namespace LogViewer.Services
         private readonly IMessageService _messageService;
         private readonly IWorkspaceManager _workspaceManager;
 
-        public ManageUserDataService(IMessageService messageService, OrcFilterService filterService, IFilterSchemeManager filterSchemeManager, IWorkspaceManager workspaceManager, ISaveFileService saveFileService, IProcessService processService)
-            : base(messageService, saveFileService, processService)
+        public ManageUserDataService(IMessageService messageService, OrcFilterService filterService, IFilterSchemeManager filterSchemeManager, 
+            IWorkspaceManager workspaceManager, ISaveFileService saveFileService, IProcessService processService, IDirectoryService directoryService,
+            IFileService fileService)
+            : base(saveFileService, processService, directoryService, fileService)
         {
             Argument.IsNotNull(() => messageService);
             Argument.IsNotNull(() => filterService);
@@ -40,9 +43,9 @@ namespace LogViewer.Services
             _workspaceManager = workspaceManager;
         }
 
-        public async Task<bool> ResetFilters()
+        public async Task<bool> ResetFiltersAsync()
         {
-            if (await _messageService.Show("Resetting filters will delete all your current filters. This action cannot be undone. Are you sure you want to reset the filters?", string.Empty, MessageButton.YesNo) == MessageResult.No)
+            if (await _messageService.ShowAsync("Resetting filters will delete all your current filters. This action cannot be undone. Are you sure you want to reset the filters?", string.Empty, MessageButton.YesNo) == MessageResult.No)
             {
                 return false;
             }
@@ -57,9 +60,9 @@ namespace LogViewer.Services
             return true;
         }
 
-        public async Task<bool> ResetWorkspaces()
+        public async Task<bool> ResetWorkspacesAsync()
         {
-            if (await _messageService.Show("Resetting workspaces will delete all your current workspaces. This action cannot be undone. Are you sure you want to reset the workspaces?", string.Empty, MessageButton.YesNo) == MessageResult.No)
+            if (await _messageService.ShowAsync("Resetting workspaces will delete all your current workspaces. This action cannot be undone. Are you sure you want to reset the workspaces?", string.Empty, MessageButton.YesNo) == MessageResult.No)
             {
                 return false;
             }
@@ -71,14 +74,14 @@ namespace LogViewer.Services
             {
                 if (workspace.CanDelete)
                 {
-                    _workspaceManager.Remove(workspace);
+                    await _workspaceManager.RemoveAsync(workspace);
                 }
             }
 
             var newWorkspace = _workspaceManager.Workspaces.FirstOrDefault();
             if (newWorkspace != null)
             {
-                _workspaceManager.Workspace = newWorkspace;
+                await _workspaceManager.SetWorkspaceAsync(newWorkspace);
             }
 
             return true;

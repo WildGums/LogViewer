@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FileBrowserConfigurationService.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// <copyright file="FileBrowserConfigurationService.cs" company="WildGums">
+//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -64,7 +64,7 @@ namespace LogViewer.Services
 
         public IEnumerable<string> LoadFolders()
         {
-            var value = _configurationService.GetValue(BrowserRootsKey, string.Empty);
+            var value = _configurationService.GetRoamingValue(BrowserRootsKey, string.Empty);
 
             string[] folders;
             if (string.IsNullOrEmpty(value))
@@ -90,7 +90,7 @@ namespace LogViewer.Services
             Argument.IsNotNull(() => folders);
 
             var foldersValue = string.Join(RootsSeparator, folders);
-            _configurationService.SetValue(BrowserRootsKey, foldersValue);
+            _configurationService.SetRoamingValue(BrowserRootsKey, foldersValue);
         }
         #endregion
     }

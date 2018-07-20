@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SettingsWindow.xaml.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// <copyright file="SettingsWindow.xaml.cs" company="WildGums">
+//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ namespace LogViewer.Views
     /// <summary>
     /// Interaction logic for SettingsWindow.xaml.
     /// </summary>
-    partial class SettingsWindow : DataWindow
+    public partial class SettingsWindow : DataWindow
     {
         #region Constructors
         /// <summary>
@@ -37,7 +37,7 @@ namespace LogViewer.Views
         {
             InitializeComponent();
 
-            this.TrackViewForAnalytics();
+            this.TrackViewForAnalyticsAsync();
         }
         #endregion
     }

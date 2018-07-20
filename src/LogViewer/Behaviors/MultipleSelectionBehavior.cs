@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MultipleSelectionBehavior.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
+// <copyright file="MultipleSelectionBehavior.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ namespace LogViewer.Behaviors
             return (FastObservableCollection<NavigationNode>)element.GetValue(SelectedItemsProperty);
         }
 
-        public static void SetSelectedItems(MultipleSelectionBehavior element, IList value)
+        public static void SetSelectedItems(MultipleSelectionBehavior element, FastObservableCollection<NavigationNode> value)
         {
             element.SetValue(SelectedItemsProperty, value);
         }
@@ -57,7 +57,10 @@ namespace LogViewer.Behaviors
             set { SetValue(SelectedItemsProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof(FastObservableCollection<NavigationNode>), typeof(MultipleSelectionBehavior), new PropertyMetadata(new FastObservableCollection<NavigationNode>()));
+        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof(FastObservableCollection<NavigationNode>),
+#pragma warning disable WPF0016 // Default value is shared reference type.
+            typeof(MultipleSelectionBehavior), new PropertyMetadata(new FastObservableCollection<NavigationNode>()));
+#pragma warning restore WPF0016 // Default value is shared reference type.
         #endregion
 
         #region Methods
@@ -159,7 +162,7 @@ namespace LogViewer.Behaviors
         {
             using (selectedItems.SuspendChangeNotifications())
             {
-                SelectedItems.ReplaceRange(navigationNodes);
+                ((ICollection<NavigationNode>)SelectedItems).ReplaceRange(navigationNodes);
             }
         }
 

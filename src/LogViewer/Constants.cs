@@ -1,13 +1,15 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Constants.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2014 Wild Gums. All rights reserved.
+// <copyright file="Constants.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 
 namespace LogViewer
 {
+    using System.Windows.Input;
     using Orc.Squirrel;
+    using InputGesture = Catel.Windows.Input.InputGesture;
 
     public static class Analytics
     {
@@ -77,21 +79,31 @@ namespace LogViewer
         public static class File
         {
             public const string Exit = "File.Exit";
+            public static readonly InputGesture ExitInputGesture = new InputGesture(Key.F4, ModifierKeys.Alt);
         }
 
         public static class Filter
         {
             public const string ResetSearchTemplate = "Filter.ResetSearchTemplate";
+            public static readonly InputGesture ResetSearchTemplateInputGesture = null;
+
+            public const string ExportResult = "Filter.ExportResult";
+            public static readonly InputGesture ExportResultInputGesture = null;
+
+            public const string CopyResultToClipboard = "Filter.CopyResultToClipboard";
+            public static readonly InputGesture CopyResultToClipboardInputGesture = null;
         }
 
         public static class Settings
         {
             public const string General = "Settings.General";
+            public static readonly InputGesture GeneralInputGesture = new InputGesture(Key.S, ModifierKeys.Alt | ModifierKeys.Control);
         }
 
         public static class Help
         {
             public const string About = "Help.About";
+            public static readonly InputGesture AboutInputGesture = new InputGesture(Key.F1);
         }
     }
 

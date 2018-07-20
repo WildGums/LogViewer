@@ -1,12 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WorkspaceInitializer.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// <copyright file="WorkspaceInitializer.cs" company="WildGums">
+//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 
 namespace LogViewer
 {
+    using System.Threading.Tasks;
     using Catel;
     using Catel.IoC;
     using Orc.WorkspaceManagement;
@@ -14,7 +15,7 @@ namespace LogViewer
     public class WorkspaceInitializer : IWorkspaceInitializer
     {
         #region Methods
-        public void Initialize(IWorkspace workspace)
+        public async Task InitializeAsync(IWorkspace workspace)
         {
             Argument.IsNotNull(() => workspace);
 
@@ -24,7 +25,7 @@ namespace LogViewer
 
             foreach (var provider in workspaceManager.Providers)
             {
-                provider.ProvideInformation(workspace);
+                await provider.ProvideInformationAsync(workspace);
             }
         }
         #endregion
