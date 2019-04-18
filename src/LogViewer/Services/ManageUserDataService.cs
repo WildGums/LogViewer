@@ -55,7 +55,7 @@ namespace LogViewer.Services
             _filterService.SelectedFilter = null;
 
             _filterSchemeManager.FilterSchemes.Schemes.Clear();
-            _filterSchemeManager.Save();
+            await _filterSchemeManager.SaveAsync();
 
             return true;
         }
