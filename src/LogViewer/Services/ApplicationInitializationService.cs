@@ -181,7 +181,7 @@ namespace LogViewer.Services
             Log.Info("Initializing filters");
 
             var filterSchemeManager = _serviceLocator.ResolveType<IFilterSchemeManager>();
-            filterSchemeManager.Load();
+            await filterSchemeManager.LoadAsync();
         }
 
         [Time]

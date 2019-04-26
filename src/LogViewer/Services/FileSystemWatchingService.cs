@@ -92,23 +92,23 @@ namespace LogViewer.Services
         {
             if (e.ChangeType.HasFlag(WatcherChangeTypes.Created))
             {
-                ContentChanged.SafeInvoke(this, new FolderNodeEventArgs(WatcherChangeTypes.Created, null, e.FullPath));
+                ContentChanged?.Invoke(this, new FolderNodeEventArgs(WatcherChangeTypes.Created, null, e.FullPath));
             }
 
             if (e.ChangeType.HasFlag(WatcherChangeTypes.Deleted))
             {
-                ContentChanged.SafeInvoke(this, new FolderNodeEventArgs(WatcherChangeTypes.Deleted, e.FullPath, null));
+                ContentChanged?.Invoke(this, new FolderNodeEventArgs(WatcherChangeTypes.Deleted, e.FullPath, null));
             }
 
             if (e.ChangeType.HasFlag(WatcherChangeTypes.Changed))
             {
-                ContentChanged.SafeInvoke(this, new FolderNodeEventArgs(WatcherChangeTypes.Changed, e.FullPath, e.FullPath));
+                ContentChanged?.Invoke(this, new FolderNodeEventArgs(WatcherChangeTypes.Changed, e.FullPath, e.FullPath));
             }
         }
 
         private void OnRenamed(object sender, RenamedEventArgs e)
         {
-            ContentChanged.SafeInvoke(this, new FolderNodeEventArgs(WatcherChangeTypes.Renamed, e.OldFullPath, e.FullPath));
+            ContentChanged?.Invoke(this, new FolderNodeEventArgs(WatcherChangeTypes.Renamed, e.OldFullPath, e.FullPath));
         }
         #endregion
     }
