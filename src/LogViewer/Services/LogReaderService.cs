@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LogReaderService.cs" company="WildGums">
 //   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
@@ -16,6 +16,7 @@ namespace LogViewer.Services
     using Catel.Logging;
     using MethodTimer;
     using Models;
+    using Orc.FileSystem;
 
     public class LogReaderService : ILogReaderService
     {
@@ -27,12 +28,26 @@ namespace LogViewer.Services
         private static readonly Regex ThreadIdPattern = new Regex(@"^\[[0-9\.]+\]", RegexOptions.Compiled);
         private static readonly Regex LogEventPattern = new Regex(@"^\[[a-zA-Z]+\]", RegexOptions.Compiled);
         private static readonly Regex TargetTypePattern = new Regex(@"^\[[a-zA-Z\.\`\d]+\]", RegexOptions.Compiled);
+
+        private readonly IFileService _fileService;
+
+        #endregion
+
+        #region Constructors
+
+        public LogReaderService(IFileService fileService)
+        {
+            Argument.IsNotNull(() => fileService);
+
+            _fileService = fileService;
+        }
+
         #endregion
 
         #region Methods
 
         #region ILogReaderService Members
-        
+
         public IEnumerable<LogRecord> LoadRecordsFromFile(FileNode fileNode)
         {
             Argument.IsNotNull(() => fileNode);
@@ -43,7 +58,7 @@ namespace LogViewer.Services
 
             try
             {
-                stream = new FileStream(fileNode.FileInfo.FullName, FileMode.Open, FileAccess.Read);
+                stream = _fileService.Open(fileNode.FileInfo.FullName, FileMode.Open, FileAccess.Read);
             }
             catch (IOException ex)
             {
