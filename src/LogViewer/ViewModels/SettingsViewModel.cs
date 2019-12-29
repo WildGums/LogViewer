@@ -14,6 +14,7 @@ namespace LogViewer.ViewModels
     using Catel.MVVM;
     using Orc.Squirrel;
     using Orc.WorkspaceManagement;
+    using Orchestra.Services;
     using Services;
     using Settings = LogViewer.Settings;
 
@@ -22,31 +23,29 @@ namespace LogViewer.ViewModels
         #region Fields
         private readonly IConfigurationService _configurationService;
         private readonly ILogTableConfigurationService _logTableConfigurationService;
-        private readonly IManageUserDataService _manageUserDataService;
+        private readonly IManageAppDataService _manageAppDataService;
         private readonly IUpdateService _updateService;
         private readonly IWorkspaceManager _workspaceManager;
         #endregion
 
         #region Constructors
-        public SettingsViewModel(IConfigurationService configurationService, IWorkspaceManager workspaceManager, IManageUserDataService manageUserDataService, IUpdateService updateService,
+        public SettingsViewModel(IConfigurationService configurationService, IWorkspaceManager workspaceManager, IManageAppDataService manageAppDataService, IUpdateService updateService,
             ILogTableConfigurationService logTableConfigurationService)
         {
             Argument.IsNotNull(() => configurationService);
             Argument.IsNotNull(() => workspaceManager);
-            Argument.IsNotNull(() => manageUserDataService);
+            Argument.IsNotNull(() => manageAppDataService);
             Argument.IsNotNull(() => updateService);
             Argument.IsNotNull(() => logTableConfigurationService);
 
             _configurationService = configurationService;
             _workspaceManager = workspaceManager;
-            _manageUserDataService = manageUserDataService;
+            _manageAppDataService = manageAppDataService;
             _updateService = updateService;
             _logTableConfigurationService = logTableConfigurationService;
 
             OpenApplicationDataDirectory = new Command(OnOpenApplicationDataDirectoryExecute);
             BackupUserData = new TaskCommand(OnBackupUserDataExecuteAsync);
-            ResetFilters = new TaskCommand(OnResetFiltersExecuteAsync);
-            ResetWorkspaces = new TaskCommand(OnResetWorkspacesExecuteAsync);
 
             Title = "Settings";
         }
@@ -103,28 +102,14 @@ namespace LogViewer.ViewModels
 
         private void OnOpenApplicationDataDirectoryExecute()
         {
-            _manageUserDataService.OpenApplicationDataDirectory();
+            _manageAppDataService.OpenApplicationDataDirectory(Catel.IO.ApplicationDataTarget.UserRoaming);
         }
 
         public TaskCommand BackupUserData { get; private set; }
 
         private async Task OnBackupUserDataExecuteAsync()
         {
-            await _manageUserDataService.BackupUserDataAsync();
-        }
-
-        public TaskCommand ResetFilters { get; private set; }
-
-        private async Task OnResetFiltersExecuteAsync()
-        {
-            await _manageUserDataService.ResetFiltersAsync();
-        }
-
-        public TaskCommand ResetWorkspaces { get; private set; }
-
-        private async Task OnResetWorkspacesExecuteAsync()
-        {
-            await _manageUserDataService.ResetWorkspacesAsync();
+            await _manageAppDataService.BackupUserDataAsync(Catel.IO.ApplicationDataTarget.UserRoaming);
         }
         #endregion
     }

@@ -94,8 +94,6 @@ namespace LogViewer.Services
         {
             var serviceLocator = ServiceLocator.Default;
 
-            serviceLocator.RegisterType<IManageUserDataService, ManageUserDataService>();
-
             serviceLocator.RegisterType<IConfigurationInitializationService, ConfigurationInitializationService>();
             serviceLocator.RegisterType<IFilterCustomizationService, FilterCustomizationService>();
 
@@ -144,11 +142,9 @@ namespace LogViewer.Services
         [Time]
         private void InitializeFonts()
         {
-            FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/LogViewer;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
-
-            FontImage.DefaultFontFamily = "FontAwesome";
-
-            FontImage.DefaultBrush = new SolidColorBrush(Color.FromArgb(255, 87, 87, 87));
+            Orc.Controls.FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/LogViewer;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
+            Orc.Controls.FontImage.DefaultFontFamily = "FontAwesome";
+            Orc.Controls.FontImage.DefaultBrush = new SolidColorBrush(Color.FromArgb(255, 87, 87, 87));
         }
 
         [Time]

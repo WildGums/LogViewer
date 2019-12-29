@@ -89,14 +89,10 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <Button Content="Open data directory..." Command="{Binding OpenApplicationDataDirectory}" />
                 <Button Content="Create user data backup" Command="{Binding BackupUserData}" />
-                <Button Content="Reset filters" Command="{Binding ResetFilters}" />
-                <Button Content="Reset workspaces" Command="{Binding ResetWorkspaces}" />
             </orccontrols:StackGrid>
         </GroupBox>
     </Grid>

@@ -9,7 +9,7 @@ namespace LogViewer
 {
     using Catel;
     using Catel.IO;
-
+    using Catel.Services;
     using Orchestra.Services;
 
     public static class AppDataServiceExtensions
@@ -19,7 +19,7 @@ namespace LogViewer
         {
             Argument.IsNotNull(() => appDataService);
 
-            var currentCompanyDir = Path.GetParentDirectory(appDataService.ApplicationDataDirectory);
+            var currentCompanyDir = Path.GetParentDirectory(appDataService.GetApplicationDataDirectory(ApplicationDataTarget.UserRoaming));
             return Path.GetParentDirectory(currentCompanyDir);
         }
         #endregion
