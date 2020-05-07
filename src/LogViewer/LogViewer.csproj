@@ -37,7 +37,7 @@
     <PackageReference Include="ModuleInit.Fody" Version="2.1.0" PrivateAssets="all" />
     <PackageReference Include="Obsolete.Fody" Version="5.2.1" PrivateAssets="all" />
     <PackageReference Include="Orc.Analytics" Version="3.2.2" />
-    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="3.2.0" />
+    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="3.3.0" />
     <PackageReference Include="Orc.Squirrel.Xaml" Version="3.2.0" />
     <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="3.2.2" />
     <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="5.3.1" />
