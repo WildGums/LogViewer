@@ -91,12 +91,15 @@ namespace LogViewer.ViewModels
         {
             var rootAppDataDir = _appDataService.GetRootAppDataFolder();
 
-            _selectDirectoryService.Title = "Select FolderNode's application data folder";
-            _selectDirectoryService.InitialDirectory = rootAppDataDir;
-
-            if (await _selectDirectoryService.DetermineDirectoryAsync())
+            var result = await _selectDirectoryService.DetermineDirectoryAsync(new DetermineDirectoryContext
             {
-                var folder = _selectDirectoryService.DirectoryName;
+                Title = "Select FolderNode's application data folder",
+                InitialDirectory = rootAppDataDir
+            });
+
+            if (result.Result)
+            {
+                var folder = result.DirectoryName;
 
                 if (FileBrowser.RootDirectories.Any(x => string.Equals(x.FullName, folder)))
                 {

@@ -57,7 +57,7 @@ namespace LogViewer.Behaviors
             set { SetValue(SelectedItemsProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof(FastObservableCollection<NavigationNode>),
+        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached(nameof(SelectedItems), typeof(FastObservableCollection<NavigationNode>),
 #pragma warning disable WPF0016 // Default value is shared reference type.
             typeof(MultipleSelectionBehavior), new PropertyMetadata(new FastObservableCollection<NavigationNode>()));
 #pragma warning restore WPF0016 // Default value is shared reference type.

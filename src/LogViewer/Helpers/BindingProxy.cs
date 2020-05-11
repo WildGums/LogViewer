@@ -24,6 +24,6 @@ namespace LogViewer
             set { SetValue(DataProperty, value); }
         }
 
-        public static readonly DependencyProperty DataProperty = DependencyProperty.Register("Data", typeof(object), typeof(BindingProxy));
+        public static readonly DependencyProperty DataProperty = DependencyProperty.Register(nameof(Data), typeof(object), typeof(BindingProxy));
     }
 }

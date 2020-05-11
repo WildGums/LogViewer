@@ -33,7 +33,7 @@ namespace LogViewer.Controls
             set { SetValue(RegularExpressionProperty, value); }
         }
 
-        public static readonly DependencyProperty RegularExpressionProperty = DependencyProperty.Register("RegularExpression", typeof(string), typeof(HighlightableTextBlock),
+        public static readonly DependencyProperty RegularExpressionProperty = DependencyProperty.Register(nameof(RegularExpression), typeof(string), typeof(HighlightableTextBlock),
 #pragma warning disable AvoidAsyncVoid // Avoid async void
             new PropertyMetadata(string.Empty, async (sender, e) => await ((HighlightableTextBlock)sender).UpdateHighlightingAsync()));
 #pragma warning restore AvoidAsyncVoid // Avoid async void
@@ -44,7 +44,7 @@ namespace LogViewer.Controls
             set { SetValue(HighlightableTextProperty, value); }
         }
 
-        public static readonly DependencyProperty HighlightableTextProperty = DependencyProperty.Register("HighlightableText", typeof(string), typeof(HighlightableTextBlock),
+        public static readonly DependencyProperty HighlightableTextProperty = DependencyProperty.Register(nameof(HighlightableText), typeof(string), typeof(HighlightableTextBlock),
 #pragma warning disable AvoidAsyncVoid // Avoid async void
             new PropertyMetadata(async (sender, e) => await ((HighlightableTextBlock)sender).UpdateHighlightingAsync()));
 #pragma warning restore AvoidAsyncVoid // Avoid async void
@@ -55,7 +55,7 @@ namespace LogViewer.Controls
             set { SetValue(HighlightForegroundProperty, value); }
         }
 
-        public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register("HighlightForeground", typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Black));
+        public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register(nameof(HighlightForeground), typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Black));
 
         public Brush HighlightBackground
         {
@@ -63,7 +63,7 @@ namespace LogViewer.Controls
             set { SetValue(HighlightBackgroundProperty, value); }
         }
 
-        public static readonly DependencyProperty HighlightBackgroundProperty = DependencyProperty.Register("HighlightBackground", typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Yellow));
+        public static readonly DependencyProperty HighlightBackgroundProperty = DependencyProperty.Register(nameof(HighlightBackground), typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Yellow));
 
 
         private async Task UpdateHighlightingAsync()
