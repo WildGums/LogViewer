@@ -23,7 +23,7 @@ namespace LogViewer.Services
     using MethodTimer;
     using Models;
     using Orc.Analytics;
-    using Orc.FilterBuilder.Services;
+    using Orc.FilterBuilder;
     using Orc.Squirrel;
     using Orc.WorkspaceManagement;
     using Orchestra.Markup;
@@ -142,9 +142,9 @@ namespace LogViewer.Services
         [Time]
         private void InitializeFonts()
         {
-            Orc.Controls.FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/LogViewer;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
-            Orc.Controls.FontImage.DefaultFontFamily = "FontAwesome";
-            Orc.Controls.FontImage.DefaultBrush = new SolidColorBrush(Color.FromArgb(255, 87, 87, 87));
+            Orc.Theming.FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/LogViewer;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
+            Orc.Theming.FontImage.DefaultFontFamily = "FontAwesome";
+            Orc.Theming.FontImage.DefaultBrush = new SolidColorBrush(Color.FromArgb(255, 87, 87, 87));
         }
 
         [Time]
