@@ -48,7 +48,7 @@
     <PackageReference Include="Obsolete.Fody" Version="5.2.1" PrivateAssets="all">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Orc.Analytics" Version="4.0.0-alpha0072" />
+    <PackageReference Include="Orc.Analytics" Version="4.0.1" />
     <PackageReference Include="Orc.FilterBuilder.Xaml" Version="4.0.0" />
     <PackageReference Include="Orc.Squirrel.Xaml" Version="4.0.0-alpha0146" />
     <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="4.0.0" />
