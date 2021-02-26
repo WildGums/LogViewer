@@ -31,6 +31,9 @@ namespace LogViewer
             {
                 public const string EnableAnalytics = "General.EnableAnalytics";
                 public const bool EnableAnalyticsDefaultValue = true;
+
+                public const string ThemeBaseColor = "General.ThemeBaseColor";
+                public const string ThemeBaseColorDefaultValue = "Light";
             }
 
             public static class AutomaticUpdates
@@ -39,9 +42,9 @@ namespace LogViewer
 
                 public static readonly UpdateChannel[] AvailableChannels =
                 {
-                    new UpdateChannel("Stable", "http://downloads.sesolutions.net.au/logviewer/stable"),
-                    new UpdateChannel("Beta", "http://downloads.sesolutions.net.au/logviewer/beta"),
-                    new UpdateChannel("Alpha", "http://downloads.sesolutions.net.au/logviewer/alpha")
+                    new UpdateChannel("Stable", "https://downloads.wildgums.com/logviewer/stable"),
+                    new UpdateChannel("Beta", "https://downloads.wildgums.com/logviewer/beta"),
+                    new UpdateChannel("Alpha", "https://downloads.wildgums.com/logviewer/alpha")
                 };
 
                 public static readonly UpdateChannel DefaultChannel = AvailableChannels[0];

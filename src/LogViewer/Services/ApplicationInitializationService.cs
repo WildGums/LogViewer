@@ -20,6 +20,8 @@ namespace LogViewer.Services
     using Catel.Threading;
     using Catel.Windows.Controls;
     using Configuration;
+    using Fluent;
+    using LogViewer.Views;
     using MethodTimer;
     using Models;
     using Orc.Analytics;
@@ -72,6 +74,12 @@ namespace LogViewer.Services
 
         public override async Task InitializeAfterCreatingShellAsync()
         {
+            var shellWindow = System.Windows.Application.Current.MainWindow as RibbonWindow;
+
+            var windowCommands = new WindowCommands();
+            windowCommands.Items.Add(new WindowCommandsView());
+            shellWindow.WindowCommands = windowCommands;
+
             await base.InitializeAfterCreatingShellAsync();
         }
 
@@ -79,15 +87,15 @@ namespace LogViewer.Services
         {
             Log.Info("Initializing commands");
 
-            _commandManager.CreateCommandWithGesture(typeof(Commands.File), "Exit");
+            _commandManager.CreateCommandWithGesture(typeof(Commands.File), nameof(Commands.File.Exit));
 
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), "ResetSearchTemplate");
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), "ExportResult");
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), "CopyResultToClipboard");
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), nameof(Commands.Filter.ResetSearchTemplate));
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), nameof(Commands.Filter.ExportResult));
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), nameof(Commands.Filter.CopyResultToClipboard));
 
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Settings), "General");
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Settings), nameof(Commands.Settings.General));
 
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Help), "About");
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Help), nameof(Commands.Help.About));
         }
 
         private void RegisterTypes()
