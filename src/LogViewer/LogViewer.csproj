@@ -52,7 +52,7 @@
     <PackageReference Include="Orc.FilterBuilder.Xaml" Version="4.3.0" />
     <PackageReference Include="Orc.Squirrel.Xaml" Version="4.1.0" />
     <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="4.1.7" />
-    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="6.5.0" />
+    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="6.6.2" />
     <PackageReference Include="Rx-Linq" Version="2.2.5" />
     <PackageReference Include="Rx-WPF" Version="2.2.5" />
   </ItemGroup>
