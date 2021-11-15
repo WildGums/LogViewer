@@ -70,7 +70,7 @@ namespace LogViewer
         {
             var mainWindow = Application.Current.MainWindow;
 
-            if (mainWindow != null)
+            if (mainWindow is not null)
             {
                 mainWindow.Close();
             }

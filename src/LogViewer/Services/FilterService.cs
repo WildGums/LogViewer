@@ -80,7 +80,7 @@ namespace LogViewer.Services
         public void ApplyLogRecordsFilter(FileNode fileNode = null)
         {
             var selectedNodes = _fileBrowser.SelectedItems.OfType<FileNode>().ToArray();
-            if (fileNode != null && !selectedNodes.Contains(fileNode))
+            if (fileNode is not null && !selectedNodes.Contains(fileNode))
             {
                 return;
             }

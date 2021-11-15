@@ -1,6 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>net5.0-windows</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <SelfContained>true</SelfContained>
@@ -43,9 +43,6 @@
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all" >
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </PackageReference>
-    <PackageReference Include="Obsolete.Fody" Version="5.2.1" PrivateAssets="all">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="Orc.Analytics" Version="4.2.0" />

@@ -77,7 +77,7 @@ namespace LogViewer.Behaviors
         private void OnTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             var node = e.NewValue as NavigationNode;
-            if (node == null)
+            if (node is null)
             {
                 return;
             }
@@ -142,12 +142,12 @@ namespace LogViewer.Behaviors
                     navigationNodes.Add(node);
                 }
 
-                if (StartItem == null && navigationNodes.Contains(node))
+                if (StartItem is null && navigationNodes.Contains(node))
                 {
                     StartItem = node;
                 }
 
-                if (StartItem != null && navigationNodes.Count == 0)
+                if (StartItem is not null && navigationNodes.Count == 0)
                 {
                     StartItem = null;
                 }
@@ -184,7 +184,7 @@ namespace LogViewer.Behaviors
             Argument.IsNotNull(() => node);
 
             var startItem = StartItem;
-            if (startItem != null)
+            if (startItem is not null)
             {
                 if (startItem == node)
                 {

@@ -109,14 +109,14 @@ namespace LogViewer.Services
 
         public void ParallelLoadFileNodeBatch(params FileNode[] fileNodes)
         {
-            if (fileNodes == null || !fileNodes.Any())
+            if (fileNodes is null || !fileNodes.Any())
             {
                 return;
             }
 
             var tasks = fileNodes.Select(node => (Action) (() => LoadFileNode(node))).ToArray();
 
-            if (_loadingFileNodeBatch != null)
+            if (_loadingFileNodeBatch is not null)
             {
                 EndParallelFileNodesLoading();
             }
@@ -139,7 +139,7 @@ namespace LogViewer.Services
 
         private void EndParallelFileNodesLoading()
         {
-            if (_cancellationTokenSource != null)
+            if (_cancellationTokenSource is not null)
             {
                 _cancellationTokenSource.Cancel();
                 if (!_loadingFileNodeBatch.Wait(100))

@@ -201,7 +201,7 @@ namespace LogViewer.Services
             var defaultWorkspace = (from workspace in workspaceManager.Workspaces
                                     where string.Equals(workspace.Title, Workspaces.DefaultWorkspaceName)
                                     select workspace).FirstOrDefault();
-            if (defaultWorkspace != null)
+            if (defaultWorkspace is not null)
             {
                 defaultWorkspace.CanDelete = false;
                 defaultWorkspace.CanEdit = false;

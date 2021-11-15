@@ -62,12 +62,12 @@ namespace LogViewer.ViewModels
         #region Methods
         public void OnSelectedItemsChanged()
         {
-            if (_prevSelectedItems != null)
+            if (_prevSelectedItems is not null)
             {
                 _prevSelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
             }
 
-            if (FileBrowser.SelectedItems != null)
+            if (FileBrowser.SelectedItems is not null)
             {
                 FileBrowser.SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
             }
@@ -116,7 +116,7 @@ namespace LogViewer.ViewModels
         private async Task OnDeleteFolderExecuteAsync()
         {
             var folder = FileBrowser.SelectedItems.SingleOrDefault() as FolderNode;
-            if (folder != null)
+            if (folder is not null)
             {
                 _fileBrowserConfigurationService.RemoveFolder(folder.FullName);
             }
@@ -130,7 +130,7 @@ namespace LogViewer.ViewModels
             }
 
             var folderNode = FileBrowser.SelectedItems.SingleOrDefault() as FolderNode;
-            if (folderNode == null)
+            if (folderNode is null)
             {
                 return false;
             }

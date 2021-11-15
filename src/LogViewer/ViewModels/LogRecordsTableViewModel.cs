@@ -72,12 +72,12 @@ namespace LogViewer.ViewModels
         #region Methods
         public void OnSelectedItemsChanged()
         {
-            if (_prevSelectedItems != null)
+            if (_prevSelectedItems is not null)
             {
                 _prevSelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
             }
 
-            if (FileBrowser.SelectedItems != null)
+            if (FileBrowser.SelectedItems is not null)
             {
                 FileBrowser.SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
             }
@@ -136,14 +136,14 @@ namespace LogViewer.ViewModels
         {
             await Task.Factory.StartNew(() =>
             {
-                if (clearableModel != null && !clearableModel.IsDirty)
+                if (clearableModel is not null && !clearableModel.IsDirty)
                 {
                     return;
                 }
 
                 _filterService.ApplyLogRecordsFilter();
 
-                if (clearableModel != null)
+                if (clearableModel is not null)
                 {
                     clearableModel.MarkClean();
                 }

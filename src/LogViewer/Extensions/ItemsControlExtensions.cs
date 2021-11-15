@@ -29,13 +29,13 @@ namespace LogViewer
                 for (var i = 0; i < item.Items.Count; i++)
                 {
                     var subItem = item.ItemContainerGenerator.ContainerFromIndex(i) as ItemsControl;
-                    if (subItem != null)
+                    if (subItem is not null)
                     {
                         stack.Enqueue(subItem);
                     }
 
                     var targetTyped = subItem as T;
-                    if (targetTyped != null)
+                    if (targetTyped is not null)
                     {
                         yield return targetTyped;
                     }

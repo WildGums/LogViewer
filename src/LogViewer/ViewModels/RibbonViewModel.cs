@@ -89,7 +89,7 @@ namespace LogViewer.ViewModels
         private bool OnSaveWorkspaceCanExecute()
         {
             var workspace = CurrentWorkspace;
-            if (workspace == null)
+            if (workspace is null)
             {
                 return false;
             }

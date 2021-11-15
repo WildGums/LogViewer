@@ -41,7 +41,7 @@ namespace LogViewer
         {
             Argument.IsNotNull(() => message);
 
-            if (!filter.UseTextSearch || filter.SearchTemplate.RegularExpression == null)
+            if (!filter.UseTextSearch || filter.SearchTemplate.RegularExpression is null)
             {
                 return true;
             }

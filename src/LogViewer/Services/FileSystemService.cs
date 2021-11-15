@@ -198,13 +198,13 @@ namespace LogViewer.Services
 
             var folder = GetParentFolderNode(fullPath);
 
-            if (folder == null)
+            if (folder is null)
             {
                 OnCreated(Catel.IO.Path.GetParentDirectory(fullPath));
                 return;
             }
 
-            if (fullPath.IsFile() && folder.Files.FirstOrDefault(x => string.Equals(x.FullName, fullPath)) == null)
+            if (fullPath.IsFile() && folder.Files.FirstOrDefault(x => string.Equals(x.FullName, fullPath)) is null)
             {
                 if (fullPath.IsSupportedFile(_regexFilter))
                 {
@@ -231,7 +231,7 @@ namespace LogViewer.Services
 
             var folder = GetParentFolderNode(fullPath);
 
-            if (folder != null)
+            if (folder is not null)
             {
                 folder.Directories.RemoveByPredicate(x => string.Equals(x.FullName, fullPath));
                 folder.Files.RemoveByPredicate(x => string.Equals(x.FullName, fullPath));                
@@ -264,7 +264,7 @@ namespace LogViewer.Services
             Argument.IsNotNullOrEmpty(() => fullPath);
 
             var fileNode = _navigationNodeCacheService.GetFromCache<FileNode>(fullPath);
-            if (fileNode == null)
+            if (fileNode is null)
             {
                 fileNode = LoadFileFromFileSystem(fullPath);
             }
@@ -278,7 +278,7 @@ namespace LogViewer.Services
             Argument.IsNotNullOrEmpty(() => newName);
 
             var fromCache = _navigationNodeCacheService.GetFromCache<FolderNode>(newName);
-            if (fromCache != null)
+            if (fromCache is not null)
             {
                 return;
             }
@@ -286,7 +286,7 @@ namespace LogViewer.Services
             var folder = GetParentFolderNode(newName);
 
             var oldDir = folder.Directories.FirstOrDefault(x => string.Equals(x.FullName, oldName));
-            if (oldDir == null)
+            if (oldDir is null)
             {
                 return;
             }
@@ -322,21 +322,21 @@ namespace LogViewer.Services
             Argument.IsNotNullOrEmpty(() => newName);
 
             var fromCache = _navigationNodeCacheService.GetFromCache<FileNode>(newName);
-            if (fromCache != null)
+            if (fromCache is not null)
             {
                 return;
             }
 
             var folder = GetParentFolderNode(newName);
 
-            if (folder == null)
+            if (folder is null)
             {
                 OnCreated(Catel.IO.Path.GetParentDirectory(newName));
                 return;
             }
 
             var fileNode = folder.Files.FirstOrDefault(x => string.Equals(x.FullName, oldName));
-            if (fileNode == null)
+            if (fileNode is null)
             {
                 OnCreated(newName);
                 return;

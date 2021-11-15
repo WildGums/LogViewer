@@ -75,11 +75,11 @@ namespace LogViewer.Services
                     string line;
                     LogRecord record = null;
 
-                    while ((line = reader.ReadLine()) != null)
+                    while ((line = reader.ReadLine()) is not null)
                     {
                         if (LogRecordPattern.IsMatch(line))
                         {
-                            if (record != null)
+                            if (record is not null)
                             {
                                 yield return record;
                             }
@@ -107,7 +107,7 @@ namespace LogViewer.Services
                         }
                     }
 
-                    if (record != null)
+                    if (record is not null)
                     {
                         yield return record;
                     }
@@ -151,7 +151,7 @@ namespace LogViewer.Services
         {
             Argument.IsNotNull(() => line);
 
-            if (logRecord == null)
+            if (logRecord is null)
             {
                 return;
             }
