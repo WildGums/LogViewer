@@ -48,7 +48,7 @@
     <PackageReference Include="Orc.Analytics" Version="4.3.0-alpha0245" />
     <PackageReference Include="Orc.FilterBuilder.Xaml" Version="4.4.0-alpha0152" />
     <PackageReference Include="Orc.Squirrel.Xaml" Version="4.2.0-alpha0317" />
-    <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="4.2.0-alpha0413" />
+    <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="4.2.0-alpha0428" />
     <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="6.7.0-alpha0100" />
     <PackageReference Include="Rx-Linq" Version="2.2.5" />
     <PackageReference Include="Rx-WPF" Version="2.2.5" />
