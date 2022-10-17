@@ -1,12 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FolderNode.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Models
+﻿namespace LogViewer.Models
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -16,10 +10,9 @@ namespace LogViewer.Models
 
     public class FolderNode : NavigationNode
     {
-        #region Constructors
         public FolderNode(DirectoryInfo directoryInfo)
         {
-            Argument.IsNotNull(() => directoryInfo);
+            ArgumentNullException.ThrowIfNull(directoryInfo);
 
             Name = directoryInfo.Name;
 
@@ -28,9 +21,7 @@ namespace LogViewer.Models
             Files = new ObservableCollection<FileNode>();
             Directories = new ObservableCollection<FolderNode>();
         }
-        #endregion
-
-        #region Properties
+ 
         public override bool AllowMultiSelection
         {
             get { return false; }
@@ -43,6 +34,5 @@ namespace LogViewer.Models
         {
             get { return new CompositeCollection {new CollectionContainer {Collection = Directories}, new CollectionContainer {Collection = Files}}; }
         }
-        #endregion
     }
 }

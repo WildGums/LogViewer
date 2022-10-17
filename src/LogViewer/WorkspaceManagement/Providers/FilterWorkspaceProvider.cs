@@ -24,7 +24,7 @@ namespace LogViewer
         public FilterWorkspaceProvider(IWorkspaceManager workspaceManager, IFilterService filterService, IServiceLocator serviceLocator)
             : base(workspaceManager, serviceLocator)
         {
-            Argument.IsNotNull(() => filterService);
+            ArgumentNullException.ThrowIfNull(filterService);
 
             _filterService = filterService;
         }
@@ -32,7 +32,7 @@ namespace LogViewer
 
         public override async Task ProvideInformationAsync(IWorkspace workspace)
         {
-            Argument.IsNotNull(() => workspace);
+            ArgumentNullException.ThrowIfNull(workspace);
 
             workspace.SetWorkspaceValue(Settings.Workspace.Filter.ShowDebug, _filterService.Filter.ShowDebug);
             workspace.SetWorkspaceValue(Settings.Workspace.Filter.ShowError, _filterService.Filter.ShowError);
@@ -46,7 +46,7 @@ namespace LogViewer
 
         public override async Task ApplyWorkspaceAsync(IWorkspace workspace)
         {
-            Argument.IsNotNull(() => workspace);
+            ArgumentNullException.ThrowIfNull(workspace);
 
             _filterService.Filter.ShowDebug = workspace.GetWorkspaceValue(Settings.Workspace.Filter.ShowDebug, Settings.Workspace.Filter.ShowDebugDefaultValue);
             _filterService.Filter.ShowError = workspace.GetWorkspaceValue(Settings.Workspace.Filter.ShowError, Settings.Workspace.Filter.ShowErrorDefaultValue);

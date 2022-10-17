@@ -18,7 +18,7 @@ namespace LogViewer.Models
         #region Constructors
         public FileNode(FileInfo fileInfo)
         {
-            Argument.IsNotNull(() => fileInfo);
+            ArgumentNullException.ThrowIfNull(fileInfo);
 
             FileInfo = fileInfo;
             Name = fileInfo.Name;

@@ -37,7 +37,7 @@ namespace LogViewer.Services
 
         public LogReaderService(IFileService fileService)
         {
-            Argument.IsNotNull(() => fileService);
+            ArgumentNullException.ThrowIfNull(fileService);
 
             _fileService = fileService;
         }
@@ -50,7 +50,7 @@ namespace LogViewer.Services
 
         public IEnumerable<LogRecord> LoadRecordsFromFile(FileNode fileNode)
         {
-            Argument.IsNotNull(() => fileNode);
+            ArgumentNullException.ThrowIfNull(fileNode);
 
             FileStream stream;
 
@@ -149,7 +149,7 @@ namespace LogViewer.Services
 
         private void AppendMessageLine(LogRecord logRecord, string line)
         {
-            Argument.IsNotNull(() => line);
+            ArgumentNullException.ThrowIfNull(line);
 
             if (logRecord is null)
             {

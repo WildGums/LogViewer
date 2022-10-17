@@ -1,13 +1,7 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FileExitCommandContainer.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer
+﻿namespace LogViewer
 {
-    using Catel;
+    using System;
+    using System.Threading.Tasks;
     using Catel.MVVM;
     using Catel.Services;
 
@@ -18,14 +12,14 @@ namespace LogViewer
         public FileExitCommandContainer(ICommandManager commandManager, INavigationService navigationService)
             : base(Commands.File.Exit, commandManager)
         {
-            Argument.IsNotNull(() => navigationService);
+            ArgumentNullException.ThrowIfNull(navigationService);
 
             _navigationService = navigationService;
         }
 
-        protected override void Execute(object parameter)
+        protected override async Task ExecuteAsync(object parameter)
         {
-            _navigationService.CloseApplication();
+            await _navigationService.CloseApplicationAsync();
         }
     }
 }

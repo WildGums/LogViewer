@@ -37,12 +37,12 @@ namespace LogViewer.Services
         public FileSystemService(IDispatcherService dispatcherService, IFileNodeService fileNodeService, IFileSystemWatchingService fileSystemWatchingService,
             INavigationNodeCacheService navigationNodeCacheService, IFilterService filterService, IFileBrowserService fileBrowserService)
         {
-            Argument.IsNotNull(() => dispatcherService);
-            Argument.IsNotNull(() => fileNodeService);
-            Argument.IsNotNull(() => fileSystemWatchingService);
-            Argument.IsNotNull(() => navigationNodeCacheService);
-            Argument.IsNotNull(() => filterService);
-            Argument.IsNotNull(() => fileBrowserService);
+            ArgumentNullException.ThrowIfNull(dispatcherService);
+            ArgumentNullException.ThrowIfNull(fileNodeService);
+            ArgumentNullException.ThrowIfNull(fileSystemWatchingService);
+            ArgumentNullException.ThrowIfNull(navigationNodeCacheService);
+            ArgumentNullException.ThrowIfNull(filterService);
+            ArgumentNullException.ThrowIfNull(fileBrowserService);
 
             _dispatcherService = dispatcherService;
             _fileNodeService = fileNodeService;
@@ -166,7 +166,7 @@ namespace LogViewer.Services
 
         public void ReleaseFileSystemContent(FolderNode folder)
         {
-            Argument.IsNotNull(() => folder);
+            ArgumentNullException.ThrowIfNull(folder);
 
             _fileSystemWatchingService.EndDirectoryWatching(folder.FullName);
             OnDeleted(folder.FullName);
@@ -306,7 +306,7 @@ namespace LogViewer.Services
 
         private void ClearSubfolders(FolderNode folder)
         {
-            Argument.IsNotNull(() => folder);
+            ArgumentNullException.ThrowIfNull(folder);
 
             foreach (var folderNode in folder.Directories)
             {
@@ -358,8 +358,8 @@ namespace LogViewer.Services
 
         private int CompareFileNodesByCreateTime(FileNode fileNode1, FileNode fileNode2)
         {
-            Argument.IsNotNull(() => fileNode1);
-            Argument.IsNotNull(() => fileNode2);
+            ArgumentNullException.ThrowIfNull(fileNode1);
+            ArgumentNullException.ThrowIfNull(fileNode2);
 
             return fileNode1.FileInfo.CreationTime.CompareTo(fileNode2.FileInfo.CreationTime);
         }

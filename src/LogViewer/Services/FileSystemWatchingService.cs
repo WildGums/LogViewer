@@ -70,7 +70,7 @@ namespace LogViewer.Services
 
         private void SubscribeWatcherEvents(FileSystemWatcher fileSystemWatcher)
         {
-            Argument.IsNotNull(() => fileSystemWatcher);
+            ArgumentNullException.ThrowIfNull(fileSystemWatcher);
 
             fileSystemWatcher.Renamed += OnRenamed;
             fileSystemWatcher.Created += OnChanged;
@@ -80,7 +80,7 @@ namespace LogViewer.Services
 
         private void UnsubscribeWatcherEvents(FileSystemWatcher fileSystemWatcher)
         {
-            Argument.IsNotNull(() => fileSystemWatcher);
+            ArgumentNullException.ThrowIfNull(fileSystemWatcher);
 
             fileSystemWatcher.Renamed -= OnRenamed;
             fileSystemWatcher.Created -= OnChanged;

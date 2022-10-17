@@ -1,12 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FileBrowserConfigurationSynchronizer.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Configuration
+﻿namespace LogViewer.Configuration
 {
+    using System;
     using System.Collections.ObjectModel;
     using System.Linq;
     using Catel;
@@ -16,20 +10,17 @@ namespace LogViewer.Configuration
 
     public class NavigatorConfigurationSynchronizer
     {
-        #region Fields
         private readonly IFileBrowserConfigurationService _fileBrowserConfigurationService;
         private readonly IFileBrowserService _fileBrowserService;
         private readonly IFileSystemService _fileSystemService;
-        #endregion
 
-        #region Constructors
         public NavigatorConfigurationSynchronizer(IConfigurationService configurationService, IFileBrowserConfigurationService fileBrowserConfigurationService, IFileSystemService fileSystemService,
             IFileBrowserService fileBrowserService)
         {
-            Argument.IsNotNull(() => configurationService);
-            Argument.IsNotNull(() => fileSystemService);
-            Argument.IsNotNull(() => fileBrowserConfigurationService);
-            Argument.IsNotNull(() => fileBrowserService);
+            ArgumentNullException.ThrowIfNull(configurationService);
+            ArgumentNullException.ThrowIfNull(fileSystemService);
+            ArgumentNullException.ThrowIfNull(fileBrowserConfigurationService);
+            ArgumentNullException.ThrowIfNull(fileBrowserService);
 
             _fileBrowserConfigurationService = fileBrowserConfigurationService;
             _fileSystemService = fileSystemService;
@@ -39,9 +30,7 @@ namespace LogViewer.Configuration
 
             ApplyConfiguration();
         }
-        #endregion
 
-        #region Methods
         private void OnConfigurationChanged(object sender, ConfigurationChangedEventArgs e)
         {
             ApplyConfiguration();
@@ -60,9 +49,9 @@ namespace LogViewer.Configuration
 
         private void UpdateFolderNodes(string[] foldersFromConfig, string[] foldersFromNavigator, ObservableCollection<FolderNode> directories)
         {
-            Argument.IsNotNull(() => foldersFromConfig);
-            Argument.IsNotNull(() => foldersFromNavigator);
-            Argument.IsNotNull(() => directories);
+            ArgumentNullException.ThrowIfNull(foldersFromConfig);
+            ArgumentNullException.ThrowIfNull(foldersFromNavigator);
+            ArgumentNullException.ThrowIfNull(directories);
 
             var newFolderNodes = foldersFromConfig.Except(foldersFromNavigator).Select(folder => _fileSystemService.LoadFileSystemContent(folder, true));
             var foldersToRemove = foldersFromNavigator.Except(foldersFromConfig);
@@ -79,6 +68,5 @@ namespace LogViewer.Configuration
                 directories.Add(folderNode);
             }
         }
-        #endregion
     }
 }

@@ -25,7 +25,7 @@ namespace LogViewer.Services
         #region Constructors
         public FileBrowserConfigurationService(IConfigurationService configurationService)
         {
-            Argument.IsNotNull(() => configurationService);
+            ArgumentNullException.ThrowIfNull(configurationService);
 
             _configurationService = configurationService;
         }
@@ -87,7 +87,7 @@ namespace LogViewer.Services
 
         private void SaveFolders(IEnumerable<string> folders)
         {
-            Argument.IsNotNull(() => folders);
+            ArgumentNullException.ThrowIfNull(folders);
 
             var foldersValue = string.Join(RootsSeparator, folders);
             _configurationService.SetRoamingValue(BrowserRootsKey, foldersValue);

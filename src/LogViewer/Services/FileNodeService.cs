@@ -1,11 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FileNodeService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Services
+﻿namespace LogViewer.Services
 {
     using System;
     using System.Collections.Generic;
@@ -24,31 +17,28 @@ namespace LogViewer.Services
 
     public class FileNodeService : IFileNodeService
     {
-        #region Fields
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
         private static readonly Regex _fileNameMask = new Regex(@"^[a-zA-Z\.]+_(\d{4}-\d{2}-\d{2})_\d{6}_\d+\.log$", RegexOptions.Compiled);
         private readonly IDispatcherService _dispatcherService;
         private readonly IFilterService _filterService;
         private readonly object _lockObject = new object();
         private readonly ILogReaderService _logReaderService;
+#pragma warning disable IDISP006 // Implement IDisposable
         private CancellationTokenSource _cancellationTokenSource;
+#pragma warning restore IDISP006 // Implement IDisposable
         private Task _loadingFileNodeBatch;
-        #endregion
 
-        #region Constructors
         public FileNodeService(ILogReaderService logReaderService, IDispatcherService dispatcherService, IFilterService filterService)
         {
-            Argument.IsNotNull(() => logReaderService);
-            Argument.IsNotNull(() => dispatcherService);
-            Argument.IsNotNull(() => filterService);
+            ArgumentNullException.ThrowIfNull(logReaderService);
+            ArgumentNullException.ThrowIfNull(dispatcherService);
+            ArgumentNullException.ThrowIfNull(filterService);
 
             _logReaderService = logReaderService;
             _dispatcherService = dispatcherService;
             _filterService = filterService;
         }
-        #endregion
 
-        #region Methods
         public FileNode CreateFileNode(string fileName)
         {
             Argument.IsNotNullOrEmpty(() => fileName);
@@ -131,7 +121,9 @@ namespace LogViewer.Services
 
             lock (_lockObject)
             {
+#pragma warning disable IDISP003 // Dispose previous before re-assigning
                 _cancellationTokenSource = new CancellationTokenSource();
+#pragma warning restore IDISP003 // Dispose previous before re-assigning
                 var parallelOptions = new ParallelOptions() {CancellationToken = _cancellationTokenSource.Token};
                 Parallel.Invoke(parallelOptions, tasks);
             }
@@ -148,7 +140,9 @@ namespace LogViewer.Services
                 }
             }
 
+#pragma warning disable IDISP003 // Dispose previous before re-assigning
             _cancellationTokenSource = null;
+#pragma warning restore IDISP003 // Dispose previous before re-assigning
         }
 
         private void ResumeParallelFileNodesLoading()
@@ -157,6 +151,5 @@ namespace LogViewer.Services
 
             _loadingFileNodeBatch = null;
         }
-        #endregion
     }
 }

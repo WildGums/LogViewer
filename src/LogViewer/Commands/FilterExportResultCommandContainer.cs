@@ -1,12 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterExportResultCommandContainer.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer
+﻿namespace LogViewer
 {
+    using System;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -29,9 +23,9 @@ namespace LogViewer
             ILogTableService logTableService)
             : base(Commands.Filter.ExportResult, commandManager)
         {
-            Argument.IsNotNull(() => saveFileService);
-            Argument.IsNotNull(() => fileService);
-            Argument.IsNotNull(() => logTableService);
+            ArgumentNullException.ThrowIfNull(saveFileService);
+            ArgumentNullException.ThrowIfNull(fileService);
+            ArgumentNullException.ThrowIfNull(logTableService);
 
             _saveFileService = saveFileService;
             _fileService = fileService;

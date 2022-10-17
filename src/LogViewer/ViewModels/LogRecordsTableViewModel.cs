@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LogRecordsTableViewModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.ViewModels
+﻿namespace LogViewer.ViewModels
 {
     using System;
     using System.Collections.ObjectModel;
@@ -21,21 +14,20 @@ namespace LogViewer.ViewModels
 
     public class LogRecordsTableViewModel : ViewModelBase
     {
-        #region Fields
         private readonly IFilterService _filterService;
         private readonly ILogTableService _logTableService;
+#pragma warning disable IDISP006 // Implement IDisposable
         private IDisposable _applyFilterListener;
+#pragma warning restore IDISP006 // Implement IDisposable
         private ObservableCollection<NavigationNode> _prevSelectedItems;
-        #endregion
 
-        #region Constructors
         public LogRecordsTableViewModel(IFilterService filterService, ICommandManager commandManager, IFileBrowserService fileBrowserService,
             ILogTableService logTableService)
         {
-            Argument.IsNotNull(() => filterService);
-            Argument.IsNotNull(() => commandManager);
-            Argument.IsNotNull(() => fileBrowserService);
-            Argument.IsNotNull(() => logTableService);
+            ArgumentNullException.ThrowIfNull(filterService);
+            ArgumentNullException.ThrowIfNull(commandManager);
+            ArgumentNullException.ThrowIfNull(fileBrowserService);
+            ArgumentNullException.ThrowIfNull(logTableService);
 
             _filterService = filterService;
             _logTableService = logTableService;
@@ -44,9 +36,6 @@ namespace LogViewer.ViewModels
             Filter = filterService.Filter;
             LogTable = logTableService.LogTable;
         }
-        #endregion
-
-        #region Properties
 
         [Model(SupportIEditableObject = false)]
         [Expose("SelectedItems")]
@@ -67,9 +56,7 @@ namespace LogViewer.ViewModels
         [Expose("RegularExpression")]
         [ViewModelToModel("Filter")]
         public SearchTemplate SearchTemplate { get; set; }
-        #endregion
 
-        #region Methods
         public void OnSelectedItemsChanged()
         {
             if (_prevSelectedItems is not null)
@@ -158,6 +145,7 @@ namespace LogViewer.ViewModels
                 h => SearchTemplate.PropertyChanged += h,
                 h => SearchTemplate.PropertyChanged -= h);
 
+            _applyFilterListener?.Dispose();
             _applyFilterListener = observable
                 .Delay(TimeSpan.FromMilliseconds(500))
                 .Throttle(TimeSpan.FromMilliseconds(500))
@@ -183,6 +171,5 @@ namespace LogViewer.ViewModels
 
             await base.CloseAsync();
         }
-        #endregion
     }
 }

@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RibbonViewModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.ViewModels
+﻿namespace LogViewer.ViewModels
 {
     using System.ComponentModel;
     using System.Threading.Tasks;
@@ -20,32 +13,30 @@ namespace LogViewer.ViewModels
     using Orc.WorkspaceManagement.ViewModels;
     using Orchestra.ViewModels;
     using Services;
+    using System;
 
     public class RibbonViewModel : ViewModelBase
     {
-        #region Fields
         private readonly IRegexService _regexService;
         private readonly INavigationService _navigationService;
         private readonly IConfigurationService _configurationService;
         private readonly IUIVisualizerService _uiVisualizerService;
         private readonly IWorkspaceManager _workspaceManager;
-        private readonly IPleaseWaitService _pleaseWaitService;
+        private readonly IBusyIndicatorService _busyIndicatorService;
         private readonly IFilterService _filterService;
-        #endregion
 
-        #region Constructors
         public RibbonViewModel(IRegexService regexService, ICommandManager commandManager, 
             INavigationService navigationService, IConfigurationService configurationService, IUIVisualizerService uiVisualizerService,
-            IWorkspaceManager workspaceManager, IPleaseWaitService pleaseWaitService, IFilterService filterService)
+            IWorkspaceManager workspaceManager, IBusyIndicatorService busyIndicatorService, IFilterService filterService)
         {
-            Argument.IsNotNull(() => regexService);
-            Argument.IsNotNull(() => commandManager);
-            Argument.IsNotNull(() => navigationService);
-            Argument.IsNotNull(() => configurationService);
-            Argument.IsNotNull(() => uiVisualizerService);
-            Argument.IsNotNull(() => workspaceManager);
-            Argument.IsNotNull(() => pleaseWaitService);
-            Argument.IsNotNull(() => filterService);
+            ArgumentNullException.ThrowIfNull(regexService);
+            ArgumentNullException.ThrowIfNull(commandManager);
+            ArgumentNullException.ThrowIfNull(navigationService);
+            ArgumentNullException.ThrowIfNull(configurationService);
+            ArgumentNullException.ThrowIfNull(uiVisualizerService);
+            ArgumentNullException.ThrowIfNull(workspaceManager);
+            ArgumentNullException.ThrowIfNull(busyIndicatorService);
+            ArgumentNullException.ThrowIfNull(filterService);
 
             _regexService = regexService;
             Filter = filterService.Filter;
@@ -53,7 +44,7 @@ namespace LogViewer.ViewModels
             _configurationService = configurationService;
             _uiVisualizerService = uiVisualizerService;
             _workspaceManager = workspaceManager;
-            _pleaseWaitService = pleaseWaitService;
+            _busyIndicatorService = busyIndicatorService;
             _filterService = filterService;
 
             SaveWorkspace = new TaskCommand(OnSaveWorkspaceExecuteAsync, OnSaveWorkspaceCanExecute);
@@ -63,9 +54,7 @@ namespace LogViewer.ViewModels
 
             Title = AssemblyHelper.GetEntryAssembly().Title();
         }
-        #endregion
-
-        #region Properties
+    
         [Model(SupportIEditableObject = false)]
         [Expose("StartDate")]
         [Expose("EndDate")]
@@ -81,9 +70,7 @@ namespace LogViewer.ViewModels
         public SearchTemplate SearchTemplate { get; set; }
 
         public IWorkspace CurrentWorkspace { get; private set; }
-        #endregion
-
-        #region Commands
+  
         public TaskCommand SaveWorkspace { get; private set; }
 
         private bool OnSaveWorkspaceCanExecute()
@@ -113,7 +100,8 @@ namespace LogViewer.ViewModels
         {
             var workspace = new Workspace();
 
-            if (await _uiVisualizerService.ShowDialogAsync<WorkspaceViewModel>(workspace) ?? false)
+            var result = await _uiVisualizerService.ShowDialogAsync<WorkspaceViewModel>(workspace);
+            if (result.DialogResult ?? false)
             {
                 await _workspaceManager.AddAsync(workspace, true);
                 await _workspaceManager.StoreAndSaveAsync();
@@ -127,9 +115,6 @@ namespace LogViewer.ViewModels
             await _uiVisualizerService.ShowDialogAsync<KeyboardMappingsCustomizationViewModel>();
         }
 
-        #endregion
-
-        #region Methods
         private void OnSearchTemplatePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (string.Equals(e.PropertyName, "RegularExpression"))
@@ -169,6 +154,5 @@ namespace LogViewer.ViewModels
         {
             CurrentWorkspace = _workspaceManager.Workspace;
         }
-        #endregion
     }
 }

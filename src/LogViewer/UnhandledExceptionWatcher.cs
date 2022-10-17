@@ -23,7 +23,7 @@ namespace LogViewer
         #region Constructors
         public UnhandledExceptionWatcher(IMessageService messageService)
         {
-            Argument.IsNotNull(() => messageService);
+            ArgumentNullException.ThrowIfNull(messageService);
 
             _messageService = messageService;
 

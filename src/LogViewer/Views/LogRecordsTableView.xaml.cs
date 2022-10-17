@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LogRecordsTableView.xaml.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Views
+﻿namespace LogViewer.Views
 {
     using System.Windows.Controls;
 
@@ -35,6 +28,5 @@ namespace LogViewer.Views
         {
             Grid.GroupStyle.Add(_defaultGroupStyle);
         }
-         
     }
 }

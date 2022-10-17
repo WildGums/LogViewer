@@ -48,7 +48,6 @@
                 </Grid.ColumnDefinitions>
 
                 <CheckBox Grid.ColumnSpan="2" Content="Show timestamp in tooltip only" IsChecked="{Binding IsTimestampVisible, Converter={catel:BooleanToOppositeBooleanConverter}}" />
-                <CheckBox Grid.ColumnSpan="2" Content="Enable anonymous analytics to improve this application" IsChecked="{Binding EnableAnalytics}" />                
             </orccontrols:StackGrid>
         </GroupBox>
 

@@ -7,6 +7,7 @@
     <AssemblyName>LogViewer</AssemblyName>
     <RootNamespace>LogViewer</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
+    <Nullable>annotations</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -28,7 +29,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Catel.MVVM" Version="5.12.22" />
+    <PackageReference Include="Catel.MVVM" Version="6.0.0-alpha1019" />
     <PackageReference Include="Catel.Fody" Version="4.7.0" PrivateAssets="all">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
@@ -45,11 +46,10 @@
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Orc.Analytics" Version="4.3.1" />
-    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="4.5.0" />
-    <PackageReference Include="Orc.Squirrel.Xaml" Version="4.2.0" />
-    <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="4.3.0" />
-    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="6.8.1" />
+    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="5.0.0-alpha0016" />
+    <PackageReference Include="Orc.Squirrel.Xaml" Version="5.0.0-alpha0064" />
+    <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="5.0.0-alpha0018" />
+    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="7.0.0-alpha0051" />
     <PackageReference Include="Rx-Linq" Version="2.2.5" />
     <PackageReference Include="Rx-WPF" Version="2.2.5" />
   </ItemGroup>

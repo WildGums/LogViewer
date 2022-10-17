@@ -1,12 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterResetSearchTemplateCommandContainer.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer
+﻿namespace LogViewer
 {
+    using System;
     using Catel;
     using Catel.MVVM;
     using Services;
@@ -18,7 +12,7 @@ namespace LogViewer
         public FilterResetSearchTemplateCommandContainer(ICommandManager commandManager, IFilterService filterService)
             : base(Commands.Filter.ResetSearchTemplate, commandManager)
         {
-            Argument.IsNotNull(() => filterService);
+            ArgumentNullException.ThrowIfNull(filterService);
 
             _filterService = filterService;
         }

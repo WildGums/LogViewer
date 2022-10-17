@@ -17,7 +17,7 @@ namespace LogViewer
         #region Methods
         public static void RemoveByPredicate<T>(this IList<T> list, Predicate<T> predicate)
         {
-            Argument.IsNotNull(() => predicate);
+            ArgumentNullException.ThrowIfNull(predicate);
 
             var itemsToRemove = list.Where(x => predicate(x)).ToList();
 
@@ -29,7 +29,7 @@ namespace LogViewer
 
         public static void ClearOneByOne<T>(this IList<T> list)
         {
-            Argument.IsNotNull(() => list);
+            ArgumentNullException.ThrowIfNull(list);
 
             while (list.Any())
             {

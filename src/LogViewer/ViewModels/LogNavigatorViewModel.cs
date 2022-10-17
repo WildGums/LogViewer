@@ -1,43 +1,32 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LogNavigatorViewModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.ViewModels
+﻿namespace LogViewer.ViewModels
 {
+    using System;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading.Tasks;
-    using Catel;
     using Catel.Fody;
     using Catel.MVVM;
     using Catel.Services;
     using Models;
-    using Orchestra.Services;
     using Services;
 
     public class LogNavigatorViewModel : ViewModelBase
     {
-        #region Fields
         private readonly IAppDataService _appDataService;
         private readonly IFileBrowserConfigurationService _fileBrowserConfigurationService;
         private readonly IFileNodeService _fileNodeService;
         private readonly IMessageService _messageService;
         private readonly ISelectDirectoryService _selectDirectoryService;
         private ObservableCollection<NavigationNode> _prevSelectedItems;
-        #endregion
 
-        #region Constructors
         public LogNavigatorViewModel(ISelectDirectoryService selectDirectoryService, IMessageService messageService, IAppDataService appDataService,
             IFileBrowserService fileBrowserService, IFileBrowserConfigurationService fileBrowserConfigurationService, IFileNodeService fileNodeService)
         {
-            Argument.IsNotNull(() => selectDirectoryService);
-            Argument.IsNotNull(() => messageService);
-            Argument.IsNotNull(() => appDataService);
-            Argument.IsNotNull(() => fileBrowserConfigurationService);
-            Argument.IsNotNull(() => fileNodeService);
+            ArgumentNullException.ThrowIfNull(selectDirectoryService);
+            ArgumentNullException.ThrowIfNull(messageService);
+            ArgumentNullException.ThrowIfNull(appDataService);
+            ArgumentNullException.ThrowIfNull(fileBrowserConfigurationService);
+            ArgumentNullException.ThrowIfNull(fileNodeService);
 
             _selectDirectoryService = selectDirectoryService;
             _messageService = messageService;
@@ -50,16 +39,12 @@ namespace LogViewer.ViewModels
             AddFolder = new TaskCommand(OnAddFolderExecuteAsync);
             DeleteFolder = new TaskCommand(OnDeleteFolderExecuteAsync, OnDeleteFolderCanExecute);
         }
-        #endregion
 
-        #region Properties
         [Model(SupportIEditableObject = false)]
         [Expose("RootDirectories")]
         [Expose("SelectedItems")]
         public FileBrowserModel FileBrowser { get; set; }
-        #endregion
 
-        #region Methods
         public void OnSelectedItemsChanged()
         {
             if (_prevSelectedItems is not null)
@@ -82,9 +67,7 @@ namespace LogViewer.ViewModels
 
             _fileNodeService.ParallelLoadFileNodeBatch(fileNodes);
         }
-        #endregion
 
-        #region Commands
         public TaskCommand AddFolder { get; private set; }
 
         private async Task OnAddFolderExecuteAsync()
@@ -137,6 +120,5 @@ namespace LogViewer.ViewModels
 
             return FileBrowser.RootDirectories.Contains(folderNode);
         }
-        #endregion
     }
 }

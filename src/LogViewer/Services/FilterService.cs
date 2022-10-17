@@ -29,8 +29,8 @@ namespace LogViewer.Services
         public FilterService(IDispatcherService dispatcherService, ILogTableService logTableService,
             IFileBrowserService fileBrowserService)
         {
-            Argument.IsNotNull(() => dispatcherService);
-            Argument.IsNotNull(() => logTableService);
+            ArgumentNullException.ThrowIfNull(dispatcherService);
+            ArgumentNullException.ThrowIfNull(logTableService);
 
             _dispatcherService = dispatcherService;
             _logTableService = logTableService;
@@ -48,8 +48,8 @@ namespace LogViewer.Services
         [Time]
         private IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<FileNode> logFiles)
         {
-            Argument.IsNotNull(() => filter);
-            Argument.IsNotNull(() => logFiles);
+            ArgumentNullException.ThrowIfNull(filter);
+            ArgumentNullException.ThrowIfNull(logFiles);
 
             var templateString = filter.SearchTemplate.TemplateString;
 

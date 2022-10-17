@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MultipleSelectionBehavior.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Behaviors
+﻿namespace LogViewer.Behaviors
 {
     using System;
     using System.Collections;
@@ -23,8 +16,6 @@ namespace LogViewer.Behaviors
 
     public class MultipleSelectionBehavior : BehaviorBase<TreeView>
     {
-        #region Dependency properties
-
         public static FastObservableCollection<NavigationNode> GetSelectedItems(MultipleSelectionBehavior element)
         {
             return (FastObservableCollection<NavigationNode>)element.GetValue(SelectedItemsProperty);
@@ -46,9 +37,7 @@ namespace LogViewer.Behaviors
         {
             element.SetValue(IsItemSelectedProperty, value);
         }
-        #endregion
 
-        #region Properties
         private NavigationNode StartItem { get; set; }
 
         public FastObservableCollection<NavigationNode> SelectedItems
@@ -61,9 +50,7 @@ namespace LogViewer.Behaviors
 #pragma warning disable WPF0016 // Default value is shared reference type.
             typeof(MultipleSelectionBehavior), new PropertyMetadata(new FastObservableCollection<NavigationNode>()));
 #pragma warning restore WPF0016 // Default value is shared reference type.
-        #endregion
 
-        #region Methods
         protected override void OnAssociatedObjectLoaded()
         {
             AssociatedObject.SelectedItemChanged += OnTreeViewSelectedItemChanged;
@@ -107,7 +94,7 @@ namespace LogViewer.Behaviors
 
         private void SelectSingleItem(NavigationNode node)
         {
-            Argument.IsNotNull(() => node);
+            ArgumentNullException.ThrowIfNull(node);
 
             var selectedItems = SelectedItems;
 
@@ -125,7 +112,7 @@ namespace LogViewer.Behaviors
 
         private void SelectMultipleItemsRandomly(NavigationNode node)
         {
-            Argument.IsNotNull(() => node);
+            ArgumentNullException.ThrowIfNull(node);
 
             var selectedItems = SelectedItems;
 
@@ -181,7 +168,7 @@ namespace LogViewer.Behaviors
 
         private void SelectMultipleItemsContinuously(NavigationNode node)
         {
-            Argument.IsNotNull(() => node);
+            ArgumentNullException.ThrowIfNull(node);
 
             var startItem = StartItem;
             if (startItem is not null)
@@ -222,7 +209,6 @@ namespace LogViewer.Behaviors
 
                 ReplaceRange(selectedItems, navigationNodes);
             }
-        }            
-        #endregion
+        }
     }
 }
