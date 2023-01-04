@@ -29,7 +29,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Catel.MVVM" Version="6.0.0-alpha1089" />
+    <PackageReference Include="Catel.MVVM" Version="6.0.0-alpha1092" />
     <PackageReference Include="Catel.Fody" Version="4.7.0" PrivateAssets="all">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
