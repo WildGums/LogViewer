@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="HighlightableTextBlock.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Controls
+﻿namespace LogViewer.Controls
 {
     using System;
     using System.Linq;

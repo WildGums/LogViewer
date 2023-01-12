@@ -139,6 +139,7 @@
 
         protected override async Task InitializeAsync()
         {
+            SearchTemplate.PropertyChanged += OnSearchTemplateIsDirtyChanged;
             Filter.PropertyChanged += OnFilterIsDirtyChanged;
 
             var observable = Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
@@ -165,6 +166,7 @@
 
         protected override async Task CloseAsync()
         {
+            SearchTemplate.PropertyChanged -= OnSearchTemplateIsDirtyChanged;
             Filter.PropertyChanged -= OnFilterIsDirtyChanged;
 
             _applyFilterListener.Dispose();

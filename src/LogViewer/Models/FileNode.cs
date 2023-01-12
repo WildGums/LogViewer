@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FileNode.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Models
+﻿namespace LogViewer.Models
 {
     using System;
     using System.Collections.ObjectModel;

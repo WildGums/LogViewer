@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IFileNodeServiceExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Services
+﻿namespace LogViewer.Services
 {
     using System.Threading.Tasks;
     using Models;

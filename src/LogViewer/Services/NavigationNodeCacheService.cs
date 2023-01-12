@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NavigationNodeCacheService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Services
+﻿namespace LogViewer.Services
 {
     using System.Collections.Generic;
     using Models;

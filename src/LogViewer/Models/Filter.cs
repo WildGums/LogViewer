@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Filter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Models
+﻿namespace LogViewer.Models
 {
     using System;
     using System.ComponentModel;

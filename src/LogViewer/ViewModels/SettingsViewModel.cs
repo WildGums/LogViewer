@@ -56,9 +56,9 @@
             EnableTooltips = workspace.GetWorkspaceValue(Settings.Workspace.General.EnableTooltips, Settings.Workspace.General.EnableTooltipsDefaultValue);
 
             IsUpdateSystemAvailable = _updateService.IsUpdateSystemAvailable;
-            CheckForUpdates = await _updateService.GetCheckForUpdatesAsync();
+            CheckForUpdates = _updateService.IsCheckForUpdatesEnabled;
             AvailableUpdateChannels = new List<UpdateChannel>(_updateService.AvailableChannels);
-            UpdateChannel = await _updateService.GetCurrentChannelAsync();
+            UpdateChannel = _updateService.CurrentChannel;
 
             IsTimestampVisible = _logTableConfigurationService.GetIsTimestampVisibile();
         }
@@ -70,8 +70,8 @@
 
             await _workspaceManager.StoreAndSaveAsync();
 
-            await _updateService.SetCheckForUpdatesAsync(CheckForUpdates);
-            await _updateService.SetCurrentChannelAsync(UpdateChannel);
+            _updateService.IsCheckForUpdatesEnabled = CheckForUpdates;
+            _updateService.CurrentChannel = UpdateChannel;
 
             _logTableConfigurationService.SetIsTimestampVisibile(IsTimestampVisible);
 
