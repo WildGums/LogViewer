@@ -16,11 +16,11 @@
         #region Fields
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        private static readonly Regex LogRecordPattern = new Regex(@"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+\s\=\>\s\[[a-zA-Z]+\]\s\[[a-zA-Z\d\.\`]+\].+", RegexOptions.Compiled);
-        private static readonly Regex DateTimePattern = new Regex(@"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+", RegexOptions.Compiled);
-        private static readonly Regex ThreadIdPattern = new Regex(@"^\[[0-9\.]+\]", RegexOptions.Compiled);
-        private static readonly Regex LogEventPattern = new Regex(@"^\[[a-zA-Z]+\]", RegexOptions.Compiled);
-        private static readonly Regex TargetTypePattern = new Regex(@"^\[[a-zA-Z\.\`\d]+\]", RegexOptions.Compiled);
+        private static readonly Regex LogRecordPattern = new Regex(@"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+\s\=\>\s\[[a-zA-Z]+\]\s\[[a-zA-Z\d\.\`]+\].+", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        private static readonly Regex DateTimePattern = new Regex(@"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        private static readonly Regex ThreadIdPattern = new Regex(@"^\[[0-9\.]+\]", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        private static readonly Regex LogEventPattern = new Regex(@"^\[[a-zA-Z]+\]", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        private static readonly Regex TargetTypePattern = new Regex(@"^\[[a-zA-Z\.\`\d]+\]", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         private readonly IFileService _fileService;
 

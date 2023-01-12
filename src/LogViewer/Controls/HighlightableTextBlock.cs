@@ -75,7 +75,7 @@
 
             await Task.Factory.StartNew(() =>
             {
-                var split = Regex.Split(textToCheck, regex, RegexOptions.ExplicitCapture);
+                var split = Regex.Split(textToCheck, regex, RegexOptions.ExplicitCapture, TimeSpan.FromSeconds(1));
                 if (split.Max(x => x.Length) == 1)
                 {
                     UpdateText(value, true);
@@ -90,7 +90,7 @@
 
                 foreach (var str in split)
                 {
-                    var match = Regex.IsMatch(str, regex, RegexOptions.ExplicitCapture);
+                    var match = Regex.IsMatch(str, regex, RegexOptions.ExplicitCapture, TimeSpan.FromSeconds(1));
                     Dispatcher.BeginInvokeIfRequired(() =>
                     {
                         var run = new Run(str);
@@ -134,7 +134,7 @@
 
             try
             {
-                Regex.Match(string.Empty, regex);
+                Regex.Match(string.Empty, regex, RegexOptions.None, TimeSpan.FromSeconds(1));
             }
             catch (ArgumentException)
             {

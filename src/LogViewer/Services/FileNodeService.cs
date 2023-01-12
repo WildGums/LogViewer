@@ -18,7 +18,8 @@
     public class FileNodeService : IFileNodeService
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-        private static readonly Regex _fileNameMask = new Regex(@"^[a-zA-Z\.]+_(\d{4}-\d{2}-\d{2})_\d{6}_\d+\.log$", RegexOptions.Compiled);
+        private static readonly Regex _fileNameMask = new Regex(@"^[a-zA-Z\.]+_(\d{4}-\d{2}-\d{2})_\d{6}_\d+\.log$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+
         private readonly IDispatcherService _dispatcherService;
         private readonly IFilterService _filterService;
         private readonly object _lockObject = new object();
@@ -56,7 +57,7 @@
             else
             {
                 fileNode.Name = fileNode.FileInfo.Name;
-                var dateTimeString = Regex.Match(fileNode.FileInfo.Name, @"(\d{4}-\d{2}-\d{2})").Value;
+                var dateTimeString = Regex.Match(fileNode.FileInfo.Name, @"(\d{4}-\d{2}-\d{2})", RegexOptions.None, TimeSpan.FromSeconds(1)).Value;
                 fileNode.DateTime = DateTime.ParseExact(dateTimeString, "yyyy-MM-dd", null, DateTimeStyles.None);
             }
 
