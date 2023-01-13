@@ -39,7 +39,7 @@
                 return true;
             }
 
-            return Regex.IsMatch(message, filter.SearchTemplate.RegularExpression);
+            return Regex.IsMatch(message, filter.SearchTemplate.RegularExpression, RegexOptions.None, TimeSpan.FromSeconds(1));
         }
 
         public static bool IsAcceptableTo(this Filter filter, FileNode fileNode)

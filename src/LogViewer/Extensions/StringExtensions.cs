@@ -44,7 +44,7 @@
                 return false;
             }
 
-            return Regex.IsMatch(fileName, regexFilter);
+            return Regex.IsMatch(fileName, regexFilter, RegexOptions.None, TimeSpan.FromSeconds(1));
         }
 
         public static bool IsFile(this string fullName)
