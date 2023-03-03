@@ -46,7 +46,7 @@
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="5.0.0-alpha0016" />
+    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="5.0.0-alpha0141" />
     <PackageReference Include="Orc.Squirrel.Xaml" Version="5.0.0-alpha0126" />
     <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="5.0.0-alpha0018" />
     <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="7.0.0-alpha0141" />
