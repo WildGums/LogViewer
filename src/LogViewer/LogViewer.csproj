@@ -30,7 +30,7 @@
 
   <ItemGroup>
     <PackageReference Include="Catel.MVVM" Version="6.0.0-alpha1100" />
-    <PackageReference Include="Catel.Fody" Version="4.7.0" PrivateAssets="all">
+    <PackageReference Include="Catel.Fody" Version="4.9.0" PrivateAssets="all">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="FastMember" Version="1.5.0" />
