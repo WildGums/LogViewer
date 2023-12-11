@@ -2,7 +2,6 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Catel;
     using Catel.IoC;
     using Orc.WorkspaceManagement;
     using Services;

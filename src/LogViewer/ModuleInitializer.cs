@@ -1,7 +1,5 @@
 ﻿using Catel.IoC;
-using LogViewer;
 using LogViewer.Services;
-using LogViewer.Models;
 using Orchestra.Services;
 
 /// <summary>

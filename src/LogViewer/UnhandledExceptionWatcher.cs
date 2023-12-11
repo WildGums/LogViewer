@@ -4,7 +4,6 @@
     using System.Diagnostics;
     using System.Threading.Tasks;
     using System.Windows;
-    using Catel;
     using Catel.Logging;
     using Catel.Services;
 

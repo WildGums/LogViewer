@@ -7,7 +7,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Catel;
-    using Catel.Collections;
     using Catel.Logging;
     using Catel.Services;
     using Models;

@@ -1,10 +1,8 @@
 ﻿namespace LogViewer
 {
     using System;
-    using Catel;
     using Catel.IO;
     using Catel.Services;
-    using Orchestra.Services;
 
     public static class AppDataServiceExtensions
     {

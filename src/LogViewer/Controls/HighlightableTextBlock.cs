@@ -8,7 +8,6 @@
     using System.Windows.Controls;
     using System.Windows.Documents;
     using System.Windows.Media;
-    using Catel.IoC;
     using Catel.Services;
     using Catel.Windows.Threading;
 

@@ -2,7 +2,6 @@
 {
     using System.ComponentModel;
     using System.Threading.Tasks;
-    using Catel;
     using Catel.Configuration;
     using Catel.Fody;
     using Catel.Reflection;

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Catel;
     using Catel.MVVM;
     using Orchestra.Services;
 
@@ -18,7 +17,7 @@
             _aboutService = aboutService;
         }
 
-        protected override Task ExecuteAsync(object parameter)
+        public override Task ExecuteAsync(object parameter)
         {
             return _aboutService.ShowAboutAsync();
         }

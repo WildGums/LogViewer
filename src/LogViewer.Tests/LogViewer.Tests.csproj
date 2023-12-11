@@ -1,6 +1,6 @@
 <Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
     <AssemblyName>LogViewer.Tests</AssemblyName>
     <RootNamespace>LogViewer.Tests</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
@@ -31,10 +31,6 @@
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageReference Include="Orc.Csv" Version="5.0.0-alpha0334" />
     <PackageReference Include="PublicApiGenerator" Version="11.0.0" PrivateAssets="all" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="NETStandard.Library" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>

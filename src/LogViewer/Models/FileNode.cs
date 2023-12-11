@@ -1,9 +1,7 @@
 ﻿namespace LogViewer.Models
 {
     using System;
-    using System.Collections.ObjectModel;
     using System.IO;
-    using Catel;
     using Catel.Collections;
 
     public class FileNode : NavigationNode

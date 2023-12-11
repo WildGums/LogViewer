@@ -1,7 +1,6 @@
 ﻿namespace LogViewer
 {
     using System;
-    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -32,7 +31,7 @@
             _logTableService = logTableService;
         }
 
-        protected override async Task ExecuteAsync(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             var result = await _saveFileService.DetermineFileAsync(new DetermineSaveFileContext
             {

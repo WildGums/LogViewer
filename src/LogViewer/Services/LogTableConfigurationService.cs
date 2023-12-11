@@ -1,7 +1,6 @@
 ﻿namespace LogViewer.Services
 {
     using System;
-    using Catel;
     using Catel.Configuration;
 
     public class LogTableConfigurationService : ILogTableConfigurationService

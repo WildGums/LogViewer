@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using Catel;
 
     public static class IListExtensions
     {

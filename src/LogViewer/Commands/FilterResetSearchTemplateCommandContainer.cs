@@ -1,7 +1,6 @@
 ﻿namespace LogViewer
 {
     using System;
-    using Catel;
     using Catel.MVVM;
     using Services;
 
@@ -17,7 +16,7 @@
             _filterService = filterService;
         }
 
-        protected override void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             _filterService.Filter.SearchTemplate.TemplateString = string.Empty;
         }

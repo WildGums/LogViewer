@@ -6,7 +6,6 @@
     using System.ComponentModel;
     using System.Reactive.Linq;
     using System.Threading.Tasks;
-    using Catel;
     using Catel.Fody;
     using Catel.MVVM;
     using Models;

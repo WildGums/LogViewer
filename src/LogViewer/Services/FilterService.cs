@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using Catel;
     using Catel.Collections;
     using Catel.Services;
     using MethodTimer;

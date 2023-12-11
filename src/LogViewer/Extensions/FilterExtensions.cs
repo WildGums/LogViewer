@@ -2,8 +2,6 @@
 {
     using System;
     using System.Text.RegularExpressions;
-
-    using Catel;
     using Catel.Logging;
 
     using LogViewer.Models;

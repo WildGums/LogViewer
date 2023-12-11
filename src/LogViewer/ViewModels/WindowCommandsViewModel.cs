@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using Catel;
     using Catel.Configuration;
     using Catel.MVVM;
     using Orc.Theming;

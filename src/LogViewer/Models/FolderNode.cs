@@ -6,7 +6,6 @@
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Windows.Data;
-    using Catel;
 
     public class FolderNode : NavigationNode
     {

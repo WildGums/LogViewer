@@ -5,9 +5,7 @@
     using System.Globalization;
     using System.IO;
     using System.Text.RegularExpressions;
-    using Catel;
     using Catel.Logging;
-    using MethodTimer;
     using Models;
     using Orc.FileSystem;
 
@@ -45,7 +43,7 @@
         {
             ArgumentNullException.ThrowIfNull(fileNode);
 
-            FileStream stream;
+            Stream stream;
 
             Log.Debug("Loading records file file '{0}'", fileNode);
 
@@ -60,7 +58,8 @@
                 yield break;
             }
 
-            int counter = 0;
+            var counter = 0;
+
             using (stream)
             {
                 using (var reader = new StreamReader(stream))

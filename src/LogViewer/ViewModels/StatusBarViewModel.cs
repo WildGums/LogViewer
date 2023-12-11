@@ -2,7 +2,6 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Catel;
     using Catel.Configuration;
     using Catel.MVVM;
     using Orchestra;

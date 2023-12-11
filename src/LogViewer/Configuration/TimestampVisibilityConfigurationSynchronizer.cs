@@ -1,7 +1,6 @@
 ﻿namespace LogViewer.Configuration
 {
     using System;
-    using Catel;
     using Catel.Configuration;
     using Models;
     using Services;

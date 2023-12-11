@@ -1,7 +1,6 @@
 ﻿namespace LogViewer.Services
 {
     using System;
-    using Catel;
 
     internal class RegexService : IRegexService
     {

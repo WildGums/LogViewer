@@ -1,10 +1,8 @@
 ﻿namespace LogViewer
 {
     using System;
-    using System.Linq;
     using System.Text;
-
-    using Catel;
+    using System.Threading.Tasks;
     using Catel.MVVM;
 
     using LogViewer.Services;
@@ -26,9 +24,10 @@
             _logTableService = logTableService;
         }
 
-        protected override void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             var stringBuilder = new StringBuilder();
+
             foreach (var record in _logTableService.LogTable.Records)
             {
                 stringBuilder.AppendLine(record.ToString());
