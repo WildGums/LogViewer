@@ -29,7 +29,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Catel.MVVM" Version="6.0.0-alpha1311" />
     <PackageReference Include="Catel.Fody" Version="4.9.0" PrivateAssets="all">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
@@ -46,10 +45,10 @@
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="5.0.0-alpha0407" />
-    <PackageReference Include="Orc.Squirrel.Xaml" Version="5.0.0-alpha0395" />
-    <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="5.0.0-alpha0454" />
-    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="7.0.0-alpha0430" />
+    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="5.0.0" />
+    <PackageReference Include="Orc.Squirrel.Xaml" Version="5.0.0" />
+    <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="5.0.0" />
+    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="7.0.0" />
     <PackageReference Include="Rx-Linq" Version="2.2.5" />
     <PackageReference Include="Rx-WPF" Version="2.2.5" />
   </ItemGroup>

@@ -1,4 +1,4 @@
-<Project Sdk="MSBuild.Sdk.Extras">
+﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
     <TargetFrameworks>net8.0-windows</TargetFrameworks>
     <AssemblyName>LogViewer.Tests</AssemblyName>
@@ -29,7 +29,7 @@
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all" />
     <PackageReference Include="NUnit" Version="4.0.1" PrivateAssets="all" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
-    <PackageReference Include="Orc.Csv" Version="5.0.0-alpha0334" />
+    <PackageReference Include="Orc.Csv" Version="5.0.0" />
     <PackageReference Include="PublicApiGenerator" Version="11.1.0" PrivateAssets="all" />
   </ItemGroup>
 
