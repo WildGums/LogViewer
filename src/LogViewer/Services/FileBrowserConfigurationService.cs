@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FileBrowserConfigurationService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Services
+﻿namespace LogViewer.Services
 {
     using System;
     using System.Collections.Generic;
@@ -25,7 +18,7 @@ namespace LogViewer.Services
         #region Constructors
         public FileBrowserConfigurationService(IConfigurationService configurationService)
         {
-            Argument.IsNotNull(() => configurationService);
+            ArgumentNullException.ThrowIfNull(configurationService);
 
             _configurationService = configurationService;
         }
@@ -87,7 +80,7 @@ namespace LogViewer.Services
 
         private void SaveFolders(IEnumerable<string> folders)
         {
-            Argument.IsNotNull(() => folders);
+            ArgumentNullException.ThrowIfNull(folders);
 
             var foldersValue = string.Join(RootsSeparator, folders);
             _configurationService.SetRoamingValue(BrowserRootsKey, foldersValue);

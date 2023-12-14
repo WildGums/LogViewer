@@ -1,12 +1,6 @@
-#pragma warning disable 1998
-
 #l "apps-uwp-variables.cake"
 
-#addin "nuget:?package=MagicChunks&version=2.0.0.119"
-#addin "nuget:?package=Newtonsoft.Json&version=11.0.2"
-#addin "nuget:?package=Microsoft.Azure.KeyVault.Core&version=1.0.0"
-#addin "nuget:?package=WindowsAzure.Storage&version=9.1.1"
-#addin "nuget:?package=Cake.WindowsAppStore&version=1.4.0"
+#addin "nuget:?package=Cake.WindowsAppStore&version=2.0.0"
 
 //-------------------------------------------------------------
 
@@ -36,7 +30,7 @@ public class UwpProcessor : ProcessorBase
     private string GetArtifactsDirectory(string outputRootDirectory)
     {
         // 1 directory up since we want to turn "/output/release" into "/output/"
-        var artifactsDirectoryString = string.Format("{0}/..", outputRootDirectory);
+        var artifactsDirectoryString = System.IO.Path.Combine(outputRootDirectory, "..");
         var artifactsDirectory = CakeContext.MakeAbsolute(CakeContext.Directory(artifactsDirectoryString)).FullPath;
 
         return artifactsDirectory;
@@ -44,7 +38,7 @@ public class UwpProcessor : ProcessorBase
 
     private string GetAppxUploadFileName(string artifactsDirectory, string solutionName, string versionMajorMinorPatch)
     {
-        var appxUploadSearchPattern = artifactsDirectory + string.Format("/{0}_{1}.0_*.appxupload", solutionName, versionMajorMinorPatch);
+        var appxUploadSearchPattern = System.IO.Path.Combine(artifactsDirectory, string.Format("{0}_{1}.0_*.appxupload", solutionName, versionMajorMinorPatch));
 
         CakeContext.Information("Searching for appxupload using '{0}'", appxUploadSearchPattern);
 
@@ -89,7 +83,7 @@ public class UwpProcessor : ProcessorBase
 
         foreach (var uwpApp in BuildContext.Uwp.Items)
         {
-            var appxManifestFile = string.Format("./src/{0}/Package.appxmanifest", uwpApp);
+            var appxManifestFile = System.IO.Path.Combine(".", "src", uwpApp, "Package.appxmanifest");
             UpdateAppxManifestVersion(appxManifestFile, string.Format("{0}.0", BuildContext.General.Version.MajorMinorPatch));
         }
     }
@@ -132,7 +126,7 @@ public class UwpProcessor : ProcessorBase
                 PlatformTarget = platform.Value
             };
 
-            ConfigureMsBuild(BuildContext, msBuildSettings, uwpApp);
+            ConfigureMsBuild(BuildContext, msBuildSettings, uwpApp, "build");
 
             // Always disable SourceLink
             msBuildSettings.WithProperty("EnableSourceLink", "false");
@@ -147,11 +141,11 @@ public class UwpProcessor : ProcessorBase
 
             CakeContext.Information("Building project for platform {0}, artifacts directory is '{1}'", platform.Key, artifactsDirectory);
 
-            var projectFileName = GetProjectFileName(uwpApp);
+            var projectFileName = GetProjectFileName(BuildContext, uwpApp);
 
             // Note: if csproj doesn't work, use SolutionFileName instead
             //var projectFileName = SolutionFileName;
-            CakeContext.MSBuild(projectFileName, msBuildSettings);
+            RunMsBuild(BuildContext, uwpApp, projectFileName, msBuildSettings, "build");
 
             // Recalculate!
             appxUploadFileName = GetAppxUploadFileName(artifactsDirectory, uwpApp, BuildContext.General.Version.MajorMinorPatch);

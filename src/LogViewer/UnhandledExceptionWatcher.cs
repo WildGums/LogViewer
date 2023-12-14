@@ -1,15 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UnhandledExceptionWatcher.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-namespace LogViewer
+﻿namespace LogViewer
 {
     using System;
     using System.Diagnostics;
     using System.Threading.Tasks;
     using System.Windows;
-    using Catel;
     using Catel.Logging;
     using Catel.Services;
 
@@ -23,7 +17,7 @@ namespace LogViewer
         #region Constructors
         public UnhandledExceptionWatcher(IMessageService messageService)
         {
-            Argument.IsNotNull(() => messageService);
+            ArgumentNullException.ThrowIfNull(messageService);
 
             _messageService = messageService;
 
@@ -70,7 +64,7 @@ namespace LogViewer
         {
             var mainWindow = Application.Current.MainWindow;
 
-            if (mainWindow != null)
+            if (mainWindow is not null)
             {
                 mainWindow.Close();
             }

@@ -10,15 +10,16 @@
                    xmlns:views="clr-namespace:Orc.WorkspaceManagement.Views;assembly=Orc.WorkspaceManagement.Xaml"
                    xmlns:orccontrols="http://schemas.wildgums.com/orc/controls"
                    xmlns:converters="clr-namespace:Orc.WorkspaceManagement.Converters;assembly=Orc.WorkspaceManagement.Xaml"
-                   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                   xmlns:xamlbehaviors="http://schemas.microsoft.com/xaml/behaviors" 
+                   xmlns:orctheming="http://schemas.wildgums.com/orc/theming"
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
-    
+
     <catel:UserControl.Resources>
         <Style TargetType="{x:Type Image}">
             <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
         </Style>
     </catel:UserControl.Resources>
-    
+
     <fluent:Ribbon x:Name="ribbon"  IsQuickAccessToolBarVisible="False" CanCustomizeRibbon="False" AutomaticStateManagement="False">
         <fluent:Ribbon.Menu>
             <fluent:Backstage Header="File">
@@ -34,7 +35,7 @@
                     <fluent:ToggleButton Header="Warning" LargeIcon="/LogViewer;component\Resources\Images\warning.png" IsChecked="{Binding ShowWarning}"/>
                     <fluent:ToggleButton Header="Error" LargeIcon="/LogViewer;component\Resources\Images\error.png" IsChecked="{Binding ShowError}"/>
                 </fluent:RibbonGroupBox>
-                
+
                 <fluent:RibbonGroupBox Header="Date range">
                     <fluent:GalleryPanel Orientation="Vertical">
                         <Grid>
@@ -42,18 +43,20 @@
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="30"/>
                             </Grid.RowDefinitions>
-                            
+
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="135"/>
                             </Grid.ColumnDefinitions>
-                            
+
                             <TextBlock Grid.Column="0" Grid.Row="0" Text="Start: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                            <orccontrols:DatePicker Grid.Column="1" Grid.Row="0" Value="{Binding StartDate}"
+                            <orccontrols:DateTimePicker Grid.Column="1" Grid.Row="0" Value="{Binding StartDate}"
+                                                        HideTime="True"
                                                  IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
 
                             <TextBlock Grid.Column="0" Grid.Row="1"  Text="End: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                            <orccontrols:DatePicker Grid.Column="1" Grid.Row="1" Value="{Binding EndDate}" 
+                            <orccontrols:DateTimePicker Grid.Column="1" Grid.Row="1" Value="{Binding EndDate}" 
+                                                        HideTime="True"
                                                  IsEnabled="{Binding IsChecked, ElementName=toggleButton, Mode=OneWay}"/>
                         </Grid>
                     </fluent:GalleryPanel>
@@ -71,9 +74,9 @@
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
                                 <TextBlock Text="Find: " VerticalAlignment="Center"/>
                                 <orccontrols:WatermarkTextBox Width="250" Margin="3" Text="{Binding SearchTemplate.TemplateString}">
-                                    <i:Interaction.Behaviors>
+                                    <xamlbehaviors:Interaction.Behaviors>
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="300" />
-                                    </i:Interaction.Behaviors>
+                                    </xamlbehaviors:Interaction.Behaviors>
 
                                     <orccontrols:WatermarkTextBox.Watermark>
                                         <StackPanel Orientation="Horizontal">
@@ -91,11 +94,11 @@
                             </StackPanel>
                         </Grid>
                     </fluent:GalleryPanel>
-                    <fluent:Button Header="Reset" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Eraser}}" Command="{catel:CommandManagerBinding Filter.ResetSearchTemplate}"/>
-                    <fluent:ToggleButton Header="Full Text" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.FileText}}" IsChecked="{Binding Path=SearchTemplate.UseFullTextSearch}" />
+                    <fluent:Button Header="Reset" LargeIcon="{orctheming:FontImage {x:Static logViewer:FontAwesome.Eraser}}" Command="{catel:CommandManagerBinding Filter.ResetSearchTemplate}"/>
+                    <fluent:ToggleButton Header="Full Text" LargeIcon="{orctheming:FontImage {x:Static logViewer:FontAwesome.FileText}}" IsChecked="{Binding Path=SearchTemplate.UseFullTextSearch}" />
                     <fluent:ToggleButton Header="Filter" LargeIcon="/LogViewer;component\Resources\Images\filter.png" IsChecked="{Binding UseTextSearch}"/>
-                    <fluent:Button Header="Export Result" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Save}}" Command="{catel:CommandManagerBinding Filter.ExportResult}"/>
-                    <fluent:Button Header="Copy Result to Clipboard" LargeIcon="{orchestra:FontImage {x:Static logViewer:FontAwesome.Copy}}" Command="{catel:CommandManagerBinding Filter.CopyResultToClipboard}"/>
+                    <fluent:Button Header="Export Result" LargeIcon="{orctheming:FontImage {x:Static logViewer:FontAwesome.Save}}" Command="{catel:CommandManagerBinding Filter.ExportResult}"/>
+                    <fluent:Button Header="Copy Result to Clipboard" LargeIcon="{orctheming:FontImage {x:Static logViewer:FontAwesome.Copy}}" Command="{catel:CommandManagerBinding Filter.CopyResultToClipboard}"/>
                 </fluent:RibbonGroupBox>
 
                 <!--<fluent:RibbonGroupBox Header="Filter" MinWidth="175">
@@ -123,7 +126,7 @@
                                         Command="{Binding ShowKeyboardMappings}" Size="Large">
                         <orchestra:KeyboardMappingsOverviewView />
                     </fluent:SplitButton>
-                </fluent:RibbonGroupBox>                
+                </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
         </fluent:Ribbon.Tabs>
     </fluent:Ribbon>

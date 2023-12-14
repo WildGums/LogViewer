@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FileSystemService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Services
+﻿namespace LogViewer.Services
 {
     using System;
     using System.Collections.Generic;
@@ -14,7 +7,6 @@ namespace LogViewer.Services
     using System.Linq;
     using System.Threading.Tasks;
     using Catel;
-    using Catel.Collections;
     using Catel.Logging;
     using Catel.Services;
     using Models;
@@ -37,12 +29,12 @@ namespace LogViewer.Services
         public FileSystemService(IDispatcherService dispatcherService, IFileNodeService fileNodeService, IFileSystemWatchingService fileSystemWatchingService,
             INavigationNodeCacheService navigationNodeCacheService, IFilterService filterService, IFileBrowserService fileBrowserService)
         {
-            Argument.IsNotNull(() => dispatcherService);
-            Argument.IsNotNull(() => fileNodeService);
-            Argument.IsNotNull(() => fileSystemWatchingService);
-            Argument.IsNotNull(() => navigationNodeCacheService);
-            Argument.IsNotNull(() => filterService);
-            Argument.IsNotNull(() => fileBrowserService);
+            ArgumentNullException.ThrowIfNull(dispatcherService);
+            ArgumentNullException.ThrowIfNull(fileNodeService);
+            ArgumentNullException.ThrowIfNull(fileSystemWatchingService);
+            ArgumentNullException.ThrowIfNull(navigationNodeCacheService);
+            ArgumentNullException.ThrowIfNull(filterService);
+            ArgumentNullException.ThrowIfNull(fileBrowserService);
 
             _dispatcherService = dispatcherService;
             _fileNodeService = fileNodeService;
@@ -166,7 +158,7 @@ namespace LogViewer.Services
 
         public void ReleaseFileSystemContent(FolderNode folder)
         {
-            Argument.IsNotNull(() => folder);
+            ArgumentNullException.ThrowIfNull(folder);
 
             _fileSystemWatchingService.EndDirectoryWatching(folder.FullName);
             OnDeleted(folder.FullName);
@@ -198,13 +190,13 @@ namespace LogViewer.Services
 
             var folder = GetParentFolderNode(fullPath);
 
-            if (folder == null)
+            if (folder is null)
             {
                 OnCreated(Catel.IO.Path.GetParentDirectory(fullPath));
                 return;
             }
 
-            if (fullPath.IsFile() && folder.Files.FirstOrDefault(x => string.Equals(x.FullName, fullPath)) == null)
+            if (fullPath.IsFile() && folder.Files.FirstOrDefault(x => string.Equals(x.FullName, fullPath)) is null)
             {
                 if (fullPath.IsSupportedFile(_regexFilter))
                 {
@@ -231,7 +223,7 @@ namespace LogViewer.Services
 
             var folder = GetParentFolderNode(fullPath);
 
-            if (folder != null)
+            if (folder is not null)
             {
                 folder.Directories.RemoveByPredicate(x => string.Equals(x.FullName, fullPath));
                 folder.Files.RemoveByPredicate(x => string.Equals(x.FullName, fullPath));                
@@ -264,7 +256,7 @@ namespace LogViewer.Services
             Argument.IsNotNullOrEmpty(() => fullPath);
 
             var fileNode = _navigationNodeCacheService.GetFromCache<FileNode>(fullPath);
-            if (fileNode == null)
+            if (fileNode is null)
             {
                 fileNode = LoadFileFromFileSystem(fullPath);
             }
@@ -278,7 +270,7 @@ namespace LogViewer.Services
             Argument.IsNotNullOrEmpty(() => newName);
 
             var fromCache = _navigationNodeCacheService.GetFromCache<FolderNode>(newName);
-            if (fromCache != null)
+            if (fromCache is not null)
             {
                 return;
             }
@@ -286,7 +278,7 @@ namespace LogViewer.Services
             var folder = GetParentFolderNode(newName);
 
             var oldDir = folder.Directories.FirstOrDefault(x => string.Equals(x.FullName, oldName));
-            if (oldDir == null)
+            if (oldDir is null)
             {
                 return;
             }
@@ -306,7 +298,7 @@ namespace LogViewer.Services
 
         private void ClearSubfolders(FolderNode folder)
         {
-            Argument.IsNotNull(() => folder);
+            ArgumentNullException.ThrowIfNull(folder);
 
             foreach (var folderNode in folder.Directories)
             {
@@ -322,21 +314,21 @@ namespace LogViewer.Services
             Argument.IsNotNullOrEmpty(() => newName);
 
             var fromCache = _navigationNodeCacheService.GetFromCache<FileNode>(newName);
-            if (fromCache != null)
+            if (fromCache is not null)
             {
                 return;
             }
 
             var folder = GetParentFolderNode(newName);
 
-            if (folder == null)
+            if (folder is null)
             {
                 OnCreated(Catel.IO.Path.GetParentDirectory(newName));
                 return;
             }
 
             var fileNode = folder.Files.FirstOrDefault(x => string.Equals(x.FullName, oldName));
-            if (fileNode == null)
+            if (fileNode is null)
             {
                 OnCreated(newName);
                 return;
@@ -358,8 +350,8 @@ namespace LogViewer.Services
 
         private int CompareFileNodesByCreateTime(FileNode fileNode1, FileNode fileNode2)
         {
-            Argument.IsNotNull(() => fileNode1);
-            Argument.IsNotNull(() => fileNode2);
+            ArgumentNullException.ThrowIfNull(fileNode1);
+            ArgumentNullException.ThrowIfNull(fileNode2);
 
             return fileNode1.FileInfo.CreationTime.CompareTo(fileNode2.FileInfo.CreationTime);
         }

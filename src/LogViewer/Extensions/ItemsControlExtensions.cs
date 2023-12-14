@@ -1,23 +1,15 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ItemsControlExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer
+﻿namespace LogViewer
 {
+    using System;
     using System.Collections.Generic;
     using System.Windows.Controls;
-    using Catel;
 
     public static class ItemsControlExtensions
     {
-        #region Methods
         public static IEnumerable<T> EnumerateNested<T>(this ItemsControl rootControl) 
             where T : ItemsControl
         {
-            Argument.IsNotNull(() => rootControl);
+            ArgumentNullException.ThrowIfNull(rootControl);
 
             var stack = new Queue<ItemsControl>();
             stack.Enqueue(rootControl);
@@ -29,19 +21,18 @@ namespace LogViewer
                 for (var i = 0; i < item.Items.Count; i++)
                 {
                     var subItem = item.ItemContainerGenerator.ContainerFromIndex(i) as ItemsControl;
-                    if (subItem != null)
+                    if (subItem is not null)
                     {
                         stack.Enqueue(subItem);
                     }
 
                     var targetTyped = subItem as T;
-                    if (targetTyped != null)
+                    if (targetTyped is not null)
                     {
                         yield return targetTyped;
                     }
                 }
             }
         }
-        #endregion
     }
 }

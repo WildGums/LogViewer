@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DummyFacts.cs" company="WildGums">
-//   Copyright (c) 2014 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Test
+﻿namespace LogViewer.Test
 {
     using NUnit.Framework;
 

@@ -1,14 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MultipleSelectionBehavior.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Behaviors
+﻿namespace LogViewer.Behaviors
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows;
@@ -23,8 +15,6 @@ namespace LogViewer.Behaviors
 
     public class MultipleSelectionBehavior : BehaviorBase<TreeView>
     {
-        #region Dependency properties
-
         public static FastObservableCollection<NavigationNode> GetSelectedItems(MultipleSelectionBehavior element)
         {
             return (FastObservableCollection<NavigationNode>)element.GetValue(SelectedItemsProperty);
@@ -46,9 +36,7 @@ namespace LogViewer.Behaviors
         {
             element.SetValue(IsItemSelectedProperty, value);
         }
-        #endregion
 
-        #region Properties
         private NavigationNode StartItem { get; set; }
 
         public FastObservableCollection<NavigationNode> SelectedItems
@@ -57,13 +45,11 @@ namespace LogViewer.Behaviors
             set { SetValue(SelectedItemsProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached("SelectedItems", typeof(FastObservableCollection<NavigationNode>),
+        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached(nameof(SelectedItems), typeof(FastObservableCollection<NavigationNode>),
 #pragma warning disable WPF0016 // Default value is shared reference type.
             typeof(MultipleSelectionBehavior), new PropertyMetadata(new FastObservableCollection<NavigationNode>()));
 #pragma warning restore WPF0016 // Default value is shared reference type.
-        #endregion
 
-        #region Methods
         protected override void OnAssociatedObjectLoaded()
         {
             AssociatedObject.SelectedItemChanged += OnTreeViewSelectedItemChanged;
@@ -77,7 +63,7 @@ namespace LogViewer.Behaviors
         private void OnTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             var node = e.NewValue as NavigationNode;
-            if (node == null)
+            if (node is null)
             {
                 return;
             }
@@ -107,7 +93,7 @@ namespace LogViewer.Behaviors
 
         private void SelectSingleItem(NavigationNode node)
         {
-            Argument.IsNotNull(() => node);
+            ArgumentNullException.ThrowIfNull(node);
 
             var selectedItems = SelectedItems;
 
@@ -125,7 +111,7 @@ namespace LogViewer.Behaviors
 
         private void SelectMultipleItemsRandomly(NavigationNode node)
         {
-            Argument.IsNotNull(() => node);
+            ArgumentNullException.ThrowIfNull(node);
 
             var selectedItems = SelectedItems;
 
@@ -142,12 +128,12 @@ namespace LogViewer.Behaviors
                     navigationNodes.Add(node);
                 }
 
-                if (StartItem == null && navigationNodes.Contains(node))
+                if (StartItem is null && navigationNodes.Contains(node))
                 {
                     StartItem = node;
                 }
 
-                if (StartItem != null && navigationNodes.Count == 0)
+                if (StartItem is not null && navigationNodes.Count == 0)
                 {
                     StartItem = null;
                 }
@@ -181,10 +167,10 @@ namespace LogViewer.Behaviors
 
         private void SelectMultipleItemsContinuously(NavigationNode node)
         {
-            Argument.IsNotNull(() => node);
+            ArgumentNullException.ThrowIfNull(node);
 
             var startItem = StartItem;
-            if (startItem != null)
+            if (startItem is not null)
             {
                 if (startItem == node)
                 {
@@ -222,7 +208,6 @@ namespace LogViewer.Behaviors
 
                 ReplaceRange(selectedItems, navigationNodes);
             }
-        }            
-        #endregion
+        }
     }
 }

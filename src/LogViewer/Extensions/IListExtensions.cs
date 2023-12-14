@@ -1,15 +1,7 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IListExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer
+﻿namespace LogViewer
 {
     using System;
     using System.Collections.Generic;
-    using Catel;
 
     public static class IListExtensions
     {
@@ -24,9 +16,9 @@ namespace LogViewer
         /// <param name="comparison"></param>
         public static void InsertInAscendingOrder<T>(this IList<T> list, T item, Comparison<T> comparison) where T : class 
         {
-            Argument.IsNotNull(() => list);
-            Argument.IsNotNull(() => item);
-            Argument.IsNotNull(() => comparison);
+            ArgumentNullException.ThrowIfNull(list);
+            ArgumentNullException.ThrowIfNull(item);
+            ArgumentNullException.ThrowIfNull(comparison);
 
             if (list.Count == 0)
             {
@@ -70,9 +62,9 @@ namespace LogViewer
         /// <param name="comparison"></param>
         public static void InsertInDescendingOrder<T>(this IList<T> list, T item, Comparison<T> comparison) where T : class 
         {
-            Argument.IsNotNull(() => list);
-            Argument.IsNotNull(() => item);
-            Argument.IsNotNull(() => comparison);
+            ArgumentNullException.ThrowIfNull(list);
+            ArgumentNullException.ThrowIfNull(item);
+            ArgumentNullException.ThrowIfNull(comparison);
 
             if (list.Count == 0)
             {

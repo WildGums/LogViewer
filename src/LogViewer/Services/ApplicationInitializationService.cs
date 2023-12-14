@@ -1,58 +1,44 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationInitializationService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Services
+﻿namespace LogViewer.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Media;
     using Catel;
-    using Catel.Data;
     using Catel.IoC;
     using Catel.Logging;
     using Catel.MVVM;
-    using Catel.Services;
-    using Catel.Threading;
     using Catel.Windows.Controls;
     using Configuration;
+    using Fluent;
+    using LogViewer.Views;
     using MethodTimer;
     using Models;
-    using Orc.Analytics;
-    using Orc.FilterBuilder.Services;
+    using Orc.FilterBuilder;
     using Orc.Squirrel;
     using Orc.WorkspaceManagement;
-    using Orchestra.Markup;
     using Orchestra.Services;
     using Settings = LogViewer.Settings;
 
     public class ApplicationInitializationService : ApplicationInitializationServiceBase
     {
-        #region Fields
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
         private readonly IServiceLocator _serviceLocator;
         private readonly ICommandManager _commandManager;
         private readonly ITypeFactory _typeFactory;
-        #endregion
 
-        #region Constructors
         public ApplicationInitializationService(ITypeFactory typeFactory, IServiceLocator serviceLocator, ICommandManager commandManager)
         {
-            Argument.IsNotNull(() => typeFactory);
-            Argument.IsNotNull(() => serviceLocator);
-            Argument.IsNotNull(() => commandManager);
+            ArgumentNullException.ThrowIfNull(typeFactory);
+            ArgumentNullException.ThrowIfNull(serviceLocator);
+            ArgumentNullException.ThrowIfNull(commandManager);
 
             _typeFactory = typeFactory;
             _serviceLocator = serviceLocator;
             _commandManager = commandManager;
         }
-        #endregion
 
-        #region Methods
         public override async Task InitializeBeforeCreatingShellAsync()
         {
             // Non-async first
@@ -61,17 +47,25 @@ namespace LogViewer.Services
             InitializeSettings();
             InitializeCommands();
 
-            await TaskHelper.RunAndWaitAsync(new Func<Task>[] {
-                ImprovePerformanceAsync,
-                InitializeAnalyticsAsync,
-                InitializeFiltersAsync,
-                InitializeWorkspacesAsync,
-                CheckForUpdatesAsync
-            });
+            var tasks = new List<Task>()
+            {
+                Task.Run(ImprovePerformanceAsync),
+                Task.Run(InitializeFiltersAsync),
+                Task.Run(InitializeWorkspacesAsync),
+                Task.Run(CheckForUpdatesAsync)
+            };
+
+            await Task.WhenAll(tasks);
         }
 
         public override async Task InitializeAfterCreatingShellAsync()
         {
+            var shellWindow = System.Windows.Application.Current.MainWindow as RibbonWindow;
+
+            var windowCommands = new WindowCommands();
+            windowCommands.Items.Add(new WindowCommandsView());
+            shellWindow.WindowCommands = windowCommands;
+
             await base.InitializeAfterCreatingShellAsync();
         }
 
@@ -79,22 +73,20 @@ namespace LogViewer.Services
         {
             Log.Info("Initializing commands");
 
-            _commandManager.CreateCommandWithGesture(typeof(Commands.File), "Exit");
+            _commandManager.CreateCommandWithGesture(typeof(Commands.File), nameof(Commands.File.Exit));
 
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), "ResetSearchTemplate");
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), "ExportResult");
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), "CopyResultToClipboard");
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), nameof(Commands.Filter.ResetSearchTemplate));
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), nameof(Commands.Filter.ExportResult));
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), nameof(Commands.Filter.CopyResultToClipboard));
 
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Settings), "General");
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Settings), nameof(Commands.Settings.General));
 
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Help), "About");
+            _commandManager.CreateCommandWithGesture(typeof(Commands.Help), nameof(Commands.Help.About));
         }
 
         private void RegisterTypes()
         {
             var serviceLocator = ServiceLocator.Default;
-
-            serviceLocator.RegisterType<IManageUserDataService, ManageUserDataService>();
 
             serviceLocator.RegisterType<IConfigurationInitializationService, ConfigurationInitializationService>();
             serviceLocator.RegisterType<IFilterCustomizationService, FilterCustomizationService>();
@@ -127,34 +119,20 @@ namespace LogViewer.Services
         }
 
         [Time]
-        private async Task InitializeAnalyticsAsync()
-        {
-            Log.Info("Initializing analytics");
-
-            var analyticsConfigurationSynchronizer = _typeFactory.CreateInstance<AnalyticsConfigurationSynchronizer>();
-            _serviceLocator.RegisterInstance(analyticsConfigurationSynchronizer);
-
-            var analyticsService = _serviceLocator.ResolveType<IAnalyticsService>();
-            analyticsService.AccountId = Analytics.AccountId;
-
-            _serviceLocator.RegisterTypeAndInstantiate<NavigatorConfigurationSynchronizer>();
-            _serviceLocator.RegisterTypeAndInstantiate<TimestampVisibilityConfigurationSynchronizer>();
-        }
-
-        [Time]
         private void InitializeFonts()
         {
-            FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/LogViewer;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
-
-            FontImage.DefaultFontFamily = "FontAwesome";
-
-            FontImage.DefaultBrush = new SolidColorBrush(Color.FromArgb(255, 87, 87, 87));
+            Orc.Theming.FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/LogViewer;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
+            Orc.Theming.FontImage.DefaultFontFamily = "FontAwesome";
+            Orc.Theming.FontImage.DefaultBrush = new SolidColorBrush(Color.FromArgb(255, 87, 87, 87));
         }
 
         [Time]
         private void InitializeSettings()
         {
             Log.Info("Initializing settings");
+
+            _serviceLocator.RegisterTypeAndInstantiate<NavigatorConfigurationSynchronizer>();
+            _serviceLocator.RegisterTypeAndInstantiate<TimestampVisibilityConfigurationSynchronizer>();
 
             var configurationInitializationService = _serviceLocator.ResolveType<IConfigurationInitializationService>();
             configurationInitializationService.Initialize();
@@ -166,7 +144,7 @@ namespace LogViewer.Services
             Log.Info("Checking for updates");
 
             var updateService = _serviceLocator.ResolveType<IUpdateService>();
-            updateService.Initialize(Settings.Application.AutomaticUpdates.AvailableChannels, Settings.Application.AutomaticUpdates.DefaultChannel,
+            await updateService.InitializeAsync(Settings.Application.AutomaticUpdates.AvailableChannels, Settings.Application.AutomaticUpdates.DefaultChannel,
                 Settings.Application.AutomaticUpdates.CheckForUpdatesDefaultValue);
 
 #pragma warning disable 4014
@@ -197,12 +175,11 @@ namespace LogViewer.Services
             var defaultWorkspace = (from workspace in workspaceManager.Workspaces
                                     where string.Equals(workspace.Title, Workspaces.DefaultWorkspaceName)
                                     select workspace).FirstOrDefault();
-            if (defaultWorkspace != null)
+            if (defaultWorkspace is not null)
             {
                 defaultWorkspace.CanDelete = false;
                 defaultWorkspace.CanEdit = false;
             }
         }
-        #endregion
     }
 }

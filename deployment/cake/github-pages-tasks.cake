@@ -1,6 +1,6 @@
 #l "github-pages-variables.cake"
 
-#addin "nuget:?package=Cake.Git&version=0.19.0"
+#addin "nuget:?package=Cake.Git&version=3.0.0"
 
 //-------------------------------------------------------------
 
@@ -76,7 +76,7 @@ public class GitHubPagesProcessor : ProcessorBase
         {
             CakeContext.Information("Updating version for GitHub page '{0}'", gitHubPage);
 
-            var projectFileName = GetProjectFileName(gitHubPage);
+            var projectFileName = GetProjectFileName(BuildContext, gitHubPage);
 
             CakeContext.TransformConfig(projectFileName, new TransformationCollection 
             {
@@ -96,7 +96,7 @@ public class GitHubPagesProcessor : ProcessorBase
         {
             BuildContext.CakeContext.LogSeparator("Building GitHub page '{0}'", gitHubPage);
 
-            var projectFileName = GetProjectFileName(gitHubPage);
+            var projectFileName = GetProjectFileName(BuildContext, gitHubPage);
             
             var msBuildSettings = new MSBuildSettings {
                 Verbosity = Verbosity.Quiet, // Verbosity.Diagnostic
@@ -106,20 +106,12 @@ public class GitHubPagesProcessor : ProcessorBase
                 PlatformTarget = PlatformTarget.MSIL
             };
 
-            ConfigureMsBuild(BuildContext, msBuildSettings, gitHubPage);
+            ConfigureMsBuild(BuildContext, msBuildSettings, gitHubPage, "build");
 
             // Always disable SourceLink
             msBuildSettings.WithProperty("EnableSourceLink", "false");
 
-            // Note: we need to set OverridableOutputPath because we need to be able to respect
-            // AppendTargetFrameworkToOutputPath which isn't possible for global properties (which
-            // are properties passed in using the command line)
-            var outputDirectory = string.Format("{0}/{1}/", BuildContext.General.OutputRootDirectory, gitHubPage);
-            CakeContext.Information("Output directory: '{0}'", outputDirectory);
-            msBuildSettings.WithProperty("OverridableOutputPath", outputDirectory);
-            msBuildSettings.WithProperty("PackageOutputPath", BuildContext.General.OutputRootDirectory);
-
-            CakeContext.MSBuild(projectFileName, msBuildSettings);
+            RunMsBuild(BuildContext, gitHubPage, projectFileName, msBuildSettings, "build");
         }        
     }
 
@@ -132,33 +124,36 @@ public class GitHubPagesProcessor : ProcessorBase
 
         foreach (var gitHubPage in BuildContext.GitHubPages.Items)
         {
+            if (!ShouldPackageProject(BuildContext, gitHubPage))
+            {
+                CakeContext.Information("GitHub page '{0}' should not be packaged", gitHubPage);
+                continue;
+            }
+
             BuildContext.CakeContext.LogSeparator("Packaging GitHub pages '{0}'", gitHubPage);
 
-            var projectFileName = string.Format("./src/{0}/{0}.csproj", gitHubPage);
-
-            var outputDirectory = string.Format("{0}/{1}/", BuildContext.General.OutputRootDirectory, gitHubPage);
+            var projectFileName = GetProjectFileName(BuildContext, gitHubPage);
+            var outputDirectory = GetProjectOutputDirectory(BuildContext, gitHubPage);
+            
             CakeContext.Information("Output directory: '{0}'", outputDirectory);
 
             CakeContext.Information("1) Using 'dotnet publish' to package '{0}'", gitHubPage);
 
-            var msBuildSettings = new DotNetCoreMSBuildSettings();
+            var msBuildSettings = new DotNetMSBuildSettings();
 
-            // Note: we need to set OverridableOutputPath because we need to be able to respect
-            // AppendTargetFrameworkToOutputPath which isn't possible for global properties (which
-            // are properties passed in using the command line)
-            msBuildSettings.WithProperty("OverridableOutputPath", outputDirectory);
-            msBuildSettings.WithProperty("PackageOutputPath", outputDirectory);
+            ConfigureMsBuildForDotNet(BuildContext, msBuildSettings, gitHubPage, "pack");
+
             msBuildSettings.WithProperty("ConfigurationName", BuildContext.General.Solution.ConfigurationName);
             msBuildSettings.WithProperty("PackageVersion", BuildContext.General.Version.NuGet);
 
-            var publishSettings = new DotNetCorePublishSettings
+            var publishSettings = new DotNetPublishSettings
             {
                 MSBuildSettings = msBuildSettings,
                 OutputDirectory = outputDirectory,
                 Configuration = BuildContext.General.Solution.ConfigurationName
             };
 
-            CakeContext.DotNetCorePublish(projectFileName, publishSettings);
+            CakeContext.DotNetPublish(projectFileName, publishSettings);
         }        
     }
 
@@ -201,7 +196,7 @@ public class GitHubPagesProcessor : ProcessorBase
             CakeContext.Information("2) Updating the GitHub pages branch with latest source");
 
             // Special directory we need to distribute (e.g. output\Release\Blazorc.PatternFly.Example\Blazorc.PatternFly.Example\dist)
-            var sourceDirectory = string.Format("{0}/{1}/{1}/dist", BuildContext.General.OutputRootDirectory, gitHubPage);
+            var sourceDirectory = string.Format("{0}/{1}/wwwroot", BuildContext.General.OutputRootDirectory, gitHubPage);
             var sourcePattern = string.Format("{0}/**/*", sourceDirectory);
 
             CakeContext.Debug("Copying all files from '{0}' => '{1}'", sourcePattern, temporaryDirectory);

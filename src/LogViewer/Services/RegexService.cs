@@ -1,20 +1,12 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RegexService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Services
+﻿namespace LogViewer.Services
 {
-    using Catel;
+    using System;
 
     internal class RegexService : IRegexService
     {
-        #region IRegexService Members
         public string ConvertToRegex(string templateString, bool matchCase, bool matchWholeWord)
         {
-            Argument.IsNotNull(() => templateString);
+            ArgumentNullException.ThrowIfNull(templateString);
 
             var regex = templateString;
 
@@ -30,6 +22,5 @@ namespace LogViewer.Services
 
             return regex.WrapToFindRegex();
         }
-        #endregion
     }
 }

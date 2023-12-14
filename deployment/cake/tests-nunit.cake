@@ -1,15 +1,14 @@
-#tool "nuget:?package=NUnit.ConsoleRunner&version=3.9.0"
+#tool "nuget:?package=NUnit.ConsoleRunner&version=3.16.3"
 
 //-------------------------------------------------------------
 
 private static void RunTestsUsingNUnit(BuildContext buildContext, string projectName, string testTargetFramework, string testResultsDirectory)
 {
-    var testFile = string.Format("{0}/{1}/{2}.dll", GetProjectOutputDirectory(buildContext, projectName), 
-        testTargetFramework, projectName);
-    var resultsFile = string.Format("{0}testresults.xml", testResultsDirectory);
+    var testFile = System.IO.Path.Combine(GetProjectOutputDirectory(buildContext, projectName),
+        testTargetFramework, $"{projectName}.dll");
+    var resultsFile = System.IO.Path.Combine(testResultsDirectory, "testresults.xml");
 
-    // Note: although the docs say you can use without array initialization, you can't
-    buildContext.CakeContext.NUnit3(new string[] { testFile }, new NUnit3Settings
+    var nunitSettings = new NUnit3Settings
     {
         Results = new NUnit3Result[] 
         {
@@ -26,7 +25,10 @@ private static void RunTestsUsingNUnit(BuildContext buildContext, string project
         Timeout = 60 * 1000, // 60 seconds
         Workers = 1
         //Work = testResultsDirectory
-    });
+    };
+
+    // Note: although the docs say you can use without array initialization, you can't
+    buildContext.CakeContext.NUnit3(new string[] { testFile }, nunitSettings);
 
     buildContext.CakeContext.Information("Verifying whether results file '{0}' exists", resultsFile);
 

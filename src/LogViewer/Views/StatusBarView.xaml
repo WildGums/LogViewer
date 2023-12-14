@@ -5,7 +5,9 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:catel="http://schemas.catelproject.com"
                    xmlns:orchestra="http://schemas.wildgums.com/orchestra"
-                   xmlns:logviewer="clr-namespace:LogViewer">
+                   xmlns:logviewer="clr-namespace:LogViewer"
+                   xmlns:orccontrols="http://schemas.wildgums.com/orc/controls" 
+                   xmlns:orctheming="http://schemas.wildgums.com/orc/theming">
 
     <UserControl.Resources>
         <catel:BooleanToCollapsingVisibilityConverter x:Key="BooleanToCollapsingVisibilityConverter" />
@@ -24,7 +26,7 @@
         <StackPanel x:Name="stackPanel">
 
             <StackPanel Visibility="{Binding IsUpdatedInstalled, Converter={StaticResource BooleanToCollapsingVisibilityConverter}}">
-                <Image Width="16" Height="16" Source="{orchestra:FontImage {x:Static logviewer:FontAwesome.Download}}" 
+                <Image Width="16" Height="16" Source="{orctheming:FontImage {x:Static logviewer:FontAwesome.Download}}" 
                        ToolTip="Update is installed, restart to enable new features" />
 
                 <Separator  Margin="3,0,3,0" Width="{Binding ElementName=stackPanel, Path=ActualHeight}">

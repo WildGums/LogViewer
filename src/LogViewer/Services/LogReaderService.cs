@@ -1,20 +1,11 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LogReaderService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Services
+﻿namespace LogViewer.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
     using System.Text.RegularExpressions;
-    using Catel;
     using Catel.Logging;
-    using MethodTimer;
     using Models;
     using Orc.FileSystem;
 
@@ -23,11 +14,11 @@ namespace LogViewer.Services
         #region Fields
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        private static readonly Regex LogRecordPattern = new Regex(@"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+\s\=\>\s\[[a-zA-Z]+\]\s\[[a-zA-Z\d\.\`]+\].+", RegexOptions.Compiled);
-        private static readonly Regex DateTimePattern = new Regex(@"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+", RegexOptions.Compiled);
-        private static readonly Regex ThreadIdPattern = new Regex(@"^\[[0-9\.]+\]", RegexOptions.Compiled);
-        private static readonly Regex LogEventPattern = new Regex(@"^\[[a-zA-Z]+\]", RegexOptions.Compiled);
-        private static readonly Regex TargetTypePattern = new Regex(@"^\[[a-zA-Z\.\`\d]+\]", RegexOptions.Compiled);
+        private static readonly Regex LogRecordPattern = new Regex(@"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+\s\=\>\s\[[a-zA-Z]+\]\s\[[a-zA-Z\d\.\`]+\].+", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        private static readonly Regex DateTimePattern = new Regex(@"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        private static readonly Regex ThreadIdPattern = new Regex(@"^\[[0-9\.]+\]", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        private static readonly Regex LogEventPattern = new Regex(@"^\[[a-zA-Z]+\]", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        private static readonly Regex TargetTypePattern = new Regex(@"^\[[a-zA-Z\.\`\d]+\]", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         private readonly IFileService _fileService;
 
@@ -37,7 +28,7 @@ namespace LogViewer.Services
 
         public LogReaderService(IFileService fileService)
         {
-            Argument.IsNotNull(() => fileService);
+            ArgumentNullException.ThrowIfNull(fileService);
 
             _fileService = fileService;
         }
@@ -50,9 +41,9 @@ namespace LogViewer.Services
 
         public IEnumerable<LogRecord> LoadRecordsFromFile(FileNode fileNode)
         {
-            Argument.IsNotNull(() => fileNode);
+            ArgumentNullException.ThrowIfNull(fileNode);
 
-            FileStream stream;
+            Stream stream;
 
             Log.Debug("Loading records file file '{0}'", fileNode);
 
@@ -67,7 +58,8 @@ namespace LogViewer.Services
                 yield break;
             }
 
-            int counter = 0;
+            var counter = 0;
+
             using (stream)
             {
                 using (var reader = new StreamReader(stream))
@@ -75,11 +67,11 @@ namespace LogViewer.Services
                     string line;
                     LogRecord record = null;
 
-                    while ((line = reader.ReadLine()) != null)
+                    while ((line = reader.ReadLine()) is not null)
                     {
                         if (LogRecordPattern.IsMatch(line))
                         {
-                            if (record != null)
+                            if (record is not null)
                             {
                                 yield return record;
                             }
@@ -107,7 +99,7 @@ namespace LogViewer.Services
                         }
                     }
 
-                    if (record != null)
+                    if (record is not null)
                     {
                         yield return record;
                     }
@@ -149,9 +141,9 @@ namespace LogViewer.Services
 
         private void AppendMessageLine(LogRecord logRecord, string line)
         {
-            Argument.IsNotNull(() => line);
+            ArgumentNullException.ThrowIfNull(line);
 
-            if (logRecord == null)
+            if (logRecord is null)
             {
                 return;
             }

@@ -1,17 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Services
+﻿namespace LogViewer.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using Catel;
     using Catel.Collections;
     using Catel.Services;
     using MethodTimer;
@@ -29,8 +21,8 @@ namespace LogViewer.Services
         public FilterService(IDispatcherService dispatcherService, ILogTableService logTableService,
             IFileBrowserService fileBrowserService)
         {
-            Argument.IsNotNull(() => dispatcherService);
-            Argument.IsNotNull(() => logTableService);
+            ArgumentNullException.ThrowIfNull(dispatcherService);
+            ArgumentNullException.ThrowIfNull(logTableService);
 
             _dispatcherService = dispatcherService;
             _logTableService = logTableService;
@@ -48,8 +40,8 @@ namespace LogViewer.Services
         [Time]
         private IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<FileNode> logFiles)
         {
-            Argument.IsNotNull(() => filter);
-            Argument.IsNotNull(() => logFiles);
+            ArgumentNullException.ThrowIfNull(filter);
+            ArgumentNullException.ThrowIfNull(logFiles);
 
             var templateString = filter.SearchTemplate.TemplateString;
 
@@ -80,7 +72,7 @@ namespace LogViewer.Services
         public void ApplyLogRecordsFilter(FileNode fileNode = null)
         {
             var selectedNodes = _fileBrowser.SelectedItems.OfType<FileNode>().ToArray();
-            if (fileNode != null && !selectedNodes.Contains(fileNode))
+            if (fileNode is not null && !selectedNodes.Contains(fileNode))
             {
                 return;
             }

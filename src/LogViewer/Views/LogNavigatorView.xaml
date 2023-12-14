@@ -4,7 +4,7 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:catel="http://schemas.catelproject.com"
-                   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                   xmlns:xamlbehaviors="http://schemas.microsoft.com/xaml/behaviors"
                    xmlns:behaviors="clr-namespace:LogViewer.Behaviors"
                    xmlns:models="clr-namespace:LogViewer.Models"
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
@@ -25,9 +25,9 @@
         <Button Grid.Row="0" Grid.Column="1"  Content="Remove Folder" Margin="2 2 16 2" Command="{Binding DeleteFolder}"/>
 
         <TreeView Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="0" ItemsSource="{Binding RootDirectories}">
-            <i:Interaction.Behaviors >
+            <xamlbehaviors:Interaction.Behaviors >
                 <behaviors:MultipleSelectionBehavior SelectedItems="{Binding SelectedItems}" />
-            </i:Interaction.Behaviors>
+            </xamlbehaviors:Interaction.Behaviors>
 
             <TreeView.Resources>
                 <Style x:Key="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}" TargetType="{x:Type TreeViewItem}">

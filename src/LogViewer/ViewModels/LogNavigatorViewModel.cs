@@ -1,43 +1,32 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LogNavigatorViewModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.ViewModels
+﻿namespace LogViewer.ViewModels
 {
+    using System;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading.Tasks;
-    using Catel;
     using Catel.Fody;
     using Catel.MVVM;
     using Catel.Services;
     using Models;
-    using Orchestra.Services;
     using Services;
 
     public class LogNavigatorViewModel : ViewModelBase
     {
-        #region Fields
         private readonly IAppDataService _appDataService;
         private readonly IFileBrowserConfigurationService _fileBrowserConfigurationService;
         private readonly IFileNodeService _fileNodeService;
         private readonly IMessageService _messageService;
         private readonly ISelectDirectoryService _selectDirectoryService;
         private ObservableCollection<NavigationNode> _prevSelectedItems;
-        #endregion
 
-        #region Constructors
         public LogNavigatorViewModel(ISelectDirectoryService selectDirectoryService, IMessageService messageService, IAppDataService appDataService,
             IFileBrowserService fileBrowserService, IFileBrowserConfigurationService fileBrowserConfigurationService, IFileNodeService fileNodeService)
         {
-            Argument.IsNotNull(() => selectDirectoryService);
-            Argument.IsNotNull(() => messageService);
-            Argument.IsNotNull(() => appDataService);
-            Argument.IsNotNull(() => fileBrowserConfigurationService);
-            Argument.IsNotNull(() => fileNodeService);
+            ArgumentNullException.ThrowIfNull(selectDirectoryService);
+            ArgumentNullException.ThrowIfNull(messageService);
+            ArgumentNullException.ThrowIfNull(appDataService);
+            ArgumentNullException.ThrowIfNull(fileBrowserConfigurationService);
+            ArgumentNullException.ThrowIfNull(fileNodeService);
 
             _selectDirectoryService = selectDirectoryService;
             _messageService = messageService;
@@ -50,24 +39,20 @@ namespace LogViewer.ViewModels
             AddFolder = new TaskCommand(OnAddFolderExecuteAsync);
             DeleteFolder = new TaskCommand(OnDeleteFolderExecuteAsync, OnDeleteFolderCanExecute);
         }
-        #endregion
 
-        #region Properties
         [Model(SupportIEditableObject = false)]
         [Expose("RootDirectories")]
         [Expose("SelectedItems")]
         public FileBrowserModel FileBrowser { get; set; }
-        #endregion
 
-        #region Methods
         public void OnSelectedItemsChanged()
         {
-            if (_prevSelectedItems != null)
+            if (_prevSelectedItems is not null)
             {
                 _prevSelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
             }
 
-            if (FileBrowser.SelectedItems != null)
+            if (FileBrowser.SelectedItems is not null)
             {
                 FileBrowser.SelectedItems.CollectionChanged += OnSelectedItemsCollectionChanged;
             }
@@ -82,21 +67,22 @@ namespace LogViewer.ViewModels
 
             _fileNodeService.ParallelLoadFileNodeBatch(fileNodes);
         }
-        #endregion
 
-        #region Commands
         public TaskCommand AddFolder { get; private set; }
 
         private async Task OnAddFolderExecuteAsync()
         {
             var rootAppDataDir = _appDataService.GetRootAppDataFolder();
 
-            _selectDirectoryService.Title = "Select FolderNode's application data folder";
-            _selectDirectoryService.InitialDirectory = rootAppDataDir;
-
-            if (await _selectDirectoryService.DetermineDirectoryAsync())
+            var result = await _selectDirectoryService.DetermineDirectoryAsync(new DetermineDirectoryContext
             {
-                var folder = _selectDirectoryService.DirectoryName;
+                Title = "Select FolderNode's application data folder",
+                InitialDirectory = rootAppDataDir
+            });
+
+            if (result.Result)
+            {
+                var folder = result.DirectoryName;
 
                 if (FileBrowser.RootDirectories.Any(x => string.Equals(x.FullName, folder)))
                 {
@@ -113,7 +99,7 @@ namespace LogViewer.ViewModels
         private async Task OnDeleteFolderExecuteAsync()
         {
             var folder = FileBrowser.SelectedItems.SingleOrDefault() as FolderNode;
-            if (folder != null)
+            if (folder is not null)
             {
                 _fileBrowserConfigurationService.RemoveFolder(folder.FullName);
             }
@@ -127,13 +113,12 @@ namespace LogViewer.ViewModels
             }
 
             var folderNode = FileBrowser.SelectedItems.SingleOrDefault() as FolderNode;
-            if (folderNode == null)
+            if (folderNode is null)
             {
                 return false;
             }
 
             return FileBrowser.RootDirectories.Contains(folderNode);
         }
-        #endregion
     }
 }

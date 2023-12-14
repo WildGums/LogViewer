@@ -1,27 +1,17 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppDataServiceExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer
+﻿namespace LogViewer
 {
-    using Catel;
+    using System;
     using Catel.IO;
-
-    using Orchestra.Services;
+    using Catel.Services;
 
     public static class AppDataServiceExtensions
     {
-        #region Methods
         public static string GetRootAppDataFolder(this IAppDataService appDataService)
         {
-            Argument.IsNotNull(() => appDataService);
+            ArgumentNullException.ThrowIfNull(appDataService);
 
-            var currentCompanyDir = Path.GetParentDirectory(appDataService.ApplicationDataDirectory);
+            var currentCompanyDir = Path.GetParentDirectory(appDataService.GetApplicationDataDirectory(ApplicationDataTarget.UserRoaming));
             return Path.GetParentDirectory(currentCompanyDir);
         }
-        #endregion
     }
 }

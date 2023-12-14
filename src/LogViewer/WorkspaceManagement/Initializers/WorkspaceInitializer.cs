@@ -1,23 +1,15 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WorkspaceInitializer.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer
+﻿namespace LogViewer
 {
+    using System;
     using System.Threading.Tasks;
-    using Catel;
     using Catel.IoC;
     using Orc.WorkspaceManagement;
 
     public class WorkspaceInitializer : IWorkspaceInitializer
     {
-        #region Methods
         public async Task InitializeAsync(IWorkspace workspace)
         {
-            Argument.IsNotNull(() => workspace);
+            ArgumentNullException.ThrowIfNull(workspace);
 
             // NOTE: not injected because this is a dependency of IWorkspaceProvider
             var dependencyResolver = this.GetDependencyResolver();
@@ -28,6 +20,5 @@ namespace LogViewer
                 await provider.ProvideInformationAsync(workspace);
             }
         }
-        #endregion
     }
 }

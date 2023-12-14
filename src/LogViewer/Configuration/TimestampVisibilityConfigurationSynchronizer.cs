@@ -1,11 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TimestampVisibilityConfigurationSynchronizer.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-namespace LogViewer.Configuration
+﻿namespace LogViewer.Configuration
 {
-    using Catel;
+    using System;
     using Catel.Configuration;
     using Models;
     using Services;
@@ -18,9 +13,9 @@ namespace LogViewer.Configuration
         public TimestampVisibilityConfigurationSynchronizer(IConfigurationService configurationService, ILogTableService logTableService,
             ILogTableConfigurationService logTableConfigurationService)
         {
-            Argument.IsNotNull(() => configurationService);
-            Argument.IsNotNull(() => logTableService);
-            Argument.IsNotNull(() => logTableConfigurationService);
+            ArgumentNullException.ThrowIfNull(configurationService);
+            ArgumentNullException.ThrowIfNull(logTableService);
+            ArgumentNullException.ThrowIfNull(logTableConfigurationService);
 
             _logTableConfigurationService = logTableConfigurationService;
 

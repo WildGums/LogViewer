@@ -1,15 +1,7 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StatusBarViewModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.ViewModels
+﻿namespace LogViewer.ViewModels
 {
     using System;
     using System.Threading.Tasks;
-    using Catel;
     using Catel.Configuration;
     using Catel.MVVM;
     using Orchestra;
@@ -17,31 +9,24 @@ namespace LogViewer.ViewModels
 
     public class StatusBarViewModel : ViewModelBase
     {
-        #region Fields
         private readonly IConfigurationService _configurationService;
         private readonly IUpdateService _updateService;
-        #endregion
 
-        #region Constructors
         public StatusBarViewModel(IConfigurationService configurationService, IUpdateService updateService)
         {
-            Argument.IsNotNull(() => configurationService);
-            Argument.IsNotNull(() => updateService);
+            ArgumentNullException.ThrowIfNull(configurationService);
+            ArgumentNullException.ThrowIfNull(updateService);
 
             _configurationService = configurationService;
             _updateService = updateService;
         }
-        #endregion
 
-        #region Properties
         public string ReceivingAutomaticUpdates { get; private set; }
 
         public bool IsUpdatedInstalled { get; private set; }
 
         public string Version { get; private set; }
-        #endregion
 
-        #region Methods
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
@@ -52,7 +37,7 @@ namespace LogViewer.ViewModels
             IsUpdatedInstalled = _updateService.IsUpdatedInstalled;
             Version = VersionHelper.GetCurrentVersion();
 
-            UpdateAutoUpdateInfo();
+            await UpdateAutoUpdateInfoAsync();
         }
 
         protected override async Task CloseAsync()
@@ -63,11 +48,11 @@ namespace LogViewer.ViewModels
             await base.CloseAsync();
         }
 
-        private void OnConfigurationChanged(object sender, ConfigurationChangedEventArgs e)
+        private async void OnConfigurationChanged(object sender, ConfigurationChangedEventArgs e)
         {
             if (e.Key.Contains("Updates"))
             {
-                UpdateAutoUpdateInfo();
+                await UpdateAutoUpdateInfoAsync();
             }
         }
 
@@ -76,23 +61,22 @@ namespace LogViewer.ViewModels
             IsUpdatedInstalled = _updateService.IsUpdatedInstalled;
         }
 
-        private void UpdateAutoUpdateInfo()
+        private async Task UpdateAutoUpdateInfoAsync()
         {
             string updateInfo = string.Empty;
 
-            var checkForUpdates = _updateService.CheckForUpdates;
+            var checkForUpdates = _updateService.IsCheckForUpdatesEnabled;
             if (!_updateService.IsUpdateSystemAvailable || !checkForUpdates)
             {
                 updateInfo = "Automatic updates are disabled";
             }
             else
             {
-                var channel = _updateService.CurrentChannel.Name;
-                updateInfo = string.Format("Automatic updates are enabled for {0} versions", channel.ToLower());
+                var channel = _updateService.CurrentChannel;
+                updateInfo = string.Format("Automatic updates are enabled for {0} versions", channel.Name.ToLower());
             }
 
             ReceivingAutomaticUpdates = updateInfo;
         }
-        #endregion
     }
 }

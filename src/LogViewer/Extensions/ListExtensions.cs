@@ -1,23 +1,15 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ListExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer
+﻿namespace LogViewer
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Catel;
 
     public static class ListExtensions
     {
         #region Methods
         public static void RemoveByPredicate<T>(this IList<T> list, Predicate<T> predicate)
         {
-            Argument.IsNotNull(() => predicate);
+            ArgumentNullException.ThrowIfNull(predicate);
 
             var itemsToRemove = list.Where(x => predicate(x)).ToList();
 
@@ -29,7 +21,7 @@ namespace LogViewer
 
         public static void ClearOneByOne<T>(this IList<T> list)
         {
-            Argument.IsNotNull(() => list);
+            ArgumentNullException.ThrowIfNull(list);
 
             while (list.Any())
             {

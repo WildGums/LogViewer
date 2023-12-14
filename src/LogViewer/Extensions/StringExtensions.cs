@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StringExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer
+﻿namespace LogViewer
 {
     using System;
     using System.IO;
@@ -51,7 +44,7 @@ namespace LogViewer
                 return false;
             }
 
-            return Regex.IsMatch(fileName, regexFilter);
+            return Regex.IsMatch(fileName, regexFilter, RegexOptions.None, TimeSpan.FromSeconds(1));
         }
 
         public static bool IsFile(this string fullName)

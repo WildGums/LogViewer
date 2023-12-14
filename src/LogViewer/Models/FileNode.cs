@@ -1,16 +1,7 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FileNode.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Models
+﻿namespace LogViewer.Models
 {
     using System;
-    using System.Collections.ObjectModel;
     using System.IO;
-    using Catel;
     using Catel.Collections;
 
     public class FileNode : NavigationNode
@@ -18,7 +9,7 @@ namespace LogViewer.Models
         #region Constructors
         public FileNode(FileInfo fileInfo)
         {
-            Argument.IsNotNull(() => fileInfo);
+            ArgumentNullException.ThrowIfNull(fileInfo);
 
             FileInfo = fileInfo;
             Name = fileInfo.Name;

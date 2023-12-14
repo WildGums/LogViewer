@@ -1,14 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SettingsWindow.xaml.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Views
+﻿namespace LogViewer.Views
 {
     using Catel.Windows;
-    using Orc.Analytics;
     using ViewModels;
 
     /// <summary>
@@ -16,7 +8,6 @@ namespace LogViewer.Views
     /// </summary>
     public partial class SettingsWindow : DataWindow
     {
-        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsWindow"/> class.
         /// </summary>
@@ -36,9 +27,6 @@ namespace LogViewer.Views
             : base(viewModel)
         {
             InitializeComponent();
-
-            this.TrackViewForAnalyticsAsync();
         }
-        #endregion
     }
 }

@@ -1,13 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RibbonView.xaml.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Views
+﻿namespace LogViewer.Views
 {
-    using Orc.Analytics;
     using Orchestra;
 
     /// <summary>
@@ -18,8 +10,6 @@ namespace LogViewer.Views
         public RibbonView()
         {
             InitializeComponent();
-
-            this.TrackViewForAnalyticsAsync();
 
             ribbon.AddAboutButton();
         }

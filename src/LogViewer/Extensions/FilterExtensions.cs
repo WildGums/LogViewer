@@ -1,22 +1,13 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer
+﻿namespace LogViewer
 {
+    using System;
     using System.Text.RegularExpressions;
-
-    using Catel;
     using Catel.Logging;
 
     using LogViewer.Models;
 
     public static class FilterExtensions
     {
-        #region Methods
         public static bool IsAcceptableTo(this Filter filter, LogEvent logEvent)
         {
             switch (logEvent)
@@ -39,22 +30,21 @@ namespace LogViewer
 
         public static bool IsAcceptableTo(this Filter filter, string message)
         {
-            Argument.IsNotNull(() => message);
+            ArgumentNullException.ThrowIfNull(message);
 
-            if (!filter.UseTextSearch || filter.SearchTemplate.RegularExpression == null)
+            if (!filter.UseTextSearch || filter.SearchTemplate.RegularExpression is null)
             {
                 return true;
             }
 
-            return Regex.IsMatch(message, filter.SearchTemplate.RegularExpression);
+            return Regex.IsMatch(message, filter.SearchTemplate.RegularExpression, RegexOptions.None, TimeSpan.FromSeconds(1));
         }
 
         public static bool IsAcceptableTo(this Filter filter, FileNode fileNode)
         {
-            Argument.IsNotNull(() => fileNode);
+            ArgumentNullException.ThrowIfNull(fileNode);
 
             return !filter.IsUseDateRange || !fileNode.IsUnifyNamed || (fileNode.DateTime.Date <= filter.EndDate.Date && fileNode.DateTime.Date >= filter.StartDate.Date);
         }
-        #endregion
     }
 }

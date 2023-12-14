@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="HighlightableTextBlock.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace LogViewer.Controls
+﻿namespace LogViewer.Controls
 {
     using System;
     using System.Linq;
@@ -15,7 +8,6 @@ namespace LogViewer.Controls
     using System.Windows.Controls;
     using System.Windows.Documents;
     using System.Windows.Media;
-    using Catel.IoC;
     using Catel.Services;
     using Catel.Windows.Threading;
 
@@ -33,7 +25,7 @@ namespace LogViewer.Controls
             set { SetValue(RegularExpressionProperty, value); }
         }
 
-        public static readonly DependencyProperty RegularExpressionProperty = DependencyProperty.Register("RegularExpression", typeof(string), typeof(HighlightableTextBlock),
+        public static readonly DependencyProperty RegularExpressionProperty = DependencyProperty.Register(nameof(RegularExpression), typeof(string), typeof(HighlightableTextBlock),
 #pragma warning disable AvoidAsyncVoid // Avoid async void
             new PropertyMetadata(string.Empty, async (sender, e) => await ((HighlightableTextBlock)sender).UpdateHighlightingAsync()));
 #pragma warning restore AvoidAsyncVoid // Avoid async void
@@ -44,7 +36,7 @@ namespace LogViewer.Controls
             set { SetValue(HighlightableTextProperty, value); }
         }
 
-        public static readonly DependencyProperty HighlightableTextProperty = DependencyProperty.Register("HighlightableText", typeof(string), typeof(HighlightableTextBlock),
+        public static readonly DependencyProperty HighlightableTextProperty = DependencyProperty.Register(nameof(HighlightableText), typeof(string), typeof(HighlightableTextBlock),
 #pragma warning disable AvoidAsyncVoid // Avoid async void
             new PropertyMetadata(async (sender, e) => await ((HighlightableTextBlock)sender).UpdateHighlightingAsync()));
 #pragma warning restore AvoidAsyncVoid // Avoid async void
@@ -55,7 +47,7 @@ namespace LogViewer.Controls
             set { SetValue(HighlightForegroundProperty, value); }
         }
 
-        public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register("HighlightForeground", typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Black));
+        public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register(nameof(HighlightForeground), typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Black));
 
         public Brush HighlightBackground
         {
@@ -63,7 +55,7 @@ namespace LogViewer.Controls
             set { SetValue(HighlightBackgroundProperty, value); }
         }
 
-        public static readonly DependencyProperty HighlightBackgroundProperty = DependencyProperty.Register("HighlightBackground", typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Yellow));
+        public static readonly DependencyProperty HighlightBackgroundProperty = DependencyProperty.Register(nameof(HighlightBackground), typeof(Brush), typeof(HighlightableTextBlock), new PropertyMetadata(Brushes.Yellow));
 
 
         private async Task UpdateHighlightingAsync()
@@ -82,7 +74,7 @@ namespace LogViewer.Controls
 
             await Task.Factory.StartNew(() =>
             {
-                var split = Regex.Split(textToCheck, regex, RegexOptions.ExplicitCapture);
+                var split = Regex.Split(textToCheck, regex, RegexOptions.ExplicitCapture, TimeSpan.FromSeconds(1));
                 if (split.Max(x => x.Length) == 1)
                 {
                     UpdateText(value, true);
@@ -97,7 +89,7 @@ namespace LogViewer.Controls
 
                 foreach (var str in split)
                 {
-                    var match = Regex.IsMatch(str, regex, RegexOptions.ExplicitCapture);
+                    var match = Regex.IsMatch(str, regex, RegexOptions.ExplicitCapture, TimeSpan.FromSeconds(1));
                     Dispatcher.BeginInvokeIfRequired(() =>
                     {
                         var run = new Run(str);
@@ -141,7 +133,7 @@ namespace LogViewer.Controls
 
             try
             {
-                Regex.Match(string.Empty, regex);
+                Regex.Match(string.Empty, regex, RegexOptions.None, TimeSpan.FromSeconds(1));
             }
             catch (ArgumentException)
             {
