@@ -33,14 +33,16 @@
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="FastMember" Version="1.5.0" />
-    <PackageReference Include="Fody" Version="6.9.1" PrivateAssets="all">
+    <PackageReference Include="Fody" Version="6.9.2" PrivateAssets="all">
       <IncludeAssets>build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="LoadAssembliesOnStartup.Fody" Version="4.6.0" PrivateAssets="all">
+    <PackageReference Include="LoadAssembliesOnStartup.Fody" Version="4.7.0" PrivateAssets="all">
       <ExcludeAssets>runtime</ExcludeAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MethodTimer.Fody" Version="3.2.2" PrivateAssets="all">
+    <PackageReference Include="MethodTimer.Fody" Version="3.2.3" PrivateAssets="all">
       <ExcludeAssets>runtime</ExcludeAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all">
       <ExcludeAssets>runtime</ExcludeAssets>
@@ -48,7 +50,7 @@
     <PackageReference Include="Orc.FilterBuilder.Xaml" Version="5.0.3" />
     <PackageReference Include="Orc.Squirrel.Xaml" Version="5.0.0" />
     <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="5.0.2" />
-    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="7.0.5" />
+    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="7.1.0" />
     <PackageReference Include="Rx-Linq" Version="2.2.5" />
     <PackageReference Include="Rx-WPF" Version="2.2.5" />
   </ItemGroup>
