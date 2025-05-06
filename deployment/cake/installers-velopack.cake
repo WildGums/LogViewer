@@ -84,10 +84,12 @@ public class VelopackInstaller : IInstaller
 
         // Pack using velopack (example command line: vpk pack -u YourAppId -v 1.0.0 -p publish -e yourMainBinary.exe)
 
+        var appId = $"{projectSlug}{setupSuffix}";
+
         var argumentBuilder = new ProcessArgumentBuilder()
             .Append("pack")
             .Append("--verbose")
-            .AppendSwitch("--packId", $"{projectSlug}{setupSuffix}")
+            .AppendSwitch("--packId", appId)
             .AppendSwitch("--packVersion", BuildContext.General.Version.NuGet)
             .AppendSwitch("--packDir", appSourceDirectory)
             .AppendSwitch("--packAuthors", BuildContext.General.Copyright.Company)
@@ -143,7 +145,7 @@ public class VelopackInstaller : IInstaller
         }
 
         // Copy setup
-        BuildContext.CakeContext.CopyFile(System.IO.Path.Combine(velopackReleasesRoot, "LogViewer-win-Setup.exe"), System.IO.Path.Combine(velopackReleasesRoot, "Setup.exe"));
+        BuildContext.CakeContext.CopyFile(System.IO.Path.Combine(velopackReleasesRoot, $"{appId}-win-Setup.exe"), System.IO.Path.Combine(velopackReleasesRoot, "Setup.exe"));
 
         if (BuildContext.Wpf.UpdateDeploymentsShare)
         {
@@ -156,8 +158,12 @@ public class VelopackInstaller : IInstaller
             // - releases.win.json
             // - RELEASES
 
-            var velopackFiles = BuildContext.CakeContext.GetFiles($"{velopackReleasesRoot}/{projectSlug}{setupSuffix}-{BuildContext.General.Version.NuGet}*.nupkg");
+            // Note to consider in future: this stores (and uploads) the same file 4 times. Maybe we need to stop processing so many files
+            // to save time on uploads (and eventually money on storage)
+            var velopackFiles = BuildContext.CakeContext.GetFiles($"{velopackReleasesRoot}/{appId}-{BuildContext.General.Version.NuGet}*.nupkg");
             BuildContext.CakeContext.CopyFiles(velopackFiles, releasesSourceDirectory);
+            BuildContext.CakeContext.CopyFile(System.IO.Path.Combine(velopackReleasesRoot, $"{appId}-win-Portable.exe"), System.IO.Path.Combine(releasesSourceDirectory, $"{appId}-win-Portable.exe"));
+            BuildContext.CakeContext.CopyFile(System.IO.Path.Combine(velopackReleasesRoot, $"{appId}-win-Setup.exe"), System.IO.Path.Combine(releasesSourceDirectory, $"{appId}-win-Setup.exe"));
             BuildContext.CakeContext.CopyFile(System.IO.Path.Combine(velopackReleasesRoot, "Setup.exe"), System.IO.Path.Combine(releasesSourceDirectory, "Setup.exe"));
             BuildContext.CakeContext.CopyFile(System.IO.Path.Combine(velopackReleasesRoot, "Setup.exe"), System.IO.Path.Combine(releasesSourceDirectory, $"{projectName}.exe"));
             BuildContext.CakeContext.CopyFile(System.IO.Path.Combine(velopackReleasesRoot, "releases.win.json"), System.IO.Path.Combine(releasesSourceDirectory, "releases.win.json"));
