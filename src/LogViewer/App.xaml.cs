@@ -8,6 +8,7 @@
     using Orc.Squirrel;
     using Orchestra.Services;
     using Orchestra.Views;
+    using Velopack;
 
     /// <summary>
     /// Interaction logic for App.xaml
@@ -22,6 +23,8 @@
 
         public App()
         {
+            VelopackApp.Build().Run();
+
             _stopwatch = new Stopwatch();
             _stopwatch.Start();
             _start = DateTime.Now;
