@@ -1,4 +1,4 @@
-<Project Sdk="MSBuild.Sdk.Extras">
+﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
     <TargetFrameworks>net8.0-windows</TargetFrameworks>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
@@ -29,8 +29,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Catel.Fody" Version="4.9.0" PrivateAssets="all">
+    <PackageReference Include="Catel.Fody" Version="4.10.0" PrivateAssets="all">
       <ExcludeAssets>runtime</ExcludeAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="FastMember" Version="1.5.0" />
     <PackageReference Include="Fody" Version="6.9.2" PrivateAssets="all">
@@ -48,9 +49,9 @@
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="Orc.FilterBuilder.Xaml" Version="5.0.3" />
-    <PackageReference Include="Orc.Squirrel.Xaml" Version="5.0.0" />
+    <PackageReference Include="Orc.Squirrel.Xaml" Version="5.1.0-alpha0726" />
     <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="5.0.2" />
-    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="7.1.0" />
+    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="7.1.2" />
     <PackageReference Include="Rx-Linq" Version="2.2.5" />
     <PackageReference Include="Rx-WPF" Version="2.2.5" />
     <PackageReference Include="Velopack" Version="0.0.1053" />

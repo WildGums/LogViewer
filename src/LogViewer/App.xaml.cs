@@ -38,7 +38,9 @@
             LogManager.AddDebugListener(true);
 #endif
 
+#pragma warning disable CS0618 // Type or member is obsolete
             await SquirrelHelper.HandleSquirrelAutomaticallyAsync();
+#pragma warning restore CS0618 // Type or member is obsolete
 
             var serviceLocator = ServiceLocator.Default;
             var shellService = serviceLocator.ResolveType<IShellService>();
