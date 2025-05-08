@@ -168,7 +168,7 @@ public class VelopackInstaller : IInstaller
             // to save time on uploads (and eventually money on storage)
             var velopackFiles = BuildContext.CakeContext.GetFiles($"{velopackReleasesRoot}/{appId}-{BuildContext.General.Version.NuGet}*.nupkg");
             BuildContext.CakeContext.CopyFiles(velopackFiles, releasesSourceDirectory);
-            BuildContext.CakeContext.CopyFile(System.IO.Path.Combine(velopackReleasesRoot, $"{appId}-win-Portable.exe"), System.IO.Path.Combine(releasesSourceDirectory, $"{appId}-win-Portable.exe"));
+            BuildContext.CakeContext.CopyFile(System.IO.Path.Combine(velopackReleasesRoot, $"{appId}-win-Portable.zip"), System.IO.Path.Combine(releasesSourceDirectory, $"{appId}-win-Portable.zip"));
             BuildContext.CakeContext.CopyFile(System.IO.Path.Combine(velopackReleasesRoot, $"{appId}-win-Setup.exe"), System.IO.Path.Combine(releasesSourceDirectory, $"{appId}-win-Setup.exe"));
             BuildContext.CakeContext.CopyFile(System.IO.Path.Combine(velopackReleasesRoot, "Setup.exe"), System.IO.Path.Combine(releasesSourceDirectory, "Setup.exe"));
             BuildContext.CakeContext.CopyFile(System.IO.Path.Combine(velopackReleasesRoot, "Setup.exe"), System.IO.Path.Combine(releasesSourceDirectory, $"{projectName}.exe"));
