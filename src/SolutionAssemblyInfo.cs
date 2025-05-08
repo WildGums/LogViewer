@@ -29,4 +29,4 @@ using System.Reflection;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0")]
-[assembly: AssemblyInformationalVersion("1.0, Nightly, Released on 2013-09-01 13:32")]
+[assembly: AssemblyInformationalVersion("1.0, Nightly, Released on 2025-09-01 13:32")]
