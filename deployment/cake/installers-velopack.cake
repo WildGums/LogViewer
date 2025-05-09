@@ -106,12 +106,25 @@ public class VelopackInstaller : IInstaller
         argumentBuilder = argumentBuilder
             .AppendSwitch("--mainExe", $"{projectName}.exe");
 
-        // (Animated) splash image
-        var splashImageFileName = System.IO.Path.Combine(".", "deployment", "velopack", "splash.gif");
-        if (System.IO.File.Exists(splashImageFileName))
+        // Check several different allowed formats
+        var allowedSplashImages = new []
         {
-            argumentBuilder = argumentBuilder
-                .AppendSwitch("--splashImage", splashImageFileName);
+            // Support "channel specific images"
+            $"splash_{setupSuffix}.gif",
+            $"splash_{setupSuffix}.png",
+            "splash.gif",
+            "splash.png",
+        };
+
+        foreach (var allowedSplashImage in allowedSplashImages)
+        {
+            var splashImageFileName = System.IO.Path.Combine(".", "deployment", "velopack", allowedSplashImage);
+            if (System.IO.File.Exists(splashImageFileName))
+            {
+                argumentBuilder = argumentBuilder
+                    .AppendSwitch("--splashImage", splashImageFileName);
+                break;
+            }
         }
 
         // Note: this is not really generic, but this is where we store our icons file, we can
