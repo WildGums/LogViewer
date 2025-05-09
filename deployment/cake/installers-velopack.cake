@@ -104,7 +104,7 @@ public class VelopackInstaller : IInstaller
 
         // Note: for now BIG assumption that the exe is the same as project name
         argumentBuilder = argumentBuilder
-            .AppendSwitch("--mainExe", $"{projectName}.exe")
+            .AppendSwitch("--mainExe", $"{projectName}.exe");
 
         // (Animated) splash image
         var splashImageFileName = System.IO.Path.Combine(".", "deployment", "velopack", "splash.gif");
