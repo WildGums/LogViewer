@@ -23,6 +23,8 @@
 
         public App()
         {
+            // Keep here, even though we have it in module initializer. But in case module
+            // initializer is not called we still want to initialize velopack.
             VelopackApp.Build().Run();
 
             _stopwatch = new Stopwatch();

@@ -1,6 +1,7 @@
 ﻿using Catel.IoC;
 using LogViewer.Services;
 using Orchestra.Services;
+using Velopack;
 
 /// <summary>
 /// Used by the ModuleInit. All code inside the Initialize method is ran as soon as the assembly is loaded.
@@ -12,6 +13,8 @@ public static class ModuleInitializer
     /// </summary>
     public static void Initialize()
     {
+        VelopackApp.Build().Run();
+
         var serviceLocator = ServiceLocator.Default;
         
         serviceLocator.RegisterType<IRibbonService, RibbonService>();
