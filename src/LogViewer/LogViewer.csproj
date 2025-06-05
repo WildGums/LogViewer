@@ -49,12 +49,11 @@
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="Orc.FilterBuilder.Xaml" Version="5.0.3" />
-    <PackageReference Include="Orc.Squirrel.Xaml" Version="5.1.0-alpha0726" />
-    <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="5.0.2" />
-    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="7.1.2" />
+    <PackageReference Include="Orc.Squirrel.Xaml" Version="5.1.0-beta0002" />
+    <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="5.1.1" />
+    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="7.2.0" />
     <PackageReference Include="Rx-Linq" Version="2.2.5" />
     <PackageReference Include="Rx-WPF" Version="2.2.5" />
-    <PackageReference Include="Velopack" Version="0.0.1053" />
   </ItemGroup>
 
   <Import Project="$(MSBuildProjectDirectory)\..\Directory.build.shared.explicit.props" Condition="Exists('$(MSBuildProjectDirectory)\..\Directory.build.shared.explicit.props')" />
