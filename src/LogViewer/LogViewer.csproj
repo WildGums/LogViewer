@@ -45,9 +45,6 @@
       <ExcludeAssets>runtime</ExcludeAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all">
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </PackageReference>
     <PackageReference Include="Orc.FilterBuilder.Xaml" Version="5.1.1" />
     <PackageReference Include="Orc.Squirrel.Xaml" Version="5.1.2" />
     <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="5.1.1" />

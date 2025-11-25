@@ -1,4 +1,5 @@
-﻿using Catel.IoC;
+using System.Runtime.CompilerServices;
+using Catel.IoC;
 using LogViewer.Services;
 using Orchestra.Services;
 using Velopack;
@@ -11,6 +12,7 @@ public static class ModuleInitializer
     /// <summary>
     /// Initializes the module.
     /// </summary>
+    [ModuleInitializer]
     public static void Initialize()
     {
         VelopackApp.Build().Run();
