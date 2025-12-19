@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/misc/">
+    <File Path="GlobalSuppressions.cs" />
+    <File Path="LogViewer.sln.DotSettings" />
+    <File Path="nuget.config" />
+    <File Path="Settings.StyleCop" />
+    <File Path="SolutionAssemblyInfo.cs" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="LogViewer.Tests/LogViewer.Tests.csproj" />
+    <Project Path="LogViewer/LogViewer.csproj" />
+  </Folder>
+</Solution>
