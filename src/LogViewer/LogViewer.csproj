@@ -45,10 +45,10 @@
       <ExcludeAssets>runtime</ExcludeAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="5.1.1" />
-    <PackageReference Include="Orc.Squirrel.Xaml" Version="5.1.2" />
-    <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="5.1.1" />
-    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="7.2.3" />
+    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="5.2.0" />
+    <PackageReference Include="Orc.Squirrel.Xaml" Version="5.2.0" />
+    <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="5.2.0" />
+    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="7.3.0" />
     <PackageReference Include="Rx-Linq" Version="2.2.5" />
     <PackageReference Include="Rx-WPF" Version="2.2.5" />
   </ItemGroup>
