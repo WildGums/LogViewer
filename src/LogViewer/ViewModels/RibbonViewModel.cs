@@ -14,7 +14,7 @@
     using Services;
     using System;
 
-    public class RibbonViewModel : ViewModelBase
+    public class RibbonViewModel : FeaturedViewModelBase
     {
         private readonly IRegexService _regexService;
         private readonly INavigationService _navigationService;
@@ -26,17 +26,10 @@
 
         public RibbonViewModel(IRegexService regexService, ICommandManager commandManager, 
             INavigationService navigationService, IConfigurationService configurationService, IUIVisualizerService uiVisualizerService,
-            IWorkspaceManager workspaceManager, IBusyIndicatorService busyIndicatorService, IFilterService filterService)
+            IWorkspaceManager workspaceManager, IBusyIndicatorService busyIndicatorService, IFilterService filterService,
+            IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
-            ArgumentNullException.ThrowIfNull(regexService);
-            ArgumentNullException.ThrowIfNull(commandManager);
-            ArgumentNullException.ThrowIfNull(navigationService);
-            ArgumentNullException.ThrowIfNull(configurationService);
-            ArgumentNullException.ThrowIfNull(uiVisualizerService);
-            ArgumentNullException.ThrowIfNull(workspaceManager);
-            ArgumentNullException.ThrowIfNull(busyIndicatorService);
-            ArgumentNullException.ThrowIfNull(filterService);
-
             _regexService = regexService;
             Filter = filterService.Filter;
             _navigationService = navigationService;
@@ -46,10 +39,10 @@
             _busyIndicatorService = busyIndicatorService;
             _filterService = filterService;
 
-            SaveWorkspace = new TaskCommand(OnSaveWorkspaceExecuteAsync, OnSaveWorkspaceCanExecute);
-            CreateWorkspace = new TaskCommand(OnCreateWorkspaceExecuteAsync);
+            SaveWorkspace = new TaskCommand(serviceProvider, OnSaveWorkspaceExecuteAsync, OnSaveWorkspaceCanExecute);
+            CreateWorkspace = new TaskCommand(serviceProvider, OnCreateWorkspaceExecuteAsync);
 
-            ShowKeyboardMappings = new TaskCommand(OnShowKeyboardMappingsExecuteAsync);
+            ShowKeyboardMappings = new TaskCommand(serviceProvider, OnShowKeyboardMappingsExecuteAsync);
 
             Title = AssemblyHelper.GetEntryAssembly().Title();
         }

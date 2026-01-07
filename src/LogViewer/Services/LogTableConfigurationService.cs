@@ -5,8 +5,8 @@
 
     public class LogTableConfigurationService : ILogTableConfigurationService
     {
-        private const string IsTimestampVisibile = "IsTimestampVisibile";
-        private const bool IsTimestampVisibileDefaulValue = true;
+        private const string IsTimestampVisible = "IsTimestampVisible";
+        private const bool IsTimestampVisibleDefaultValue = true;
         private readonly IConfigurationService _configurationService;
 
         public LogTableConfigurationService(IConfigurationService configurationService)
@@ -16,15 +16,15 @@
             _configurationService = configurationService;
         }
 
-        public bool GetIsTimestampVisibile()
+        public bool GetIsTimestampVisible()
         {
-            var stringValue = _configurationService.GetRoamingValue(IsTimestampVisibile, IsTimestampVisibileDefaulValue.ToString());
+            var stringValue = _configurationService.GetRoamingValue(IsTimestampVisible, IsTimestampVisibleDefaultValue.ToString());
             return bool.Parse(stringValue);
         }
 
-        public void SetIsTimestampVisibile(bool value)
+        public void SetIsTimestampVisible(bool value)
         {
-            _configurationService.SetRoamingValue(IsTimestampVisibile, value.ToString());
+            _configurationService.SetRoamingValue(IsTimestampVisible, value.ToString());
         }
     }
 }

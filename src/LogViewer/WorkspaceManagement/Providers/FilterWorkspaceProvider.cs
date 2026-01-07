@@ -2,26 +2,20 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Catel.IoC;
     using Orc.WorkspaceManagement;
     using Services;
 
     public class FilterWorkspaceProvider : WorkspaceProviderBase
     {
-        #region Fields
         private readonly IFilterService _filterService;
-        #endregion
 
-        #region Constructors
-        public FilterWorkspaceProvider(IWorkspaceManager workspaceManager, IFilterService filterService, IServiceLocator serviceLocator)
-            : base(workspaceManager, serviceLocator)
+        public FilterWorkspaceProvider(IFilterService filterService, IServiceProvider serviceProvider)
+            : base()
         {
             ArgumentNullException.ThrowIfNull(filterService);
 
             _filterService = filterService;
         }
-        #endregion
-
         public override async Task ProvideInformationAsync(IWorkspace workspace)
         {
             ArgumentNullException.ThrowIfNull(workspace);

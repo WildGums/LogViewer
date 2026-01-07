@@ -20,7 +20,7 @@
             Files = new ObservableCollection<FileNode>();
             Directories = new ObservableCollection<FolderNode>();
         }
- 
+
         public override bool AllowMultiSelection
         {
             get { return false; }
@@ -31,7 +31,20 @@
 
         public IList Children
         {
-            get { return new CompositeCollection {new CollectionContainer {Collection = Directories}, new CollectionContainer {Collection = Files}}; }
+            get
+            {
+                return new CompositeCollection
+                {
+                    new CollectionContainer
+                    {
+                        Collection = Directories
+                    },
+                    new CollectionContainer
+                    {
+                        Collection = Files
+                    }
+                };
+            }
         }
     }
 }

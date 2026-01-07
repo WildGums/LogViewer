@@ -11,13 +11,10 @@
 
     internal class FilterService : IFilterService
     {
-        #region Fields
         private readonly IDispatcherService _dispatcherService;
         private readonly FileBrowserModel _fileBrowser;
         private readonly ILogTableService _logTableService;
-        #endregion
 
-        #region Constructors
         public FilterService(IDispatcherService dispatcherService, ILogTableService logTableService,
             IFileBrowserService fileBrowserService)
         {
@@ -30,13 +27,9 @@
             Filter = new Filter();
             _fileBrowser = fileBrowserService.FileBrowserModel;
         }
-        #endregion
 
-        #region Properties
         public Filter Filter { get; set; }
-        #endregion
 
-        #region IFilterService Members
         [Time]
         private IEnumerable<LogRecord> FilterRecords(Filter filter, IEnumerable<FileNode> logFiles)
         {
@@ -45,7 +38,7 @@
 
             var templateString = filter.SearchTemplate.TemplateString;
 
-            var logRecords = logFiles.Where(filter.IsAcceptableTo).SelectMany(file => file.Records.ToArray()).Where(record => filter.IsAcceptableTo(record.LogEvent));
+            var logRecords = logFiles.Where(filter.IsAcceptableTo).SelectMany(file => file.Records.ToArray()).Where(record => filter.IsAcceptableTo(record.LogLevel));
 
             if (!filter.UseTextSearch)
             {
@@ -85,7 +78,7 @@
 
             _dispatcherService.Invoke(() =>
             {                
-                using (logRecords.SuspendChangeNotifications())
+                //using (logRecords.SuspendChangeNotifications())
                 {
                     ((ICollection<LogRecord>)logRecords).ReplaceRange(filteredRecords);
                 }
@@ -133,6 +126,5 @@
                 subRootFolders.UpdateVisibility();
             }
         }
-        #endregion
     }
 }

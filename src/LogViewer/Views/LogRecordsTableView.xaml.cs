@@ -1,19 +1,15 @@
 ﻿namespace LogViewer.Views
 {
     using System.Windows.Controls;
-
-    /// <summary>
-    /// Interaction logic for LogRecordsTableView.xaml
-    /// </summary>
+    
     public partial class LogRecordsTableView
     {
-        private readonly GroupStyle _defaultGroupStyle;
+        private GroupStyle? _defaultGroupStyle;
 
-        public LogRecordsTableView()
+        partial void OnInitializedComponent()
         {
-            InitializeComponent();
-
             _defaultGroupStyle = (GroupStyle) FindResource("groupStyle");
+
             InitDataGrid();
 
             Loaded += LogRecordsTableView_Loaded;
@@ -26,7 +22,10 @@
 
         private void InitDataGrid()
         {
-            Grid.GroupStyle.Add(_defaultGroupStyle);
+            if (_defaultGroupStyle is not null)
+            {
+                Grid.GroupStyle.Add(_defaultGroupStyle);
+            }
         }
     }
 }

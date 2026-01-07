@@ -12,15 +12,14 @@
         private readonly IBaseColorSchemeService _baseColorSchemeService;
         private readonly IConfigurationService _configurationService;
 
-        public WindowCommandsViewModel(IBaseColorSchemeService baseColorSchemeService, IConfigurationService configurationService)
+        public WindowCommandsViewModel(IBaseColorSchemeService baseColorSchemeService, 
+            IConfigurationService configurationService, IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
-            ArgumentNullException.ThrowIfNull(baseColorSchemeService);
-            ArgumentNullException.ThrowIfNull(configurationService);
-
             _baseColorSchemeService = baseColorSchemeService;
             _configurationService = configurationService;
 
-            SwitchTheme = new Command(OnSwitchThemeExecute);
+            SwitchTheme = new Command(serviceProvider, OnSwitchThemeExecute);
         }
 
         public bool IsInDarkMode { get; private set; }

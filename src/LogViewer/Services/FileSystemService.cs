@@ -9,12 +9,13 @@
     using Catel;
     using Catel.Logging;
     using Catel.Services;
+    using Microsoft.Extensions.Logging;
     using Models;
 
     internal class FileSystemService : IFileSystemService
     {
-        #region Fields
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger Logger = LogManager.GetLogger(typeof(FileSystemService));
+
         private readonly IDispatcherService _dispatcherService;
         private readonly IFileNodeService _fileNodeService;
         private readonly IFileSystemWatchingService _fileSystemWatchingService;
@@ -23,9 +24,7 @@
         private readonly INavigationNodeCacheService _navigationNodeCacheService;
         private string _regexFilter;
         private string _wildcardsFilter;
-        #endregion
 
-        #region Constructors
         public FileSystemService(IDispatcherService dispatcherService, IFileNodeService fileNodeService, IFileSystemWatchingService fileSystemWatchingService,
             INavigationNodeCacheService navigationNodeCacheService, IFilterService filterService, IFileBrowserService fileBrowserService)
         {
@@ -47,9 +46,7 @@
 
             fileSystemWatchingService.ContentChanged += OnFolderContentChanged;
         }
-        #endregion
 
-        #region Properties
         public string Filter
         {
             get { return _wildcardsFilter; }
@@ -68,14 +65,12 @@
                 }
             }
         }
-        #endregion
 
-        #region Methods
         public FolderNode LoadFileSystemContent(string path, bool isNavigationRoot = false)
         {
             Argument.IsNotNullOrEmpty(() => path);
 
-            Log.Debug("Loading file system content '{0}'", path);
+            Logger.LogDebug("Loading file system content '{0}'", path);
 
             var directoryInfo = new DirectoryInfo(path);
 
@@ -397,6 +392,5 @@
             var folder = _navigationNodeCacheService.GetFromCache<FolderNode>(parentDirectory);
             return folder;
         }
-        #endregion
     }
 }

@@ -5,16 +5,17 @@
 
     public class Filter : SimplyClearableModel
     {
-        #region Constructors
         public Filter()
         {
-            SearchTemplate = new SearchTemplate() { UseFullTextSearch = true };
+            SearchTemplate = new SearchTemplate
+            {
+                UseFullTextSearch = true 
+            };
+
             StartDate = DateTime.Today;
             EndDate = DateTime.Today;
         }
-        #endregion
 
-        #region Properties
         [DefaultValue(true)]
         public bool ShowInfo { get; set; }
 
@@ -38,6 +39,5 @@
 
         [DefaultValue(false)]
         public bool IsUseDateRange { get; set; }
-        #endregion
     }
 }

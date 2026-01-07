@@ -7,7 +7,7 @@
     using Catel.MVVM;
     using Orc.Squirrel;
     using Orc.WorkspaceManagement;
-    using Orchestra.Services;
+    using Orchestra;
     using Services;
     using Settings = LogViewer.Settings;
 
@@ -19,23 +19,19 @@
         private readonly IUpdateService _updateService;
         private readonly IWorkspaceManager _workspaceManager;
 
-        public SettingsViewModel(IConfigurationService configurationService, IWorkspaceManager workspaceManager, IManageAppDataService manageAppDataService, IUpdateService updateService,
-            ILogTableConfigurationService logTableConfigurationService)
+        public SettingsViewModel(IConfigurationService configurationService, IWorkspaceManager workspaceManager, 
+            IManageAppDataService manageAppDataService, IUpdateService updateService, 
+            ILogTableConfigurationService logTableConfigurationService, IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
-            ArgumentNullException.ThrowIfNull(configurationService);
-            ArgumentNullException.ThrowIfNull(workspaceManager);
-            ArgumentNullException.ThrowIfNull(manageAppDataService);
-            ArgumentNullException.ThrowIfNull(updateService);
-            ArgumentNullException.ThrowIfNull(logTableConfigurationService);
-
             _configurationService = configurationService;
             _workspaceManager = workspaceManager;
             _manageAppDataService = manageAppDataService;
             _updateService = updateService;
             _logTableConfigurationService = logTableConfigurationService;
 
-            OpenApplicationDataDirectory = new Command(OnOpenApplicationDataDirectoryExecute);
-            BackupUserData = new TaskCommand(OnBackupUserDataExecuteAsync);
+            OpenApplicationDataDirectory = new Command(serviceProvider, OnOpenApplicationDataDirectoryExecute);
+            BackupUserData = new TaskCommand(serviceProvider, OnBackupUserDataExecuteAsync);
 
             Title = "Settings";
         }
@@ -59,7 +55,7 @@
             AvailableUpdateChannels = new List<UpdateChannel>(_updateService.AvailableChannels);
             UpdateChannel = _updateService.CurrentChannel;
 
-            IsTimestampVisible = _logTableConfigurationService.GetIsTimestampVisibile();
+            IsTimestampVisible = _logTableConfigurationService.GetIsTimestampVisible();
         }
 
         protected override async Task<bool> SaveAsync()
@@ -72,7 +68,7 @@
             _updateService.IsCheckForUpdatesEnabled = CheckForUpdates;
             _updateService.CurrentChannel = UpdateChannel;
 
-            _logTableConfigurationService.SetIsTimestampVisibile(IsTimestampVisible);
+            _logTableConfigurationService.SetIsTimestampVisible(IsTimestampVisible);
 
             return await base.SaveAsync();
         }

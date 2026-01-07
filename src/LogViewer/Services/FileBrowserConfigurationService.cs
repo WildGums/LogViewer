@@ -9,22 +9,17 @@
 
     public class FileBrowserConfigurationService : IFileBrowserConfigurationService
     {
-        #region Fields
         private const string BrowserRootsKey = "BrowserRoots";
         private const string RootsSeparator = "|";
         private readonly IConfigurationService _configurationService;
-        #endregion
 
-        #region Constructors
         public FileBrowserConfigurationService(IConfigurationService configurationService)
         {
             ArgumentNullException.ThrowIfNull(configurationService);
 
             _configurationService = configurationService;
         }
-        #endregion
 
-        #region Methods
         public bool AddFolder(string fullPath)
         {
             Argument.IsNotNullOrWhitespace(() => fullPath);
@@ -85,6 +80,5 @@
             var foldersValue = string.Join(RootsSeparator, folders);
             _configurationService.SetRoamingValue(BrowserRootsKey, foldersValue);
         }
-        #endregion
     }
 }

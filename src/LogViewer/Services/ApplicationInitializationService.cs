@@ -14,35 +14,30 @@
     using Fluent;
     using LogViewer.Views;
     using MethodTimer;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Models;
     using Orc.FilterBuilder;
     using Orc.Squirrel;
     using Orc.WorkspaceManagement;
-    using Orchestra.Services;
+    using Orchestra;
     using Settings = LogViewer.Settings;
 
     public class ApplicationInitializationService : ApplicationInitializationServiceBase
     {
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-        private readonly IServiceLocator _serviceLocator;
+        private static readonly ILogger Logger = LogManager.GetLogger(typeof(ApplicationInitializationService));
+
         private readonly ICommandManager _commandManager;
-        private readonly ITypeFactory _typeFactory;
 
-        public ApplicationInitializationService(ITypeFactory typeFactory, IServiceLocator serviceLocator, ICommandManager commandManager)
+        public ApplicationInitializationService(IServiceProvider serviceProvider, ICommandManager commandManager)
+            : base(serviceProvider)
         {
-            ArgumentNullException.ThrowIfNull(typeFactory);
-            ArgumentNullException.ThrowIfNull(serviceLocator);
-            ArgumentNullException.ThrowIfNull(commandManager);
-
-            _typeFactory = typeFactory;
-            _serviceLocator = serviceLocator;
             _commandManager = commandManager;
         }
 
         public override async Task InitializeBeforeCreatingShellAsync()
         {
             // Non-async first
-            RegisterTypes();
             InitializeFonts();
             InitializeSettings();
             InitializeCommands();
@@ -71,48 +66,23 @@
 
         private void InitializeCommands()
         {
-            Log.Info("Initializing commands");
+            Logger.LogInformation("Initializing commands");
 
-            _commandManager.CreateCommandWithGesture(typeof(Commands.File), nameof(Commands.File.Exit));
+            _commandManager.CreateCommandWithGesture(ServiceProvider, typeof(Commands.File), nameof(Commands.File.Exit));
 
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), nameof(Commands.Filter.ResetSearchTemplate));
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), nameof(Commands.Filter.ExportResult));
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Filter), nameof(Commands.Filter.CopyResultToClipboard));
+            _commandManager.CreateCommandWithGesture(ServiceProvider, typeof(Commands.Filter), nameof(Commands.Filter.ResetSearchTemplate));
+            _commandManager.CreateCommandWithGesture(ServiceProvider, typeof(Commands.Filter), nameof(Commands.Filter.ExportResult));
+            _commandManager.CreateCommandWithGesture(ServiceProvider, typeof(Commands.Filter), nameof(Commands.Filter.CopyResultToClipboard));
 
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Settings), nameof(Commands.Settings.General));
+            _commandManager.CreateCommandWithGesture(ServiceProvider, typeof(Commands.Settings), nameof(Commands.Settings.General));
 
-            _commandManager.CreateCommandWithGesture(typeof(Commands.Help), nameof(Commands.Help.About));
-        }
-
-        private void RegisterTypes()
-        {
-            var serviceLocator = ServiceLocator.Default;
-
-            serviceLocator.RegisterType<IConfigurationInitializationService, ConfigurationInitializationService>();
-            serviceLocator.RegisterType<IFilterCustomizationService, FilterCustomizationService>();
-
-            serviceLocator.RegisterType<ILogReaderService, LogReaderService>();
-            serviceLocator.RegisterType<IFileNodeService, FileNodeService>();
-            serviceLocator.RegisterType<IFilterService, FilterService>();
-            serviceLocator.RegisterType<IRegexService, RegexService>();
-            serviceLocator.RegisterType<IFileBrowserConfigurationService, FileBrowserConfigurationService>();
-            serviceLocator.RegisterType<IFileSystemService, FileSystemService>();
-            serviceLocator.RegisterType<IFileBrowserService, FileBrowserService>();
-            serviceLocator.RegisterType<IFileSystemWatchingService, FileSystemWatchingService>();
-            serviceLocator.RegisterType<ILogTableService, LogTableService>();
-            serviceLocator.RegisterType<INavigationNodeCacheService, NavigationNodeCacheService>();
-            serviceLocator.RegisterType<ILogTableConfigurationService, LogTableConfigurationService>();
-
-            serviceLocator.RegisterType<IWorkspaceInitializer, WorkspaceInitializer>();
-
-            serviceLocator.RegisterTypeAndInstantiate<FileBrowserModel>();
-            serviceLocator.RegisterTypeAndInstantiate<UnhandledExceptionWatcher>();
+            _commandManager.CreateCommandWithGesture(ServiceProvider, typeof(Commands.Help), nameof(Commands.Help.About));
         }
 
         [Time]
         private async Task ImprovePerformanceAsync()
         {
-            Log.Info("Improving performance");
+            Logger.LogInformation("Improving performance");
 
             UserControl.DefaultCreateWarningAndErrorValidatorForViewModelValue = false;
             UserControl.DefaultSkipSearchingForInfoBarMessageControlValue = true;
@@ -129,21 +99,18 @@
         [Time]
         private void InitializeSettings()
         {
-            Log.Info("Initializing settings");
+            Logger.LogInformation("Initializing settings");
 
-            _serviceLocator.RegisterTypeAndInstantiate<NavigatorConfigurationSynchronizer>();
-            _serviceLocator.RegisterTypeAndInstantiate<TimestampVisibilityConfigurationSynchronizer>();
-
-            var configurationInitializationService = _serviceLocator.ResolveType<IConfigurationInitializationService>();
+            var configurationInitializationService = ServiceProvider.GetRequiredService<IConfigurationInitializationService>();
             configurationInitializationService.Initialize();
         }
 
         [Time]
         private async Task CheckForUpdatesAsync()
         {
-            Log.Info("Checking for updates");
+            Logger.LogInformation("Checking for updates");
 
-            var updateService = _serviceLocator.ResolveType<IUpdateService>();
+            var updateService = ServiceProvider.GetRequiredService<IUpdateService>();
             await updateService.InitializeAsync(Settings.Application.AutomaticUpdates.AvailableChannels, Settings.Application.AutomaticUpdates.DefaultChannel,
                 Settings.Application.AutomaticUpdates.CheckForUpdatesDefaultValue);
 
@@ -156,20 +123,19 @@
         [Time]
         private async Task InitializeFiltersAsync()
         {
-            Log.Info("Initializing filters");
+            Logger.LogInformation("Initializing filters");
 
-            var filterSchemeManager = _serviceLocator.ResolveType<IFilterSchemeManager>();
+            var filterSchemeManager = ServiceProvider.GetRequiredService<IFilterSchemeManager>();
             await filterSchemeManager.LoadAsync();
         }
 
         [Time]
         private async Task InitializeWorkspacesAsync()
         {
-            Log.Info("Initializing workspaces");
+            Logger.LogInformation("Initializing workspaces");
 
-            var workspaceManager = _serviceLocator.ResolveType<IWorkspaceManager>();
+            var workspaceManager = ServiceProvider.GetRequiredService<IWorkspaceManager>();
 
-            await workspaceManager.AddProviderAsync<FilterWorkspaceProvider>(true);
             await workspaceManager.InitializeAsync(defaultWorkspaceName: Workspaces.DefaultWorkspaceName);
 
             var defaultWorkspace = (from workspace in workspaceManager.Workspaces

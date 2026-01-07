@@ -9,11 +9,8 @@
 
     public class FileSystemWatchingService : IFileSystemWatchingService
     {
-        #region Fields
         private readonly IDictionary<string, FileSystemWatcher> _fileSystemWatchers = new ConcurrentDictionary<string, FileSystemWatcher>();
-        #endregion
 
-        #region Methods
         public void BeginDirectoryWatching(string fullPath, string filter)
         {
             Argument.IsNotNullOrEmpty(() => fullPath);
@@ -103,6 +100,5 @@
         {
             ContentChanged?.Invoke(this, new FolderNodeEventArgs(WatcherChangeTypes.Renamed, e.OldFullPath, e.FullPath));
         }
-        #endregion
     }
 }

@@ -19,8 +19,9 @@
         public FilterExportResultCommandContainer(ICommandManager commandManager,
             ISaveFileService saveFileService,
             IFileService fileService,
-            ILogTableService logTableService)
-            : base(Commands.Filter.ExportResult, commandManager)
+            ILogTableService logTableService,
+            IServiceProvider serviceProvider)
+            : base(Commands.Filter.ExportResult, commandManager, serviceProvider)
         {
             ArgumentNullException.ThrowIfNull(saveFileService);
             ArgumentNullException.ThrowIfNull(fileService);

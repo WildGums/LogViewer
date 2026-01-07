@@ -8,11 +8,10 @@
     {
         private readonly IFilterService _filterService;
   
-        public FilterResetSearchTemplateCommandContainer(ICommandManager commandManager, IFilterService filterService)
-            : base(Commands.Filter.ResetSearchTemplate, commandManager)
+        public FilterResetSearchTemplateCommandContainer(ICommandManager commandManager, IFilterService filterService,
+            IServiceProvider serviceProvider)
+            : base(Commands.Filter.ResetSearchTemplate, commandManager, serviceProvider)
         {
-            ArgumentNullException.ThrowIfNull(filterService);
-
             _filterService = filterService;
         }
 

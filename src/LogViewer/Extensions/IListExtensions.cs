@@ -5,7 +5,6 @@
 
     public static class IListExtensions
     {
-        #region Methods
         /// <summary>
         /// The list must already be sorted by descending order.
         ///  We will insert the new item and preserve the sortedness.
@@ -97,6 +96,5 @@
                 list.Insert(0, item);
             }
         }
-        #endregion
     }
 }

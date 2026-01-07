@@ -2,10 +2,11 @@
 {
     using System;
     using Catel.Configuration;
+    using Catel.IoC;
     using Models;
     using Services;
 
-    public class TimestampVisibilityConfigurationSynchronizer
+    public class TimestampVisibilityConfigurationSynchronizer : IConstructAtStartup
     {
         private readonly ILogTableConfigurationService _logTableConfigurationService;
         private readonly LogTable _logTable;
@@ -33,10 +34,10 @@
 
         private void ApplyConfiguration()
         {
-            var isTimestampVisibile = _logTableConfigurationService.GetIsTimestampVisibile();
-            if (_logTable.IsTimestampVisible != isTimestampVisibile)
+            var isTimestampVisible = _logTableConfigurationService.GetIsTimestampVisible();
+            if (_logTable.IsTimestampVisible != isTimestampVisible)
             {
-                _logTable.IsTimestampVisible = isTimestampVisibile;
+                _logTable.IsTimestampVisible = isTimestampVisible;
             }
         }
     }

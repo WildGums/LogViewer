@@ -13,12 +13,14 @@
     using Catel.Logging;
     using Catel.Services;
     using MethodTimer;
+    using Microsoft.Extensions.Logging;
     using Models;
 
     public class FileNodeService : IFileNodeService
     {
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-        private static readonly Regex _fileNameMask = new Regex(@"^[a-zA-Z\.]+_(\d{4}-\d{2}-\d{2})_\d{6}_\d+\.log$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        private static readonly ILogger Logger = LogManager.GetLogger(typeof(FileNodeService));
+
+        private static readonly Regex FileNameMask = new Regex(@"^[a-zA-Z\.]+_(\d{4}-\d{2}-\d{2})_\d{6}_\d+\.log$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         private readonly IDispatcherService _dispatcherService;
         private readonly IFilterService _filterService;
@@ -29,7 +31,8 @@
 #pragma warning restore IDISP006 // Implement IDisposable
         private Task _loadingFileNodeBatch;
 
-        public FileNodeService(ILogReaderService logReaderService, IDispatcherService dispatcherService, IFilterService filterService)
+        public FileNodeService(ILogReaderService logReaderService, IDispatcherService dispatcherService, 
+            IFilterService filterService)
         {
             ArgumentNullException.ThrowIfNull(logReaderService);
             ArgumentNullException.ThrowIfNull(dispatcherService);
@@ -44,12 +47,12 @@
         {
             Argument.IsNotNullOrEmpty(() => fileName);
 
-            //Log.Debug("Creating file node '{0}'", fileName);
+            //Logger.LogDebug("Creating file node '{0}'", fileName);
 
             var fileNode = new FileNode(new FileInfo(fileName));
 
             fileNode.Name = fileNode.FileInfo.Name;
-            fileNode.IsUnifyNamed = _fileNameMask.IsMatch(fileNode.FileInfo.Name);
+            fileNode.IsUnifyNamed = FileNameMask.IsMatch(fileNode.FileInfo.Name);
             if (!fileNode.IsUnifyNamed)
             {
                 fileNode.Name = fileNode.FileInfo.Name;
@@ -67,7 +70,7 @@
         [Time]
         public void LoadFileNode(FileNode fileNode)
         {
-            Log.Debug("Loading file node '{0}'", fileNode);
+            Logger.LogDebug("Loading file node '{0}'", fileNode);
 
             try
             {
@@ -76,7 +79,7 @@
                     var fileRecords = _logReaderService.LoadRecordsFromFileAsync(fileNode).Result;
 
                     var logRecords = fileNode.Records;
-                    using (logRecords.SuspendChangeNotifications())
+                    //using (logRecords.SuspendChangeNotifications())
                     {
                         ((ICollection<LogRecord>)logRecords).ReplaceRange(fileRecords);
                     }
@@ -84,7 +87,7 @@
             }
             catch (Exception ex)
             {
-                Log.Warning(ex, "Failed to load file node '{0}'", fileNode);
+                Logger.LogWarning(ex, "Failed to load file node '{0}'", fileNode);
             }
         }
 
@@ -137,7 +140,7 @@
                 _cancellationTokenSource.Cancel();
                 if (!_loadingFileNodeBatch.Wait(100))
                 {
-                    Log.Warning("Loading FileNode batch was not awaited.");
+                    Logger.LogWarning("Loading FileNode batch was not awaited.");
                 }
             }
 

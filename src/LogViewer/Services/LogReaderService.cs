@@ -5,14 +5,15 @@
     using System.Globalization;
     using System.IO;
     using System.Text.RegularExpressions;
+    using Catel;
     using Catel.Logging;
+    using Microsoft.Extensions.Logging;
     using Models;
     using Orc.FileSystem;
 
     public class LogReaderService : ILogReaderService
     {
-        #region Fields
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger Logger = LogManager.GetLogger(typeof(LogReaderService));
 
         private static readonly Regex LogRecordPattern = new Regex(@"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+\s\=\>\s\[[a-zA-Z]+\]\s\[[a-zA-Z\d\.\`]+\].+", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
         private static readonly Regex DateTimePattern = new Regex(@"^(\d{4}-\d{2}-\d{2}\s)?\d{2}\:\d{2}\:\d{2}\:\d+", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
@@ -22,10 +23,6 @@
 
         private readonly IFileService _fileService;
 
-        #endregion
-
-        #region Constructors
-
         public LogReaderService(IFileService fileService)
         {
             ArgumentNullException.ThrowIfNull(fileService);
@@ -33,19 +30,13 @@
             _fileService = fileService;
         }
 
-        #endregion
-
-        #region Methods
-
-        #region ILogReaderService Members
-
         public IEnumerable<LogRecord> LoadRecordsFromFile(FileNode fileNode)
         {
             ArgumentNullException.ThrowIfNull(fileNode);
 
             Stream stream;
 
-            Log.Debug("Loading records file file '{0}'", fileNode);
+            Logger.LogDebug("Loading records file file '{0}'", fileNode);
 
             try
             {
@@ -53,7 +44,7 @@
             }
             catch (IOException ex)
             {
-                Log.Warning(ex, "Failed to load records from file '{0}'", fileNode);
+                Logger.LogWarning(ex, "Failed to load records from file '{0}'", fileNode);
 
                 yield break;
             }
@@ -88,7 +79,7 @@
                                 record.DateTime = fileNode.DateTime.Date + record.DateTime.TimeOfDay;
                             }
 
-                            record.LogEvent = ExtractLogEventType(ref line);
+                            record.LogLevel = ExtractLogLevel(ref line);
                             record.TargetTypeName = ExtractTargetTypeName(ref line);
                             record.ThreadId = ExtractThreadId(ref line);
                             record.Message = line;
@@ -106,9 +97,8 @@
                 }
             }
 
-            Log.Info("Read '{0}' records from file '{1}'", counter, fileNode);
+            Logger.LogInformation("Read '{0}' records from file '{1}'", counter, fileNode);
         }
-        #endregion
 
         private DateTime ExtractDateTime(ref string line)
         {
@@ -117,12 +107,18 @@
             return DateTime.ParseExact(dateTimeString, new[] { "HH:mm:ss:fff", "yyyy-MM-dd HH:mm:ss:fff" }, null, DateTimeStyles.NoCurrentDateDefault);
         }
 
-        private LogEvent ExtractLogEventType(ref string line)
+        private LogLevel ExtractLogLevel(ref string line)
         {
             var eventTypeString = LogEventPattern.Match(line).Value;
             line = line.Substring(eventTypeString.Length).TrimStart();
             eventTypeString = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(eventTypeString.Trim('[', ']').ToLowerInvariant());
-            return (LogEvent)Enum.Parse(typeof(LogEvent), eventTypeString);
+
+            if (!Enum<LogLevel>.TryParse(eventTypeString, out var logLevel))
+            {
+                return LogLevel.Debug; 
+            }
+
+            return logLevel.Value;
         }
 
         private string ExtractTargetTypeName(ref string line)
@@ -150,6 +146,5 @@
 
             logRecord.Message += (Environment.NewLine + line);
         }
-        #endregion
     }
 }

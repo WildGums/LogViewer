@@ -4,11 +4,10 @@
 
     using LogViewer.Views;
 
-    using Orchestra.Services;
+    using Orchestra;
 
     public class RibbonService : IRibbonService
     {
-        #region IRibbonService Members
         public FrameworkElement GetRibbon()
         {
             return new RibbonView();
@@ -23,6 +22,5 @@
         {
             return new StatusBarView();
         }
-        #endregion
     }
 }
