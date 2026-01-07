@@ -118,7 +118,7 @@
                 return LogLevel.Debug; 
             }
 
-            return logLevel.Value;
+            return logLevel;
         }
 
         private string ExtractTargetTypeName(ref string line)
