@@ -6,7 +6,6 @@
 
     public static class FolderNodeExtensions
     {
-        #region Methods
         public static IEnumerable<FileNode> GetAllNestedFiles(this FolderNode folder)
         {
             var stack = new Stack<FolderNode>();
@@ -38,6 +37,5 @@
             var hasVisibleSubfolders = folder.Directories.Any() && folder.Directories.Any(dir => dir.IsVisible);
             folder.IsVisible = hasVisibleFiles || hasVisibleSubfolders;
         }
-        #endregion
     }
 }

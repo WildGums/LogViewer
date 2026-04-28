@@ -2,7 +2,6 @@
 {
     public class SearchTemplate : SimplyClearableModel
     {
-        #region Properties
         public string TemplateString { get; set; }
 
         public bool UseFullTextSearch { get; set; }
@@ -15,8 +14,7 @@
 
         public bool IsEmpty()
         {
-            return string.IsNullOrEmpty(this.TemplateString) || string.IsNullOrEmpty(this.TemplateString.Trim());
+            return string.IsNullOrWhiteSpace(TemplateString);
         }
-        #endregion
     }
 }

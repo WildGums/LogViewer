@@ -3,14 +3,15 @@
     using System;
     using System.Threading.Tasks;
     using Catel.MVVM;
-    using Orchestra.Services;
+    using Orchestra;
 
     public class HelpAboutCommandContainer: CommandContainerBase
     {
         private readonly IAboutService _aboutService;
 
-        public HelpAboutCommandContainer(ICommandManager commandManager, IAboutService aboutService)
-            : base(Commands.Help.About, commandManager)
+        public HelpAboutCommandContainer(ICommandManager commandManager, IAboutService aboutService,
+            IServiceProvider serviceProvider)
+            : base(Commands.Help.About, commandManager, serviceProvider)
         {
             ArgumentNullException.ThrowIfNull(aboutService);
 

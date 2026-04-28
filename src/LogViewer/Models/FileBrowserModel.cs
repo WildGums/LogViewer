@@ -2,20 +2,17 @@
 {
     using Catel.Collections;
     using Catel.Data;
+    using Catel.Services;
 
     public class FileBrowserModel : ModelBase
     {
-        #region Constructors
-        public FileBrowserModel()
+        public FileBrowserModel(IDispatcherService dispatcherService)
         {
-            RootDirectories = new FastObservableCollection<FolderNode>();
-            SelectedItems = new FastObservableCollection<NavigationNode>();
+            RootDirectories = new FastObservableCollection<FolderNode>(dispatcherService);
+            SelectedItems = new FastObservableCollection<NavigationNode>(dispatcherService);
         }
-        #endregion
 
-        #region Properties
         public FastObservableCollection<FolderNode> RootDirectories { get; private set; }
         public FastObservableCollection<NavigationNode> SelectedItems { get; private set; }
-        #endregion
     }
 }

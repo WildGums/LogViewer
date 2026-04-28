@@ -3,8 +3,8 @@
     public interface ILogTableConfigurationService
     {
         #region Methods
-        bool GetIsTimestampVisibile();
-        void SetIsTimestampVisibile(bool value);
+        bool GetIsTimestampVisible();
+        void SetIsTimestampVisible(bool value);
         #endregion
     }
 }

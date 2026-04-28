@@ -4,10 +4,11 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using Catel.Configuration;
+    using Catel.IoC;
     using Models;
     using Services;
 
-    public class NavigatorConfigurationSynchronizer
+    public class NavigatorConfigurationSynchronizer : IConstructAtStartup
     {
         private readonly IFileBrowserConfigurationService _fileBrowserConfigurationService;
         private readonly IFileBrowserService _fileBrowserService;

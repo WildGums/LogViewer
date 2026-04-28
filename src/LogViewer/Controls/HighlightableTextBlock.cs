@@ -18,7 +18,6 @@
 
         }
 
-        #region Properties
         public string RegularExpression
         {
             get { return (string)GetValue(RegularExpressionProperty); }
@@ -104,9 +103,7 @@
                 }
             });
         }
-        #endregion
 
-        #region Methods
         private void UpdateText(string newText, bool clearInlines)
         {
             Dispatcher.BeginInvokeIfRequired(() =>
@@ -142,6 +139,5 @@
 
             return true;
         }
-        #endregion
     }
 }

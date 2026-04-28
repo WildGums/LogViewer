@@ -9,8 +9,9 @@
     {
         private readonly INavigationService _navigationService;
 
-        public FileExitCommandContainer(ICommandManager commandManager, INavigationService navigationService)
-            : base(Commands.File.Exit, commandManager)
+        public FileExitCommandContainer(ICommandManager commandManager, INavigationService navigationService,
+            IServiceProvider serviceProvider)
+            : base(Commands.File.Exit, commandManager, serviceProvider)
         {
             ArgumentNullException.ThrowIfNull(navigationService);
 

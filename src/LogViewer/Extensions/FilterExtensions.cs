@@ -5,23 +5,25 @@
     using Catel.Logging;
 
     using LogViewer.Models;
+    using Microsoft.Extensions.Logging;
 
     public static class FilterExtensions
     {
-        public static bool IsAcceptableTo(this Filter filter, LogEvent logEvent)
+        public static bool IsAcceptableTo(this Filter filter, LogLevel logLevel)
         {
-            switch (logEvent)
+            switch (logLevel)
             {
-                case LogEvent.Debug:
+                case LogLevel.Debug:
                     return filter.ShowDebug;
 
-                case LogEvent.Error:
+                case LogLevel.Critical:
+                case LogLevel.Error:
                     return filter.ShowError;
 
-                case LogEvent.Info:
+                case LogLevel.Information:
                     return filter.ShowInfo;
 
-                case LogEvent.Warning:
+                case LogLevel.Warning:
                     return filter.ShowWarning;
             }
 

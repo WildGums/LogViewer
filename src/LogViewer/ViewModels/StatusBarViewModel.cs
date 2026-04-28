@@ -12,11 +12,10 @@
         private readonly IConfigurationService _configurationService;
         private readonly IUpdateService _updateService;
 
-        public StatusBarViewModel(IConfigurationService configurationService, IUpdateService updateService)
+        public StatusBarViewModel(IConfigurationService configurationService, IUpdateService updateService,
+            IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
-            ArgumentNullException.ThrowIfNull(configurationService);
-            ArgumentNullException.ThrowIfNull(updateService);
-
             _configurationService = configurationService;
             _updateService = updateService;
         }

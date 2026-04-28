@@ -6,7 +6,6 @@
 
     public static class ListExtensions
     {
-        #region Methods
         public static void RemoveByPredicate<T>(this IList<T> list, Predicate<T> predicate)
         {
             ArgumentNullException.ThrowIfNull(predicate);
@@ -28,6 +27,5 @@
                 list.RemoveAt(0);
             }
         }
-        #endregion
     }
 }

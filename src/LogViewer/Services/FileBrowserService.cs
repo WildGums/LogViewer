@@ -1,18 +1,15 @@
 ﻿namespace LogViewer.Services
 {
+    using Catel.Services;
     using Models;
 
     public class FileBrowserService : IFileBrowserService
     {
-        #region Constructors
-        public FileBrowserService()
+        public FileBrowserService(IDispatcherService dispatcherService)
         {
-            FileBrowserModel = new FileBrowserModel();
+            FileBrowserModel = new FileBrowserModel(dispatcherService);
         }
-        #endregion
 
-        #region Properties
         public FileBrowserModel FileBrowserModel { get; private set; }
-        #endregion
     }
 }

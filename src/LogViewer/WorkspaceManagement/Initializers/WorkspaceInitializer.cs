@@ -2,23 +2,24 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Catel.IoC;
     using Orc.WorkspaceManagement;
 
     public class WorkspaceInitializer : IWorkspaceInitializer
     {
+        //private readonly IWorkspaceManager _workspaceManager;
+
+        public WorkspaceInitializer()
+        {
+        }
+
         public async Task InitializeAsync(IWorkspace workspace)
         {
             ArgumentNullException.ThrowIfNull(workspace);
 
-            // NOTE: not injected because this is a dependency of IWorkspaceProvider
-            var dependencyResolver = this.GetDependencyResolver();
-            var workspaceManager = dependencyResolver.Resolve<IWorkspaceManager>();
-
-            foreach (var provider in workspaceManager.Providers)
-            {
-                await provider.ProvideInformationAsync(workspace);
-            }
+            //foreach (var provider in _workspaceManager.Providers)
+            //{
+            //    await provider.ProvideInformationAsync(workspace);
+            //}
         }
     }
 }

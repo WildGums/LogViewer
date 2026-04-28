@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -15,12 +16,12 @@
 
     public class MultipleSelectionBehavior : BehaviorBase<TreeView>
     {
-        public static FastObservableCollection<NavigationNode> GetSelectedItems(MultipleSelectionBehavior element)
+        public static ObservableCollection<NavigationNode> GetSelectedItems(MultipleSelectionBehavior element)
         {
-            return (FastObservableCollection<NavigationNode>)element.GetValue(SelectedItemsProperty);
+            return (ObservableCollection<NavigationNode>)element.GetValue(SelectedItemsProperty);
         }
 
-        public static void SetSelectedItems(MultipleSelectionBehavior element, FastObservableCollection<NavigationNode> value)
+        public static void SetSelectedItems(MultipleSelectionBehavior element, ObservableCollection<NavigationNode> value)
         {
             element.SetValue(SelectedItemsProperty, value);
         }
@@ -39,15 +40,16 @@
 
         private NavigationNode StartItem { get; set; }
 
-        public FastObservableCollection<NavigationNode> SelectedItems
+        public ObservableCollection<NavigationNode> SelectedItems
         {
-            get { return (FastObservableCollection<NavigationNode>)GetValue(SelectedItemsProperty); }
+            get { return (ObservableCollection<NavigationNode>)GetValue(SelectedItemsProperty); }
             set { SetValue(SelectedItemsProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached(nameof(SelectedItems), typeof(FastObservableCollection<NavigationNode>),
+        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached(nameof(SelectedItems), 
+            typeof(ObservableCollection<NavigationNode>),
 #pragma warning disable WPF0016 // Default value is shared reference type.
-            typeof(MultipleSelectionBehavior), new PropertyMetadata(new FastObservableCollection<NavigationNode>()));
+            typeof(MultipleSelectionBehavior), new PropertyMetadata(new ObservableCollection<NavigationNode>()));
 #pragma warning restore WPF0016 // Default value is shared reference type.
 
         protected override void OnAssociatedObjectLoaded()
@@ -97,14 +99,14 @@
 
             var selectedItems = SelectedItems;
 
-            using (selectedItems.SuspendChangeNotifications())
-            {
+            //using (selectedItems.SuspendChangeNotifications())
+            //{
                 using (UpdatingSelection(selectedItems))
                 {
                     selectedItems.Clear();
                     selectedItems.Add(node);
                 }
-            }
+           // }
 
             StartItem = node;
         }
@@ -144,9 +146,9 @@
             ReplaceRange(selectedItems, navigationNodes);
         }
 
-        private void ReplaceRange(FastObservableCollection<NavigationNode> selectedItems, List<NavigationNode> navigationNodes)
+        private void ReplaceRange(ObservableCollection<NavigationNode> selectedItems, List<NavigationNode> navigationNodes)
         {
-            using (selectedItems.SuspendChangeNotifications())
+            //using (selectedItems.SuspendChangeNotifications())
             {
                 ((ICollection<NavigationNode>)SelectedItems).ReplaceRange(navigationNodes);
             }
@@ -154,10 +156,10 @@
 
         private static IDisposable UpdatingSelection(IEnumerable<NavigationNode> selectedItems)
         {
-            return new DisposableToken(null, t => SetItemSetectedValue(selectedItems, false), t => SetItemSetectedValue(selectedItems, true));
+            return new DisposableToken(null, t => SetItemSelectedValue(selectedItems, false), t => SetItemSelectedValue(selectedItems, true));
         }
 
-        private static void SetItemSetectedValue(IEnumerable<NavigationNode> selectedItems, bool value)
+        private static void SetItemSelectedValue(IEnumerable<NavigationNode> selectedItems, bool value)
         {
             foreach (var selectedItem in selectedItems)
             {

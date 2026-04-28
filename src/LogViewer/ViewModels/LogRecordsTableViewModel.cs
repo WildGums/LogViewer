@@ -11,7 +11,7 @@
     using Models;
     using Services;
 
-    public class LogRecordsTableViewModel : ViewModelBase
+    public class LogRecordsTableViewModel : FeaturedViewModelBase
     {
         private readonly IFilterService _filterService;
         private readonly ILogTableService _logTableService;
@@ -20,14 +20,10 @@
 #pragma warning restore IDISP006 // Implement IDisposable
         private ObservableCollection<NavigationNode> _prevSelectedItems;
 
-        public LogRecordsTableViewModel(IFilterService filterService, ICommandManager commandManager, IFileBrowserService fileBrowserService,
-            ILogTableService logTableService)
+        public LogRecordsTableViewModel(IFilterService filterService, ICommandManager commandManager, 
+            IFileBrowserService fileBrowserService, ILogTableService logTableService, IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
-            ArgumentNullException.ThrowIfNull(filterService);
-            ArgumentNullException.ThrowIfNull(commandManager);
-            ArgumentNullException.ThrowIfNull(fileBrowserService);
-            ArgumentNullException.ThrowIfNull(logTableService);
-
             _filterService = filterService;
             _logTableService = logTableService;
 

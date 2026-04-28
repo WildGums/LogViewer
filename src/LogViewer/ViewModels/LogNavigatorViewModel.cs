@@ -10,7 +10,7 @@
     using Models;
     using Services;
 
-    public class LogNavigatorViewModel : ViewModelBase
+    public class LogNavigatorViewModel : FeaturedViewModelBase
     {
         private readonly IAppDataService _appDataService;
         private readonly IFileBrowserConfigurationService _fileBrowserConfigurationService;
@@ -19,15 +19,12 @@
         private readonly ISelectDirectoryService _selectDirectoryService;
         private ObservableCollection<NavigationNode> _prevSelectedItems;
 
-        public LogNavigatorViewModel(ISelectDirectoryService selectDirectoryService, IMessageService messageService, IAppDataService appDataService,
-            IFileBrowserService fileBrowserService, IFileBrowserConfigurationService fileBrowserConfigurationService, IFileNodeService fileNodeService)
+        public LogNavigatorViewModel(ISelectDirectoryService selectDirectoryService, IMessageService messageService, 
+            IAppDataService appDataService, IFileBrowserService fileBrowserService, 
+            IFileBrowserConfigurationService fileBrowserConfigurationService, IFileNodeService fileNodeService,
+            IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
-            ArgumentNullException.ThrowIfNull(selectDirectoryService);
-            ArgumentNullException.ThrowIfNull(messageService);
-            ArgumentNullException.ThrowIfNull(appDataService);
-            ArgumentNullException.ThrowIfNull(fileBrowserConfigurationService);
-            ArgumentNullException.ThrowIfNull(fileNodeService);
-
             _selectDirectoryService = selectDirectoryService;
             _messageService = messageService;
             _appDataService = appDataService;
@@ -36,8 +33,8 @@
 
             FileBrowser = fileBrowserService.FileBrowserModel;
 
-            AddFolder = new TaskCommand(OnAddFolderExecuteAsync);
-            DeleteFolder = new TaskCommand(OnDeleteFolderExecuteAsync, OnDeleteFolderCanExecute);
+            AddFolder = new TaskCommand(serviceProvider, OnAddFolderExecuteAsync);
+            DeleteFolder = new TaskCommand(serviceProvider, OnDeleteFolderExecuteAsync, OnDeleteFolderCanExecute);
         }
 
         [Model(SupportIEditableObject = false)]

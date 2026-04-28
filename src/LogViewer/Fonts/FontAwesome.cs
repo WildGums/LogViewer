@@ -1,14 +1,7 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FontAwesome.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-using System.Globalization;
-
-namespace LogViewer
+﻿namespace LogViewer
 {
+    using System.Globalization;
+
     /// <summary>
     /// Class FontAwesome, characters can be found at http://fortawesome.github.io/Font-Awesome/cheatsheet/
     /// </summary>

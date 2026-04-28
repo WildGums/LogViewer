@@ -7,7 +7,6 @@
 
     public static class StringExtensions
     {
-        #region Methods
         public static string WrapToFindRegex(this string str)
         {
             return string.Format("(?={0})|(?<={0})", str);
@@ -56,6 +55,5 @@
         {
             return Directory.Exists(fullName);
         }
-        #endregion
     }
 }

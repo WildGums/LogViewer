@@ -6,20 +6,17 @@
     using Catel.MVVM;
 
     using LogViewer.Services;
-
-    using Orchestra.Services;
+    using Orchestra;
 
     public class FilterCopyResultToClipboardCommandContainer : CommandContainerBase
     {
         private readonly IClipboardService _clipboardService;
         private readonly ILogTableService _logTableService;
 
-        public FilterCopyResultToClipboardCommandContainer(ICommandManager commandManager, IClipboardService clipboardService, ILogTableService logTableService)
-            : base(Commands.Filter.CopyResultToClipboard, commandManager)
+        public FilterCopyResultToClipboardCommandContainer(ICommandManager commandManager, IClipboardService clipboardService, 
+            ILogTableService logTableService, IServiceProvider serviceProvider)
+            : base(Commands.Filter.CopyResultToClipboard, commandManager, serviceProvider)
         {
-            ArgumentNullException.ThrowIfNull(clipboardService);
-            ArgumentNullException.ThrowIfNull(logTableService);
-
             _clipboardService = clipboardService;
             _logTableService = logTableService;
         }

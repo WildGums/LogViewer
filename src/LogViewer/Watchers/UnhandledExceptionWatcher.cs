@@ -4,37 +4,33 @@
     using System.Diagnostics;
     using System.Threading.Tasks;
     using System.Windows;
+    using Catel.IoC;
     using Catel.Logging;
     using Catel.Services;
+    using Microsoft.Extensions.Logging;
 
-    public class UnhandledExceptionWatcher
+    public class UnhandledExceptionWatcher : IConstructAtStartup
     {
-        #region Fields
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-        private readonly IMessageService _messageService;
-        #endregion
+        private static readonly ILogger Logger = LogManager.GetLogger(typeof(UnhandledExceptionWatcher));
 
-        #region Constructors
+        private readonly IMessageService _messageService;
+
         public UnhandledExceptionWatcher(IMessageService messageService)
         {
-            ArgumentNullException.ThrowIfNull(messageService);
-
             _messageService = messageService;
 
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
             TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
             Application.Current.DispatcherUnhandledException += OnDispatcherUnhandledException;
         }
-        #endregion
 
-        #region Methods
         private void OnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
             try
             {
                 var exception = e.Exception;
 
-                Log.Error(exception);
+                Logger.LogError(exception, null);
 
                 CreateSupportPackage(exception);
             }
@@ -50,7 +46,7 @@
             {
                 var exception = (Exception)e.ExceptionObject;
 
-                Log.Error(exception);
+                Logger.LogError(exception, null);
 
                 CreateSupportPackage(exception);
             }
@@ -78,7 +74,7 @@
             var exception = e.Exception;
             try
             {
-                Log.Error(exception);
+                Logger.LogError(exception, null);
 
                 CreateSupportPackage(exception);
                 e.Handled = true;
@@ -98,9 +94,8 @@
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Failed to create support package.");
+                Logger.LogError(ex, "Failed to create support package.");
             }
         }
-        #endregion
     }
 }

@@ -5,24 +5,20 @@
 
     using Catel.Data;
     using Catel.Logging;
+    using Microsoft.Extensions.Logging;
 
     public class LogRecord : ModelBase
     {
-        #region Fields
-        private static readonly Dictionary<LogEvent, string> LogEventCache = new Dictionary<LogEvent, string>();
-        #endregion
+        private static readonly Dictionary<LogLevel, string> LogLevelCache = new Dictionary<LogLevel, string>();
 
-        #region Constructors
         static LogRecord()
         {
-            foreach (LogEvent value in Enum.GetValues(typeof(LogEvent)))
+            foreach (LogLevel value in Enum.GetValues(typeof(LogLevel)))
             {
-                LogEventCache.Add(value, value.ToString().ToUpper());
+                LogLevelCache.Add(value, value.ToString().ToUpper());
             }
         }
-        #endregion
 
-        #region Properties
         public FileNode FileNode { get; set; }
 
         /// <summary>
@@ -32,7 +28,7 @@
 
         public DateTime DateTime { get; set; }
 
-        public LogEvent LogEvent { get; set; }
+        public LogLevel LogLevel { get; set; }
 
         public string TargetTypeName { get; set; }
 
@@ -41,13 +37,10 @@
         public string Message { get; set; }
 
         public bool IsSelected { get; set; }
-        #endregion
 
-        #region Methods
         public override string ToString()
         {
-            return $"{DateTime:HH:mm:ss:ms} => [{LogEventCache[LogEvent]}] [{TargetTypeName}] [{ThreadId}] {Message}";
+            return $"{DateTime:HH:mm:ss:ms} => [{LogLevelCache[LogLevel]}] [{TargetTypeName}] [{ThreadId}] {Message}";
         }
-        #endregion
     }
 }
