@@ -46,7 +46,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.7" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.7" />
-    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="6.0.0-alpha0099" />
+    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="6.0.0-alpha0104" />
     <PackageReference Include="Orc.Squirrel.Xaml" Version="6.0.0-alpha0091" />
     <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="6.0.0-alpha0090" />
     <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="8.0.0-alpha0122" />
