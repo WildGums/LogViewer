@@ -137,6 +137,7 @@
             await base.CloseAsync();
         }
 
+        [NoWeaving]
         private void OnCurrentWorkspaceChanged(object sender, WorkspaceUpdatedEventArgs e)
         {
             UpdateCurrentWorkspace();

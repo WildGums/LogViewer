@@ -12,8 +12,6 @@
 
   <PropertyGroup>
     <UseWpf>true</UseWpf>
-    <ExtrasEnableImplicitWpfReferences>true</ExtrasEnableImplicitWpfReferences>
-    <ExtrasEnableImplicitWinFormsReferences>true</ExtrasEnableImplicitWinFormsReferences>
   </PropertyGroup>
   
   <PropertyGroup>
@@ -29,15 +27,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Catel.Fody" Version="7.0.0" PrivateAssets="all" />
-    <PackageReference Include="Catel.SourceGenerators" Version="7.0.1" PrivateAssets="all" />
+    <PackageReference Include="Catel.Fody" Version="7.1.0-alpha0016" PrivateAssets="all" />
+    <PackageReference Include="Catel.SourceGenerators" Version="7.1.0-alpha0052" PrivateAssets="all" />
     <PackageReference Include="FastMember" Version="1.5.0" />
     <PackageReference Include="Fody" Version="6.9.3" PrivateAssets="all">
       <IncludeAssets>build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="LoadAssembliesOnStartup.Fody" Version="4.7.0" PrivateAssets="all">
-      <ExcludeAssets>runtime</ExcludeAssets>
-      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="MethodTimer.Fody" Version="3.2.3" PrivateAssets="all">
       <ExcludeAssets>runtime</ExcludeAssets>
@@ -46,10 +40,10 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.7" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.7" />
-    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="6.0.0-alpha0104" />
+    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="6.0.0-alpha0140" />
     <PackageReference Include="Orc.Squirrel.Xaml" Version="6.0.0-alpha0131" />
     <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="6.0.0-alpha0090" />
-    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="8.0.0-alpha0169" />
+    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="8.0.0-alpha0177" />
     <PackageReference Include="Rx-Linq" Version="2.2.5" />
     <PackageReference Include="Rx-WPF" Version="2.2.5" />
   </ItemGroup>
