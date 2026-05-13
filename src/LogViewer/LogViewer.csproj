@@ -37,9 +37,9 @@
       <ExcludeAssets>runtime</ExcludeAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.7" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.8" />
     <PackageReference Include="Orc.FilterBuilder.Xaml" Version="6.0.0-alpha0144" />
     <PackageReference Include="Orc.Squirrel.Xaml" Version="6.0.0-alpha0131" />
     <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="6.0.0-alpha0090" />
