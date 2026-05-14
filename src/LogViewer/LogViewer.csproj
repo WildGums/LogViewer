@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <PackageReference Include="Catel.Fody" Version="7.1.0-alpha0016" PrivateAssets="all" />
-    <PackageReference Include="Catel.SourceGenerators" Version="7.1.0-alpha0052" PrivateAssets="all" />
+    <PackageReference Include="Catel.SourceGenerators" Version="7.1.0-alpha0059" PrivateAssets="all" />
     <PackageReference Include="FastMember" Version="1.5.0" />
     <PackageReference Include="Fody" Version="6.9.3" PrivateAssets="all">
       <IncludeAssets>build; native; contentfiles; analyzers</IncludeAssets>
@@ -43,7 +43,7 @@
     <PackageReference Include="Orc.FilterBuilder.Xaml" Version="6.0.0-alpha0144" />
     <PackageReference Include="Orc.Squirrel.Xaml" Version="6.0.0-alpha0131" />
     <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="6.0.0-alpha0090" />
-    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="8.0.0-alpha0177" />
+    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="8.0.0-alpha0198" />
     <PackageReference Include="Rx-Linq" Version="2.2.5" />
     <PackageReference Include="Rx-WPF" Version="2.2.5" />
   </ItemGroup>
