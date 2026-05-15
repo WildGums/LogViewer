@@ -38,7 +38,7 @@
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.8" />
-    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="6.0.0-alpha0144" />
+    <PackageReference Include="Orc.FilterBuilder.Xaml" Version="6.0.0-alpha0146" />
     <PackageReference Include="Orc.Squirrel.Xaml" Version="6.0.0-alpha0131" />
     <PackageReference Include="Orc.WorkspaceManagement.Xaml" Version="6.0.0-alpha0090" />
     <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="8.0.0-alpha0199" />
