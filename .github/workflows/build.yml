@@ -191,15 +191,7 @@ jobs:
           }
 
           Add-Content -Path $env:GITHUB_ENV -Value "AzureCodeSignVaultName=$env:AZURE_KEYVAULT_NAME"
-    
-      # Get a short-lived NuGet API key
-      - name: NuGet login (OIDC → temp API key)
-        id: nuget-login
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy }}
-        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
-        with:
-          user: ${{ env.NuGetUser }}
-    
+
       # Build & test
       - name: Build and test via Cake
         id: cake-action-build-test
