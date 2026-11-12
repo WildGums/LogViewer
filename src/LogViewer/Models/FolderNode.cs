@@ -29,6 +29,7 @@
         public IList<FileNode> Files { get; set; }
         public IList<FolderNode> Directories { get; set; }
 
+#pragma warning disable WFO2000
         public IList Children
         {
             get
@@ -46,5 +47,6 @@
                 };
             }
         }
+#pragma warning restore WFO2000
     }
 }
